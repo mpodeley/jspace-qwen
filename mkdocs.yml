@@ -1,0 +1,36 @@
+site_name: The J-space on Qwen3
+site_description: >-
+  Reproducing Anthropic's global-workspace / Jacobian-lens result on open-weights
+  Qwen3, and measuring when the J-space emerges and when it is causally important.
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle: {icon: material/weather-night, name: Dark mode}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle: {icon: material/weather-sunny, name: Light mode}
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - toc.integrate
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.arithmatex: {generic: true}
+  - tables
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+nav:
+  - Overview: index.md
+  - Method (J-lens & J-space): method.md
+  - Reproducible setup (AMD/ROCm): setup.md
+  - Results — scale: results-scale.md
+  - Results — causal importance: results-causal.md
+  - How to reproduce: reproduce.md
+# Spanish translation added as a final pass via mkdocs-static-i18n.

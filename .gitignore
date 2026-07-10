@@ -1,0 +1,13 @@
+out/
+__pycache__/
+*.pt
+*.npz
+*.parquet
+.venv/
+models/
+site/
+.ipynb_checkpoints/
+jacobian-lens/
+*.log
+*.nohup
+data/corpus.json
