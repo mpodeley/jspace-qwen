@@ -74,11 +74,10 @@ def collect(model, lens, prompts, tok_ids):
                 continue
             h = acts[l][16:-1]           # valid positions
             dh = acts[l + 1][16:-1] - h
-            Jt = lens.jacobians[l].to("cuda").t()      # transport^T for projection
+            Jt = lens.jacobians[l].to("cuda").t()      # fitted transport at layer l
             # concept logit (saturation) and write-flux, per position x concept
-            sat = (h @ (lens.jacobians[l].to("cuda").t() @ U.t())).abs()   # [P, C]
-            flux = (dh @ (lens.jacobians[min(l + 1, layers[-1])].to("cuda").t()
-                          @ U.t())).abs()               # [P, C]
+            sat = (h @ (Jt @ U.t())).abs()    # [P, C]
+            flux = (dh @ (Jt @ U.t())).abs()  # [P, C]  (write transported with J_l)
             S = sat / (sat.sum(1, keepdim=True) + 1e-9)
             K = flux / (flux.sum(1, keepdim=True) + 1e-9)
             S_all.append(S.cpu().numpy()); K_all.append(K.cpu().numpy())
