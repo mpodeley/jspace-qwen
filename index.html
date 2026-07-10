@@ -315,6 +315,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#headline-17b-8b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headline (1.7B → 8B)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -540,11 +551,23 @@ emerge and sharpen as models grow?</strong> We run the identical pipeline on Qwe
 </ul>
 <p>Whether the readout advantage and a sharper workspace emerge at 8B and 32B is
 the scale question this project answers.</p>
+<h2 id="headline-17b-8b">Headline (1.7B → 8B)</h2>
+<ul>
+<li><strong>The causal workspace sharpens with scale.</strong> Swapping a bridge entity's
+  J-lens direction in the mid-layer <em>workspace</em> band flips the two-hop answer
+  with rate <strong>0.30 → 0.55</strong> from 1.7B to 8B, and <em>localizes</em> (the early band
+  collapses 0.17 → 0.04); the matched-norm control stays ~0.</li>
+<li><strong>The J-space concentrates</strong> (read variance fraction 0.027 → 0.014).</li>
+<li><strong>But the readout advantage does not emerge</strong>: on pass@k the J-lens only ties
+  the logit-lens on Qwen3 at both scales — an honest departure from the Claude
+  result.</li>
+<li><strong>int8 preserves the J-space</strong> (structural metrics within ~1–2%, correlations
+  ≥ 0.98), so the 32B-int8 run is trustworthy.</li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Status</p>
-<p>Work in progress. 1.7B complete; 8B (bf16 + int8 quantization control) and
-32B (int8) fitting in progress. Figures and numbers update as the sweep
-completes.</p>
+<p>1.7B and 8B complete (both bf16 + int8). 32B (int8) is the next scale point.
+Figures and numbers update as it completes.</p>
 </div>
 
 

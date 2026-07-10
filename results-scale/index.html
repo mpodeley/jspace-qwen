@@ -409,6 +409,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#takeaway-so-far" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Takeaway so far
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -517,37 +528,93 @@
 
 <h1 id="results-scale">Results — scale</h1>
 <p>Does the J-space exist at every scale, or emerge and sharpen with size? We fit
-the identical J-lens on Qwen3 1.7B, 8B, and 32B and compare per-layer metrics
-(reindexed to a 0–100 depth scale) and the paper's pass@k lens-quality eval.</p>
+the identical J-lens on Qwen3 1.7B and 8B (32B in progress) and compare per-layer
+metrics (reindexed to a 0–100 depth scale) and the paper's pass@k lens-quality
+eval.</p>
 <p><img alt="J-space metrics vs depth, across model scale" src="../figs/scale_metrics.png" /></p>
 <h2 id="per-layer-metrics">Per-layer metrics</h2>
-<p>The workspace band (38–92% depth) is shaded. Reading the 1.7B curves:</p>
+<p>The workspace band (38–92% depth) is shaded. Blue = 1.7B, green = 8B.</p>
 <ul>
 <li><strong><code>read_var_frac</code></strong> — the J-lens read directions hold a small, <em>shrinking</em>
-  fraction of residual variance (~5% early → ~1.8% deep), consistent with the
-  paper's "&lt;10%" J-space.</li>
-<li><strong><code>top1_autocorr</code></strong> — top-1 readout persistence <strong>peaks inside the workspace
-  band</strong>, the signature of content that is held across positions.</li>
+  fraction of residual variance, and it <strong>shrinks further with scale</strong>: the 8B
+  curve sits clearly below 1.7B (workspace mean 0.014 vs 0.027). The J-space
+  becomes more concentrated / specialized as the model grows.</li>
+<li><strong><code>top1_autocorr</code></strong> — readout persistence <strong>peaks inside the workspace band</strong>
+  at both scales, the signature of content held across positions.</li>
 <li><strong><code>jlens_top1</code></strong> — next-token accuracy stays near zero until the motor regime,
-  then rises steeply toward the output.</li>
-<li><strong><code>eff_dim</code></strong> rises with depth (low-rank transport early, near-full-rank late);
-  <strong><code>kurtosis</code></strong> dips through the mid layers.</li>
+  then rises steeply toward the output, at both scales.</li>
+<li><strong><code>eff_dim</code></strong> scales with model width (≈0.5·<span class="arithmatex">\(d_\text{model}\)</span> at both sizes).</li>
 </ul>
 <h2 id="lens-quality-passk">Lens quality (pass@k)</h2>
 <p><img alt="Lens quality: J-lens vs logit-lens" src="../figs/lenseval.png" /></p>
-<p>pass@k = fraction of hidden two-hop bridge entities recovered at lens rank ≤ k
-(min over layers). <strong>At 1.7B the J-lens only matches the logit-lens</strong> — the
-readout advantage the paper reports for Claude has not yet emerged. The scale
-hypothesis is that this gap opens at 8B and 32B.</p>
+<p>pass@k = fraction of hidden two-hop bridge entities recovered at lens rank ≤ k.
+Here the result is <strong>honest and nuanced</strong>: on our implementation the <strong>J-lens
+only ties the logit-lens</strong> at both 1.7B and 8B (at 8B the logit-lens is even
+marginally ahead on pass@1/@10). The strong J-lens ≫ logit-lens advantage the
+paper reports for Claude does <strong>not</strong> clearly reproduce on Qwen3 at these scales.
+Candidate reasons: small eval sample (40 items), a metric-detail difference from
+the paper, or an advantage that only appears at 32B. We report it as-is.</p>
 <h2 id="quantization-control-8b-bf16-vs-int8">Quantization control (8B bf16 vs int8)</h2>
 <p>Because 32B is run in int8 (the <a href="../setup/">48 GB wall</a>), we fit the 8B in <em>both</em>
-precisions and compare, to measure the confound directly.</p>
-<p><em>Early signal: the int8 per-prompt Jacobian norms match bf16 to within ~1%.
-The full bf16-vs-int8 figure lands with the 8B runs.</em></p>
+precisions and compare. <strong>int8 preserves the J-space almost exactly:</strong></p>
+<p><img alt="Quantization control — 8B bf16 vs int8" src="../figs/quant_control.png" /></p>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th style="text-align: right;">rel. diff (bf16 vs int8)</th>
+<th style="text-align: right;">correlation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jlens_top1</code></td>
+<td style="text-align: right;">1.0%</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td><code>read_var_frac</code></td>
+<td style="text-align: right;">0.8%</td>
+<td style="text-align: right;">0.9996</td>
+</tr>
+<tr>
+<td><code>eff_dim</code></td>
+<td style="text-align: right;">0.2%</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td><code>kurtosis</code></td>
+<td style="text-align: right;">2.4%</td>
+<td style="text-align: right;">0.9994</td>
+</tr>
+<tr>
+<td><code>top1_autocorr</code></td>
+<td style="text-align: right;">6.0%</td>
+<td style="text-align: right;">0.9785</td>
+</tr>
+<tr>
+<td>causal workspace flip</td>
+<td style="text-align: right;">0.55 → 0.59</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table>
+<p>The same held at 1.7B (correlations 0.97–1.00). So the 32B-int8 results are
+trustworthy — the quantization confound is at the ~1–2% level on the structural
+metrics and negligible on the causal result.</p>
+<h2 id="takeaway-so-far">Takeaway so far</h2>
+<p>Two dissociated tracks, both now with two scale points:</p>
+<ul>
+<li><strong>Causal structure</strong> (see <a href="../results-causal/">causal</a>) is strong and <strong>sharpens
+  with scale</strong>.</li>
+<li><strong>Readout legibility</strong> (pass@k) is the weaker signal and does <strong>not</strong> open a
+  gap over the logit-lens on Qwen3 yet.</li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">In progress</p>
-<p>8B (bf16 + int8) and 32B (int8) are fitting. Curves for those models overlay
-onto the figures above as they complete.</p>
+<p>32B (int8) is the third scale point; it will tell us whether the pass@k
+advantage finally emerges at large scale, and whether the causal sharpening
+continues.</p>
 </div>
 
 

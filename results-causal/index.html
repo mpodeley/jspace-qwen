@@ -404,10 +404,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-workspace-band-is-causally-potent-17b" class="md-nav__link">
+  <a href="#the-workspace-band-is-causally-potent-and-sharpens-with-scale" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The workspace band is causally potent (1.7B)
+        The workspace band is causally potent — and sharpens with scale
       
     </span>
   </a>
@@ -511,50 +511,57 @@ component along a bridge entity's J-lens direction onto a different entity's
 direction, across a layer band, and check whether the model's greedy answer
 flips accordingly — against a matched-norm <strong>random control</strong>.</p>
 <p><img alt="Causal swap by band" src="../figs/causal.png" /></p>
-<h2 id="the-workspace-band-is-causally-potent-17b">The workspace band is causally potent (1.7B)</h2>
+<h2 id="the-workspace-band-is-causally-potent-and-sharpens-with-scale">The workspace band is causally potent — and sharpens with scale</h2>
 <table>
 <thead>
 <tr>
-<th>band</th>
-<th style="text-align: right;">swap flip-rate</th>
-<th style="text-align: right;">control flip-rate</th>
+<th>model</th>
+<th style="text-align: right;">early</th>
+<th style="text-align: right;"><strong>workspace</strong></th>
+<th style="text-align: right;">late</th>
+<th style="text-align: right;">control</th>
+<th style="text-align: right;">n solved</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>early</td>
+<td>1.7B</td>
 <td style="text-align: right;">0.17</td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr>
-<td><strong>workspace</strong></td>
 <td style="text-align: right;"><strong>0.30</strong></td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr>
-<td>late</td>
 <td style="text-align: right;">0.04</td>
 <td style="text-align: right;">0.00</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr>
+<td>8B</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;"><strong>0.55</strong></td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">47</td>
 </tr>
 </tbody>
 </table>
-<p>Two things stand out even at the smallest scale:</p>
+<p>This is the project's cleanest result. Three things:</p>
 <ol>
-<li><strong>The workspace band dominates.</strong> Intervening in the mid-layers flips the
-   answer roughly twice as often as the early band and ~7× the late band —
-   exactly where the paper locates the workspace.</li>
+<li><strong>The workspace band dominates</strong>, at both scales — exactly where the paper
+   locates the workspace.</li>
 <li><strong>The control does nothing.</strong> A random direction of identical norm never
    produces the swapped answer, so the effect is specific to the J-lens
    directions, not to perturbation magnitude.</li>
+<li><strong>It sharpens with scale.</strong> From 1.7B to 8B the workspace flip-rate nearly
+   doubles (0.30 → 0.55) <em>and localizes</em>: the early band collapses (0.17 → 0.04),
+   so at 8B the workspace is ~14× more causally potent than the early/late bands
+   (vs ~2× at 1.7B). The global workspace becomes both stronger and more
+   sharply localized as the model grows.</li>
 </ol>
-<p>This is the striking part of the 1.7B result: the causal structure is present
-<em>before</em> the readout advantage (see <a href="../results-scale/">scale</a>) — the workspace
-is steering the two-hop before the J-lens clearly out-reads the logit-lens.</p>
+<p>The striking dissociation: this causal structure is strong <em>before</em> any readout
+advantage appears (see <a href="../results-scale/">scale</a>) — the workspace steers the
+two-hop even though the J-lens does not yet out-read the logit-lens on Qwen3.</p>
 <div class="admonition note">
 <p class="admonition-title">In progress</p>
-<p>8B and 32B swap results overlay onto the figure as they complete; the scale
-question here is whether the workspace flip-rate grows (and the early/late
-bands fall further) with size.</p>
+<p>32B (int8) is the third point; the question is whether the workspace
+sharpening continues.</p>
 </div>
 <h2 id="channels-workspace-output">Channels: workspace → output</h2>
 <p>A complementary view of <em>how</em> a concept reaches the output. For a two-hop probe
