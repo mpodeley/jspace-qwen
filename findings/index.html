@@ -536,6 +536,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#23-the-relational-declension-paradigm-operator_paradigmpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 The relational "declension paradigm" (operator_paradigm.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -842,6 +853,84 @@ and read what the model does. 1.7B, 23/40 clean.</p>
 <p>So morphology does <strong>not</strong> follow the pointer downstream — the opposite of the
 naive prediction, and itself a dissociation (concept is rerouteable at the node;
 its surface realization is not, at least via this node).</p>
+<h3 id="23-the-relational-declension-paradigm-operator_paradigmpy">2.3 The relational "declension paradigm" (<code>operator_paradigm.py</code>)</h3>
+<p>The strongest positive result. Reframe: the workspace holds not a bare concept but
+a concept marked by its pending <em>relational role</em> — "Italy-in-the-currency-case"
+vs "Italy-in-the-capital-case". The relation (currency-of, capital-of, language-of,
+demonym-of, continent-of) is a <strong>case</strong>; the country is a <strong>stem</strong>. This is the
+function-vector view (Todd et al. 2024) with a morphological reading, and it
+connects to relational linearity (Hernandez et al. 2024).</p>
+<p>Build each case as a direction: the mean, over stems, of that case's deviation
+from the stem's average over cases. Then intervene on a <code>from</code> prompt with
+<code>v(to) − v(from)</code> and read the answer-token logit shift (1.7B, 12 countries):</p>
+<table>
+<thead>
+<tr>
+<th>swap</th>
+<th style="text-align: right;">clean (from wins)</th>
+<th style="text-align: right;">+operator</th>
+<th style="text-align: right;">+random (matched norm)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>currency → capital</td>
+<td style="text-align: right;">−7.9</td>
+<td style="text-align: right;"><strong>+31.5</strong></td>
+<td style="text-align: right;">−1.2</td>
+</tr>
+<tr>
+<td>capital → currency</td>
+<td style="text-align: right;">−12.0</td>
+<td style="text-align: right;"><strong>+33.0</strong></td>
+<td style="text-align: right;">−2.5</td>
+</tr>
+<tr>
+<td>capital → language</td>
+<td style="text-align: right;">−8.5</td>
+<td style="text-align: right;"><strong>+32.5</strong></td>
+<td style="text-align: right;">+3.0</td>
+</tr>
+<tr>
+<td>language → capital</td>
+<td style="text-align: right;">−7.6</td>
+<td style="text-align: right;"><strong>+34.0</strong></td>
+<td style="text-align: right;">−2.1</td>
+</tr>
+<tr>
+<td>continent → language</td>
+<td style="text-align: right;">−1.9</td>
+<td style="text-align: right;"><strong>+23.0</strong></td>
+<td style="text-align: right;">+1.4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>All 20 ordered case-swaps flip the sign; the matched-norm random control does
+not</strong> (its 8/20 sign-crossings are ±2 noise against a +10…+34 effect). The
+relations are a structured set of causally-manipulable case-directions.</p>
+<p>Two findings sharpen the "declension" reading:</p>
+<ul>
+<li>
+<p><strong>Operation ≠ realization.</strong> <code>language-of</code> and <code>demonym-of</code> produce the <em>same
+  output word</em> (Italian = the language and the demonym), yet they are <strong>distinct
+  case-directions</strong> in the causal representation, and the swap <em>between</em> them is
+  weak (+3.9, vs +20…+34 for other pairs) precisely because they share an
+  exponent. The model separates the grammatical role from its surface form — and
+  the syncretism (shared form) shows up exactly where declension predicts: at the
+  level of the exponent, not the case.</p>
+</li>
+<li>
+<p><strong>J-space shows the syncretism, not cleaner cases.</strong> Building the case
+  directions in the J-lens readout <code>unembed(J h)</code> vs the logit-lens readout
+  <code>unembed(h)</code>: the cases are <strong>less</strong> separable in J-space (mean |off-diagonal
+  cosine| 0.38 vs 0.25) and reorganize into output-form families — the
+  form-sharing cases are pulled together. Because <code>J_l</code> maps toward the output,
+  the J-space is organized by <em>realization</em>, so it is where the surface-form
+  collapse (syncretism) is visible, while the distinct cases live in the causal
+  representation. This is consistent with Part 1: J-space is not a cleaner readout;
+  here it specifically reflects output form.</p>
+</li>
+</ul>
 <hr />
 <h2 id="the-open-interpretive-question-deliberately-unresolved">The open interpretive question (deliberately unresolved)</h2>
 <p>The evidence splits cleanly into a negative half and a positive half:</p>
@@ -851,26 +940,33 @@ its surface realization is not, at least via this node).</p>
   fitted J-lens; the concept channel is a magnitude artifact.</li>
 <li><strong>Positive (well controlled):</strong> the workspace is causally a <em>concept-routing
   node</em> — intervening on it reroutes the downstream concept (and the noun that
-  realizes it), robustly, localized to the band, sharpening with scale.</li>
+  realizes it), robustly, localized to the band, sharpening with scale. And
+  relations are a structured paradigm of causally-manipulable <strong>case-directions</strong>
+  (§2.3): 20/20 case-swaps flip, random ~0, with operation separated from
+  realization (language ≠ demonym as cases despite the same output word).</li>
 </ul>
 <p>Framings this could support, none yet chosen:</p>
 <ol>
 <li><strong>Legibility ≠ causal importance.</strong> The headline is the dissociation itself:
    a subspace can be causally load-bearing without being more linearly readable
    than the stream it sits in. Novel, honest, contrarian to the readout framing.</li>
-<li><strong>The positive result alone.</strong> Center on pointer-node routing; the nulls become
-   a controls section.</li>
+<li><strong>The workspace declines concepts by role.</strong> Center on §2.3: relational
+   computation as a case paradigm (function vectors with paradigm geometry, and
+   the operation/realization split). The nulls become the "not via a special
+   readout" controls. This is the richest positive story.</li>
 <li><strong>The negative result alone.</strong> "The J-lens readout advantage does not replicate
    on Qwen3 under controls" — modest, defensive, solid.</li>
 </ol>
 <p>Open threads that could change the picture before deciding:
 - Everything here is 1.7B (causal also 8B). Does the readout null hold at 8B/32B,
-  and does the causal reroute keep sharpening?
+  does the causal reroute keep sharpening, and does the case paradigm survive at
+  scale and generalize to held-out stems (a case-ending applies to any stem)?
 - <code>a/an</code> is a poor morphology probe in this model (determiner not look-ahead). A
   clean downstream-realization test would need a construction where the surface
   form provably depends on the dereferenced concept.
-- The causal reroute is shown for concepts; whether <em>any</em> morphosyntactic feature
-  rides the same node is untested (2.2 says determiner does not).</p>
+- The case paradigm is causal/representational; whether it is specifically a
+  <em>J-space</em> phenomenon is answered "no" so far (§2.3: cases are cleaner in the
+  raw residual; J-space reflects output form).</p>
 <h2 id="reproducing-these-numbers">Reproducing these numbers</h2>
 <div class="highlight"><pre><span></span><code>python scripts/lens_eval.py 1.7b --set lemma-form      # 1.2
 python scripts/syntax_probe.py 1.7b                     # 1.3
