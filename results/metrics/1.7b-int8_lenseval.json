@@ -1,0 +1,10 @@
+{
+  "jlens_pass@1": 0.0625,
+  "jlens_pass@5": 0.3458333333333333,
+  "jlens_pass@10": 0.4458333333333333,
+  "logit_pass@1": 0.1,
+  "logit_pass@5": 0.225,
+  "logit_pass@10": 0.3,
+  "model": "1.7b-int8",
+  "n_items": 40
+}

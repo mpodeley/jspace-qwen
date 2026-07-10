@@ -73,6 +73,28 @@ The residual stream carries **many concepts at once** (superposition) through th
   directed-modulation experiments. One can visualize the **sweep**: inject at a
   cell and watch the concept advect and rise to the output.
 
+### Injector, worked: rerouting the country → currency channel
+
+The J-space appears to hold a *relational manifold* `[country] → [currency]`.
+The two-hop probe "the currency of the boot-shaped country is the ___" travels
+it: `boot → Italy → euro`. If we **inject a different country at the "Italy"
+node** — adding its J-lens direction across the workspace band, in place of
+Italy's — the flow should run down the *same* country→currency channel and emit
+that country's currency. It does (Qwen3-1.7B, `scripts/inject.py`):
+
+| injection at the "Italy" node | model's top-1 output |
+|---|---|
+| *(baseline)* | **euro** |
+| Italy → United States | **dollar** |
+| Italy → Japan | **yen** |
+| Italy → Russia | **rub**(le) |
+| Italy → India | **ru**(pee) |
+| Italy → France | **euro** *(unchanged — France really does use the euro)* |
+
+The France row is the control: the channel does not "break", it **routes
+correctly**. This relational rerouting is present already at 1.7B — more evidence
+that the J-space's causal structure emerges before its readout sharpens.
+
 !!! note "Why this framing"
     For a reservoir-engineering audience it makes the interpretability concrete;
     and each analogy above corresponds to a real, runnable experiment
