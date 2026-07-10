@@ -32,5 +32,6 @@ nav:
   - Reproducible setup (AMD/ROCm): setup.md
   - Results — scale: results-scale.md
   - Results — causal importance: results-causal.md
+  - A reservoir-simulation view: reservoir.md
   - How to reproduce: reproduce.md
 # Spanish translation added as a final pass via mkdocs-static-i18n.
