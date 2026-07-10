@@ -497,6 +497,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#injector-sweep-animated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injector sweep (animated)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -686,6 +697,16 @@ that country's currency. It does (Qwen3-1.7B, <code>scripts/inject.py</code>):</
 <p>The France row is the control: the channel does not "break", it <strong>routes
 correctly</strong>. This relational rerouting is present already at 1.7B — more evidence
 that the J-space's causal structure emerges before its readout sharpens.</p>
+<h3 id="injector-sweep-animated">Injector sweep (animated)</h3>
+<p>Sweeping the injection strength <span class="arithmatex">\(\alpha\)</span> from 0 to 1 and watching two fields over
+the (layer × position) grid: the <strong>country front</strong> (the injected concept
+propagating) and the <strong>currency channel</strong> as a diverging map, euro (blue) →
+dollar (red). As the front arrives in the workspace band, the <code>currency</code> column
+and the output token flip from euro to dollar.</p>
+<p><img alt="Injector sweep: euro → dollar" src="../figs/inject_1.7b.gif" /></p>
+<p>The static end state (<span class="arithmatex">\(\alpha=1\)</span>) and the code are <code>scripts/injector_sweep.py</code>.
+It is the reservoir "injector well" made literal: inject at a cell, watch the
+concept sweep to the producer and displace what was there.</p>
 <div class="admonition note">
 <p class="admonition-title">Why this framing</p>
 <p>For a reservoir-engineering audience it makes the interpretability concrete;
