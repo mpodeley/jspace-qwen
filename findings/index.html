@@ -14,7 +14,7 @@
         <link rel="prev" href="../results-causal/">
       
       
-        <link rel="next" href="../reproduce/">
+        <link rel="next" href="../paper/">
       
       
         
@@ -558,6 +558,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#25-cross-domain-the-factorization-is-specific-to-relations-op_corepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Cross-domain: the factorization is specific to relations (op_core.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -589,6 +600,33 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Paper draft — operator/operand factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1000,6 +1038,82 @@ case-subspaces, at a mid-workspace layer:</p>
   ending, stripped of its form, is still causally functional.</p>
 </li>
 </ul>
+<h3 id="25-cross-domain-the-factorization-is-specific-to-relations-op_corepy">2.5 Cross-domain: the factorization is specific to relations (<code>op_core.py</code>)</h3>
+<p>The operator framework is domain-general (<code>scripts/op_core.py</code>; <code>--domain
+relations|arithmetic|logic</code>). Applying the identical pipeline to <strong>arithmetic</strong>
+(+, ×, − over single-digit operands) and <strong>comparison-logic</strong> (greater/less/equal
+over number pairs) tests how far the factorization generalizes. The key
+discriminator is <strong>held-out-operand generalization</strong>: build <code>v(op)</code> from half the
+operands, swap the other half — a real operator transfers, mere interpolation does
+not.</p>
+<table>
+<thead>
+<tr>
+<th>domain</th>
+<th style="text-align: right;">operator variance</th>
+<th style="text-align: right;">interaction (fusion)</th>
+<th>held-out generalization</th>
+<th>swap vs random</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>relational</strong> (1.7B)</td>
+<td style="text-align: right;">86%</td>
+<td style="text-align: right;">9%</td>
+<td><strong>20/20</strong> flip (+19)</td>
+<td>+21 vs ~0</td>
+</tr>
+<tr>
+<td><strong>relational</strong> (8B)</td>
+<td style="text-align: right;">82%</td>
+<td style="text-align: right;">13%</td>
+<td><strong>20/20</strong> flip (+22)</td>
+<td>+25 vs ~0</td>
+</tr>
+<tr>
+<td><strong>arithmetic</strong> (1.7B)</td>
+<td style="text-align: right;">55%</td>
+<td style="text-align: right;">23%</td>
+<td>2/6 (−0.4, ≤ random)</td>
+<td>+0.4 vs +0.3</td>
+</tr>
+<tr>
+<td><strong>arithmetic</strong> (8B)</td>
+<td style="text-align: right;">42%</td>
+<td style="text-align: right;">25%</td>
+<td>1/6 (−0.6, ≤ random)</td>
+<td>+1.4 vs +0.0</td>
+</tr>
+<tr>
+<td><strong>logic/compare</strong> (1.7B)</td>
+<td style="text-align: right;">33%</td>
+<td style="text-align: right;">34%</td>
+<td>2/6 (−0.5, ≤ random)</td>
+<td>+1.2 vs +0.2</td>
+</tr>
+<tr>
+<td><strong>logic/compare</strong> (8B)</td>
+<td style="text-align: right;">25%</td>
+<td style="text-align: right;">45%</td>
+<td>0/6 (−2.8, &lt; random)</td>
+<td>−0.6 vs −0.1</td>
+</tr>
+</tbody>
+</table>
+<p>The gradient is monotone at both scales — relational (clean) ≫ arithmetic &gt; logic
+(worst: highest interaction, zero held-out generalization). Relational operators
+factorize cleanly (case-dominant, low interaction) and
+<strong>generalize to held-out operands</strong> at both scales. Arithmetic and logic operators
+have <strong>2–4× the interaction</strong> and <strong>fail to generalize</strong> (held-out flip ≤ random) —
+the operator is entangled with its operands, not a transferable direction. This
+matches the literature's picture of arithmetic as a bag of heuristics / Fourier
+computation (Nikankin et al. 2025; Nanda et al. 2023; Kantamneni &amp; Tegmark 2025)
+rather than a linear operator, and extends it with a quantitative factorization and
+a generalization test that pinpoint <em>why</em> it is not operator-linear. The held-out
+test is the discriminator: a clean in-sample swap (arithmetic swaps do flip
+in-sample) is <strong>not</strong> evidence of a real operator unless it generalizes.</p>
+<p>A <a href="../paper/">draft write-up is at <strong>paper.md</strong></a>.</p>
 <hr />
 <h2 id="the-open-interpretive-question-deliberately-unresolved">The open interpretive question (deliberately unresolved)</h2>
 <p>The evidence splits cleanly into a negative half and a positive half:</p>
