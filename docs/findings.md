@@ -173,15 +173,50 @@ Two findings sharpen the "declension" reading:
   the syncretism (shared form) shows up exactly where declension predicts: at the
   level of the exponent, not the case.
 
-- **J-space shows the syncretism, not cleaner cases.** Building the case
-  directions in the J-lens readout `unembed(J h)` vs the logit-lens readout
-  `unembed(h)`: the cases are **less** separable in J-space (mean |off-diagonal
-  cosine| 0.38 vs 0.25) and reorganize into output-form families — the
-  form-sharing cases are pulled together. Because `J_l` maps toward the output,
-  the J-space is organized by *realization*, so it is where the surface-form
-  collapse (syncretism) is visible, while the distinct cases live in the causal
-  representation. This is consistent with Part 1: J-space is not a cleaner readout;
-  here it specifically reflects output form.
+- **J-space shows the syncretism, not cleaner cases (1.7B; does NOT replicate at
+  8B).** Building the case directions in the J-lens readout `unembed(J h)` vs the
+  logit-lens readout `unembed(h)`: at 1.7B the cases are **less** separable in
+  J-space (mean |off-diagonal cosine| 0.38 vs 0.25) and reorganize into output-form
+  families — the form-sharing cases pulled together. That fit the story that `J_l`
+  maps toward the output so J-space reflects realization. **But at 8B the two
+  spaces are comparable (0.245 vs 0.259)**, so this specific readout-geometry claim
+  is 1.7B-specific and should not be leaned on. The causal case structure below is
+  what replicates.
+
+Both the swap efficacy (**20/20 flips, random ~0**) and the factorization (§2.4)
+replicate at 8B; only the J-space-geometry sub-claim does not.
+
+### 2.4 The representation factorizes into operator ⊕ operand (`operator_factorize.py`)
+
+Two-way decomposition of the workspace tensor `H[country, case] = μ + stem(c) +
+case(k) + interaction`. Variance shares and principal angles between the stem- and
+case-subspaces, at a mid-workspace layer:
+
+| read position | stem (operand) | case (operator) | interaction (fusion) | 1.7B / 8B |
+|---|---:|---:|---:|---|
+| query token ("is") | 5% | **86% / 82%** | 9% / 13% | case-dominant |
+| country token | **59% / 55%** | 31% / 34% | 9% / 11% | stem-dominant |
+
+Three things, replicating 1.7B→8B:
+
+- **The representation is ~90% additive** in operator + operand — `H ≈ μ + stem +
+  case` is a good model, so relations compose roughly linearly. The ~9–13%
+  **interaction** is the *fusion*: where stem and ending do not cleanly concatenate
+  (the phonological fusion of a declension). Stem- and case-subspaces are largely
+  separate (principal angles 41–82°).
+
+- **The declension happens along the sequence.** At the country token the
+  representation is stem-dominant (~55–59% country); by the query token it has
+  flipped to case-dominant (~82–86% operation). So this is **not template echo** —
+  the bare concept enters, and the workspace *declines* it into an operation-marked
+  form as it flows to the query position. (The causal swaps are the stronger
+  control: adding `v(case)` changes the output.)
+
+- **A pure desinence is isolable.** `v = mean_country[h(language) − h(demonym)]`,
+  built where the two cases emit the SAME word (Italian), cancels the exponent and
+  leaves a bare case marker. Added to a currency prompt it installs the relation
+  (logit(language) − logit(currency): 1.7B −3.7 → +12.5; 8B −2.9 → +8.1) — the
+  ending, stripped of its form, is still causally functional.
 
 ---
 
@@ -230,7 +265,11 @@ python scripts/syntax_probe.py 1.7b                     # 1.3
 python scripts/syntax_probe.py 1.7b --lens out/lenses/1.7b-randproj.pt
 python scripts/syntax_swap.py 1.7b                      # 2.2
 python scripts/causal_swap.py 1.7b                      # 2.1 (existing)
+python scripts/operator_paradigm.py 1.7b               # 2.3 (also 8b)
+python scripts/operator_factorize.py 1.7b              # 2.4 (also 8b)
 ```
+
+Relational stimuli: `data/relations.json`.
 
 Datasets: `data/morphosyntax/`. Control lenses: `out/lenses/*-randproj.pt`,
 `*-permvocab.json` (`scripts/control_lens.py`).
