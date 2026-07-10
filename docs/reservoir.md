@@ -95,6 +95,20 @@ The France row is the control: the channel does not "break", it **routes
 correctly**. This relational rerouting is present already at 1.7B — more evidence
 that the J-space's causal structure emerges before its readout sharpens.
 
+### Injector sweep (animated)
+
+Sweeping the injection strength $\alpha$ from 0 to 1 and watching two fields over
+the (layer × position) grid: the **country front** (the injected concept
+propagating) and the **currency channel** as a diverging map, euro (blue) →
+dollar (red). As the front arrives in the workspace band, the `currency` column
+and the output token flip from euro to dollar.
+
+![Injector sweep: euro → dollar](figs/inject_1.7b.gif)
+
+The static end state ($\alpha=1$) and the code are `scripts/injector_sweep.py`.
+It is the reservoir "injector well" made literal: inject at a cell, watch the
+concept sweep to the producer and displace what was there.
+
 !!! note "Why this framing"
     For a reservoir-engineering audience it makes the interpretability concrete;
     and each analogy above corresponds to a real, runnable experiment
