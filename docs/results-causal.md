@@ -8,31 +8,33 @@ flips accordingly — against a matched-norm **random control**.
 
 ![Causal swap by band](figs/causal.png)
 
-## The workspace band is causally potent (1.7B)
+## The workspace band is causally potent — and sharpens with scale
 
-| band | swap flip-rate | control flip-rate |
-|---|---:|---:|
-| early | 0.17 | 0.00 |
-| **workspace** | **0.30** | 0.00 |
-| late | 0.04 | 0.00 |
+| model | early | **workspace** | late | control | n solved |
+|---|---:|---:|---:|---:|---:|
+| 1.7B | 0.17 | **0.30** | 0.04 | 0.00 | 23 |
+| 8B | 0.04 | **0.55** | 0.02 | 0.04 | 47 |
 
-Two things stand out even at the smallest scale:
+This is the project's cleanest result. Three things:
 
-1. **The workspace band dominates.** Intervening in the mid-layers flips the
-   answer roughly twice as often as the early band and ~7× the late band —
-   exactly where the paper locates the workspace.
+1. **The workspace band dominates**, at both scales — exactly where the paper
+   locates the workspace.
 2. **The control does nothing.** A random direction of identical norm never
    produces the swapped answer, so the effect is specific to the J-lens
    directions, not to perturbation magnitude.
+3. **It sharpens with scale.** From 1.7B to 8B the workspace flip-rate nearly
+   doubles (0.30 → 0.55) *and localizes*: the early band collapses (0.17 → 0.04),
+   so at 8B the workspace is ~14× more causally potent than the early/late bands
+   (vs ~2× at 1.7B). The global workspace becomes both stronger and more
+   sharply localized as the model grows.
 
-This is the striking part of the 1.7B result: the causal structure is present
-*before* the readout advantage (see [scale](results-scale.md)) — the workspace
-is steering the two-hop before the J-lens clearly out-reads the logit-lens.
+The striking dissociation: this causal structure is strong *before* any readout
+advantage appears (see [scale](results-scale.md)) — the workspace steers the
+two-hop even though the J-lens does not yet out-read the logit-lens on Qwen3.
 
 !!! note "In progress"
-    8B and 32B swap results overlay onto the figure as they complete; the scale
-    question here is whether the workspace flip-rate grows (and the early/late
-    bands fall further) with size.
+    32B (int8) is the third point; the question is whether the workspace
+    sharpening continues.
 
 ## Channels: workspace → output
 

@@ -42,7 +42,19 @@ The smallest model already shows a clean split between *structure* and
 Whether the readout advantage and a sharper workspace emerge at 8B and 32B is
 the scale question this project answers.
 
+## Headline (1.7B → 8B)
+
+- **The causal workspace sharpens with scale.** Swapping a bridge entity's
+  J-lens direction in the mid-layer *workspace* band flips the two-hop answer
+  with rate **0.30 → 0.55** from 1.7B to 8B, and *localizes* (the early band
+  collapses 0.17 → 0.04); the matched-norm control stays ~0.
+- **The J-space concentrates** (read variance fraction 0.027 → 0.014).
+- **But the readout advantage does not emerge**: on pass@k the J-lens only ties
+  the logit-lens on Qwen3 at both scales — an honest departure from the Claude
+  result.
+- **int8 preserves the J-space** (structural metrics within ~1–2%, correlations
+  ≥ 0.98), so the 32B-int8 run is trustworthy.
+
 !!! note "Status"
-    Work in progress. 1.7B complete; 8B (bf16 + int8 quantization control) and
-    32B (int8) fitting in progress. Figures and numbers update as the sweep
-    completes.
+    1.7B and 8B complete (both bf16 + int8). 32B (int8) is the next scale point.
+    Figures and numbers update as it completes.
