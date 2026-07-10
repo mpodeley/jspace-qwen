@@ -547,6 +547,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#24-the-representation-factorizes-into-operator-operand-operator_factorizepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 The representation factorizes into operator ⊕ operand (operator_factorize.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -920,15 +931,73 @@ relations are a structured set of causally-manipulable case-directions.</p>
   level of the exponent, not the case.</p>
 </li>
 <li>
-<p><strong>J-space shows the syncretism, not cleaner cases.</strong> Building the case
-  directions in the J-lens readout <code>unembed(J h)</code> vs the logit-lens readout
-  <code>unembed(h)</code>: the cases are <strong>less</strong> separable in J-space (mean |off-diagonal
-  cosine| 0.38 vs 0.25) and reorganize into output-form families — the
-  form-sharing cases are pulled together. Because <code>J_l</code> maps toward the output,
-  the J-space is organized by <em>realization</em>, so it is where the surface-form
-  collapse (syncretism) is visible, while the distinct cases live in the causal
-  representation. This is consistent with Part 1: J-space is not a cleaner readout;
-  here it specifically reflects output form.</p>
+<p><strong>J-space shows the syncretism, not cleaner cases (1.7B; does NOT replicate at
+  8B).</strong> Building the case directions in the J-lens readout <code>unembed(J h)</code> vs the
+  logit-lens readout <code>unembed(h)</code>: at 1.7B the cases are <strong>less</strong> separable in
+  J-space (mean |off-diagonal cosine| 0.38 vs 0.25) and reorganize into output-form
+  families — the form-sharing cases pulled together. That fit the story that <code>J_l</code>
+  maps toward the output so J-space reflects realization. <strong>But at 8B the two
+  spaces are comparable (0.245 vs 0.259)</strong>, so this specific readout-geometry claim
+  is 1.7B-specific and should not be leaned on. The causal case structure below is
+  what replicates.</p>
+</li>
+</ul>
+<p>Both the swap efficacy (<strong>20/20 flips, random ~0</strong>) and the factorization (§2.4)
+replicate at 8B; only the J-space-geometry sub-claim does not.</p>
+<h3 id="24-the-representation-factorizes-into-operator-operand-operator_factorizepy">2.4 The representation factorizes into operator ⊕ operand (<code>operator_factorize.py</code>)</h3>
+<p>Two-way decomposition of the workspace tensor <code>H[country, case] = μ + stem(c) +
+case(k) + interaction</code>. Variance shares and principal angles between the stem- and
+case-subspaces, at a mid-workspace layer:</p>
+<table>
+<thead>
+<tr>
+<th>read position</th>
+<th style="text-align: right;">stem (operand)</th>
+<th style="text-align: right;">case (operator)</th>
+<th style="text-align: right;">interaction (fusion)</th>
+<th>1.7B / 8B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>query token ("is")</td>
+<td style="text-align: right;">5%</td>
+<td style="text-align: right;"><strong>86% / 82%</strong></td>
+<td style="text-align: right;">9% / 13%</td>
+<td>case-dominant</td>
+</tr>
+<tr>
+<td>country token</td>
+<td style="text-align: right;"><strong>59% / 55%</strong></td>
+<td style="text-align: right;">31% / 34%</td>
+<td style="text-align: right;">9% / 11%</td>
+<td>stem-dominant</td>
+</tr>
+</tbody>
+</table>
+<p>Three things, replicating 1.7B→8B:</p>
+<ul>
+<li>
+<p><strong>The representation is ~90% additive</strong> in operator + operand — <code>H ≈ μ + stem +
+  case</code> is a good model, so relations compose roughly linearly. The ~9–13%
+  <strong>interaction</strong> is the <em>fusion</em>: where stem and ending do not cleanly concatenate
+  (the phonological fusion of a declension). Stem- and case-subspaces are largely
+  separate (principal angles 41–82°).</p>
+</li>
+<li>
+<p><strong>The declension happens along the sequence.</strong> At the country token the
+  representation is stem-dominant (~55–59% country); by the query token it has
+  flipped to case-dominant (~82–86% operation). So this is <strong>not template echo</strong> —
+  the bare concept enters, and the workspace <em>declines</em> it into an operation-marked
+  form as it flows to the query position. (The causal swaps are the stronger
+  control: adding <code>v(case)</code> changes the output.)</p>
+</li>
+<li>
+<p><strong>A pure desinence is isolable.</strong> <code>v = mean_country[h(language) − h(demonym)]</code>,
+  built where the two cases emit the SAME word (Italian), cancels the exponent and
+  leaves a bare case marker. Added to a currency prompt it installs the relation
+  (logit(language) − logit(currency): 1.7B −3.7 → +12.5; 8B −2.9 → +8.1) — the
+  ending, stripped of its form, is still causally functional.</p>
 </li>
 </ul>
 <hr />
@@ -973,7 +1042,10 @@ python scripts/syntax_probe.py 1.7b                     # 1.3
 python scripts/syntax_probe.py 1.7b --lens out/lenses/1.7b-randproj.pt
 python scripts/syntax_swap.py 1.7b                      # 2.2
 python scripts/causal_swap.py 1.7b                      # 2.1 (existing)
+python scripts/operator_paradigm.py 1.7b               # 2.3 (also 8b)
+python scripts/operator_factorize.py 1.7b              # 2.4 (also 8b)
 </code></pre></div>
+<p>Relational stimuli: <code>data/relations.json</code>.</p>
 <p>Datasets: <code>data/morphosyntax/</code>. Control lenses: <code>out/lenses/*-randproj.pt</code>,
 <code>*-permvocab.json</code> (<code>scripts/control_lens.py</code>).</p>
 
