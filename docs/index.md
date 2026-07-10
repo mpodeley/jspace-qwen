@@ -5,12 +5,6 @@ Reproducing Anthropic's **global-workspace / Jacobian-lens** result
 on open-weights **Qwen3**, and measuring **when** the *J-space* emerges and
 **when** it is causally important — run entirely on a single AMD Strix Halo APU.
 
-!!! tip "Interactive: **[Concept Flooding →](waterflood/)**"
-    A visual, didactic piece — watch an injected idea *diffuse* through the model
-    and, at the output, either **condense into a word** or stay a **silent
-    thought**, drawn in the language of reservoir-simulation flooding.
-    *(Currently a synthetic-data preview of the UI; real Qwen data swaps in shortly.)*
-
 ## What this is
 
 The paper introduces the **Jacobian lens (J-lens)**, which reads out what an
