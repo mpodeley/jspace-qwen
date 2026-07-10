@@ -1,0 +1,687 @@
+{
+  "meta": {
+    "tokenizer": "Qwen/Qwen3-1.7B",
+    "purpose": "number minimal pairs: build v_syn (mean-difference) and probe number in logit space",
+    "n_items": 75,
+    "n_irregular": 15,
+    "n_agreement": 60,
+    "caveat": "single-token filtering selects frequent lemmas; agreement realizes number on the verb (downstream), which is the motor-band prediction"
+  },
+  "items": [
+    {
+      "name": "num-irreg-mouse",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single mouse. It was one mouse",
+      "plur_prompt": "Fact: I saw several mice. They were many mice",
+      "sing_target": "mouse",
+      "plur_target": "mice",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-foot",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single foot. It was one foot",
+      "plur_prompt": "Fact: I saw several feet. They were many feet",
+      "sing_target": "foot",
+      "plur_target": "feet",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-tooth",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single tooth. It was one tooth",
+      "plur_prompt": "Fact: I saw several teeth. They were many teeth",
+      "sing_target": "tooth",
+      "plur_target": "teeth",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-man",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single man. It was one man",
+      "plur_prompt": "Fact: I saw several men. They were many men",
+      "sing_target": "man",
+      "plur_target": "men",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-woman",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single woman. It was one woman",
+      "plur_prompt": "Fact: I saw several women. They were many women",
+      "sing_target": "woman",
+      "plur_target": "women",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-child",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single child. It was one child",
+      "plur_prompt": "Fact: I saw several children. They were many children",
+      "sing_target": "child",
+      "plur_target": "children",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-person",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single person. It was one person",
+      "plur_prompt": "Fact: I saw several people. They were many people",
+      "sing_target": "person",
+      "plur_target": "people",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-die",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single die. It was one die",
+      "plur_prompt": "Fact: I saw several dice. They were many dice",
+      "sing_target": "die",
+      "plur_target": "dice",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-leaf",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single leaf. It was one leaf",
+      "plur_prompt": "Fact: I saw several leaves. They were many leaves",
+      "sing_target": "leaf",
+      "plur_target": "leaves",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-wife",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single wife. It was one wife",
+      "plur_prompt": "Fact: I saw several wives. They were many wives",
+      "sing_target": "wife",
+      "plur_target": "wives",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-knife",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single knife. It was one knife",
+      "plur_prompt": "Fact: I saw several knives. They were many knives",
+      "sing_target": "knife",
+      "plur_target": "knives",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-life",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single life. It was one life",
+      "plur_prompt": "Fact: I saw several lives. They were many lives",
+      "sing_target": "life",
+      "plur_target": "lives",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-half",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single half. It was one half",
+      "plur_prompt": "Fact: I saw several halves. They were many halves",
+      "sing_target": "half",
+      "plur_target": "halves",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-thief",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single thief. It was one thief",
+      "plur_prompt": "Fact: I saw several thieves. They were many thieves",
+      "sing_target": "thief",
+      "plur_target": "thieves",
+      "readout": "last"
+    },
+    {
+      "name": "num-irreg-wolf",
+      "kind": "irregular",
+      "sing_prompt": "Fact: I saw a single wolf. It was one wolf",
+      "plur_prompt": "Fact: I saw several wolves. They were many wolves",
+      "sing_target": "wolf",
+      "plur_target": "wolves",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-key-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The key on the table",
+      "plur_prompt": "Fact: The keys on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-key-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The key in the room",
+      "plur_prompt": "Fact: The keys in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-key-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The key near the window",
+      "plur_prompt": "Fact: The keys near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-book-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The book on the table",
+      "plur_prompt": "Fact: The books on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-book-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The book in the room",
+      "plur_prompt": "Fact: The books in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-book-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The book near the window",
+      "plur_prompt": "Fact: The books near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-car-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The car on the table",
+      "plur_prompt": "Fact: The cars on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-car-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The car in the room",
+      "plur_prompt": "Fact: The cars in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-car-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The car near the window",
+      "plur_prompt": "Fact: The cars near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-door-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The door on the table",
+      "plur_prompt": "Fact: The doors on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-door-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The door in the room",
+      "plur_prompt": "Fact: The doors in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-door-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The door near the window",
+      "plur_prompt": "Fact: The doors near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-window-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The window on the table",
+      "plur_prompt": "Fact: The windows on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-window-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The window in the room",
+      "plur_prompt": "Fact: The windows in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-window-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The window near the window",
+      "plur_prompt": "Fact: The windows near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-letter-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The letter on the table",
+      "plur_prompt": "Fact: The letters on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-letter-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The letter in the room",
+      "plur_prompt": "Fact: The letters in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-letter-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The letter near the window",
+      "plur_prompt": "Fact: The letters near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-picture-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The picture on the table",
+      "plur_prompt": "Fact: The pictures on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-picture-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The picture in the room",
+      "plur_prompt": "Fact: The pictures in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-picture-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The picture near the window",
+      "plur_prompt": "Fact: The pictures near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-bridge-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The bridge on the table",
+      "plur_prompt": "Fact: The bridges on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-bridge-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The bridge in the room",
+      "plur_prompt": "Fact: The bridges in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-bridge-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The bridge near the window",
+      "plur_prompt": "Fact: The bridges near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-farmer-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The farmer on the table",
+      "plur_prompt": "Fact: The farmers on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-farmer-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The farmer in the room",
+      "plur_prompt": "Fact: The farmers in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-farmer-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The farmer near the window",
+      "plur_prompt": "Fact: The farmers near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-sailor-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The sailor on the table",
+      "plur_prompt": "Fact: The sailors on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-sailor-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The sailor in the room",
+      "plur_prompt": "Fact: The sailors in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-sailor-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The sailor near the window",
+      "plur_prompt": "Fact: The sailors near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-rocket-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The rocket on the table",
+      "plur_prompt": "Fact: The rockets on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-rocket-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The rocket in the room",
+      "plur_prompt": "Fact: The rockets in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-rocket-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The rocket near the window",
+      "plur_prompt": "Fact: The rockets near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-basket-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The basket on the table",
+      "plur_prompt": "Fact: The baskets on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-basket-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The basket in the room",
+      "plur_prompt": "Fact: The baskets in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-basket-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The basket near the window",
+      "plur_prompt": "Fact: The baskets near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-monkey-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The monkey on the table",
+      "plur_prompt": "Fact: The monkeys on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-monkey-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The monkey in the room",
+      "plur_prompt": "Fact: The monkeys in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-monkey-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The monkey near the window",
+      "plur_prompt": "Fact: The monkeys near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-garden-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The garden on the table",
+      "plur_prompt": "Fact: The gardens on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-garden-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The garden in the room",
+      "plur_prompt": "Fact: The gardens in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-garden-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The garden near the window",
+      "plur_prompt": "Fact: The gardens near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-cabin-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The cabin on the table",
+      "plur_prompt": "Fact: The cabins on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-cabin-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The cabin in the room",
+      "plur_prompt": "Fact: The cabins in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-cabin-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The cabin near the window",
+      "plur_prompt": "Fact: The cabins near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-star-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The star on the table",
+      "plur_prompt": "Fact: The stars on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-star-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The star in the room",
+      "plur_prompt": "Fact: The stars in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-star-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The star near the window",
+      "plur_prompt": "Fact: The stars near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-road-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The road on the table",
+      "plur_prompt": "Fact: The roads on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-road-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The road in the room",
+      "plur_prompt": "Fact: The roads in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-road-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The road near the window",
+      "plur_prompt": "Fact: The roads near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-river-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The river on the table",
+      "plur_prompt": "Fact: The rivers on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-river-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The river in the room",
+      "plur_prompt": "Fact: The rivers in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-river-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The river near the window",
+      "plur_prompt": "Fact: The rivers near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-table-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The table on the table",
+      "plur_prompt": "Fact: The tables on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-table-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The table in the room",
+      "plur_prompt": "Fact: The tables in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-table-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The table near the window",
+      "plur_prompt": "Fact: The tables near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-friend-0",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The friend on the table",
+      "plur_prompt": "Fact: The friends on the table",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-friend-1",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The friend in the room",
+      "plur_prompt": "Fact: The friends in the room",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    },
+    {
+      "name": "num-agree-friend-2",
+      "kind": "agreement",
+      "sing_prompt": "Fact: The friend near the window",
+      "plur_prompt": "Fact: The friends near the window",
+      "sing_target": "is",
+      "plur_target": "are",
+      "readout": "last"
+    }
+  ]
+}

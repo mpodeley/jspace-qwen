@@ -1,0 +1,222 @@
+{
+  "meta": {
+    "tokenizer": "Qwen/Qwen3-1.7B",
+    "purpose": "split pass@k into lemma identity (J ties logit) vs surface form (expect J beats logit) via normalized logit difference",
+    "n_items": 26,
+    "kinds": [
+      "agreement",
+      "casing",
+      "irregular"
+    ]
+  },
+  "items": [
+    {
+      "name": "lf-irreg-mouse",
+      "prompt": "Fact: I saw one mouse, then I saw two",
+      "lemma": "mouse",
+      "form_correct": "mice",
+      "form_wrong": "mouses",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-foot",
+      "prompt": "Fact: I saw one foot, then I saw two",
+      "lemma": "foot",
+      "form_correct": "feet",
+      "form_wrong": "foots",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-tooth",
+      "prompt": "Fact: I saw one tooth, then I saw two",
+      "lemma": "tooth",
+      "form_correct": "teeth",
+      "form_wrong": "tooths",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-man",
+      "prompt": "Fact: I saw one man, then I saw two",
+      "lemma": "man",
+      "form_correct": "men",
+      "form_wrong": "mans",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-child",
+      "prompt": "Fact: I saw one child, then I saw two",
+      "lemma": "child",
+      "form_correct": "children",
+      "form_wrong": "childs",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-person",
+      "prompt": "Fact: I saw one person, then I saw two",
+      "lemma": "person",
+      "form_correct": "people",
+      "form_wrong": "persons",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-leaf",
+      "prompt": "Fact: I saw one leaf, then I saw two",
+      "lemma": "leaf",
+      "form_correct": "leaves",
+      "form_wrong": "leafs",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-knife",
+      "prompt": "Fact: I saw one knife, then I saw two",
+      "lemma": "knife",
+      "form_correct": "knives",
+      "form_wrong": "knifes",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-agree-key",
+      "prompt": "Fact: The keys on the table",
+      "lemma": "key",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-book",
+      "prompt": "Fact: The books on the table",
+      "lemma": "book",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-car",
+      "prompt": "Fact: The cars on the table",
+      "lemma": "car",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-door",
+      "prompt": "Fact: The doors on the table",
+      "lemma": "door",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-window",
+      "prompt": "Fact: The windows on the table",
+      "lemma": "window",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-letter",
+      "prompt": "Fact: The letters on the table",
+      "lemma": "letter",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-picture",
+      "prompt": "Fact: The pictures on the table",
+      "lemma": "picture",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-bridge",
+      "prompt": "Fact: The bridges on the table",
+      "lemma": "bridge",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-farmer",
+      "prompt": "Fact: The farmers on the table",
+      "lemma": "farmer",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-sailor",
+      "prompt": "Fact: The sailors on the table",
+      "lemma": "sailor",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-rocket",
+      "prompt": "Fact: The rockets on the table",
+      "lemma": "rocket",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-basket",
+      "prompt": "Fact: The baskets on the table",
+      "lemma": "basket",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-case-paris",
+      "prompt": "The capital city everyone talks about is",
+      "lemma": "paris",
+      "form_correct": "Paris",
+      "form_wrong": "paris",
+      "kind": "casing"
+    },
+    {
+      "name": "lf-case-london",
+      "prompt": "The capital city everyone talks about is",
+      "lemma": "london",
+      "form_correct": "London",
+      "form_wrong": "london",
+      "kind": "casing"
+    },
+    {
+      "name": "lf-case-france",
+      "prompt": "The capital city everyone talks about is",
+      "lemma": "france",
+      "form_correct": "France",
+      "form_wrong": "france",
+      "kind": "casing"
+    },
+    {
+      "name": "lf-case-china",
+      "prompt": "The capital city everyone talks about is",
+      "lemma": "china",
+      "form_correct": "China",
+      "form_wrong": "china",
+      "kind": "casing"
+    },
+    {
+      "name": "lf-case-japan",
+      "prompt": "The capital city everyone talks about is",
+      "lemma": "japan",
+      "form_correct": "Japan",
+      "form_wrong": "japan",
+      "kind": "casing"
+    },
+    {
+      "name": "lf-case-monday",
+      "prompt": "The capital city everyone talks about is",
+      "lemma": "monday",
+      "form_correct": "Monday",
+      "form_wrong": "monday",
+      "kind": "casing"
+    }
+  ]
+}

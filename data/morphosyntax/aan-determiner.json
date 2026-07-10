@@ -1,0 +1,207 @@
+{
+  "meta": {
+    "tokenizer": "Qwen/Qwen3-1.7B",
+    "purpose": "does swapping the workspace pointer flip the DOWNSTREAM determiner a<->an? tests dereference-time realization",
+    "n_items": 19,
+    "n_consonant": 11,
+    "n_vowel": 8,
+    "screening": "TOKENIZATION only; behavioural screen (clean greedy next == determiner) runs on GPU in syntax_swap.run_aan",
+    "failure_modes": [
+      "model may not commit to the noun at the determiner position",
+      "'an' can be licensed by a vowel-initial adjective, not the noun",
+      "keep both concept and swap_to singular to avoid a number confound"
+    ]
+  },
+  "items": [
+    {
+      "name": "aan-meow",
+      "prompt": "Fact: the small furry pet that says meow is",
+      "concept": "cat",
+      "det": "a",
+      "swap_to": "elephant",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-bark",
+      "prompt": "Fact: the loyal four-legged pet that barks is",
+      "concept": "dog",
+      "det": "a",
+      "swap_to": "owl",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-trunk",
+      "prompt": "Fact: the huge grey animal with a long trunk is",
+      "concept": "elephant",
+      "det": "an",
+      "swap_to": "spider",
+      "swap_det": "a",
+      "concept_onset": "V",
+      "swap_onset": "C"
+    },
+    {
+      "name": "aan-web",
+      "prompt": "Fact: the eight-legged creature that spins a web is",
+      "concept": "spider",
+      "det": "a",
+      "swap_to": "apple",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-hoot",
+      "prompt": "Fact: the nocturnal bird that hoots at night is",
+      "concept": "owl",
+      "det": "an",
+      "swap_to": "tiger",
+      "swap_det": "a",
+      "concept_onset": "V",
+      "swap_onset": "C"
+    },
+    {
+      "name": "aan-hop",
+      "prompt": "Fact: the small green animal that hops near ponds is",
+      "concept": "frog",
+      "det": "a",
+      "swap_to": "onion",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-stripes",
+      "prompt": "Fact: the big striped cat of the jungle is",
+      "concept": "tiger",
+      "det": "a",
+      "swap_to": "anchor",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-wool",
+      "prompt": "Fact: the farm animal covered in wool is",
+      "concept": "sheep",
+      "det": "a",
+      "swap_to": "umbrella",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-honey",
+      "prompt": "Fact: the small insect that makes honey is",
+      "concept": "bee",
+      "det": "a",
+      "swap_to": "elephant",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-mane",
+      "prompt": "Fact: the great cat with a mane, king of beasts, is",
+      "concept": "lion",
+      "det": "a",
+      "swap_to": "owl",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-shell-slow",
+      "prompt": "Fact: the slow reptile that carries a shell is",
+      "concept": "turtle",
+      "det": "a",
+      "swap_to": "ant",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-gallop",
+      "prompt": "Fact: the large animal you ride that gallops is",
+      "concept": "horse",
+      "det": "a",
+      "swap_to": "apple",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-quack",
+      "prompt": "Fact: the water bird that quacks is",
+      "concept": "duck",
+      "det": "a",
+      "swap_to": "orange",
+      "swap_det": "an",
+      "concept_onset": "C",
+      "swap_onset": "V"
+    },
+    {
+      "name": "aan-antler",
+      "prompt": "Fact: the small burrowing insect that lives in colonies is",
+      "concept": "ant",
+      "det": "an",
+      "swap_to": "spider",
+      "swap_det": "a",
+      "concept_onset": "V",
+      "swap_onset": "C"
+    },
+    {
+      "name": "aan-orchard",
+      "prompt": "Fact: the round red fruit that grows on trees is",
+      "concept": "apple",
+      "det": "an",
+      "swap_to": "frog",
+      "swap_det": "a",
+      "concept_onset": "V",
+      "swap_onset": "C"
+    },
+    {
+      "name": "aan-citrus",
+      "prompt": "Fact: the round orange citrus fruit is",
+      "concept": "orange",
+      "det": "an",
+      "swap_to": "tiger",
+      "swap_det": "a",
+      "concept_onset": "V",
+      "swap_onset": "C"
+    },
+    {
+      "name": "aan-layers",
+      "prompt": "Fact: the round vegetable with many layers that makes you cry is",
+      "concept": "onion",
+      "det": "an",
+      "swap_to": "sheep",
+      "swap_det": "a",
+      "concept_onset": "V",
+      "swap_onset": "C"
+    },
+    {
+      "name": "aan-anchor-ship",
+      "prompt": "Fact: the heavy metal hook that keeps a ship in place is",
+      "concept": "anchor",
+      "det": "an",
+      "swap_to": "bee",
+      "swap_det": "a",
+      "concept_onset": "V",
+      "swap_onset": "C"
+    },
+    {
+      "name": "aan-umbrella-rain",
+      "prompt": "Fact: the thing you open to stay dry in the rain is",
+      "concept": "umbrella",
+      "det": "an",
+      "swap_to": "lion",
+      "swap_det": "a",
+      "concept_onset": "V",
+      "swap_onset": "C"
+    }
+  ]
+}
