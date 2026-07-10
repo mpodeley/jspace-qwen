@@ -1,15 +1,28 @@
 #!/usr/bin/env python
-"""Lens-quality eval: does the lens surface the hidden bridge entity?
+"""Lens-quality eval, in two halves that together make the project's argument.
 
-Uses the paper's shipped multihop set (jacobian-lens/data/evaluations). For each
-two-hop prompt we read out at the token before `target` across all fitted layers
-and ask whether each `intermediate` (the unstated bridge entity, e.g. "Brazil")
-appears at lens rank <= k for its best layer. pass@k = mean over items of the
-fraction of intermediates that hit. Reported for the J-lens and the logit-lens
-baseline, so the gap is the J-lens' advantage — and comparing across model sizes
-is the scale story.
+SEMANTIC IDENTITY (the shipped multihop set). For each two-hop prompt we read out
+at the token before `target` across all fitted layers and ask whether each
+`intermediate` (the unstated bridge entity, e.g. "Brazil") appears at lens rank
+<= k for its best layer. pass@k, J-lens vs logit-lens. On Qwen3 the J-lens only
+*ties* the logit-lens here -- and that is the point: pass@k scores next-token
+*identity*, a lexical-semantic axis, so a tie is exactly what the pointer-table
+hypothesis predicts (the workspace names the lemma; both lenses can read a lemma).
 
-    python scripts/lens_eval.py 1.7b
+    python scripts/lens_eval.py 1.7b                      # multihop identity
+
+SURFACE FORM (the new lemma-form set). Conditioning on the model getting the
+clean case right, does the lens rank the correct surface form (mice, are, Paris)
+above a minimal wrong form (mouses, is, paris)? Scored by a normalized logit
+difference (Zhang & Nanda 2024: a difference, not a probability, so a suppressed
+form is visible), taken at the layer that resolves it most sharply, and profiled
+per band to locate *where* the form is decided. This is where we expect the
+J-lens to beat the logit-lens.
+
+    python scripts/lens_eval.py 1.7b --set lemma-form     # surface form
+
+The dataset schema selects which eval runs (an `intermediates` key -> identity,
+a `form_correct` key -> form).
 """
 
 from __future__ import annotations
@@ -21,16 +34,12 @@ from pathlib import Path
 import pandas as pd
 import torch
 
-from _common import MODELS, load_model, resolve_tag
+from _common import BANDS, MODELS, band_layers, first_token, load_model, resolve_tag
+from causal_swap import greedy_next
 from jlens import JacobianLens
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "jacobian-lens" / "data" / "evaluations"
-
-
-def first_token(tok, word: str) -> int:
-    ids = tok.encode(" " + word.strip(), add_special_tokens=False)
-    return ids[0]
 
 
 @torch.no_grad()
@@ -68,6 +77,72 @@ def evaluate(model, lens, items, ks=(1, 5, 10)):
     return {m: sum(v) / max(len(v), 1) for m, v in out.items()}
 
 
+@torch.no_grad()
+def _per_layer_logits(model, lens, prompt, *, use_jacobian):
+    """{layer: [vocab]} lens logits at the last position."""
+    lens_logits, _, _ = lens.apply(
+        model, prompt, layers=lens.source_layers, positions=[-1],
+        use_jacobian=use_jacobian,
+    )
+    return {l: lens_logits[l][0] for l in lens.source_layers}
+
+
+def _norm_logit_diff(logits, id_correct: int, id_wrong: int) -> float:
+    """(L_correct - L_wrong) / (|L_correct| + |L_wrong|), in [-1, 1]. A difference,
+    not a probability, so a *suppressed* correct form still reads as positive."""
+    lc = float(logits[id_correct])
+    lw = float(logits[id_wrong])
+    return (lc - lw) / (abs(lc) + abs(lw) + 1e-9)
+
+
+@torch.no_grad()
+def evaluate_form(model, lens, items):
+    """Does the lens rank the correct surface form above a minimal wrong form,
+    given the model itself gets the clean case right? J-lens vs logit-lens.
+
+    Reported: form accuracy (sign of the best-over-layers logit diff), the mean
+    diff, and a per-band diff profile to locate where the form is resolved. Only
+    items the full model answers correctly are scored (n_clean / n_items)."""
+    tok = model.tokenizer
+    layers = lens.source_layers
+    bands = band_layers(layers, model.n_layers)
+
+    per_lens = {}
+    for use_j, pre in ((True, "jlens"), (False, "logit")):
+        by_kind: dict[str, list[float]] = {}
+        band_diffs: dict[str, list[float]] = {b: [] for b in BANDS}
+        best_diffs, n_clean = [], 0
+        for it in items:
+            ic = first_token(tok, it["form_correct"])
+            iw = first_token(tok, it["form_wrong"])
+            if ic == iw:
+                continue  # not first-token distinguishable; skip (report coverage)
+            # behavioural screen on the FULL model, once (lens-independent)
+            if use_j:
+                it["_clean"] = greedy_next(model, it["prompt"]) == ic
+            if not it.get("_clean"):
+                continue
+            n_clean += 1
+            logits = _per_layer_logits(model, lens, it["prompt"], use_jacobian=use_j)
+            diffs = {l: _norm_logit_diff(logits[l], ic, iw) for l in layers}
+            best = max(diffs.values())
+            best_diffs.append(best)
+            by_kind.setdefault(it["kind"], []).append(1.0 if best > 0 else 0.0)
+            for b, ls in bands.items():
+                if ls:
+                    band_diffs[b].append(max(diffs[l] for l in ls))
+        per_lens[pre] = {
+            "form_acc": sum(1.0 for d in best_diffs if d > 0) / max(len(best_diffs), 1),
+            "form_logitdiff_mean": sum(best_diffs) / max(len(best_diffs), 1),
+            "n_clean": n_clean,
+            "by_kind_acc": {k: sum(v) / len(v) for k, v in by_kind.items()},
+            "band_logitdiff_mean": {
+                b: (sum(v) / len(v) if v else None) for b, v in band_diffs.items()
+            },
+        }
+    return per_lens
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("model")
@@ -80,7 +155,15 @@ def main() -> None:
     key = args.model
     tag = resolve_tag(key, int8=args.int8)
     lens_path = Path(args.lens) if args.lens else ROOT / "out" / "lenses" / f"{tag}.pt"
-    items = json.loads((DATA / f"{args.set}.json").read_text())["items"]
+    # vendored eval sets live under jacobian-lens/data/evaluations; our authored
+    # morphosyntax sets live under this repo's data/morphosyntax.
+    for base in (DATA, ROOT / "data" / "morphosyntax"):
+        cand = base / f"{args.set}.json"
+        if cand.exists():
+            items = json.loads(cand.read_text())["items"]
+            break
+    else:
+        raise SystemExit(f"dataset {args.set}.json not found")
     if args.limit:
         items = items[: args.limit]
 
@@ -91,12 +174,18 @@ def main() -> None:
         model = load_model(key)
     lens = JacobianLens.from_pretrained(str(lens_path))
 
-    res = evaluate(model, lens, items)
-    res["model"] = tag
-    res["n_items"] = len(items)
-    print(pd.Series(res).to_string())
+    is_form = "form_correct" in items[0]
+    if is_form:
+        res = {"eval": "surface-form", "model": tag, "n_items": len(items),
+               "lens": lens_path.stem, **evaluate_form(model, lens, items)}
+        suffix = "formeval"
+    else:
+        res = {"eval": "semantic-identity", **evaluate(model, lens, items),
+               "model": tag, "n_items": len(items), "lens": lens_path.stem}
+        suffix = "lenseval"
 
-    out = ROOT / "results" / "metrics" / f"{tag}_lenseval.json"
+    print(json.dumps(res, indent=2))
+    out = ROOT / "results" / "metrics" / f"{tag}_{suffix}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(res, indent=2))
     print(f"\nsaved {out}")

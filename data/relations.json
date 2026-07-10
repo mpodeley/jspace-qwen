@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "domain": "relations",
+    "template": "The {op} of {a} is",
+    "operators": {
+      "currency": "currency", "capital": "capital", "language": "language",
+      "demonym": "word for a person from", "continent": "continent"
+    },
+    "operand_slots": ["a"],
+    "desinence_pair": ["language", "demonym"],
+    "note": "uniform 'is' suffix so the operator direction is not contaminated by the template; efficacy is a logit difference of the answers' first tokens, robust to the article ('the euro' vs 'Rome'). demonym phrase 'word for a person from {a}' -> 'Italian'. language and demonym emit the same word (syncretism) yet are distinct operator directions."
+  },
+  "items": {
+    "Italy":   {"args": {"a": "Italy"},   "answers": {"currency": "euro",   "capital": "Rome",      "language": "Italian",    "demonym": "Italian",    "continent": "Europe"}},
+    "Japan":   {"args": {"a": "Japan"},   "answers": {"currency": "yen",    "capital": "Tokyo",     "language": "Japanese",   "demonym": "Japanese",   "continent": "Asia"}},
+    "Russia":  {"args": {"a": "Russia"},  "answers": {"currency": "ruble",  "capital": "Moscow",    "language": "Russian",    "demonym": "Russian",    "continent": "Europe"}},
+    "China":   {"args": {"a": "China"},   "answers": {"currency": "yuan",   "capital": "Beijing",   "language": "Chinese",    "demonym": "Chinese",    "continent": "Asia"}},
+    "France":  {"args": {"a": "France"},  "answers": {"currency": "euro",   "capital": "Paris",     "language": "French",     "demonym": "French",     "continent": "Europe"}},
+    "Germany": {"args": {"a": "Germany"}, "answers": {"currency": "euro",   "capital": "Berlin",    "language": "German",     "demonym": "German",     "continent": "Europe"}},
+    "Brazil":  {"args": {"a": "Brazil"},  "answers": {"currency": "real",   "capital": "Brasilia",  "language": "Portuguese", "demonym": "Brazilian",  "continent": "America"}},
+    "Egypt":   {"args": {"a": "Egypt"},   "answers": {"currency": "pound",  "capital": "Cairo",     "language": "Arabic",     "demonym": "Egyptian",   "continent": "Africa"}},
+    "India":   {"args": {"a": "India"},   "answers": {"currency": "rupee",  "capital": "Delhi",     "language": "Hindi",      "demonym": "Indian",     "continent": "Asia"}},
+    "Mexico":  {"args": {"a": "Mexico"},  "answers": {"currency": "peso",   "capital": "Mexico",    "language": "Spanish",    "demonym": "Mexican",    "continent": "America"}},
+    "Sweden":  {"args": {"a": "Sweden"},  "answers": {"currency": "krona",  "capital": "Stockholm", "language": "Swedish",    "demonym": "Swedish",    "continent": "Europe"}},
+    "Turkey":  {"args": {"a": "Turkey"},  "answers": {"currency": "lira",   "capital": "Ankara",    "language": "Turkish",    "demonym": "Turkish",    "continent": "Asia"}}
+  }
+}

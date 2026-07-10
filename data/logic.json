@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "domain": "logic",
+    "template": "The claim that {a} is {op} {b} is",
+    "operators": {
+      "greater": "greater than",
+      "less": "less than",
+      "equal": "equal to"
+    },
+    "operand_slots": [
+      "a",
+      "b"
+    ],
+    "note": "comparison operators over number pairs; answers True/False are single distinct tokens. and/or over 2 booleans is degenerate (operator entangled with answer), so we use comparisons instead."
+  },
+  "items": {
+    "5,3": {
+      "args": {
+        "a": "5",
+        "b": "3"
+      },
+      "answers": {
+        "greater": "True",
+        "less": "False",
+        "equal": "False"
+      }
+    },
+    "3,5": {
+      "args": {
+        "a": "3",
+        "b": "5"
+      },
+      "answers": {
+        "greater": "False",
+        "less": "True",
+        "equal": "False"
+      }
+    },
+    "7,2": {
+      "args": {
+        "a": "7",
+        "b": "2"
+      },
+      "answers": {
+        "greater": "True",
+        "less": "False",
+        "equal": "False"
+      }
+    },
+    "2,7": {
+      "args": {
+        "a": "2",
+        "b": "7"
+      },
+      "answers": {
+        "greater": "False",
+        "less": "True",
+        "equal": "False"
+      }
+    },
+    "4,4": {
+      "args": {
+        "a": "4",
+        "b": "4"
+      },
+      "answers": {
+        "greater": "False",
+        "less": "False",
+        "equal": "True"
+      }
+    },
+    "8,1": {
+      "args": {
+        "a": "8",
+        "b": "1"
+      },
+      "answers": {
+        "greater": "True",
+        "less": "False",
+        "equal": "False"
+      }
+    },
+    "1,8": {
+      "args": {
+        "a": "1",
+        "b": "8"
+      },
+      "answers": {
+        "greater": "False",
+        "less": "True",
+        "equal": "False"
+      }
+    },
+    "6,6": {
+      "args": {
+        "a": "6",
+        "b": "6"
+      },
+      "answers": {
+        "greater": "False",
+        "less": "False",
+        "equal": "True"
+      }
+    },
+    "9,4": {
+      "args": {
+        "a": "9",
+        "b": "4"
+      },
+      "answers": {
+        "greater": "True",
+        "less": "False",
+        "equal": "False"
+      }
+    },
+    "4,9": {
+      "args": {
+        "a": "4",
+        "b": "9"
+      },
+      "answers": {
+        "greater": "False",
+        "less": "True",
+        "equal": "False"
+      }
+    },
+    "2,2": {
+      "args": {
+        "a": "2",
+        "b": "2"
+      },
+      "answers": {
+        "greater": "False",
+        "less": "False",
+        "equal": "True"
+      }
+    },
+    "3,8": {
+      "args": {
+        "a": "3",
+        "b": "8"
+      },
+      "answers": {
+        "greater": "False",
+        "less": "True",
+        "equal": "False"
+      }
+    }
+  }
+}

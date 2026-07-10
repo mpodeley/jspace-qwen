@@ -1,0 +1,42 @@
+{
+  "model": "1.7b",
+  "lens": "1.7b-randproj",
+  "n_items": 198,
+  "n_axis": 74,
+  "bands": {
+    "jlens": {
+      "early": {
+        "auc": 0.9223548617488011,
+        "auc_shuffled": 0.5710641771247832,
+        "selectivity": 0.3512906846240179
+      },
+      "workspace": {
+        "auc": 0.9976533006836037,
+        "auc_shuffled": 0.541067238036935,
+        "selectivity": 0.4565860626466687
+      },
+      "late": {
+        "auc": 0.9857157432915009,
+        "auc_shuffled": 0.5007652280379553,
+        "selectivity": 0.4849505152535456
+      }
+    },
+    "logit": {
+      "early": {
+        "auc": 0.9263340475461688,
+        "auc_shuffled": 0.5262728293031324,
+        "selectivity": 0.4000612182430364
+      },
+      "workspace": {
+        "auc": 0.9980614223038465,
+        "auc_shuffled": 0.5124987246199367,
+        "selectivity": 0.4855626976839098
+      },
+      "late": {
+        "auc": 0.9998979695949393,
+        "auc_shuffled": 0.4892357922660953,
+        "selectivity": 0.510662177328844
+      }
+    }
+  }
+}

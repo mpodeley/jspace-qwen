@@ -15,6 +15,8 @@ from pathlib import Path
 import matplotlib
 import pandas as pd
 
+from _common import BANDS
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -69,10 +71,11 @@ def fig_scale_metrics(data):
                         textcoords="offset points", va="center")
         ax.set_title(title, fontsize=10)
         ax.set_xlabel("depth (0–100)")
-        ax.axvspan(38, 92, color="#000000", alpha=0.04, lw=0)  # workspace band
+        ax.axvspan(*BANDS["workspace"], color="#000000", alpha=0.04, lw=0)
     axes.flat[-1].axis("off")
-    axes.flat[-1].text(0.0, 0.8, "shaded = workspace band (38–92%)", color=MUTED,
-                       fontsize=9)
+    _ws_lo, _ws_hi = BANDS["workspace"]
+    axes.flat[-1].text(0.0, 0.8, f"shaded = workspace band ({_ws_lo}–{_ws_hi}%)",
+                       color=MUTED, fontsize=9)
     fig.suptitle("J-space metrics vs depth, across model scale", fontsize=13, x=0.01,
                  ha="left")
     fig.savefig(FIGS / "scale_metrics.png", bbox_inches="tight")

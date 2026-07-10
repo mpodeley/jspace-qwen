@@ -32,17 +32,11 @@ from pathlib import Path
 import pandas as pd
 import torch
 
-from _common import MODELS, depth_percent, load_model, resolve_tag
+from _common import MODELS, band_layers, first_token, load_model, resolve_tag
 from jlens import JacobianLens
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "jacobian-lens" / "data" / "experiments"
-
-BANDS = {"early": (0, 33), "workspace": (38, 92), "late": (92, 100)}
-
-
-def first_token(tok, word: str) -> int:
-    return tok.encode(" " + word.strip(), add_special_tokens=False)[0]
 
 
 def jlens_dir(lens: JacobianLens, W_U: torch.Tensor, layer: int, tok_id: int, dev):
@@ -91,12 +85,9 @@ def run(model, lens, items, seed_dir):
     tok = model.tokenizer
     W_U = model._lm_head.weight  # [vocab, d]
     dev = W_U.device
-    band_layers = {
-        b: [l for l in lens.source_layers if lo <= depth_percent(l, model.n_layers) <= hi]
-        for b, (lo, hi) in BANDS.items()
-    }
+    layers_by_band = band_layers(lens.source_layers, model.n_layers)
     rows = []
-    for band, layers in band_layers.items():
+    for band, layers in layers_by_band.items():
         if not layers:
             continue
         n_base = n_swap = n_ctrl = n_eval = 0
