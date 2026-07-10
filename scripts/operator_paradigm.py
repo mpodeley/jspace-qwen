@@ -17,7 +17,7 @@ import argparse
 import statistics as st
 from pathlib import Path
 
-from _common import band_layers, load_model, resolve_tag
+from _common import band_layers, evenly_spaced_layers, load_model, resolve_tag
 from jlens import JacobianLens
 import op_core
 
@@ -30,11 +30,12 @@ def main() -> None:
     ap.add_argument("--domain", default="relations")
     ap.add_argument("--lens", default=None)
     ap.add_argument("--int8", action="store_true")
+    ap.add_argument("--geometry", action="store_true",
+                    help="also compute J-space vs logit-space readout geometry (needs a J-lens)")
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
 
     tag = resolve_tag(args.model, int8=args.int8)
-    lens_path = Path(args.lens) if args.lens else ROOT / "out" / "lenses" / f"{tag}.pt"
     dom = op_core.load_domain(args.domain)
 
     if args.int8:
@@ -42,9 +43,16 @@ def main() -> None:
         model = load_int8_model(args.model)
     else:
         model = load_model(args.model)
-    lens = JacobianLens.from_pretrained(str(lens_path))
     tok = model.tokenizer
-    ws = band_layers(lens.source_layers, model.n_layers)["workspace"]
+
+    # The causal core (swaps, factorization) is lens-free; only the readout
+    # geometry needs a fitted J-lens. This lets a second model run without a fit.
+    lens = None
+    if args.geometry:
+        lens_path = Path(args.lens) if args.lens else ROOT / "out" / "lenses" / f"{tag}.pt"
+        lens = JacobianLens.from_pretrained(str(lens_path))
+    source_layers = lens.source_layers if lens else evenly_spaced_layers(model.n_layers)
+    ws = band_layers(source_layers, model.n_layers)["workspace"]
 
     rep = op_core.guard_tokenization(dom, tok)
     print(f"[{args.domain}] {rep['operands_total']} operands, single-token frac "
@@ -58,13 +66,14 @@ def main() -> None:
           f"random flipped: {(valid['random'] > 0).sum()}/{len(valid)}; "
           f"mean swap={valid['swap'].mean():+.2f} vs mean random={valid['random'].mean():+.2f}")
 
-    print("\n(B) paradigm geometry: mean |off-diagonal cosine| (lower = more distinct)")
-    for name, uj in (("J-space (unembed(J h))", True), ("logit-space (unembed(h))", False)):
-        _, offs = op_core.measure_geometry(model, lens, ws, dom, uj)
-        mabs = st.mean(abs(o[2]) for o in offs)
-        syn = max(offs, key=lambda o: o[2])
-        print(f"  {name:<26} mean|off|={mabs:.3f}   most-syncretic: "
-              f"{syn[0]}~{syn[1]} cos={syn[2]:+.2f}")
+    if lens is not None:
+        print("\n(B) paradigm geometry: mean |off-diagonal cosine| (lower = more distinct)")
+        for name, uj in (("J-space (unembed(J h))", True), ("logit-space (unembed(h))", False)):
+            _, offs = op_core.measure_geometry(model, lens, ws, dom, uj)
+            mabs = st.mean(abs(o[2]) for o in offs)
+            syn = max(offs, key=lambda o: o[2])
+            print(f"  {name:<26} mean|off|={mabs:.3f}   most-syncretic: "
+                  f"{syn[0]}~{syn[1]} cos={syn[2]:+.2f}")
 
     out = ROOT / "results" / "ablation" / f"{tag}_{args.domain}_operator_swap.parquet"
     out.parent.mkdir(parents=True, exist_ok=True)

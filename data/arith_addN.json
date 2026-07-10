@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "domain": "arith_addN",
+    "template": "The result of {a} plus {op} is",
+    "operators": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4"
+    },
+    "operand_slots": [
+      "a"
+    ],
+    "answer_leading_space": false,
+    "note": "add-N as a relation (Christ et al. 2510.26543 cut): the operator IS the addend N, the operand is a single number. N is really a linear numeric quantity, so swaps generalize -- unlike +/x/- over two operands, which vary the function and do not."
+  },
+  "items": {
+    "1": {
+      "args": {
+        "a": "1"
+      },
+      "answers": {
+        "1": "2",
+        "2": "3",
+        "3": "4",
+        "4": "5"
+      }
+    },
+    "2": {
+      "args": {
+        "a": "2"
+      },
+      "answers": {
+        "1": "3",
+        "2": "4",
+        "3": "5",
+        "4": "6"
+      }
+    },
+    "3": {
+      "args": {
+        "a": "3"
+      },
+      "answers": {
+        "1": "4",
+        "2": "5",
+        "3": "6",
+        "4": "7"
+      }
+    },
+    "4": {
+      "args": {
+        "a": "4"
+      },
+      "answers": {
+        "1": "5",
+        "2": "6",
+        "3": "7",
+        "4": "8"
+      }
+    },
+    "5": {
+      "args": {
+        "a": "5"
+      },
+      "answers": {
+        "1": "6",
+        "2": "7",
+        "3": "8",
+        "4": "9"
+      }
+    }
+  }
+}

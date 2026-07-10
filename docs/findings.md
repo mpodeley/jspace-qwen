@@ -252,6 +252,35 @@ in-sample) is **not** evidence of a real operator unless it generalizes.
 
 A [draft write-up is at **paper.md**](paper.md).
 
+### 2.6 Reconciling with Christ et al. (2510.26543): add-N vs. two-operand arithmetic
+
+Christ et al. (Oct 2025) report that arithmetic **generalizes** across held-out
+relations when each relation is an *add-N* (fixed addend N). That is the opposite
+sign to our §2.5 arithmetic negative — so we reproduce their cut on Qwen3 and
+reconcile. In *add-N* the operator **is the addend N**, over a single number
+operand; because a number is a linear quantity, "generalizing across N" is
+number-line interpolation, not operator structure. Our `+ × −` cut instead varies
+the **function** over two operands.
+
+Measured (`--domain arith_addN` vs `arithmetic`), the reconciliation is directional
+but honest — the single-digit BPE constraint keeps the add-N grid tiny (5 operands),
+so we cannot reproduce their strong multi-digit generalization:
+
+| cut | held-out generalization (1.7B / 8B) | operator-set collinearity (top-1 var) |
+|---|---|---:|
+| relations (5 operations) | 20/20 · 20/20 | 0.39 (spread paradigm) |
+| **add-N** (operator = addend) | 5/12 (+0.10) · 6/12 (+0.05) | **0.76 (most 1-D / number-line)** |
+| `+ × −` (operator = function) | 2/6 (−0.43) · 1/6 (−0.55) | 0.64 |
+
+So add-N sits between: it generalizes *better* than `+ × −` (positive vs clearly
+negative) and its operator directions are the **most collinear** (76% of the
+operator-set variance on one line) — consistent with add-N being a linear numeric
+family. The genuine-operation cut (`+ × −`) is entangled and generalizes worst.
+This matches Christ's positive (their cut varies a linear parameter) and our
+negative (ours varies the function) without contradiction; the constraint is that
+Qwen3 BPE limits us to single-digit arithmetic, so the add-N generalization is weak
+in absolute terms — the *ordering*, not the magnitude, is the point.
+
 ---
 
 ## The open interpretive question (deliberately unresolved)

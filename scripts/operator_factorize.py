@@ -19,7 +19,7 @@ import argparse
 import statistics as st
 from pathlib import Path
 
-from _common import band_layers, load_model, resolve_tag
+from _common import band_layers, evenly_spaced_layers, load_model, resolve_tag
 from jlens import JacobianLens
 import op_core
 
@@ -32,20 +32,27 @@ def main() -> None:
     ap.add_argument("--domain", default="relations")
     ap.add_argument("--lens", default=None)
     ap.add_argument("--int8", action="store_true")
+    ap.add_argument("--geometry", action="store_true",
+                    help="also compute the J-space factorization row (needs a J-lens)")
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
 
     tag = resolve_tag(args.model, int8=args.int8)
-    lens_path = Path(args.lens) if args.lens else ROOT / "out" / "lenses" / f"{tag}.pt"
     dom = op_core.load_domain(args.domain)
     if args.int8:
         from int8_model import load_int8_model
         model = load_int8_model(args.model)
     else:
         model = load_model(args.model)
-    lens = JacobianLens.from_pretrained(str(lens_path))
     tok = model.tokenizer
-    ws = band_layers(lens.source_layers, model.n_layers)["workspace"]
+
+    # lens-free by default; only the J-space factorization row needs it.
+    lens = None
+    if args.geometry:
+        lens_path = Path(args.lens) if args.lens else ROOT / "out" / "lenses" / f"{tag}.pt"
+        lens = JacobianLens.from_pretrained(str(lens_path))
+    source_layers = lens.source_layers if lens else evenly_spaced_layers(model.n_layers)
+    ws = band_layers(source_layers, model.n_layers)["workspace"]
     L = ws[len(ws) // 2]
 
     rep = op_core.guard_tokenization(dom, tok)
@@ -59,7 +66,8 @@ def main() -> None:
     print(f"\n(A) two-way factorization  [{tag}, {args.domain}, layer {L}]")
     print("  query position:")
     show("raw residual", op_core.factorize(model, lens, L, -1, dom, False))
-    show("J-space", op_core.factorize(model, lens, L, -1, dom, True))
+    if lens is not None:
+        show("J-space", op_core.factorize(model, lens, L, -1, dom, True))
     print("  reading-position control (operand token, -2):")
     show("raw @ operand tok", op_core.factorize(model, lens, L, -2, dom, False))
 
