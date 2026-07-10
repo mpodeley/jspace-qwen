@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "domain": "arithmetic",
+    "template": "The result of {a} {op} {b} is",
+    "operators": {
+      "plus": "plus",
+      "times": "times",
+      "minus": "minus"
+    },
+    "operand_slots": [
+      "a",
+      "b"
+    ],
+    "answer_leading_space": false,
+    "note": "single-digit results only (BPE splits multi-digit numbers); operands with plus==times etc. dropped so every operator pair is distinct; answers scored as bare digit tokens (Qwen3 splits ' 3' into [space,3])"
+  },
+  "items": {
+    "1,1": {
+      "args": {
+        "a": "1",
+        "b": "1"
+      },
+      "answers": {
+        "plus": "2",
+        "times": "1",
+        "minus": "0"
+      }
+    },
+    "2,1": {
+      "args": {
+        "a": "2",
+        "b": "1"
+      },
+      "answers": {
+        "plus": "3",
+        "times": "2",
+        "minus": "1"
+      }
+    },
+    "3,1": {
+      "args": {
+        "a": "3",
+        "b": "1"
+      },
+      "answers": {
+        "plus": "4",
+        "times": "3",
+        "minus": "2"
+      }
+    },
+    "3,2": {
+      "args": {
+        "a": "3",
+        "b": "2"
+      },
+      "answers": {
+        "plus": "5",
+        "times": "6",
+        "minus": "1"
+      }
+    },
+    "3,3": {
+      "args": {
+        "a": "3",
+        "b": "3"
+      },
+      "answers": {
+        "plus": "6",
+        "times": "9",
+        "minus": "0"
+      }
+    },
+    "4,1": {
+      "args": {
+        "a": "4",
+        "b": "1"
+      },
+      "answers": {
+        "plus": "5",
+        "times": "4",
+        "minus": "3"
+      }
+    },
+    "4,2": {
+      "args": {
+        "a": "4",
+        "b": "2"
+      },
+      "answers": {
+        "plus": "6",
+        "times": "8",
+        "minus": "2"
+      }
+    },
+    "5,1": {
+      "args": {
+        "a": "5",
+        "b": "1"
+      },
+      "answers": {
+        "plus": "6",
+        "times": "5",
+        "minus": "4"
+      }
+    },
+    "6,1": {
+      "args": {
+        "a": "6",
+        "b": "1"
+      },
+      "answers": {
+        "plus": "7",
+        "times": "6",
+        "minus": "5"
+      }
+    },
+    "7,1": {
+      "args": {
+        "a": "7",
+        "b": "1"
+      },
+      "answers": {
+        "plus": "8",
+        "times": "7",
+        "minus": "6"
+      }
+    },
+    "8,1": {
+      "args": {
+        "a": "8",
+        "b": "1"
+      },
+      "answers": {
+        "plus": "9",
+        "times": "8",
+        "minus": "7"
+      }
+    }
+  }
+}
