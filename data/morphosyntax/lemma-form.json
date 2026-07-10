@@ -1,78 +1,295 @@
 {
   "meta": {
     "tokenizer": "Qwen/Qwen3-1.7B",
-    "purpose": "split pass@k into lemma identity (J ties logit) vs surface form (expect J beats logit) via normalized logit difference",
-    "n_items": 26,
+    "purpose": "surface form vs a REAL competing form (plural vs singular, are vs is): does the lens commit to the right number, and in which band? wrong form is never a non-word",
+    "n_items": 55,
     "kinds": [
       "agreement",
-      "casing",
-      "irregular"
-    ]
+      "irregular",
+      "regular"
+    ],
+    "note": "casing dropped -- the authored casing prompts had 0 clean items (the model never produced the Title-case form)"
   },
   "items": [
     {
       "name": "lf-irreg-mouse",
-      "prompt": "Fact: I saw one mouse, then I saw two",
+      "prompt": "Fact: I saw one mouse, and then I saw two more of them: two",
       "lemma": "mouse",
       "form_correct": "mice",
-      "form_wrong": "mouses",
+      "form_wrong": "mouse",
       "kind": "irregular"
     },
     {
       "name": "lf-irreg-foot",
-      "prompt": "Fact: I saw one foot, then I saw two",
+      "prompt": "Fact: I saw one foot, and then I saw two more of them: two",
       "lemma": "foot",
       "form_correct": "feet",
-      "form_wrong": "foots",
+      "form_wrong": "foot",
       "kind": "irregular"
     },
     {
       "name": "lf-irreg-tooth",
-      "prompt": "Fact: I saw one tooth, then I saw two",
+      "prompt": "Fact: I saw one tooth, and then I saw two more of them: two",
       "lemma": "tooth",
       "form_correct": "teeth",
-      "form_wrong": "tooths",
+      "form_wrong": "tooth",
       "kind": "irregular"
     },
     {
       "name": "lf-irreg-man",
-      "prompt": "Fact: I saw one man, then I saw two",
+      "prompt": "Fact: I saw one man, and then I saw two more of them: two",
       "lemma": "man",
       "form_correct": "men",
-      "form_wrong": "mans",
+      "form_wrong": "man",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-woman",
+      "prompt": "Fact: I saw one woman, and then I saw two more of them: two",
+      "lemma": "woman",
+      "form_correct": "women",
+      "form_wrong": "woman",
       "kind": "irregular"
     },
     {
       "name": "lf-irreg-child",
-      "prompt": "Fact: I saw one child, then I saw two",
+      "prompt": "Fact: I saw one child, and then I saw two more of them: two",
       "lemma": "child",
       "form_correct": "children",
-      "form_wrong": "childs",
+      "form_wrong": "child",
       "kind": "irregular"
     },
     {
       "name": "lf-irreg-person",
-      "prompt": "Fact: I saw one person, then I saw two",
+      "prompt": "Fact: I saw one person, and then I saw two more of them: two",
       "lemma": "person",
       "form_correct": "people",
-      "form_wrong": "persons",
+      "form_wrong": "person",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-die",
+      "prompt": "Fact: I saw one die, and then I saw two more of them: two",
+      "lemma": "die",
+      "form_correct": "dice",
+      "form_wrong": "die",
       "kind": "irregular"
     },
     {
       "name": "lf-irreg-leaf",
-      "prompt": "Fact: I saw one leaf, then I saw two",
+      "prompt": "Fact: I saw one leaf, and then I saw two more of them: two",
       "lemma": "leaf",
       "form_correct": "leaves",
-      "form_wrong": "leafs",
+      "form_wrong": "leaf",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-wife",
+      "prompt": "Fact: I saw one wife, and then I saw two more of them: two",
+      "lemma": "wife",
+      "form_correct": "wives",
+      "form_wrong": "wife",
       "kind": "irregular"
     },
     {
       "name": "lf-irreg-knife",
-      "prompt": "Fact: I saw one knife, then I saw two",
+      "prompt": "Fact: I saw one knife, and then I saw two more of them: two",
       "lemma": "knife",
       "form_correct": "knives",
-      "form_wrong": "knifes",
+      "form_wrong": "knife",
       "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-life",
+      "prompt": "Fact: I saw one life, and then I saw two more of them: two",
+      "lemma": "life",
+      "form_correct": "lives",
+      "form_wrong": "life",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-half",
+      "prompt": "Fact: I saw one half, and then I saw two more of them: two",
+      "lemma": "half",
+      "form_correct": "halves",
+      "form_wrong": "half",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-thief",
+      "prompt": "Fact: I saw one thief, and then I saw two more of them: two",
+      "lemma": "thief",
+      "form_correct": "thieves",
+      "form_wrong": "thief",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-irreg-wolf",
+      "prompt": "Fact: I saw one wolf, and then I saw two more of them: two",
+      "lemma": "wolf",
+      "form_correct": "wolves",
+      "form_wrong": "wolf",
+      "kind": "irregular"
+    },
+    {
+      "name": "lf-regnum-key",
+      "prompt": "Fact: I saw one key, and then I saw two more of them: two",
+      "lemma": "key",
+      "form_correct": "keys",
+      "form_wrong": "key",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-book",
+      "prompt": "Fact: I saw one book, and then I saw two more of them: two",
+      "lemma": "book",
+      "form_correct": "books",
+      "form_wrong": "book",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-car",
+      "prompt": "Fact: I saw one car, and then I saw two more of them: two",
+      "lemma": "car",
+      "form_correct": "cars",
+      "form_wrong": "car",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-door",
+      "prompt": "Fact: I saw one door, and then I saw two more of them: two",
+      "lemma": "door",
+      "form_correct": "doors",
+      "form_wrong": "door",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-window",
+      "prompt": "Fact: I saw one window, and then I saw two more of them: two",
+      "lemma": "window",
+      "form_correct": "windows",
+      "form_wrong": "window",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-letter",
+      "prompt": "Fact: I saw one letter, and then I saw two more of them: two",
+      "lemma": "letter",
+      "form_correct": "letters",
+      "form_wrong": "letter",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-picture",
+      "prompt": "Fact: I saw one picture, and then I saw two more of them: two",
+      "lemma": "picture",
+      "form_correct": "pictures",
+      "form_wrong": "picture",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-bridge",
+      "prompt": "Fact: I saw one bridge, and then I saw two more of them: two",
+      "lemma": "bridge",
+      "form_correct": "bridges",
+      "form_wrong": "bridge",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-farmer",
+      "prompt": "Fact: I saw one farmer, and then I saw two more of them: two",
+      "lemma": "farmer",
+      "form_correct": "farmers",
+      "form_wrong": "farmer",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-sailor",
+      "prompt": "Fact: I saw one sailor, and then I saw two more of them: two",
+      "lemma": "sailor",
+      "form_correct": "sailors",
+      "form_wrong": "sailor",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-rocket",
+      "prompt": "Fact: I saw one rocket, and then I saw two more of them: two",
+      "lemma": "rocket",
+      "form_correct": "rockets",
+      "form_wrong": "rocket",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-basket",
+      "prompt": "Fact: I saw one basket, and then I saw two more of them: two",
+      "lemma": "basket",
+      "form_correct": "baskets",
+      "form_wrong": "basket",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-monkey",
+      "prompt": "Fact: I saw one monkey, and then I saw two more of them: two",
+      "lemma": "monkey",
+      "form_correct": "monkeys",
+      "form_wrong": "monkey",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-garden",
+      "prompt": "Fact: I saw one garden, and then I saw two more of them: two",
+      "lemma": "garden",
+      "form_correct": "gardens",
+      "form_wrong": "garden",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-cabin",
+      "prompt": "Fact: I saw one cabin, and then I saw two more of them: two",
+      "lemma": "cabin",
+      "form_correct": "cabins",
+      "form_wrong": "cabin",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-star",
+      "prompt": "Fact: I saw one star, and then I saw two more of them: two",
+      "lemma": "star",
+      "form_correct": "stars",
+      "form_wrong": "star",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-road",
+      "prompt": "Fact: I saw one road, and then I saw two more of them: two",
+      "lemma": "road",
+      "form_correct": "roads",
+      "form_wrong": "road",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-river",
+      "prompt": "Fact: I saw one river, and then I saw two more of them: two",
+      "lemma": "river",
+      "form_correct": "rivers",
+      "form_wrong": "river",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-table",
+      "prompt": "Fact: I saw one table, and then I saw two more of them: two",
+      "lemma": "table",
+      "form_correct": "tables",
+      "form_wrong": "table",
+      "kind": "regular"
+    },
+    {
+      "name": "lf-regnum-friend",
+      "prompt": "Fact: I saw one friend, and then I saw two more of them: two",
+      "lemma": "friend",
+      "form_correct": "friends",
+      "form_wrong": "friend",
+      "kind": "regular"
     },
     {
       "name": "lf-agree-key",
@@ -171,52 +388,68 @@
       "kind": "agreement"
     },
     {
-      "name": "lf-case-paris",
-      "prompt": "The capital city everyone talks about is",
-      "lemma": "paris",
-      "form_correct": "Paris",
-      "form_wrong": "paris",
-      "kind": "casing"
+      "name": "lf-agree-monkey",
+      "prompt": "Fact: The monkeys on the table",
+      "lemma": "monkey",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
     },
     {
-      "name": "lf-case-london",
-      "prompt": "The capital city everyone talks about is",
-      "lemma": "london",
-      "form_correct": "London",
-      "form_wrong": "london",
-      "kind": "casing"
+      "name": "lf-agree-garden",
+      "prompt": "Fact: The gardens on the table",
+      "lemma": "garden",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
     },
     {
-      "name": "lf-case-france",
-      "prompt": "The capital city everyone talks about is",
-      "lemma": "france",
-      "form_correct": "France",
-      "form_wrong": "france",
-      "kind": "casing"
+      "name": "lf-agree-cabin",
+      "prompt": "Fact: The cabins on the table",
+      "lemma": "cabin",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
     },
     {
-      "name": "lf-case-china",
-      "prompt": "The capital city everyone talks about is",
-      "lemma": "china",
-      "form_correct": "China",
-      "form_wrong": "china",
-      "kind": "casing"
+      "name": "lf-agree-star",
+      "prompt": "Fact: The stars on the table",
+      "lemma": "star",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
     },
     {
-      "name": "lf-case-japan",
-      "prompt": "The capital city everyone talks about is",
-      "lemma": "japan",
-      "form_correct": "Japan",
-      "form_wrong": "japan",
-      "kind": "casing"
+      "name": "lf-agree-road",
+      "prompt": "Fact: The roads on the table",
+      "lemma": "road",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
     },
     {
-      "name": "lf-case-monday",
-      "prompt": "The capital city everyone talks about is",
-      "lemma": "monday",
-      "form_correct": "Monday",
-      "form_wrong": "monday",
-      "kind": "casing"
+      "name": "lf-agree-river",
+      "prompt": "Fact: The rivers on the table",
+      "lemma": "river",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-table",
+      "prompt": "Fact: The tables on the table",
+      "lemma": "table",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
+    },
+    {
+      "name": "lf-agree-friend",
+      "prompt": "Fact: The friends on the table",
+      "lemma": "friend",
+      "form_correct": "are",
+      "form_wrong": "is",
+      "kind": "agreement"
     }
   ]
 }

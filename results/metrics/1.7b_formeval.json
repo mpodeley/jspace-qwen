@@ -1,0 +1,34 @@
+{
+  "eval": "surface-form",
+  "model": "1.7b",
+  "n_items": 26,
+  "lens": "1.7b",
+  "jlens": {
+    "form_acc": 1.0,
+    "form_logitdiff_mean": 0.7527082191570088,
+    "n_clean": 17,
+    "by_kind_acc": {
+      "irregular": 1.0,
+      "agreement": 1.0
+    },
+    "band_logitdiff_mean": {
+      "early": 0.6515461073378873,
+      "workspace": 0.42742001362895543,
+      "late": 0.2719250645455986
+    }
+  },
+  "logit": {
+    "form_acc": 1.0,
+    "form_logitdiff_mean": 0.8173592519361736,
+    "n_clean": 17,
+    "by_kind_acc": {
+      "irregular": 1.0,
+      "agreement": 1.0
+    },
+    "band_logitdiff_mean": {
+      "early": 0.7064304741743848,
+      "workspace": 0.6293780015855289,
+      "late": 0.3482358721522669
+    }
+  }
+}

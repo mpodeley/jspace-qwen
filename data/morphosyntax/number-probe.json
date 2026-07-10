@@ -1,0 +1,1199 @@
+{
+  "meta": {
+    "tokenizer": "Qwen/Qwen3-1.7B",
+    "purpose": "labelled singular/plural examples read at the noun position; syntax_probe.py trains a number probe on the lens logits (J vs logit vs randproj null) per band",
+    "n_items": 198,
+    "n_nouns": 33,
+    "balance": "half singular / half plural by construction"
+  },
+  "items": [
+    {
+      "name": "np-key-sing-0",
+      "noun": "key",
+      "prompt": "Fact: On the table I noticed the key",
+      "number": "sing"
+    },
+    {
+      "name": "np-key-plur-0",
+      "noun": "key",
+      "prompt": "Fact: On the table I noticed the keys",
+      "number": "plur"
+    },
+    {
+      "name": "np-key-sing-1",
+      "noun": "key",
+      "prompt": "Fact: In the story there was the key",
+      "number": "sing"
+    },
+    {
+      "name": "np-key-plur-1",
+      "noun": "key",
+      "prompt": "Fact: In the story there was the keys",
+      "number": "plur"
+    },
+    {
+      "name": "np-key-sing-2",
+      "noun": "key",
+      "prompt": "Fact: Near the house we saw the key",
+      "number": "sing"
+    },
+    {
+      "name": "np-key-plur-2",
+      "noun": "key",
+      "prompt": "Fact: Near the house we saw the keys",
+      "number": "plur"
+    },
+    {
+      "name": "np-book-sing-0",
+      "noun": "book",
+      "prompt": "Fact: On the table I noticed the book",
+      "number": "sing"
+    },
+    {
+      "name": "np-book-plur-0",
+      "noun": "book",
+      "prompt": "Fact: On the table I noticed the books",
+      "number": "plur"
+    },
+    {
+      "name": "np-book-sing-1",
+      "noun": "book",
+      "prompt": "Fact: In the story there was the book",
+      "number": "sing"
+    },
+    {
+      "name": "np-book-plur-1",
+      "noun": "book",
+      "prompt": "Fact: In the story there was the books",
+      "number": "plur"
+    },
+    {
+      "name": "np-book-sing-2",
+      "noun": "book",
+      "prompt": "Fact: Near the house we saw the book",
+      "number": "sing"
+    },
+    {
+      "name": "np-book-plur-2",
+      "noun": "book",
+      "prompt": "Fact: Near the house we saw the books",
+      "number": "plur"
+    },
+    {
+      "name": "np-car-sing-0",
+      "noun": "car",
+      "prompt": "Fact: On the table I noticed the car",
+      "number": "sing"
+    },
+    {
+      "name": "np-car-plur-0",
+      "noun": "car",
+      "prompt": "Fact: On the table I noticed the cars",
+      "number": "plur"
+    },
+    {
+      "name": "np-car-sing-1",
+      "noun": "car",
+      "prompt": "Fact: In the story there was the car",
+      "number": "sing"
+    },
+    {
+      "name": "np-car-plur-1",
+      "noun": "car",
+      "prompt": "Fact: In the story there was the cars",
+      "number": "plur"
+    },
+    {
+      "name": "np-car-sing-2",
+      "noun": "car",
+      "prompt": "Fact: Near the house we saw the car",
+      "number": "sing"
+    },
+    {
+      "name": "np-car-plur-2",
+      "noun": "car",
+      "prompt": "Fact: Near the house we saw the cars",
+      "number": "plur"
+    },
+    {
+      "name": "np-door-sing-0",
+      "noun": "door",
+      "prompt": "Fact: On the table I noticed the door",
+      "number": "sing"
+    },
+    {
+      "name": "np-door-plur-0",
+      "noun": "door",
+      "prompt": "Fact: On the table I noticed the doors",
+      "number": "plur"
+    },
+    {
+      "name": "np-door-sing-1",
+      "noun": "door",
+      "prompt": "Fact: In the story there was the door",
+      "number": "sing"
+    },
+    {
+      "name": "np-door-plur-1",
+      "noun": "door",
+      "prompt": "Fact: In the story there was the doors",
+      "number": "plur"
+    },
+    {
+      "name": "np-door-sing-2",
+      "noun": "door",
+      "prompt": "Fact: Near the house we saw the door",
+      "number": "sing"
+    },
+    {
+      "name": "np-door-plur-2",
+      "noun": "door",
+      "prompt": "Fact: Near the house we saw the doors",
+      "number": "plur"
+    },
+    {
+      "name": "np-window-sing-0",
+      "noun": "window",
+      "prompt": "Fact: On the table I noticed the window",
+      "number": "sing"
+    },
+    {
+      "name": "np-window-plur-0",
+      "noun": "window",
+      "prompt": "Fact: On the table I noticed the windows",
+      "number": "plur"
+    },
+    {
+      "name": "np-window-sing-1",
+      "noun": "window",
+      "prompt": "Fact: In the story there was the window",
+      "number": "sing"
+    },
+    {
+      "name": "np-window-plur-1",
+      "noun": "window",
+      "prompt": "Fact: In the story there was the windows",
+      "number": "plur"
+    },
+    {
+      "name": "np-window-sing-2",
+      "noun": "window",
+      "prompt": "Fact: Near the house we saw the window",
+      "number": "sing"
+    },
+    {
+      "name": "np-window-plur-2",
+      "noun": "window",
+      "prompt": "Fact: Near the house we saw the windows",
+      "number": "plur"
+    },
+    {
+      "name": "np-letter-sing-0",
+      "noun": "letter",
+      "prompt": "Fact: On the table I noticed the letter",
+      "number": "sing"
+    },
+    {
+      "name": "np-letter-plur-0",
+      "noun": "letter",
+      "prompt": "Fact: On the table I noticed the letters",
+      "number": "plur"
+    },
+    {
+      "name": "np-letter-sing-1",
+      "noun": "letter",
+      "prompt": "Fact: In the story there was the letter",
+      "number": "sing"
+    },
+    {
+      "name": "np-letter-plur-1",
+      "noun": "letter",
+      "prompt": "Fact: In the story there was the letters",
+      "number": "plur"
+    },
+    {
+      "name": "np-letter-sing-2",
+      "noun": "letter",
+      "prompt": "Fact: Near the house we saw the letter",
+      "number": "sing"
+    },
+    {
+      "name": "np-letter-plur-2",
+      "noun": "letter",
+      "prompt": "Fact: Near the house we saw the letters",
+      "number": "plur"
+    },
+    {
+      "name": "np-picture-sing-0",
+      "noun": "picture",
+      "prompt": "Fact: On the table I noticed the picture",
+      "number": "sing"
+    },
+    {
+      "name": "np-picture-plur-0",
+      "noun": "picture",
+      "prompt": "Fact: On the table I noticed the pictures",
+      "number": "plur"
+    },
+    {
+      "name": "np-picture-sing-1",
+      "noun": "picture",
+      "prompt": "Fact: In the story there was the picture",
+      "number": "sing"
+    },
+    {
+      "name": "np-picture-plur-1",
+      "noun": "picture",
+      "prompt": "Fact: In the story there was the pictures",
+      "number": "plur"
+    },
+    {
+      "name": "np-picture-sing-2",
+      "noun": "picture",
+      "prompt": "Fact: Near the house we saw the picture",
+      "number": "sing"
+    },
+    {
+      "name": "np-picture-plur-2",
+      "noun": "picture",
+      "prompt": "Fact: Near the house we saw the pictures",
+      "number": "plur"
+    },
+    {
+      "name": "np-bridge-sing-0",
+      "noun": "bridge",
+      "prompt": "Fact: On the table I noticed the bridge",
+      "number": "sing"
+    },
+    {
+      "name": "np-bridge-plur-0",
+      "noun": "bridge",
+      "prompt": "Fact: On the table I noticed the bridges",
+      "number": "plur"
+    },
+    {
+      "name": "np-bridge-sing-1",
+      "noun": "bridge",
+      "prompt": "Fact: In the story there was the bridge",
+      "number": "sing"
+    },
+    {
+      "name": "np-bridge-plur-1",
+      "noun": "bridge",
+      "prompt": "Fact: In the story there was the bridges",
+      "number": "plur"
+    },
+    {
+      "name": "np-bridge-sing-2",
+      "noun": "bridge",
+      "prompt": "Fact: Near the house we saw the bridge",
+      "number": "sing"
+    },
+    {
+      "name": "np-bridge-plur-2",
+      "noun": "bridge",
+      "prompt": "Fact: Near the house we saw the bridges",
+      "number": "plur"
+    },
+    {
+      "name": "np-farmer-sing-0",
+      "noun": "farmer",
+      "prompt": "Fact: On the table I noticed the farmer",
+      "number": "sing"
+    },
+    {
+      "name": "np-farmer-plur-0",
+      "noun": "farmer",
+      "prompt": "Fact: On the table I noticed the farmers",
+      "number": "plur"
+    },
+    {
+      "name": "np-farmer-sing-1",
+      "noun": "farmer",
+      "prompt": "Fact: In the story there was the farmer",
+      "number": "sing"
+    },
+    {
+      "name": "np-farmer-plur-1",
+      "noun": "farmer",
+      "prompt": "Fact: In the story there was the farmers",
+      "number": "plur"
+    },
+    {
+      "name": "np-farmer-sing-2",
+      "noun": "farmer",
+      "prompt": "Fact: Near the house we saw the farmer",
+      "number": "sing"
+    },
+    {
+      "name": "np-farmer-plur-2",
+      "noun": "farmer",
+      "prompt": "Fact: Near the house we saw the farmers",
+      "number": "plur"
+    },
+    {
+      "name": "np-sailor-sing-0",
+      "noun": "sailor",
+      "prompt": "Fact: On the table I noticed the sailor",
+      "number": "sing"
+    },
+    {
+      "name": "np-sailor-plur-0",
+      "noun": "sailor",
+      "prompt": "Fact: On the table I noticed the sailors",
+      "number": "plur"
+    },
+    {
+      "name": "np-sailor-sing-1",
+      "noun": "sailor",
+      "prompt": "Fact: In the story there was the sailor",
+      "number": "sing"
+    },
+    {
+      "name": "np-sailor-plur-1",
+      "noun": "sailor",
+      "prompt": "Fact: In the story there was the sailors",
+      "number": "plur"
+    },
+    {
+      "name": "np-sailor-sing-2",
+      "noun": "sailor",
+      "prompt": "Fact: Near the house we saw the sailor",
+      "number": "sing"
+    },
+    {
+      "name": "np-sailor-plur-2",
+      "noun": "sailor",
+      "prompt": "Fact: Near the house we saw the sailors",
+      "number": "plur"
+    },
+    {
+      "name": "np-rocket-sing-0",
+      "noun": "rocket",
+      "prompt": "Fact: On the table I noticed the rocket",
+      "number": "sing"
+    },
+    {
+      "name": "np-rocket-plur-0",
+      "noun": "rocket",
+      "prompt": "Fact: On the table I noticed the rockets",
+      "number": "plur"
+    },
+    {
+      "name": "np-rocket-sing-1",
+      "noun": "rocket",
+      "prompt": "Fact: In the story there was the rocket",
+      "number": "sing"
+    },
+    {
+      "name": "np-rocket-plur-1",
+      "noun": "rocket",
+      "prompt": "Fact: In the story there was the rockets",
+      "number": "plur"
+    },
+    {
+      "name": "np-rocket-sing-2",
+      "noun": "rocket",
+      "prompt": "Fact: Near the house we saw the rocket",
+      "number": "sing"
+    },
+    {
+      "name": "np-rocket-plur-2",
+      "noun": "rocket",
+      "prompt": "Fact: Near the house we saw the rockets",
+      "number": "plur"
+    },
+    {
+      "name": "np-basket-sing-0",
+      "noun": "basket",
+      "prompt": "Fact: On the table I noticed the basket",
+      "number": "sing"
+    },
+    {
+      "name": "np-basket-plur-0",
+      "noun": "basket",
+      "prompt": "Fact: On the table I noticed the baskets",
+      "number": "plur"
+    },
+    {
+      "name": "np-basket-sing-1",
+      "noun": "basket",
+      "prompt": "Fact: In the story there was the basket",
+      "number": "sing"
+    },
+    {
+      "name": "np-basket-plur-1",
+      "noun": "basket",
+      "prompt": "Fact: In the story there was the baskets",
+      "number": "plur"
+    },
+    {
+      "name": "np-basket-sing-2",
+      "noun": "basket",
+      "prompt": "Fact: Near the house we saw the basket",
+      "number": "sing"
+    },
+    {
+      "name": "np-basket-plur-2",
+      "noun": "basket",
+      "prompt": "Fact: Near the house we saw the baskets",
+      "number": "plur"
+    },
+    {
+      "name": "np-monkey-sing-0",
+      "noun": "monkey",
+      "prompt": "Fact: On the table I noticed the monkey",
+      "number": "sing"
+    },
+    {
+      "name": "np-monkey-plur-0",
+      "noun": "monkey",
+      "prompt": "Fact: On the table I noticed the monkeys",
+      "number": "plur"
+    },
+    {
+      "name": "np-monkey-sing-1",
+      "noun": "monkey",
+      "prompt": "Fact: In the story there was the monkey",
+      "number": "sing"
+    },
+    {
+      "name": "np-monkey-plur-1",
+      "noun": "monkey",
+      "prompt": "Fact: In the story there was the monkeys",
+      "number": "plur"
+    },
+    {
+      "name": "np-monkey-sing-2",
+      "noun": "monkey",
+      "prompt": "Fact: Near the house we saw the monkey",
+      "number": "sing"
+    },
+    {
+      "name": "np-monkey-plur-2",
+      "noun": "monkey",
+      "prompt": "Fact: Near the house we saw the monkeys",
+      "number": "plur"
+    },
+    {
+      "name": "np-garden-sing-0",
+      "noun": "garden",
+      "prompt": "Fact: On the table I noticed the garden",
+      "number": "sing"
+    },
+    {
+      "name": "np-garden-plur-0",
+      "noun": "garden",
+      "prompt": "Fact: On the table I noticed the gardens",
+      "number": "plur"
+    },
+    {
+      "name": "np-garden-sing-1",
+      "noun": "garden",
+      "prompt": "Fact: In the story there was the garden",
+      "number": "sing"
+    },
+    {
+      "name": "np-garden-plur-1",
+      "noun": "garden",
+      "prompt": "Fact: In the story there was the gardens",
+      "number": "plur"
+    },
+    {
+      "name": "np-garden-sing-2",
+      "noun": "garden",
+      "prompt": "Fact: Near the house we saw the garden",
+      "number": "sing"
+    },
+    {
+      "name": "np-garden-plur-2",
+      "noun": "garden",
+      "prompt": "Fact: Near the house we saw the gardens",
+      "number": "plur"
+    },
+    {
+      "name": "np-cabin-sing-0",
+      "noun": "cabin",
+      "prompt": "Fact: On the table I noticed the cabin",
+      "number": "sing"
+    },
+    {
+      "name": "np-cabin-plur-0",
+      "noun": "cabin",
+      "prompt": "Fact: On the table I noticed the cabins",
+      "number": "plur"
+    },
+    {
+      "name": "np-cabin-sing-1",
+      "noun": "cabin",
+      "prompt": "Fact: In the story there was the cabin",
+      "number": "sing"
+    },
+    {
+      "name": "np-cabin-plur-1",
+      "noun": "cabin",
+      "prompt": "Fact: In the story there was the cabins",
+      "number": "plur"
+    },
+    {
+      "name": "np-cabin-sing-2",
+      "noun": "cabin",
+      "prompt": "Fact: Near the house we saw the cabin",
+      "number": "sing"
+    },
+    {
+      "name": "np-cabin-plur-2",
+      "noun": "cabin",
+      "prompt": "Fact: Near the house we saw the cabins",
+      "number": "plur"
+    },
+    {
+      "name": "np-star-sing-0",
+      "noun": "star",
+      "prompt": "Fact: On the table I noticed the star",
+      "number": "sing"
+    },
+    {
+      "name": "np-star-plur-0",
+      "noun": "star",
+      "prompt": "Fact: On the table I noticed the stars",
+      "number": "plur"
+    },
+    {
+      "name": "np-star-sing-1",
+      "noun": "star",
+      "prompt": "Fact: In the story there was the star",
+      "number": "sing"
+    },
+    {
+      "name": "np-star-plur-1",
+      "noun": "star",
+      "prompt": "Fact: In the story there was the stars",
+      "number": "plur"
+    },
+    {
+      "name": "np-star-sing-2",
+      "noun": "star",
+      "prompt": "Fact: Near the house we saw the star",
+      "number": "sing"
+    },
+    {
+      "name": "np-star-plur-2",
+      "noun": "star",
+      "prompt": "Fact: Near the house we saw the stars",
+      "number": "plur"
+    },
+    {
+      "name": "np-road-sing-0",
+      "noun": "road",
+      "prompt": "Fact: On the table I noticed the road",
+      "number": "sing"
+    },
+    {
+      "name": "np-road-plur-0",
+      "noun": "road",
+      "prompt": "Fact: On the table I noticed the roads",
+      "number": "plur"
+    },
+    {
+      "name": "np-road-sing-1",
+      "noun": "road",
+      "prompt": "Fact: In the story there was the road",
+      "number": "sing"
+    },
+    {
+      "name": "np-road-plur-1",
+      "noun": "road",
+      "prompt": "Fact: In the story there was the roads",
+      "number": "plur"
+    },
+    {
+      "name": "np-road-sing-2",
+      "noun": "road",
+      "prompt": "Fact: Near the house we saw the road",
+      "number": "sing"
+    },
+    {
+      "name": "np-road-plur-2",
+      "noun": "road",
+      "prompt": "Fact: Near the house we saw the roads",
+      "number": "plur"
+    },
+    {
+      "name": "np-river-sing-0",
+      "noun": "river",
+      "prompt": "Fact: On the table I noticed the river",
+      "number": "sing"
+    },
+    {
+      "name": "np-river-plur-0",
+      "noun": "river",
+      "prompt": "Fact: On the table I noticed the rivers",
+      "number": "plur"
+    },
+    {
+      "name": "np-river-sing-1",
+      "noun": "river",
+      "prompt": "Fact: In the story there was the river",
+      "number": "sing"
+    },
+    {
+      "name": "np-river-plur-1",
+      "noun": "river",
+      "prompt": "Fact: In the story there was the rivers",
+      "number": "plur"
+    },
+    {
+      "name": "np-river-sing-2",
+      "noun": "river",
+      "prompt": "Fact: Near the house we saw the river",
+      "number": "sing"
+    },
+    {
+      "name": "np-river-plur-2",
+      "noun": "river",
+      "prompt": "Fact: Near the house we saw the rivers",
+      "number": "plur"
+    },
+    {
+      "name": "np-table-sing-0",
+      "noun": "table",
+      "prompt": "Fact: On the table I noticed the table",
+      "number": "sing"
+    },
+    {
+      "name": "np-table-plur-0",
+      "noun": "table",
+      "prompt": "Fact: On the table I noticed the tables",
+      "number": "plur"
+    },
+    {
+      "name": "np-table-sing-1",
+      "noun": "table",
+      "prompt": "Fact: In the story there was the table",
+      "number": "sing"
+    },
+    {
+      "name": "np-table-plur-1",
+      "noun": "table",
+      "prompt": "Fact: In the story there was the tables",
+      "number": "plur"
+    },
+    {
+      "name": "np-table-sing-2",
+      "noun": "table",
+      "prompt": "Fact: Near the house we saw the table",
+      "number": "sing"
+    },
+    {
+      "name": "np-table-plur-2",
+      "noun": "table",
+      "prompt": "Fact: Near the house we saw the tables",
+      "number": "plur"
+    },
+    {
+      "name": "np-friend-sing-0",
+      "noun": "friend",
+      "prompt": "Fact: On the table I noticed the friend",
+      "number": "sing"
+    },
+    {
+      "name": "np-friend-plur-0",
+      "noun": "friend",
+      "prompt": "Fact: On the table I noticed the friends",
+      "number": "plur"
+    },
+    {
+      "name": "np-friend-sing-1",
+      "noun": "friend",
+      "prompt": "Fact: In the story there was the friend",
+      "number": "sing"
+    },
+    {
+      "name": "np-friend-plur-1",
+      "noun": "friend",
+      "prompt": "Fact: In the story there was the friends",
+      "number": "plur"
+    },
+    {
+      "name": "np-friend-sing-2",
+      "noun": "friend",
+      "prompt": "Fact: Near the house we saw the friend",
+      "number": "sing"
+    },
+    {
+      "name": "np-friend-plur-2",
+      "noun": "friend",
+      "prompt": "Fact: Near the house we saw the friends",
+      "number": "plur"
+    },
+    {
+      "name": "np-dog-sing-0",
+      "noun": "dog",
+      "prompt": "Fact: On the table I noticed the dog",
+      "number": "sing"
+    },
+    {
+      "name": "np-dog-plur-0",
+      "noun": "dog",
+      "prompt": "Fact: On the table I noticed the dogs",
+      "number": "plur"
+    },
+    {
+      "name": "np-dog-sing-1",
+      "noun": "dog",
+      "prompt": "Fact: In the story there was the dog",
+      "number": "sing"
+    },
+    {
+      "name": "np-dog-plur-1",
+      "noun": "dog",
+      "prompt": "Fact: In the story there was the dogs",
+      "number": "plur"
+    },
+    {
+      "name": "np-dog-sing-2",
+      "noun": "dog",
+      "prompt": "Fact: Near the house we saw the dog",
+      "number": "sing"
+    },
+    {
+      "name": "np-dog-plur-2",
+      "noun": "dog",
+      "prompt": "Fact: Near the house we saw the dogs",
+      "number": "plur"
+    },
+    {
+      "name": "np-cat-sing-0",
+      "noun": "cat",
+      "prompt": "Fact: On the table I noticed the cat",
+      "number": "sing"
+    },
+    {
+      "name": "np-cat-plur-0",
+      "noun": "cat",
+      "prompt": "Fact: On the table I noticed the cats",
+      "number": "plur"
+    },
+    {
+      "name": "np-cat-sing-1",
+      "noun": "cat",
+      "prompt": "Fact: In the story there was the cat",
+      "number": "sing"
+    },
+    {
+      "name": "np-cat-plur-1",
+      "noun": "cat",
+      "prompt": "Fact: In the story there was the cats",
+      "number": "plur"
+    },
+    {
+      "name": "np-cat-sing-2",
+      "noun": "cat",
+      "prompt": "Fact: Near the house we saw the cat",
+      "number": "sing"
+    },
+    {
+      "name": "np-cat-plur-2",
+      "noun": "cat",
+      "prompt": "Fact: Near the house we saw the cats",
+      "number": "plur"
+    },
+    {
+      "name": "np-tree-sing-0",
+      "noun": "tree",
+      "prompt": "Fact: On the table I noticed the tree",
+      "number": "sing"
+    },
+    {
+      "name": "np-tree-plur-0",
+      "noun": "tree",
+      "prompt": "Fact: On the table I noticed the trees",
+      "number": "plur"
+    },
+    {
+      "name": "np-tree-sing-1",
+      "noun": "tree",
+      "prompt": "Fact: In the story there was the tree",
+      "number": "sing"
+    },
+    {
+      "name": "np-tree-plur-1",
+      "noun": "tree",
+      "prompt": "Fact: In the story there was the trees",
+      "number": "plur"
+    },
+    {
+      "name": "np-tree-sing-2",
+      "noun": "tree",
+      "prompt": "Fact: Near the house we saw the tree",
+      "number": "sing"
+    },
+    {
+      "name": "np-tree-plur-2",
+      "noun": "tree",
+      "prompt": "Fact: Near the house we saw the trees",
+      "number": "plur"
+    },
+    {
+      "name": "np-house-sing-0",
+      "noun": "house",
+      "prompt": "Fact: On the table I noticed the house",
+      "number": "sing"
+    },
+    {
+      "name": "np-house-plur-0",
+      "noun": "house",
+      "prompt": "Fact: On the table I noticed the houses",
+      "number": "plur"
+    },
+    {
+      "name": "np-house-sing-1",
+      "noun": "house",
+      "prompt": "Fact: In the story there was the house",
+      "number": "sing"
+    },
+    {
+      "name": "np-house-plur-1",
+      "noun": "house",
+      "prompt": "Fact: In the story there was the houses",
+      "number": "plur"
+    },
+    {
+      "name": "np-house-sing-2",
+      "noun": "house",
+      "prompt": "Fact: Near the house we saw the house",
+      "number": "sing"
+    },
+    {
+      "name": "np-house-plur-2",
+      "noun": "house",
+      "prompt": "Fact: Near the house we saw the houses",
+      "number": "plur"
+    },
+    {
+      "name": "np-hand-sing-0",
+      "noun": "hand",
+      "prompt": "Fact: On the table I noticed the hand",
+      "number": "sing"
+    },
+    {
+      "name": "np-hand-plur-0",
+      "noun": "hand",
+      "prompt": "Fact: On the table I noticed the hands",
+      "number": "plur"
+    },
+    {
+      "name": "np-hand-sing-1",
+      "noun": "hand",
+      "prompt": "Fact: In the story there was the hand",
+      "number": "sing"
+    },
+    {
+      "name": "np-hand-plur-1",
+      "noun": "hand",
+      "prompt": "Fact: In the story there was the hands",
+      "number": "plur"
+    },
+    {
+      "name": "np-hand-sing-2",
+      "noun": "hand",
+      "prompt": "Fact: Near the house we saw the hand",
+      "number": "sing"
+    },
+    {
+      "name": "np-hand-plur-2",
+      "noun": "hand",
+      "prompt": "Fact: Near the house we saw the hands",
+      "number": "plur"
+    },
+    {
+      "name": "np-girl-sing-0",
+      "noun": "girl",
+      "prompt": "Fact: On the table I noticed the girl",
+      "number": "sing"
+    },
+    {
+      "name": "np-girl-plur-0",
+      "noun": "girl",
+      "prompt": "Fact: On the table I noticed the girls",
+      "number": "plur"
+    },
+    {
+      "name": "np-girl-sing-1",
+      "noun": "girl",
+      "prompt": "Fact: In the story there was the girl",
+      "number": "sing"
+    },
+    {
+      "name": "np-girl-plur-1",
+      "noun": "girl",
+      "prompt": "Fact: In the story there was the girls",
+      "number": "plur"
+    },
+    {
+      "name": "np-girl-sing-2",
+      "noun": "girl",
+      "prompt": "Fact: Near the house we saw the girl",
+      "number": "sing"
+    },
+    {
+      "name": "np-girl-plur-2",
+      "noun": "girl",
+      "prompt": "Fact: Near the house we saw the girls",
+      "number": "plur"
+    },
+    {
+      "name": "np-boy-sing-0",
+      "noun": "boy",
+      "prompt": "Fact: On the table I noticed the boy",
+      "number": "sing"
+    },
+    {
+      "name": "np-boy-plur-0",
+      "noun": "boy",
+      "prompt": "Fact: On the table I noticed the boys",
+      "number": "plur"
+    },
+    {
+      "name": "np-boy-sing-1",
+      "noun": "boy",
+      "prompt": "Fact: In the story there was the boy",
+      "number": "sing"
+    },
+    {
+      "name": "np-boy-plur-1",
+      "noun": "boy",
+      "prompt": "Fact: In the story there was the boys",
+      "number": "plur"
+    },
+    {
+      "name": "np-boy-sing-2",
+      "noun": "boy",
+      "prompt": "Fact: Near the house we saw the boy",
+      "number": "sing"
+    },
+    {
+      "name": "np-boy-plur-2",
+      "noun": "boy",
+      "prompt": "Fact: Near the house we saw the boys",
+      "number": "plur"
+    },
+    {
+      "name": "np-school-sing-0",
+      "noun": "school",
+      "prompt": "Fact: On the table I noticed the school",
+      "number": "sing"
+    },
+    {
+      "name": "np-school-plur-0",
+      "noun": "school",
+      "prompt": "Fact: On the table I noticed the schools",
+      "number": "plur"
+    },
+    {
+      "name": "np-school-sing-1",
+      "noun": "school",
+      "prompt": "Fact: In the story there was the school",
+      "number": "sing"
+    },
+    {
+      "name": "np-school-plur-1",
+      "noun": "school",
+      "prompt": "Fact: In the story there was the schools",
+      "number": "plur"
+    },
+    {
+      "name": "np-school-sing-2",
+      "noun": "school",
+      "prompt": "Fact: Near the house we saw the school",
+      "number": "sing"
+    },
+    {
+      "name": "np-school-plur-2",
+      "noun": "school",
+      "prompt": "Fact: Near the house we saw the schools",
+      "number": "plur"
+    },
+    {
+      "name": "np-bird-sing-0",
+      "noun": "bird",
+      "prompt": "Fact: On the table I noticed the bird",
+      "number": "sing"
+    },
+    {
+      "name": "np-bird-plur-0",
+      "noun": "bird",
+      "prompt": "Fact: On the table I noticed the birds",
+      "number": "plur"
+    },
+    {
+      "name": "np-bird-sing-1",
+      "noun": "bird",
+      "prompt": "Fact: In the story there was the bird",
+      "number": "sing"
+    },
+    {
+      "name": "np-bird-plur-1",
+      "noun": "bird",
+      "prompt": "Fact: In the story there was the birds",
+      "number": "plur"
+    },
+    {
+      "name": "np-bird-sing-2",
+      "noun": "bird",
+      "prompt": "Fact: Near the house we saw the bird",
+      "number": "sing"
+    },
+    {
+      "name": "np-bird-plur-2",
+      "noun": "bird",
+      "prompt": "Fact: Near the house we saw the birds",
+      "number": "plur"
+    },
+    {
+      "name": "np-song-sing-0",
+      "noun": "song",
+      "prompt": "Fact: On the table I noticed the song",
+      "number": "sing"
+    },
+    {
+      "name": "np-song-plur-0",
+      "noun": "song",
+      "prompt": "Fact: On the table I noticed the songs",
+      "number": "plur"
+    },
+    {
+      "name": "np-song-sing-1",
+      "noun": "song",
+      "prompt": "Fact: In the story there was the song",
+      "number": "sing"
+    },
+    {
+      "name": "np-song-plur-1",
+      "noun": "song",
+      "prompt": "Fact: In the story there was the songs",
+      "number": "plur"
+    },
+    {
+      "name": "np-song-sing-2",
+      "noun": "song",
+      "prompt": "Fact: Near the house we saw the song",
+      "number": "sing"
+    },
+    {
+      "name": "np-song-plur-2",
+      "noun": "song",
+      "prompt": "Fact: Near the house we saw the songs",
+      "number": "plur"
+    },
+    {
+      "name": "np-game-sing-0",
+      "noun": "game",
+      "prompt": "Fact: On the table I noticed the game",
+      "number": "sing"
+    },
+    {
+      "name": "np-game-plur-0",
+      "noun": "game",
+      "prompt": "Fact: On the table I noticed the games",
+      "number": "plur"
+    },
+    {
+      "name": "np-game-sing-1",
+      "noun": "game",
+      "prompt": "Fact: In the story there was the game",
+      "number": "sing"
+    },
+    {
+      "name": "np-game-plur-1",
+      "noun": "game",
+      "prompt": "Fact: In the story there was the games",
+      "number": "plur"
+    },
+    {
+      "name": "np-game-sing-2",
+      "noun": "game",
+      "prompt": "Fact: Near the house we saw the game",
+      "number": "sing"
+    },
+    {
+      "name": "np-game-plur-2",
+      "noun": "game",
+      "prompt": "Fact: Near the house we saw the games",
+      "number": "plur"
+    },
+    {
+      "name": "np-market-sing-0",
+      "noun": "market",
+      "prompt": "Fact: On the table I noticed the market",
+      "number": "sing"
+    },
+    {
+      "name": "np-market-plur-0",
+      "noun": "market",
+      "prompt": "Fact: On the table I noticed the markets",
+      "number": "plur"
+    },
+    {
+      "name": "np-market-sing-1",
+      "noun": "market",
+      "prompt": "Fact: In the story there was the market",
+      "number": "sing"
+    },
+    {
+      "name": "np-market-plur-1",
+      "noun": "market",
+      "prompt": "Fact: In the story there was the markets",
+      "number": "plur"
+    },
+    {
+      "name": "np-market-sing-2",
+      "noun": "market",
+      "prompt": "Fact: Near the house we saw the market",
+      "number": "sing"
+    },
+    {
+      "name": "np-market-plur-2",
+      "noun": "market",
+      "prompt": "Fact: Near the house we saw the markets",
+      "number": "plur"
+    },
+    {
+      "name": "np-player-sing-0",
+      "noun": "player",
+      "prompt": "Fact: On the table I noticed the player",
+      "number": "sing"
+    },
+    {
+      "name": "np-player-plur-0",
+      "noun": "player",
+      "prompt": "Fact: On the table I noticed the players",
+      "number": "plur"
+    },
+    {
+      "name": "np-player-sing-1",
+      "noun": "player",
+      "prompt": "Fact: In the story there was the player",
+      "number": "sing"
+    },
+    {
+      "name": "np-player-plur-1",
+      "noun": "player",
+      "prompt": "Fact: In the story there was the players",
+      "number": "plur"
+    },
+    {
+      "name": "np-player-sing-2",
+      "noun": "player",
+      "prompt": "Fact: Near the house we saw the player",
+      "number": "sing"
+    },
+    {
+      "name": "np-player-plur-2",
+      "noun": "player",
+      "prompt": "Fact: Near the house we saw the players",
+      "number": "plur"
+    }
+  ]
+}

@@ -134,27 +134,58 @@ def build_minpairs() -> dict:
 # Swap partner has the opposite phonological onset so the determiner should flip.
 # concept/swap_to must be single leading-space tokens.
 AAN_RIDDLES = [
-    # (name, prompt, implied_concept, expected_det)
+    # (name, prompt, implied_concept, expected_det). Prompt must END such that
+    # the model's next token is the determiner of the implied noun.
+    # consonant-onset -> " a"
     ("meow", "Fact: the small furry pet that says meow is", "cat", "a"),
     ("bark", "Fact: the loyal four-legged pet that barks is", "dog", "a"),
-    ("trunk", "Fact: the huge grey animal with a long trunk is", "elephant", "an"),
     ("web", "Fact: the eight-legged creature that spins a web is", "spider", "a"),
-    ("hoot", "Fact: the nocturnal bird that hoots at night is", "owl", "an"),
     ("hop", "Fact: the small green animal that hops near ponds is", "frog", "a"),
     ("stripes", "Fact: the big striped cat of the jungle is", "tiger", "a"),
     ("wool", "Fact: the farm animal covered in wool is", "sheep", "a"),
     ("honey", "Fact: the small insect that makes honey is", "bee", "a"),
     ("mane", "Fact: the great cat with a mane, king of beasts, is", "lion", "a"),
-    ("ink", "Fact: the eight-armed sea creature that squirts ink is", "octopus", "an"),
     ("shell-slow", "Fact: the slow reptile that carries a shell is", "turtle", "a"),
     ("gallop", "Fact: the large animal you ride that gallops is", "horse", "a"),
     ("quack", "Fact: the water bird that quacks is", "duck", "a"),
-    ("antler", "Fact: the small burrowing insect that lives in colonies is", "ant", "an"),
+    ("moo", "Fact: the farm animal that says moo is", "cow", "a"),
+    ("oink", "Fact: the pink farm animal that says oink is", "pig", "a"),
+    ("neigh", "Fact: the animal with fins that swims in the sea is", "shark", "a"),
+    ("hump", "Fact: the desert animal with a hump on its back is", "camel", "a"),
+    ("hood-red", "Fact: the wild animal that ate Red Riding Hood is", "wolf", "a"),
+    ("den", "Fact: the large animal that hibernates in a den is", "bear", "a"),
+    ("hop-ears", "Fact: the small animal with long ears that hops is", "rabbit", "a"),
+    ("croak", "Fact: the amphibian that croaks by the pond is", "frog", "a"),
+    ("buzz", "Fact: the striped insect that buzzes and stings is", "bee", "a"),
+    ("bristle", "Fact: the eight-legged web spinner is", "spider", "a"),
+    ("fetch", "Fact: the pet you throw a stick for is", "dog", "a"),
+    ("purr", "Fact: the pet that purrs on your lap is", "cat", "a"),
+    ("hiss", "Fact: the legless reptile that hisses is", "snake", "a"),
+    ("gobble", "Fact: the bird served at Thanksgiving is", "turkey", "a"),
+    # vowel-onset -> " an"
+    ("trunk", "Fact: the huge grey animal with a long trunk is", "elephant", "an"),
+    ("hoot", "Fact: the nocturnal bird that hoots at night is", "owl", "an"),
+    ("ink", "Fact: the eight-armed sea creature that squirts ink is", "octopus", "an"),
+    ("colony", "Fact: the tiny insect that lives in a colony and carries crumbs is", "ant", "an"),
     ("orchard", "Fact: the round red fruit that grows on trees is", "apple", "an"),
     ("citrus", "Fact: the round orange citrus fruit is", "orange", "an"),
     ("layers", "Fact: the round vegetable with many layers that makes you cry is", "onion", "an"),
     ("anchor-ship", "Fact: the heavy metal hook that keeps a ship in place is", "anchor", "an"),
     ("umbrella-rain", "Fact: the thing you open to stay dry in the rain is", "umbrella", "an"),
+    ("soar", "Fact: the great bird that soars and is a national symbol is", "eagle", "an"),
+    ("horns-ox", "Fact: the strong horned animal that pulls a plough is", "ox", "an"),
+    ("island-sea", "Fact: a piece of land surrounded by water is", "island", "an"),
+    ("engine-car", "Fact: the part of a car that burns fuel to make power is", "engine", "an"),
+    ("insect-legs", "Fact: a small creature with six legs is", "insect", "an"),
+    ("igloo-ice", "Fact: the dome house made of ice blocks is", "igloo", "an"),
+    ("acorn-oak", "Fact: the nut that grows on an oak tree is", "acorn", "an"),
+    ("otter-river", "Fact: the playful river mammal that floats on its back is", "otter", "an"),
+    ("emu-bird", "Fact: the large flightless bird of Australia is", "emu", "an"),
+    ("iguana-lizard", "Fact: the large green lizard kept as a pet is", "iguana", "an"),
+    ("olive-tree", "Fact: the small green fruit pressed for oil is", "olive", "an"),
+    ("umpire-game", "Fact: the official who calls balls and strikes is", "umpire", "an"),
+    ("oyster-pearl", "Fact: the shellfish that makes a pearl is", "oyster", "an"),
+    ("owl-wise", "Fact: the wise bird of the night is", "owl", "an"),
 ]
 
 
@@ -210,27 +241,40 @@ def build_aan() -> dict:
 # 3. lemma-vs-form scoring set
 # --------------------------------------------------------------------------
 def build_lemma_form() -> dict:
+    """The wrong form is always a REAL, competitive word -- never a non-word.
+
+    Early validation (2026-07-10) showed that scoring the correct plural against
+    an *overregularized non-word* ("mice" vs "mouses") is confounded: the
+    non-word has intrinsically low logit, so the logit difference is trivially
+    positive without the lens knowing anything. We use the SINGULAR as the
+    competitor ("mice" vs "mouse") -- both real, frequent, first-token distinct.
+    So the test is genuinely "did the lens commit to plural over singular", the
+    number decision, not "did it avoid a non-word"."""
     items = []
 
-    # irregular: correct plural vs the *overregularized* wrong plural
-    OVERREG = {"mouse": "mouses", "foot": "foots", "tooth": "tooths",
-               "man": "mans", "child": "childs", "person": "persons",
-               "goose": "gooses", "knife": "knifes", "leaf": "leafs"}
+    # irregular plural vs its own singular (both real)
     for s, p in IRREGULARS:
-        wrong = OVERREG.get(s)
-        if wrong is None or not (single(s) and single(p)):
-            continue
-        # score correct vs wrong at token 0 only if distinct there
-        if ids(p)[0] == ids(wrong)[0]:
+        if not (single(s) and single(p) and distinct(s, p)):
             continue
         items.append({
             "name": f"lf-irreg-{s}",
-            "prompt": f"Fact: I saw one {s}, then I saw two",
-            "lemma": s, "form_correct": p, "form_wrong": wrong, "kind": "irregular",
+            "prompt": f"Fact: I saw one {s}, and then I saw two more of them: two",
+            "lemma": s, "form_correct": p, "form_wrong": s, "kind": "irregular",
         })
 
-    # agreement: is vs are
-    for noun in keep_single(AGREEMENT_NOUNS)[:12]:
+    # regular plural vs its own singular (both real; ~96% coverage on common nouns)
+    for noun in keep_single(AGREEMENT_NOUNS):
+        plural = noun + "s"
+        if not (single(plural) and distinct(noun, plural)):
+            continue
+        items.append({
+            "name": f"lf-regnum-{noun}",
+            "prompt": f"Fact: I saw one {noun}, and then I saw two more of them: two",
+            "lemma": noun, "form_correct": plural, "form_wrong": noun, "kind": "regular",
+        })
+
+    # subject-verb agreement: are vs is (both real, and number is on the verb)
+    for noun in keep_single(AGREEMENT_NOUNS):
         plural = noun + "s"
         if not (single(plural) and distinct(noun, plural)):
             continue
@@ -240,25 +284,67 @@ def build_lemma_form() -> dict:
             "lemma": noun, "form_correct": "are", "form_wrong": "is", "kind": "agreement",
         })
 
-    # casing: sentence-initial Title vs lower for a proper noun
-    CASE = ["paris", "london", "france", "china", "japan", "monday"]
-    for w in CASE:
-        title = w.capitalize()
-        if not (single(w) and single(title) and distinct(w, title)):
-            continue
-        items.append({
-            "name": f"lf-case-{w}",
-            "prompt": f"The capital city everyone talks about is",
-            "lemma": w, "form_correct": title, "form_wrong": w, "kind": "casing",
-        })
-
     return {
         "meta": {
             "tokenizer": TOK_NAME,
-            "purpose": "split pass@k into lemma identity (J ties logit) vs surface "
-                       "form (expect J beats logit) via normalized logit difference",
+            "purpose": "surface form vs a REAL competing form (plural vs singular, "
+                       "are vs is): does the lens commit to the right number, and "
+                       "in which band? wrong form is never a non-word",
             "n_items": len(items),
             "kinds": sorted({it["kind"] for it in items}),
+            "note": "casing dropped -- the authored casing prompts had 0 clean "
+                    "items (the model never produced the Title-case form)",
+        },
+        "items": items,
+    }
+
+
+# --------------------------------------------------------------------------
+# 4. Number-probe dataset (for syntax_probe.py, the readout-rescue experiment)
+# --------------------------------------------------------------------------
+# Many (noun, number) examples read at the noun position, so a probe can ask
+# whether the lens READOUT (in logit space) linearly encodes grammatical number
+# -- a much richer question than a two-token logit difference. The noun sits at
+# the last position; the next token must agree, so number must be present.
+PROBE_NOUNS = AGREEMENT_NOUNS + [
+    "dog", "cat", "tree", "house", "hand", "girl", "boy", "school", "bird",
+    "song", "game", "letter", "picture", "garden", "window", "market", "player",
+]
+PROBE_FRAMES = [
+    "Fact: On the table I noticed the {w}",
+    "Fact: In the story there was the {w}",
+    "Fact: Near the house we saw the {w}",
+]
+
+
+def build_number_probe() -> dict:
+    items = []
+    seen = set()
+    for noun in keep_single(PROBE_NOUNS):
+        if noun in seen:
+            continue
+        seen.add(noun)
+        plural = noun + "s"
+        if not (single(plural) and distinct(noun, plural)):
+            continue
+        for fi, frame in enumerate(PROBE_FRAMES):
+            items.append({
+                "name": f"np-{noun}-sing-{fi}", "noun": noun,
+                "prompt": frame.format(w=noun), "number": "sing",
+            })
+            items.append({
+                "name": f"np-{noun}-plur-{fi}", "noun": noun,
+                "prompt": frame.format(w=plural), "number": "plur",
+            })
+    return {
+        "meta": {
+            "tokenizer": TOK_NAME,
+            "purpose": "labelled singular/plural examples read at the noun "
+                       "position; syntax_probe.py trains a number probe on the "
+                       "lens logits (J vs logit vs randproj null) per band",
+            "n_items": len(items),
+            "n_nouns": len(seen),
+            "balance": "half singular / half plural by construction",
         },
         "items": items,
     }
@@ -269,6 +355,7 @@ def main() -> None:
         DATA / "morph-minpairs.json": build_minpairs,
         DATA / "aan-determiner.json": build_aan,
         DATA / "lemma-form.json": build_lemma_form,
+        DATA / "number-probe.json": build_number_probe,
     }
     for path, fn in builders.items():
         obj = fn()
