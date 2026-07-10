@@ -483,6 +483,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Multiphase analogies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#injector-worked-rerouting-the-country-currency-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injector, worked: rerouting the country → currency channel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -625,6 +642,50 @@ recharge concentrated in a few mid-layer bands.</p>
   directed-modulation experiments. One can visualize the <strong>sweep</strong>: inject at a
   cell and watch the concept advect and rise to the output.</li>
 </ul>
+<h3 id="injector-worked-rerouting-the-country-currency-channel">Injector, worked: rerouting the country → currency channel</h3>
+<p>The J-space appears to hold a <em>relational manifold</em> <code>[country] → [currency]</code>.
+The two-hop probe "the currency of the boot-shaped country is the ___" travels
+it: <code>boot → Italy → euro</code>. If we <strong>inject a different country at the "Italy"
+node</strong> — adding its J-lens direction across the workspace band, in place of
+Italy's — the flow should run down the <em>same</em> country→currency channel and emit
+that country's currency. It does (Qwen3-1.7B, <code>scripts/inject.py</code>):</p>
+<table>
+<thead>
+<tr>
+<th>injection at the "Italy" node</th>
+<th>model's top-1 output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>(baseline)</em></td>
+<td><strong>euro</strong></td>
+</tr>
+<tr>
+<td>Italy → United States</td>
+<td><strong>dollar</strong></td>
+</tr>
+<tr>
+<td>Italy → Japan</td>
+<td><strong>yen</strong></td>
+</tr>
+<tr>
+<td>Italy → Russia</td>
+<td><strong>rub</strong>(le)</td>
+</tr>
+<tr>
+<td>Italy → India</td>
+<td><strong>ru</strong>(pee)</td>
+</tr>
+<tr>
+<td>Italy → France</td>
+<td><strong>euro</strong> <em>(unchanged — France really does use the euro)</em></td>
+</tr>
+</tbody>
+</table>
+<p>The France row is the control: the channel does not "break", it <strong>routes
+correctly</strong>. This relational rerouting is present already at 1.7B — more evidence
+that the J-space's causal structure emerges before its readout sharpens.</p>
 <div class="admonition note">
 <p class="admonition-title">Why this framing</p>
 <p>For a reservoir-engineering audience it makes the interpretability concrete;
