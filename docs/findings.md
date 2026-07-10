@@ -218,6 +218,40 @@ Three things, replicating 1.7B→8B:
   (logit(language) − logit(currency): 1.7B −3.7 → +12.5; 8B −2.9 → +8.1) — the
   ending, stripped of its form, is still causally functional.
 
+### 2.5 Cross-domain: the factorization is specific to relations (`op_core.py`)
+
+The operator framework is domain-general (`scripts/op_core.py`; `--domain
+relations|arithmetic|logic`). Applying the identical pipeline to **arithmetic**
+(+, ×, − over single-digit operands) and **comparison-logic** (greater/less/equal
+over number pairs) tests how far the factorization generalizes. The key
+discriminator is **held-out-operand generalization**: build `v(op)` from half the
+operands, swap the other half — a real operator transfers, mere interpolation does
+not.
+
+| domain | operator variance | interaction (fusion) | held-out generalization | swap vs random |
+|---|---:|---:|---|---|
+| **relational** (1.7B) | 86% | 9% | **20/20** flip (+19) | +21 vs ~0 |
+| **relational** (8B) | 82% | 13% | **20/20** flip (+22) | +25 vs ~0 |
+| **arithmetic** (1.7B) | 55% | 23% | 2/6 (−0.4, ≤ random) | +0.4 vs +0.3 |
+| **arithmetic** (8B) | 42% | 25% | 1/6 (−0.6, ≤ random) | +1.4 vs +0.0 |
+| **logic/compare** (1.7B) | 33% | 34% | 2/6 (−0.5, ≤ random) | +1.2 vs +0.2 |
+| **logic/compare** (8B) | 25% | 45% | 0/6 (−2.8, < random) | −0.6 vs −0.1 |
+
+The gradient is monotone at both scales — relational (clean) ≫ arithmetic > logic
+(worst: highest interaction, zero held-out generalization). Relational operators
+factorize cleanly (case-dominant, low interaction) and
+**generalize to held-out operands** at both scales. Arithmetic and logic operators
+have **2–4× the interaction** and **fail to generalize** (held-out flip ≤ random) —
+the operator is entangled with its operands, not a transferable direction. This
+matches the literature's picture of arithmetic as a bag of heuristics / Fourier
+computation (Nikankin et al. 2025; Nanda et al. 2023; Kantamneni & Tegmark 2025)
+rather than a linear operator, and extends it with a quantitative factorization and
+a generalization test that pinpoint *why* it is not operator-linear. The held-out
+test is the discriminator: a clean in-sample swap (arithmetic swaps do flip
+in-sample) is **not** evidence of a real operator unless it generalizes.
+
+A [draft write-up is at **paper.md**](paper.md).
+
 ---
 
 ## The open interpretive question (deliberately unresolved)
