@@ -138,6 +138,51 @@ So morphology does **not** follow the pointer downstream — the opposite of the
 naive prediction, and itself a dissociation (concept is rerouteable at the node;
 its surface realization is not, at least via this node).
 
+### 2.3 The relational "declension paradigm" (`operator_paradigm.py`)
+
+The strongest positive result. Reframe: the workspace holds not a bare concept but
+a concept marked by its pending *relational role* — "Italy-in-the-currency-case"
+vs "Italy-in-the-capital-case". The relation (currency-of, capital-of, language-of,
+demonym-of, continent-of) is a **case**; the country is a **stem**. This is the
+function-vector view (Todd et al. 2024) with a morphological reading, and it
+connects to relational linearity (Hernandez et al. 2024).
+
+Build each case as a direction: the mean, over stems, of that case's deviation
+from the stem's average over cases. Then intervene on a `from` prompt with
+`v(to) − v(from)` and read the answer-token logit shift (1.7B, 12 countries):
+
+| swap | clean (from wins) | +operator | +random (matched norm) |
+|---|---:|---:|---:|
+| currency → capital | −7.9 | **+31.5** | −1.2 |
+| capital → currency | −12.0 | **+33.0** | −2.5 |
+| capital → language | −8.5 | **+32.5** | +3.0 |
+| language → capital | −7.6 | **+34.0** | −2.1 |
+| continent → language | −1.9 | **+23.0** | +1.4 |
+
+**All 20 ordered case-swaps flip the sign; the matched-norm random control does
+not** (its 8/20 sign-crossings are ±2 noise against a +10…+34 effect). The
+relations are a structured set of causally-manipulable case-directions.
+
+Two findings sharpen the "declension" reading:
+
+- **Operation ≠ realization.** `language-of` and `demonym-of` produce the *same
+  output word* (Italian = the language and the demonym), yet they are **distinct
+  case-directions** in the causal representation, and the swap *between* them is
+  weak (+3.9, vs +20…+34 for other pairs) precisely because they share an
+  exponent. The model separates the grammatical role from its surface form — and
+  the syncretism (shared form) shows up exactly where declension predicts: at the
+  level of the exponent, not the case.
+
+- **J-space shows the syncretism, not cleaner cases.** Building the case
+  directions in the J-lens readout `unembed(J h)` vs the logit-lens readout
+  `unembed(h)`: the cases are **less** separable in J-space (mean |off-diagonal
+  cosine| 0.38 vs 0.25) and reorganize into output-form families — the
+  form-sharing cases are pulled together. Because `J_l` maps toward the output,
+  the J-space is organized by *realization*, so it is where the surface-form
+  collapse (syncretism) is visible, while the distinct cases live in the causal
+  representation. This is consistent with Part 1: J-space is not a cleaner readout;
+  here it specifically reflects output form.
+
 ---
 
 ## The open interpretive question (deliberately unresolved)
@@ -149,26 +194,33 @@ The evidence splits cleanly into a negative half and a positive half:
   fitted J-lens; the concept channel is a magnitude artifact.
 - **Positive (well controlled):** the workspace is causally a *concept-routing
   node* — intervening on it reroutes the downstream concept (and the noun that
-  realizes it), robustly, localized to the band, sharpening with scale.
+  realizes it), robustly, localized to the band, sharpening with scale. And
+  relations are a structured paradigm of causally-manipulable **case-directions**
+  (§2.3): 20/20 case-swaps flip, random ~0, with operation separated from
+  realization (language ≠ demonym as cases despite the same output word).
 
 Framings this could support, none yet chosen:
 
 1. **Legibility ≠ causal importance.** The headline is the dissociation itself:
    a subspace can be causally load-bearing without being more linearly readable
    than the stream it sits in. Novel, honest, contrarian to the readout framing.
-2. **The positive result alone.** Center on pointer-node routing; the nulls become
-   a controls section.
+2. **The workspace declines concepts by role.** Center on §2.3: relational
+   computation as a case paradigm (function vectors with paradigm geometry, and
+   the operation/realization split). The nulls become the "not via a special
+   readout" controls. This is the richest positive story.
 3. **The negative result alone.** "The J-lens readout advantage does not replicate
    on Qwen3 under controls" — modest, defensive, solid.
 
 Open threads that could change the picture before deciding:
 - Everything here is 1.7B (causal also 8B). Does the readout null hold at 8B/32B,
-  and does the causal reroute keep sharpening?
+  does the causal reroute keep sharpening, and does the case paradigm survive at
+  scale and generalize to held-out stems (a case-ending applies to any stem)?
 - `a/an` is a poor morphology probe in this model (determiner not look-ahead). A
   clean downstream-realization test would need a construction where the surface
   form provably depends on the dereferenced concept.
-- The causal reroute is shown for concepts; whether *any* morphosyntactic feature
-  rides the same node is untested (2.2 says determiner does not).
+- The case paradigm is causal/representational; whether it is specifically a
+  *J-space* phenomenon is answered "no" so far (§2.3: cases are cleaner in the
+  raw residual; J-space reflects output form).
 
 ## Reproducing these numbers
 

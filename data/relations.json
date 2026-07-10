@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "purpose": "relational operations ('cases') over a country stem, for the operator-paradigm experiment (scripts/operator_paradigm.py)",
+    "template": "The {rel} of {country} is",
+    "note": "uniform 'is' suffix so the case direction is not contaminated by the template; efficacy is measured by answer-token logit shift, robust to the article ('the euro' vs 'Rome')",
+    "cases": {
+      "currency": "currency", "capital": "capital", "language": "language",
+      "demonym": "word for a person from", "continent": "continent"
+    }
+  },
+  "answers": {
+    "Italy":   {"currency": "euro",   "capital": "Rome",      "language": "Italian",    "demonym": "Italian",    "continent": "Europe"},
+    "Japan":   {"currency": "yen",    "capital": "Tokyo",     "language": "Japanese",   "demonym": "Japanese",   "continent": "Asia"},
+    "Russia":  {"currency": "ruble",  "capital": "Moscow",    "language": "Russian",    "demonym": "Russian",    "continent": "Europe"},
+    "China":   {"currency": "yuan",   "capital": "Beijing",   "language": "Chinese",    "demonym": "Chinese",    "continent": "Asia"},
+    "France":  {"currency": "euro",   "capital": "Paris",     "language": "French",     "demonym": "French",     "continent": "Europe"},
+    "Germany": {"currency": "euro",   "capital": "Berlin",    "language": "German",     "demonym": "German",     "continent": "Europe"},
+    "Brazil":  {"currency": "real",   "capital": "Brasilia",  "language": "Portuguese", "demonym": "Brazilian",  "continent": "America"},
+    "Egypt":   {"currency": "pound",  "capital": "Cairo",     "language": "Arabic",     "demonym": "Egyptian",   "continent": "Africa"},
+    "India":   {"currency": "rupee",  "capital": "Delhi",     "language": "Hindi",      "demonym": "Indian",     "continent": "Asia"},
+    "Mexico":  {"currency": "peso",   "capital": "Mexico",    "language": "Spanish",    "demonym": "Mexican",    "continent": "America"},
+    "Sweden":  {"currency": "krona",  "capital": "Stockholm", "language": "Swedish",    "demonym": "Swedish",    "continent": "Europe"},
+    "Turkey":  {"currency": "lira",   "capital": "Ankara",    "language": "Turkish",    "demonym": "Turkish",    "continent": "Asia"}
+  }
+}
