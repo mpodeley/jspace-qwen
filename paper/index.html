@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#causal-operatoroperand-factorization-in-the-residual-stream-of-qwen3" class="md-skip">
+        <a href="#causal-operatoroperand-factorization-in-the-residual-stream-of-llms" class="md-skip">
           Skip to content
         </a>
       
@@ -558,10 +558,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#45-the-factorization-is-domain-specific-arithmetic-and-logic-do-not" class="md-nav__link">
+  <a href="#45-cross-architecture-replication-gemma-2-9b" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.5 The factorization is domain-specific (arithmetic and logic do not)
+        4.5 Cross-architecture replication (Gemma-2-9B)
       
     </span>
   </a>
@@ -569,10 +569,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#46-reconciling-with-a-contrary-report-add-n-vs-two-operand-arithmetic" class="md-nav__link">
+  <a href="#46-the-factorization-is-domain-specific-arithmetic-and-logic-do-not" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.6 Reconciling with a contrary report: add-N vs. two-operand arithmetic
+        4.6 The factorization is domain-specific (arithmetic and logic do not)
       
     </span>
   </a>
@@ -580,10 +580,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#47-this-is-causal-structure-not-a-j-space-readout-advantage" class="md-nav__link">
+  <a href="#47-reconciling-with-a-contrary-report-add-n-vs-two-operand-arithmetic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.7 This is causal structure, not a J-space readout advantage
+        4.7 Reconciling with a contrary report: add-N vs. two-operand arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-this-is-causal-structure-not-a-j-space-readout-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 This is causal structure, not a J-space readout advantage
       
     </span>
   </a>
@@ -707,7 +718,7 @@
 
 
 
-<h1 id="causal-operatoroperand-factorization-in-the-residual-stream-of-qwen3">Causal operator–operand factorization in the residual stream of Qwen3</h1>
+<h1 id="causal-operatoroperand-factorization-in-the-residual-stream-of-llms">Causal operator–operand factorization in the residual stream of LLMs</h1>
 <p><em>Subtitle: relational computation as declension — the model marks concepts by their functional
 role. The case metaphor is our explanatory device; the claims below stand on the causal
 interventions and the measured factorization.</em></p>
@@ -716,12 +727,15 @@ interventions and the measured factorization.</em></p>
 <a href="../explorer/">interactive explorer</a> animates the three central results (declension, injection,
 syncretism) and, for readers new to grammatical case, explains the linguistic analogy.</em></p>
 <h2 id="abstract">Abstract</h2>
-<p>We study how an open-weights transformer (Qwen3) represents a <strong>relational operation</strong> applied to an
-entity — <em>currency-of</em>, <em>capital-of</em>, <em>language-of</em>, <em>demonym-of</em>, <em>continent-of</em> applied to a country.
+<p>We study how open-weights transformers (Qwen3-1.7B/8B, Gemma-2-9B) represent a <strong>relational operation</strong>
+applied to an entity — <em>currency-of</em>, <em>capital-of</em>, <em>language-of</em>, <em>demonym-of</em>, <em>continent-of</em> applied
+to a country.
 We find that the operation is carried by a <strong>manipulable operator direction</strong> in the residual stream
 that is largely <strong>separable from the operand</strong>. Adding <code>v(op_B) − v(op_A)</code> to a prompt performing <code>op_A</code>
 converts the model's answer to <code>op_B</code> for all 20 ordered operator pairs (matched-norm random controls
-null), and the direction <strong>generalizes to operands never used to build it</strong>. A two-way analysis of
+null), and the direction <strong>generalizes to operands never used to build it</strong>, to <strong>unseen paraphrase
+frames</strong> (every build→test frame combination flips), and <strong>across architectures</strong> — the full pipeline
+replicates on Gemma-2-9B with the largest effect sizes of the three models tested. A two-way analysis of
 variance factorizes the representation as <code>H[operand, operator] = μ + operand + operator + interaction</code>,
 ~90% additive with a ~10% <strong>fusion</strong> interaction, operator and operand occupying largely orthogonal
 subspaces; the operation-dominant representation <em>emerges along the sequence</em> (operand-dominant at the
@@ -784,8 +798,8 @@ down for arithmetic and logic. The declension/case reading is our <em>presentati
 an organizing metaphor that anticipates the observed asymmetries (syncretism at the exponent, fusion in
 the interaction term) — not an additional empirical claim.</p>
 <h2 id="3-method">3. Method</h2>
-<p><strong>Setup.</strong> Qwen3-1.7B and 8B, run on a single AMD Strix Halo APU (see <a href="../setup/">setup</a>; an int8 path
-keeps larger models in range). A relation is rendered into a template; the canonical frame is
+<p><strong>Setup.</strong> Qwen3-1.7B/8B throughout, plus Gemma-2-9B for the cross-architecture replication (§4.5); all
+run on a single AMD Strix Halo APU (see <a href="../setup/">setup</a>; an int8 path keeps larger models in range). A relation is rendered into a template; the canonical frame is
 <code>"The {op} of {a} is"</code>, and §4.4 additionally uses two paraphrase frames (question–answer and
 discourse-prefixed) that hold the <code>{op} of {a}</code> unit fixed while varying the surrounding frame, all
 ending in <em>is</em> so answer scoring is comparable.
@@ -938,7 +952,63 @@ frames are genuinely different prompts; the operator's causal effect does not. A
 replicates — <strong>100/100 flips over the tested combinations (80/80 cross-frame, mean contrast +28.7)</strong>,
 with the declarative-built direction again frame-invariant (+26.0 / +26.0 / +26.0). The operator
 direction is a property of the <strong>relation</strong>, not of the prompt that elicits it.</p>
-<h3 id="45-the-factorization-is-domain-specific-arithmetic-and-logic-do-not">4.5 The factorization is domain-specific (arithmetic and logic do not)</h3>
+<h3 id="45-cross-architecture-replication-gemma-2-9b">4.5 Cross-architecture replication (Gemma-2-9B)</h3>
+<p>The entire pipeline transfers unchanged to <strong>Gemma-2-9B</strong> — a different pretraining corpus, tokenizer
+(SentencePiece; answer single-token coverage 0.95), and architecture family (soft-capped logits, GQA):</p>
+<table>
+<thead>
+<tr>
+<th>measure</th>
+<th style="text-align: right;">Qwen3-1.7B</th>
+<th style="text-align: right;">Qwen3-8B</th>
+<th style="text-align: right;"><strong>Gemma-2-9B</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all-pairs swap contrast</td>
+<td style="text-align: right;">+22.6 [+14.0, +32.1]</td>
+<td style="text-align: right;">+26.0 [+17.9, +32.8]</td>
+<td style="text-align: right;"><strong>+30.4 [+23.8, +34.8]</strong></td>
+</tr>
+<tr>
+<td>flips (swap &gt; 0)</td>
+<td style="text-align: right;">20/20</td>
+<td style="text-align: right;">20/20</td>
+<td style="text-align: right;"><strong>20/20</strong></td>
+</tr>
+<tr>
+<td>held-out-operand contrast</td>
+<td style="text-align: right;">+20.0 [+10.8, +29.5]</td>
+<td style="text-align: right;">+22.8 [+14.0, +31.0]</td>
+<td style="text-align: right;"><strong>+26.6 [+20.6, +33.2]</strong></td>
+</tr>
+<tr>
+<td>operator variance @ query</td>
+<td style="text-align: right;">86%</td>
+<td style="text-align: right;">82%</td>
+<td style="text-align: right;"><strong>84.8%</strong></td>
+</tr>
+<tr>
+<td>interaction (fusion)</td>
+<td style="text-align: right;">9%</td>
+<td style="text-align: right;">13%</td>
+<td style="text-align: right;"><strong>6.8%</strong></td>
+</tr>
+<tr>
+<td>pure desinence (clean → +v)</td>
+<td style="text-align: right;">−3.7 → +12.5</td>
+<td style="text-align: right;">−2.9 → +8.1</td>
+<td style="text-align: right;"><strong>−3.0 → +8.6</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Every qualitative signature replicates — all-pairs flips with matched-norm nulls ≈ 0, held-out-operand
+transfer, case-dominant factorization at the query token with single-digit fusion, the along-sequence
+shift (stem 37.6% → 8.4% from the entity token to the query token), and the exponent-free desinence.
+Effect sizes are, if anything, largest in Gemma. The operator–operand factorization is not an
+idiosyncrasy of one model family.</p>
+<h3 id="46-the-factorization-is-domain-specific-arithmetic-and-logic-do-not">4.6 The factorization is domain-specific (arithmetic and logic do not)</h3>
 <p>Extending the identical pipeline to arithmetic (+, ×, −) and comparison-logic operators, on 1.7B:</p>
 <table>
 <thead>
@@ -981,7 +1051,7 @@ random). Monotone at both scales: relational ≫ arithmetic &gt; logic.</p>
 with their operands</strong> (2–4× the interaction) and do <strong>not</strong> form a transferable direction — consistent
 with arithmetic being a bag of heuristics / Fourier computation rather than a linear operator. The
 <strong>held-out generalization test is the discriminator</strong> between a real operator and memorized interpolation.</p>
-<h3 id="46-reconciling-with-a-contrary-report-add-n-vs-two-operand-arithmetic">4.6 Reconciling with a contrary report: add-N vs. two-operand arithmetic</h3>
+<h3 id="47-reconciling-with-a-contrary-report-add-n-vs-two-operand-arithmetic">4.7 Reconciling with a contrary report: add-N vs. two-operand arithmetic</h3>
 <p>Christ et al. (2025) report the <em>opposite</em> sign for arithmetic: an operator built from an <strong>add-N</strong>
 relation (a fixed addend <code>N</code> applied to a single number) <strong>does</strong> generalize to held-out relations. The
 two results do not conflict — they cut arithmetic along different axes. In add-N the operator <strong>is the
@@ -1023,7 +1093,7 @@ reproduces Christ et al.'s positive (their cut varies a linear parameter) alongs
 varies the function) with no contradiction. The caveat is quantitative: Qwen3 BPE restricts us to
 single-digit results, so the add-N grid is small (5 operands) and its generalization is weak in absolute
 terms — the <strong>ordering</strong> (relations ≫ add-N &gt; <code>+ × −</code>), not the magnitude, is the claim.</p>
-<h3 id="47-this-is-causal-structure-not-a-j-space-readout-advantage">4.7 This is causal structure, not a J-space readout advantage</h3>
+<h3 id="48-this-is-causal-structure-not-a-j-space-readout-advantage">4.8 This is causal structure, not a J-space readout advantage</h3>
 <p>On four readout comparisons (bridge-entity pass@k, a surface-form logit difference, a number probe, and a
 concept-plane trajectory), the J-lens readout shows <strong>no advantage</strong> over the logit-lens under matched
 controls; a spectrum-matched random projection reads number as well as the fitted J-lens, and the
@@ -1034,8 +1104,9 @@ legible in the J-space than in the raw stream (its 1.7B readout-geometry differe
 <em>causal</em> factorization.</p>
 <h2 id="5-limitations">5. Limitations</h2>
 <ul>
-<li><strong>Scale and family.</strong> 1.7B and 8B, one model family (Qwen3); no 32B. Relational linearity holds for a
-  subset of relations even in-domain (cf. LRE ~48%).</li>
+<li><strong>Scale and family.</strong> 1.7–9B models from two families (Qwen3, Gemma 2) — both decoder-only
+  transformers; no ≥30B model. Relational linearity holds for a subset of relations even in-domain
+  (cf. LRE ~48%).</li>
 <li><strong>Relation coverage.</strong> Five hand-chosen country relations, English-only. Prompt variation covers three
   paraphrase <em>frames</em> (§4.4) but all frames share the <code>{op} of {a}</code> phrasing unit; phrase-level
   paraphrases, more relations, and other entity types remain open.</li>

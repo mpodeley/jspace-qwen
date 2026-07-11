@@ -591,6 +591,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#28-cross-architecture-replication-gemma-2-9b-2026-07-10-night" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Cross-architecture replication: Gemma-2-9B (2026-07-10, night)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1231,6 +1242,15 @@ in absolute terms — the <em>ordering</em>, not the magnitude, is the point.</p
   (+26.0/+26.0/+26.0), QA-built strongest (+35.3).</strong></p>
 </li>
 </ul>
+<h3 id="28-cross-architecture-replication-gemma-2-9b-2026-07-10-night">2.8 Cross-architecture replication: Gemma-2-9B (2026-07-10, night)</h3>
+<p>The full pipeline transfers unchanged to <code>google/gemma-2-9b</code> (different corpus, SentencePiece
+tokenizer with 0.95 single-token answer coverage, soft-capped logits). <strong>Everything replicates,
+with the largest effect sizes of the three models:</strong> all-pairs swap 20/20, operator-level contrast
+<strong>+30.4 [+23.8, +34.8]</strong> (vs +22.6 / +26.0 for Qwen3-1.7B/8B); held-out operands 20/20 at
+<strong>+26.6 [+20.6, +33.2]</strong>; factorization at the query token stem 8.4% / <strong>case 84.8%</strong> / fusion
+<strong>6.8%</strong> (lowest of the three); along-sequence shift present (stem 37.6%→8.4%); pure desinence
+−3.0 → <strong>+8.6</strong>. Zero per-pair CIs cross zero. The factorization is not a Qwen idiosyncrasy —
+paper claims upgraded to two-family evidence (title now "…residual stream of LLMs").</p>
 <hr />
 <h2 id="the-open-interpretive-question-deliberately-unresolved">The open interpretive question (deliberately unresolved)</h2>
 <p>The evidence splits cleanly into a negative half and a positive half:</p>
