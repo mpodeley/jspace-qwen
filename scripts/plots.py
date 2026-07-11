@@ -390,6 +390,7 @@ def fig_op_dose():
     if not p.exists():
         return
     df = pd.read_parquet(p).sort_values("alpha")
+    signed = bool((df["alpha"] < 0).any())  # the +/- sweep: does the effect reverse?
     fig, axes = plt.subplots(1, 2, figsize=fs(9.2, 3.6), constrained_layout=True)
 
     ax = axes[0]
@@ -406,7 +407,13 @@ def fig_op_dose():
     ax.text(4.15, ax.get_ylim()[0] + 1.5, "default α=4", color=MUTED, fontsize=8.5)
     ax.set_xlabel("intervention strength α")
     ax.set_ylabel("logit-margin shift")
-    ax.set_title("Efficacy saturates at the default dose", fontsize=10.5, loc="left")
+    if signed:
+        ax.axhline(0, color=MUTED, lw=1)
+        ax.axvline(0, color=MUTED, lw=1)
+        ax.set_title("The effect is a signed axis: reversing α reverses the preference",
+                     fontsize=10.5, loc="left")
+    else:
+        ax.set_title("Efficacy saturates at the default dose", fontsize=10.5, loc="left")
 
     ax2 = axes[1]
     ax2.plot(df["alpha"], df["kl_nats"], color=OPERAND_C, lw=2, marker="o", ms=4)
@@ -482,6 +489,323 @@ def fig_op_syncretism():
     plt.close(fig)
 
 
+def fig_op_patch(tag: str = "1.7b"):
+    """The headline of the revision -- what does the donor activation carry that the
+    operator direction does not? Left: greedy exact match (does the model SAY it?).
+    Right: the logit margin (does it PREFER it?). The two panels are the paper's two
+    levels of evidence, and the variants that move one without the other are the
+    result."""
+    import numpy as np
+    p = ABL / f"{tag}_relations_patch_decomp.json"
+    if not p.exists():
+        return
+    s = json.loads(p.read_text())
+    meta = s.pop("_meta")
+    order = ["magnitude control", "interaction only", "operand only",
+             "operator + wrong operand", "operator only",
+             "operator + operand (held-out cell)", "operator + operand",
+             "full (donor)"]
+    order = [v for v in order if v in s]
+    em = [s[v]["exact_match"] for v in order]
+    dm = [s[v]["delta_margin"] for v in order]
+    lo = [s[v]["delta_margin_lo"] for v in order]
+    hi = [s[v]["delta_margin_hi"] for v in order]
+    # the real donor is the reference bar; the two additive reconstructions that
+    # match it are the result -- everything else is a control.
+    HEAD = {"operator + operand", "operator + operand (held-out cell)"}
+    color = [OPERATOR_C if v == "full (donor)" else
+             OPERAND_C if v in HEAD else MUTED for v in order]
+
+    fig, axes = plt.subplots(1, 2, figsize=fs(9.4, 4.0), constrained_layout=True)
+    y = np.arange(len(order))
+
+    ax = axes[0]
+    ax.barh(y, em, 0.62, color=color)
+    ax.axvline(meta["clean_exact_from"], color=INK, lw=1, ls="--")
+    ax.text(meta["clean_exact_from"], len(order) - 0.35,
+            f"  clean accuracy {meta['clean_exact_from']:.0%}",
+            color=INK, fontsize=8.5, va="center")
+    for i, v in enumerate(em):
+        ax.text(v + 0.012, i, f"{v:.0%}", va="center", fontsize=9.5, color=INK)
+    ax.set_yticks(y, order, fontsize=9.5)
+    ax.set_xlim(0, max(max(em), meta["clean_exact_from"]) * 1.28)
+    ax.set_xlabel("greedy exact match (says the target answer)")
+    ax.set_title("Behavioral sufficiency: does the model SAY it?",
+                 fontsize=10.5, loc="left")
+    ax.grid(axis="y", visible=False)
+
+    ax2 = axes[1]
+    ax2.barh(y, dm, 0.62, color=color)
+    ax2.errorbar(dm, y, xerr=[np.array(dm) - np.array(lo), np.array(hi) - np.array(dm)],
+                 fmt="none", ecolor=INK, elinewidth=1.4, capsize=2.5)
+    ax2.axvline(0, color=MUTED, lw=1)
+    ax2.set_yticks(y, ["" for _ in order])
+    ax2.set_xlabel("Δ logit margin toward the target (95% CI)")
+    ax2.set_title("Causal influence: does it PREFER it?", fontsize=10.5, loc="left")
+    ax2.grid(axis="y", visible=False)
+
+    fig.suptitle("A state composed from the factorization's parts generates the answer — "
+                 "the fusion term is not needed",
+                 fontsize=12.5, x=0.01, ha="left")
+    fig.text(0.01, -0.035,
+             f"Query-position patch at the workspace band, {tag}, "
+             f"{meta['n_cells']} (pair, operand) cells. Every variant includes μ (the hook "
+             f"REPLACES the residual, so a variant must be a plausible state).\n"
+             f"“full (donor)” = μ + operand + operator + interaction is the real donor "
+             f"activation by construction. “held-out cell” rebuilds the operand and "
+             f"operator components WITHOUT ever seeing the target cell.\n"
+             f"CIs: operator-level cluster bootstrap.",
+             color=MUTED, fontsize=8.5, va="top")
+    _savefig(fig, "op_patch")
+    plt.close(fig)
+
+
+def fig_op_positions(tag: str = "1.7b"):
+    """Is the margin effect a localized edit of the queried relation, or a global
+    perturbation? Cross WHERE the vector lands with HOW WIDE the layer scope is,
+    and show the metric the flips hide: the target's rank in the vocabulary."""
+    import numpy as np
+    p = ABL / f"{tag}_relations_positions.json"
+    if not p.exists():
+        return
+    s = json.loads(p.read_text())
+    meta = s.pop("_meta")
+    poss = ["all", "query", "operand", "wrong"]
+    scopes = ["band", "single"]
+    fig, axes = plt.subplots(1, 3, figsize=fs(11.0, 3.7), constrained_layout=True)
+    x = np.arange(len(poss))
+    w = 0.36
+    C = {"band": OPERATOR_C, "single": OPERAND_C}
+
+    for j, (key, label, title) in enumerate([
+            ("delta_margin", "Δ logit margin", "Causal influence on the margin"),
+            ("exact_match", "greedy exact match", "Behavioral sufficiency"),
+            ("kl_offtask", "KL nats/token, unrelated text", "Off-task collateral")]):
+        ax = axes[j]
+        for i, sc in enumerate(scopes):
+            vals = [s[f"{sc}/{pn}"].get(key) or 0.0 for pn in poss]
+            b = ax.bar(x + (i - 0.5) * w, vals, w, color=C[sc], label=sc)
+            if key == "delta_margin":
+                lo = [s[f"{sc}/{pn}"]["delta_margin_lo"] for pn in poss]
+                hi = [s[f"{sc}/{pn}"]["delta_margin_hi"] for pn in poss]
+                ax.errorbar(x + (i - 0.5) * w, vals,
+                            yerr=[np.array(vals) - np.array(lo),
+                                  np.array(hi) - np.array(vals)],
+                            fmt="none", ecolor=INK, elinewidth=1.2, capsize=2)
+        ax.axhline(0, color=MUTED, lw=1)
+        ax.set_xticks(x, poss, fontsize=9.5)
+        ax.set_xlabel("position of the added vector")
+        ax.set_ylabel(label)
+        ax.set_title(title, fontsize=10.5, loc="left")
+        ax.grid(axis="x", visible=False)
+        if j == 0:
+            ax.legend(frameon=False, fontsize=9, title="layer scope",
+                      title_fontsize=9)
+    fig.suptitle("Where the operator vector has to land — and what it does not buy",
+                 fontsize=12.5, x=0.01, ha="left")
+    fig.text(0.01, -0.05,
+             f"{tag}, α={meta['alpha']}. “query” = the last prompt token (where the "
+             f"direction is read); “operand” = the entity token; “wrong” = the "
+             f"sentence-initial token (structurally irrelevant, but still upstream of "
+             f"the answer). Bars are means over all ordered pairs × operands; CIs are "
+             f"operator-level cluster bootstraps.",
+             color=MUTED, fontsize=8.5, va="top")
+    _savefig(fig, "op_positions")
+    plt.close(fig)
+
+
+def fig_op_nulls(tag: str = "1.7b"):
+    """Forest plot of the null battery, in two labeled groups. Semantic nulls (same
+    statistics, destroyed content) go to zero -- the decisive result. Structural
+    probes stay nonzero for mechanistically informative reasons: the margin metric
+    decomposes into uninstall-source + install-category components, and residual
+    additions persist across layers."""
+    import numpy as np
+    p = ABL / f"{tag}_relations_nulls.json"
+    if not p.exists():
+        return
+    meta = json.loads(p.read_text())
+    byname = {r["null"]: r for r in meta["nulls"]}
+    # (row label, key, group) bottom-to-top; None = spacer
+    layout = [
+        ("wrong layer (additions persist)", "wrong layer (early band)", "B"),
+        ("other relation (−source alone)", "other-relation direction", "B"),
+        ("shuffled answers (category boost)", "shuffled answers", "B"),
+        (None, None, None),
+        ("random in operator subspace", "random in operator subspace", "A"),
+        ("permuted labels (global)", "permuted labels (global)", "A"),
+        ("permuted labels (per-operand)", "permuted labels (per-operand)", "A"),
+        (None, None, None),
+        ("real swap", "real swap", "real"),
+    ]
+    fig, ax = plt.subplots(figsize=fs(8.8, 4.6), constrained_layout=True)
+    ylabels = []
+    for i, (label, key, grp) in enumerate(layout):
+        ylabels.append(label or "")
+        if key is None:
+            continue
+        r = byname[key]
+        c = OPERATOR_C if grp == "real" else (INK if grp == "A" else MUTED)
+        ax.plot([r["contrast_lo"], r["contrast_hi"]], [i, i], color=c, lw=2.6,
+                solid_capstyle="round")
+        ax.plot(r["contrast"], i, "o", color=c, ms=6.5, mec=SURF, mew=0.8, zorder=3)
+        ax.text(max(r["contrast_hi"], 0) + 0.7, i, f"{r['contrast']:+.1f}",
+                va="center", fontsize=9,
+                color=c, fontweight="bold" if grp == "real" else "normal")
+    ax.axvline(0, color=MUTED, lw=1)
+    ax.set_yticks(range(len(layout)), ylabels, fontsize=9.5)
+    ax.set_xlabel("contrast vs matched-norm random (logit units), 95% CI")
+    ax.grid(axis="y", visible=False)
+    ax.text(5.0, 7.0, "semantic nulls → 0: the content of the direction is everything",
+            fontsize=9, color=INK, style="italic", va="center")
+    ax.text(5.0, 3.0, "structural probes: what the margin metric itself is made of",
+            fontsize=9, color=MUTED, style="italic", va="center")
+    ax.set_title("Same statistics, destroyed semantics → no effect",
+                 fontsize=12, loc="left")
+    fig.text(0.01, -0.05,
+             f"{tag}, α={meta['alpha']}, {meta['n_seeds']} redraws per stochastic null. "
+             f"Permuted labels rebuild directions from the SAME residuals with operator "
+             f"labels shuffled; the subspace null draws inside the span of the real "
+             f"directions (right home, wrong content).\nStructural probes are nonzero "
+             f"for known reasons: −case(source) alone contributes ≈half the margin "
+             f"(uninstall); +case(target) boosts the whole answer category (operand "
+             f"specificity lives in generation, §composition); and additions to the "
+             f"residual stream persist downstream, so an early-layer injection is not "
+             f"actually absent from the workspace.",
+             color=MUTED, fontsize=8.5, va="top")
+    _savefig(fig, "op_nulls")
+    plt.close(fig)
+
+
+def fig_op_layer_sweep(tag: str = "1.7b"):
+    """Where the operator is most READABLE vs where it is most CAUSAL. If those two
+    peaks coincide, the band story is complete; if they diverge, readability and
+    control are different properties of the same direction."""
+    p = ABL / f"{tag}_relations_layersweep.parquet"
+    if not p.exists():
+        return
+    df = pd.read_parquet(p).sort_values("depth")
+    meta = json.loads((ABL / f"{tag}_relations_layersweep.json").read_text())
+    fig, ax = plt.subplots(figsize=fs(8.6, 4.0), constrained_layout=True)
+    lo, hi = BANDS["workspace"]
+    ax.axvspan(lo, hi, color=GRID, alpha=0.55, lw=0)
+    ax.text(lo + 1, 0.035, "workspace band", color=MUTED, fontsize=8.5,
+            transform=ax.get_xaxis_transform())
+
+    # LOO decodability is at ceiling at EVERY layer (the operator token is in the
+    # prompt), so the informative representational curve is the ANOVA operator share.
+    ax.plot(df["depth"], df["case_share"], color=OPERAND_C, lw=2, marker="o", ms=3.5)
+    ax.set_ylabel("operator variance share (ANOVA)", color=OPERAND_C)
+    ax.set_xlabel("depth (% of layers)")
+    ax.set_ylim(0, 1.05)
+
+    ax2 = ax.twinx()
+    ax2.plot(df["depth"], df["contrast"], color=OPERATOR_C, lw=2, marker="s", ms=3.5)
+    ax2.fill_between(df["depth"], df["contrast_lo"], df["contrast_hi"],
+                     color=OPERATOR_C, alpha=0.14, lw=0)
+    ax2.set_ylabel("single-layer causal contrast (logits)", color=OPERATOR_C)
+    ax2.grid(False)
+
+    pk, pc = meta["peak_case_share"], meta["peak_causal"]
+    ax.annotate(f"factorization peaks\nL{pk['layer']} ({pk['depth']:.0f}%)",
+                (pk["depth"], pk["value"]), color=OPERAND_C, fontsize=9,
+                xytext=(4, 10), textcoords="offset points")
+    ax2.annotate(f"causal leverage peaks\nL{pc['layer']} ({pc['depth']:.0f}%)",
+                 (pc["depth"], pc["value"]), color=OPERATOR_C, fontsize=9,
+                 xytext=(-10, 8), textcoords="offset points", ha="right")
+    ax.set_title("Where the operator is represented is not where it acts",
+                 fontsize=12, loc="left")
+    dec = df["decodability"]
+    fig.text(0.01, -0.04,
+             f"{tag}. Blue: operator variance share of the two-way ANOVA at that layer "
+             f"(query position). Orange: all-pairs swap contrast when the direction is "
+             f"built AND injected at that single layer (shaded = 95% CI).\n"
+             f"Held-out-operand decodability is {dec.min():.0%}–{dec.max():.0%} at "
+             f"every layer — the operator token is present in the prompt, so mere "
+             f"readability locates nothing; these two curves do.",
+             color=MUTED, fontsize=8.5, va="top")
+    _savefig(fig, "op_layer_sweep")
+    plt.close(fig)
+
+
+def fig_method():
+    """The method in one schematic: the state grid h_{l,t} (one residual vector per
+    layer per token), the two reading positions, the averaging that produces the
+    per-layer operator direction, and the three ways the same object is applied.
+    Requested by a reader: the compressed H[operand,operator] notation hides that
+    every measurement fixes a layer AND a position."""
+    import numpy as np
+    tokens = ["The", "currency", "of", "Italy", "is"]
+    n_l = 6
+    fig, axes = plt.subplots(1, 2, figsize=fs(10.4, 4.4), constrained_layout=True,
+                             gridspec_kw={"width_ratios": [1.15, 1]})
+
+    # --- left: the grid ------------------------------------------------------
+    ax = axes[0]
+    ax.set_xlim(-0.7, len(tokens) - 0.3)
+    ax.set_ylim(-1.45, n_l + 0.2)
+    ax.axis("off")
+    for t in range(len(tokens)):
+        col = OPERAND_C if t == 3 else OPERATOR_C if t == 4 else MUTED
+        ax.annotate("", (t, n_l - 0.7), (t, 0.3),
+                    arrowprops=dict(arrowstyle="-|>", color=GRID, lw=3))
+        for l in range(n_l):
+            ax.plot(t, l, "o", color=col, ms=7 if t >= 3 else 5,
+                    alpha=1.0 if t >= 3 else 0.55, zorder=3)
+        ax.text(t, -0.75, tokens[t], ha="center", fontsize=10,
+                color=col, fontweight="bold" if t >= 3 else "normal")
+    ax.text(3, -1.25, "entity token\n(operand read here)", ha="center", fontsize=8,
+            color=OPERAND_C)
+    ax.text(4.35, -1.25, "query token\n(answer read here)", ha="center", fontsize=8,
+            color=OPERATOR_C)
+    for l in range(n_l):
+        ax.text(-0.55, l, f"$\\ell={l}$" if l < n_l - 1 else "…", va="center",
+                fontsize=8, color=MUTED)
+    # band shading
+    ax.axhspan(2, 4.5, xmin=0.04, xmax=0.99, color=GRID, alpha=0.5, lw=0)
+    ax.text(-0.15, 4.62, "workspace band: directions built here", fontsize=8,
+            color=MUTED)
+    ax.plot(4, 3, "o", ms=13, mfc="none", mec=INK, mew=1.6, zorder=4)
+    ax.annotate("$h_{\\ell,t}$ — one vector per\nlayer per position",
+                (4, 3), xytext=(-118, 26), textcoords="offset points",
+                fontsize=9, color=INK,
+                arrowprops=dict(arrowstyle="->", color=INK, lw=1))
+    ax.set_title("The state is a grid: layers × positions", fontsize=11, loc="left")
+
+    # --- right: averaging and the three applications -------------------------
+    ax = axes[1]
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 10)
+    ax.axis("off")
+    ax.set_title("One object, applied three ways", fontsize=11, loc="left")
+    ax.text(0.2, 9.3, "at each band layer $\\ell$, average the query-token states:",
+            fontsize=9, color=INK)
+    ax.text(0.6, 8.15, r"$v_\ell(\mathrm{op}) = \mathrm{mean}_o\,[\,h_{\ell,-1}(o,"
+                       r"\mathrm{op}) - \mathrm{mean}_k\, h_{\ell,-1}(o,k)\,]$",
+            fontsize=10.5, color=INK)
+    ax.text(0.2, 6.9, r"$\equiv$ the ANOVA operator main effect $b_\ell(\mathrm{op})$"
+                      " (verified: dev. $10^{-8}$)",
+            fontsize=9.5, color=OPERAND_C)
+    for y, (name, desc, c) in enumerate([
+        ("steer", r"add $\alpha\,(v_\ell(B)-v_\ell(A))$ at the query token"
+                  " → margin flips; generates at calibrated $\\alpha$", OPERATOR_C),
+        ("compose", r"replace $h_{\ell,-1}$ with $\mu_\ell + a_\ell(o) + b_\ell(k)$"
+                    " → generates at the clean ceiling", OPERAND_C),
+        ("decode", "classify / ANOVA the same states → factorization,"
+                   " layer profiles", MUTED),
+    ]):
+        yy = 5.4 - y * 1.7
+        ax.text(0.4, yy, name, fontsize=10, fontweight="bold", color=c)
+        ax.text(2.2, yy, desc, fontsize=8.6, color=INK, va="center", wrap=True)
+    fig.text(0.01, -0.03,
+             "Prompt → token × layer grid of residual states → per-layer operator "
+             "direction by averaging at the query token → applied by addition "
+             "(steering), by replacement (composition), or read out (ANOVA).",
+             color=MUTED, fontsize=8.5, va="top")
+    _savefig(fig, "op_method")
+    plt.close(fig)
+
+
 def main():
     FIGS.mkdir(parents=True, exist_ok=True)
     data = load_metrics()
@@ -495,6 +819,10 @@ def main():
     fig_op_swap_dist()
     fig_op_dose()
     fig_op_syncretism()
+    fig_op_patch()
+    fig_op_positions()
+    fig_op_nulls()
+    fig_op_layer_sweep()
     print("wrote:", sorted(p.name for p in FIGS.glob("*.png")))
 
 
