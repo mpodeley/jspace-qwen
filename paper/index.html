@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#the-workspace-declines-concepts-by-role-operatoroperand-factorization-in-an-open-weights-llm" class="md-skip">
+        <a href="#causal-operatoroperand-factorization-in-the-residual-stream-of-qwen3" class="md-skip">
           Skip to content
         </a>
       
@@ -547,10 +547,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#44-operators-generalize-to-held-out-operands" class="md-nav__link">
+  <a href="#44-operators-generalize-to-held-out-operands-and-across-prompt-frames" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4 Operators generalize to held-out operands
+        4.4 Operators generalize to held-out operands and across prompt frames
       
     </span>
   </a>
@@ -707,7 +707,10 @@
 
 
 
-<h1 id="the-workspace-declines-concepts-by-role-operatoroperand-factorization-in-an-open-weights-llm">The workspace declines concepts by role: operator/operand factorization in an open-weights LLM</h1>
+<h1 id="causal-operatoroperand-factorization-in-the-residual-stream-of-qwen3">Causal operator–operand factorization in the residual stream of Qwen3</h1>
+<p><em>Subtitle: relational computation as declension — the model marks concepts by their functional
+role. The case metaphor is our explanatory device; the claims below stand on the causal
+interventions and the measured factorization.</em></p>
 <p><em>Draft, 2026-07-10. Qwen3-1.7B/8B. All numbers reproducible from <code>scripts/</code> and <code>data/</code>; see
 <a href="../reproduce/">"How to reproduce"</a> and the <a href="../findings/">working findings log</a>. An
 <a href="../explorer/">interactive explorer</a> animates the three central results (declension, injection,
@@ -724,7 +727,7 @@ variance factorizes the representation as <code>H[operand, operator] = μ + oper
 subspaces; the operation-dominant representation <em>emerges along the sequence</em> (operand-dominant at the
 entity token → operator-dominant at the query token). Strikingly, the operation is <strong>separable from its
 surface realization</strong>: <em>language-of</em> and <em>demonym-of</em> are distinct operator directions even though both
-emit "Italian". We frame this with a morphological metaphor — the model <strong>declines</strong> a concept by its
+emit "Italian". As an explanatory device we borrow a morphological metaphor — the model <strong>declines</strong> a concept by its
 functional role (case), with <strong>syncretism</strong> (shared surface form) and <strong>fusion</strong> (non-additive
 stem+ending) as in a Latin declension. Testing generalization across domains, the factorization is
 <strong>specific to relational retrieval</strong>: for <strong>arithmetic</strong> (+, ×, −) and <strong>comparison-logic</strong> operators,
@@ -741,8 +744,9 @@ relations are approximately linear operators (LRE, Hernandez et al. 2024; Merull
 not been characterized is the <strong>joint structure of operator and operand</strong>: whether the operation
 <em>factorizes</em> from its argument, whether that factorization <em>generalizes</em>, whether the operation is
 separable from the <em>word it produces</em>, and whether any of this holds <em>beyond</em> relational facts, in
-arithmetic and logic. We answer these on Qwen3, and give a morphological reading — relational computation
-as <strong>declension</strong> — that predicts the specific asymmetries we observe.</p>
+arithmetic and logic. We answer these on Qwen3, and offer a morphological reading — relational computation
+as <strong>declension</strong> — as an organizing metaphor that anticipates the specific asymmetries we observe
+(syncretism at the level of the surface form, fusion in the interaction term).</p>
 <h2 id="2-related-work-and-what-is-new-here">2. Related work and what is new here</h2>
 <p><strong>Operation as an addable vector.</strong> Task Vectors (Hendel et al., EMNLP 2023) and Function Vectors (Todd
 et al., ICLR 2024) extract one vector per ICL task and add/patch it to trigger the task. In-Context
@@ -768,14 +772,23 @@ operand <em>value</em> cleanly linear (Gurnee &amp; Tegmark 2024). Truth is a st
 2023) and logical-operator heads exist (Hong et al. 2024). No prior work reports a <strong>cross-domain
 operator/operand factorization</strong>; we provide one and show it <strong>breaks down</strong> for arithmetic and logic —
 itself a result.</p>
-<p><strong>Genuinely new here:</strong> (1) operation-vs-realization dissociation (language ≠ demonym as directions
-despite identical output); (2) the operator×operand ANOVA with a named fusion term; (3) the
-declension/case-paradigm framing; (4) all-pairs swap with matched-norm nulls; (5) operator/operand
-subspace orthogonality; (6) the cross-domain generalization test that separates relational (clean) from
-arithmetic/logic (entangled).</p>
+<p><strong>What is new here is the combination, not any single ingredient.</strong> That relations admit addable
+vectors (task/function vectors) and linear decoders (LRE) is established; what has not been done is the
+joint, quantified analysis: (1) an operator ⊕ operand <strong>factorization of the residual state itself</strong>
+(two-way ANOVA with a measured interaction/fusion term and operator/operand subspace angles); (2) an
+<strong>exhaustive all-pairs causal swap</strong> with matched-norm nulls; (3) <strong>held-out-operand generalization</strong> as
+the discriminator between a real operator and interpolation among build examples; (4) the
+<strong>operation-vs-realization dissociation</strong> (language ≠ demonym as directions despite identical output);
+and (5) a <strong>cross-domain test</strong> showing the factorization is specific to relational retrieval and breaks
+down for arithmetic and logic. The declension/case reading is our <em>presentation</em> of these measurements —
+an organizing metaphor that anticipates the observed asymmetries (syncretism at the exponent, fusion in
+the interaction term) — not an additional empirical claim.</p>
 <h2 id="3-method">3. Method</h2>
 <p><strong>Setup.</strong> Qwen3-1.7B and 8B, run on a single AMD Strix Halo APU (see <a href="../setup/">setup</a>; an int8 path
-keeps larger models in range). A relation is rendered into a uniform template <code>"The {op} of {a} is"</code>.
+keeps larger models in range). A relation is rendered into a template; the canonical frame is
+<code>"The {op} of {a} is"</code>, and §4.4 additionally uses two paraphrase frames (question–answer and
+discourse-prefixed) that hold the <code>{op} of {a}</code> unit fixed while varying the surrounding frame, all
+ending in <em>is</em> so answer scoring is comparable.
 Reading position is the query token unless stated; the depth "workspace" band (38–92% of layers) is where
 the J-space paper locates the global workspace and where we build operator directions.</p>
 <p><strong>Operator direction.</strong> For operator <code>k</code>, <code>v(k) = mean_operand[ h(operand, k) − mean_op h(operand, ·) ]</code>
@@ -790,6 +803,14 @@ variance share of each term and the principal angles between the operand- and op
 (<code>scripts/op_core.py:factorize</code>).</p>
 <p><strong>Generalization.</strong> Build <code>v(op)</code> from half the operands; test the swap on the held-out half. This
 distinguishes a genuine operator from interpolation among the examples used to build it.</p>
+<p><strong>Statistical treatment.</strong> The 20 ordered swaps are <strong>not</strong> 20 independent observations: they are built
+from 5 operator directions (each participating in 8 ordered pairs) and evaluated on the same 12 operands.
+We therefore report cluster-bootstrap percentile intervals (10,000 replicates) at two levels. Within a
+pair, the <strong>operand</strong> is the resampling unit (per-pair 95% CIs). Across the paradigm, the <strong>operator</strong> is
+the top-level cluster: a dyadic node bootstrap resamples the operator set with replacement, weights each
+ordered pair by the product of its endpoints' multiplicities, and resamples operands within surviving
+pairs (<code>op_core.bootstrap_pair_ci</code> / <code>bootstrap_family_ci</code>; per-operand values persisted in the
+<code>*_long.parquet</code> artifacts).</p>
 <p><strong>J-space controls.</strong> We repeat readout-geometry in the J-lens readout <code>unembed(J·h)</code> vs the logit-lens
 readout <code>unembed(h)</code>, and re-run efficacy with <strong>spectrum-matched random-projection</strong> and
 <strong>permuted-vocabulary</strong> null lenses (<code>scripts/control_lens.py</code>).</p>
@@ -836,6 +857,26 @@ the matched-norm random control is ~0. Representative (1.7B):</p>
 <p><img alt="All-pairs operator swap: clean (baseline, &quot;from&quot; wins, blue) vs. injecting v(to)−v(from) (&quot;to&quot; wins, red). 20/20 pairs flip sign; matched-norm random control ≈ 0." src="../figs/op_swap.png" /></p>
 <p><em>Injecting the operator difference <code>v(to) − v(from)</code> flips every one of the 20 ordered pairs: clean (left,
 "from" wins, blue) → swapped (right, "to" wins, red). The matched-norm random control moves nothing.</em></p>
+<p>Under the operator-level cluster bootstrap (§3, the level that respects that pairs share directions), the
+swap−random contrast is <strong>+22.6, 95% CI [+14.0, +32.1]</strong> at 1.7B and <strong>+26.0 [+17.9, +32.8]</strong> at 8B; the
+flip fraction is <strong>1.00 [1.00, 1.00]</strong> at both scales — every replicate flips every pair. Per-pair
+operand-bootstrap CIs never cross zero:</p>
+<p><img alt="Per-pair distributions: swap values per operand with operand-bootstrap 95% CIs, matched-norm random control, and clean baselines. No CI crosses zero; the weakest pairs are exactly the syncretic ones (demonym↔language and their neighbours)." src="../figs/op_swap_dist.png" /></p>
+<p><strong>Dose–response and collateral cost.</strong> Sweeping the intervention strength α (1.7B) separates the effect
+into its parts: the <strong>operator-specific</strong> component (swap − random) rises and <strong>saturates at ≈+23 by the
+default α = 4</strong>, while the matched-norm random control contributes a <strong>nonspecific</strong> margin shift of
+≈+6 that is flat in α — any large perturbation degrades the clean answer's dominance somewhat, which is
+why all headline numbers are swap − random contrasts. The intervention is <em>answer</em>-surgical, not
+<em>distribution</em>-surgical: with the same hook active on unrelated WikiText, per-token KL(clean ‖
+intervened) grows from 7.9 nats (α = 0.5) to 21 nats (α = 12) — 18.4 at the default — so the band-wide
+edit substantially distorts off-task text. We report this as an honest cost of the band-wide,
+all-position intervention rather than tuning it away; targeted (single-position) variants are the
+natural mitigation and are left to future work.</p>
+<p><img alt="Dose-response: the operator-specific effect saturates at the default dose α=4 while the nonspecific random shift stays flat; per-token KL on unrelated text grows monotonically — the edit is answer-surgical, not distribution-surgical." src="../figs/op_dose.png" /></p>
+<p><em>Every ordered swap, with uncertainty. Orange dots = per-operand swap values (12/pair); gray × =
+matched-norm random control; black bar = operand-bootstrap 95% CI; blue ○ = clean baseline mean. The
+weakest effects are precisely the syncretic pairs (<code>demonym ↔ language</code> and swaps into <code>demonym</code>) — where
+the two operations share their surface form.</em></p>
 <h3 id="42-the-representation-factorizes-into-operator-operand">4.2 The representation factorizes into operator ⊕ operand</h3>
 <p>Two-way ANOVA at a mid-workspace layer (1.7B / 8B):</p>
 <table>
@@ -881,9 +922,22 @@ in Latin declension.</p>
 <p><em>Operation ≠ realization. Every operator is a distinct direction — including language and demonym (boxed),
 which emit the identical word "Italian". A desinence built precisely where the two </em><em>share</em><em> their output
 word (so the word cancels) still installs the relation: the case is separable from the word that realizes it.</em></p>
-<h3 id="44-operators-generalize-to-held-out-operands">4.4 Operators generalize to held-out operands</h3>
-<p><code>v(op)</code> built on 6 operands and applied to the 6 held-out operands still flips <strong>20/20</strong> swaps (mean
-<strong>+19</strong> on 1.7B) — a genuine, transferable operator, not interpolation.</p>
+<h3 id="44-operators-generalize-to-held-out-operands-and-across-prompt-frames">4.4 Operators generalize to held-out operands and across prompt frames</h3>
+<p><strong>Held-out operands.</strong> <code>v(op)</code> built on 6 operands and applied to the 6 held-out operands still flips
+<strong>20/20</strong> swaps — a genuine, transferable operator, not interpolation. Operator-level cluster bootstrap
+on the held-out contrast: <strong>+20.0 [+10.8, +29.5]</strong> at 1.7B, <strong>+22.8 [+14.0, +31.0]</strong> at 8B; flip
+fraction <strong>1.00 [1.00, 1.00]</strong> at both.</p>
+<p><strong>Cross-frame transfer (paraphrase robustness).</strong> To rule out template echo we render every relation in
+three paraphrase frames — declarative (<code>The {op} of {a} is</code>), question–answer (<code>Q: What is the {op} of
+{a}? A: It is</code>), and discourse-prefixed (<code>It is well known that the {op} of {a} is</code>) — and test every
+build→test frame combination: <code>v(op)</code> built on frame <em>i</em>, all-pairs swap run on frame <em>j</em>. On 1.7B, <strong>all
+9 combinations flip 20/20</strong> (180/180; off-diagonal transfer 120/120, mean contrast <strong>+24.2</strong>), and the
+contrast is <em>frame-invariant to two decimals</em>: directions built on the declarative frame produce +22.6 on
+all three test frames. The clean baselines do shift across frames (−7.0 / −8.1 / −7.9), confirming the
+frames are genuinely different prompts; the operator's causal effect does not. At 8B the pattern
+replicates — <strong>100/100 flips over the tested combinations (80/80 cross-frame, mean contrast +28.7)</strong>,
+with the declarative-built direction again frame-invariant (+26.0 / +26.0 / +26.0). The operator
+direction is a property of the <strong>relation</strong>, not of the prompt that elicits it.</p>
 <h3 id="45-the-factorization-is-domain-specific-arithmetic-and-logic-do-not">4.5 The factorization is domain-specific (arithmetic and logic do not)</h3>
 <p>Extending the identical pipeline to arithmetic (+, ×, −) and comparison-logic operators, on 1.7B:</p>
 <table>
@@ -980,8 +1034,11 @@ legible in the J-space than in the raw stream (its 1.7B readout-geometry differe
 <em>causal</em> factorization.</p>
 <h2 id="5-limitations">5. Limitations</h2>
 <ul>
-<li><strong>Scale.</strong> 1.7B and 8B; no 32B lens yet. Relational linearity holds for a subset of relations even
-  in-domain (cf. LRE ~48%); our five relations are hand-chosen and English-only.</li>
+<li><strong>Scale and family.</strong> 1.7B and 8B, one model family (Qwen3); no 32B. Relational linearity holds for a
+  subset of relations even in-domain (cf. LRE ~48%).</li>
+<li><strong>Relation coverage.</strong> Five hand-chosen country relations, English-only. Prompt variation covers three
+  paraphrase <em>frames</em> (§4.4) but all frames share the <code>{op} of {a}</code> phrasing unit; phrase-level
+  paraphrases, more relations, and other entity types remain open.</li>
 <li><strong>Arithmetic coverage.</strong> Qwen3 BPE splits multi-digit numbers, so we restrict to single-digit results;
   the arithmetic null is on that regime and at 1.7B/8B, where arithmetic competence is itself limited.</li>
 <li><strong>Reading-position result</strong> restates known subject-enrichment→attribute-extraction dynamics.</li>

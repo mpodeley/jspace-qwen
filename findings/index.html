@@ -580,6 +580,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#27-statistical-treatment-and-paraphrase-frame-transfer-2026-07-10-evening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Statistical treatment and paraphrase-frame transfer (2026-07-10, evening)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1197,6 +1208,29 @@ This matches Christ's positive (their cut varies a linear parameter) and our
 negative (ours varies the function) without contradiction; the constraint is that
 Qwen3 BPE limits us to single-digit arithmetic, so the add-N generalization is weak
 in absolute terms — the <em>ordering</em>, not the magnitude, is the point.</p>
+<h3 id="27-statistical-treatment-and-paraphrase-frame-transfer-2026-07-10-evening">2.7 Statistical treatment and paraphrase-frame transfer (2026-07-10, evening)</h3>
+<p>Two reviewer-driven upgrades, both landing the same conclusions with proper uncertainty:</p>
+<ul>
+<li>
+<p><strong>Cluster bootstrap.</strong> The 20 ordered swaps reuse 5 operator directions over 12 shared operands — not
+  20 independent observations. Per-operand values are now persisted (<code>*_operator_swap_long.parquet</code>)
+  and CIs are cluster-bootstrapped at two levels (operands within pair; operators as top-level clusters
+  via a dyadic node bootstrap — <code>op_core.bootstrap_pair_ci</code> / <code>bootstrap_family_ci</code>). Operator-level
+  swap−random contrast: <strong>1.7B +22.6 [+14.0, +32.1]; 8B +26.0 [+17.9, +32.8]</strong>; held-out-operand
+  contrast <strong>+20.0 [+10.8, +29.5] / +22.8 [+14.0, +31.0]</strong>; flip fraction <strong>1.00 [1.00, 1.00]</strong>
+  everywhere. No per-pair operand-bootstrap CI crosses zero (see <code>figs/op_swap_dist.png</code>).</p>
+</li>
+<li>
+<p><strong>Cross-frame transfer</strong> (<code>operator_templates.py</code>). Three paraphrase frames (declarative / QA /
+  discourse-prefixed) holding the <code>{op} of {a}</code> unit fixed. 1.7B, all 9 build→test combinations:
+  <strong>180/180 flips</strong> (off-diagonal 120/120, mean contrast <strong>+24.2</strong>), contrast frame-invariant to ~0.02
+  while clean baselines shift (−7.0/−8.1/−7.9) — the frames are genuinely different prompts, the
+  operator's causal effect is a property of the relation, not the template. Kills the template-echo
+  reading beyond the reading-position control. <strong>8B replicates: 100/100 flips on the tested combos
+  (80/80 cross-frame, mean contrast +28.7), declarative-built direction frame-invariant
+  (+26.0/+26.0/+26.0), QA-built strongest (+35.3).</strong></p>
+</li>
+</ul>
 <hr />
 <h2 id="the-open-interpretive-question-deliberately-unresolved">The open interpretive question (deliberately unresolved)</h2>
 <p>The evidence splits cleanly into a negative half and a positive half:</p>

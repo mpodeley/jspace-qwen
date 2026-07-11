@@ -604,7 +604,7 @@
 <p>Everything runs on a single AMD Strix Halo (Radeon 8060S, gfx1151); no CUDA, no
 cloud. See <a href="../setup/">setup</a> for why the environment is a plain <code>uv</code> venv.</p>
 <h2 id="1-environment">1. Environment</h2>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>&lt;this<span class="w"> </span>repo&gt;<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>jspace-qwen
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/mpodeley/jspace-qwen.git<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>jspace-qwen
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/anthropics/jacobian-lens
 bash<span class="w"> </span>env/install.sh<span class="w">                     </span><span class="c1"># ROCm torch + jlens stack</span>
 .venv/bin/python<span class="w"> </span>scripts/00_smoke.py<span class="w">    </span><span class="c1"># forward+backward of Qwen3-1.7B on the iGPU</span>
@@ -643,6 +643,18 @@ checkpoint. Lenses land in <code>out/lenses/&lt;tag&gt;.pt</code>.</p>
 <p><code>op_geometry_dump.py</code> persists the factorization/PCA/cosine geometry (print-only in the
 other two) to <code>results/geometry/*.json|npz</code>, and writes the explorer's data bundle
 <code>docs/interactive/declension.data.js</code> (from the 1.7B relations run).</p>
+<p>Two further checks from the review pass:</p>
+<div class="highlight"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/operator_templates.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">   </span><span class="c1"># cross-frame transfer (3 paraphrase frames)</span>
+.venv/bin/python<span class="w"> </span>scripts/op_dose.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">              </span><span class="c1"># alpha dose-response + off-task KL</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Reproducibility box</p>
+<p>All experiments are seeded (<code>--seed 0</code> default; the RNG seeds only the matched-norm
+random controls — direction building is deterministic). Checkpoints: <code>Qwen/Qwen3-1.7B</code>,
+<code>Qwen/Qwen3-8B</code> (bf16), <code>google/gemma-2-9b</code> for the cross-architecture run. Per-operand
+long-form values are persisted as <code>results/ablation/*_long.parquet</code>; every figure
+regenerates from <code>scripts/plots.py</code>. License MIT; contact <code>mpodeley@gmail.com</code>.</p>
+</div>
 <h2 id="5-figures-and-site">5. Figures and site</h2>
 <div class="highlight"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/plots.py<span class="w">        </span><span class="c1"># -&gt; docs/figs/*.png (incl. op_geometry/op_swap/op_syncretism)</span>
 .venv/bin/python<span class="w"> </span>-m<span class="w"> </span>mkdocs<span class="w"> </span>serve<span class="w">         </span><span class="c1"># preview the site (incl. the interactive explorer)</span>
