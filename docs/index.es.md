@@ -2,8 +2,8 @@
 
 <p class="hero-sub">¿Cómo representa un modelo de lenguaje <i>"la capital de Italia"</i>?
 Encontramos que divide el pensamiento en dos: <b>la cosa</b> (Italia) y <b>la operación que se le
-aplica</b> (capital-de) — y la operación vive como su propia <b>dirección</b> en el espacio de
-activaciones: se la puede agarrar, mover y trasplantar.</p>
+aplica</b> (capital-de) — y la operación vive como su propia <b>dirección</b> — una flecha en el espacio de estados internos
+del modelo — que se puede agarrar, mover y trasplantar.</p>
 
 ## El hallazgo, conceptualmente
 

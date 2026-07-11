@@ -1,5 +1,13 @@
 # Method: the Jacobian lens and the J-space
 
+!!! info "Archive — the original J-space replication study"
+    This is what the repository started as: replicating the J-space / global-workspace *readout* claim
+    on open weights. That readout claim did not survive our controls — an informative null, preserved
+    here with full rigor — and the project pivoted to the operator/operand finding on the
+    [main page](index.md). These pages are kept as-is.
+
+
+
 This project reproduces the method of Anthropic's
 [*Verbalizable Representations Form a Global Workspace in Language Models*](https://transformer-circuits.pub/2026/workspace/index.html)
 (Gurnee, Sofroniew, Lindsey et al., 2026) on open-weights Qwen3 models, using

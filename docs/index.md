@@ -2,8 +2,8 @@
 
 <p class="hero-sub">How does a language model represent <i>"the capital of Italy"</i>? We find it
 splits the thought in two: <b>the thing</b> (Italy) and <b>the operation applied to it</b>
-(capital-of) — and the operation lives as its own <b>direction</b> in activation space, one you can
-grab, move, and transplant.</p>
+(capital-of) — and the operation lives as its own <b>direction</b> — an arrow in the model's space of internal
+states — that you can grab, move, and transplant.</p>
 
 ## The finding, conceptually
 

@@ -1,5 +1,13 @@
 # Results — causal importance
 
+!!! info "Archive — the original J-space replication study"
+    This is what the repository started as: replicating the J-space / global-workspace *readout* claim
+    on open weights. That readout claim did not survive our controls — an informative null, preserved
+    here with full rigor — and the project pivoted to the operator/operand finding on the
+    [main page](index.md). These pages are kept as-is.
+
+
+
 Is the J-space merely *readable*, or does it actually **steer** the computation?
 Using the paper's shipped two-hop `probe-swap` set, we move the residual
 component along a bridge entity's J-lens direction onto a different entity's

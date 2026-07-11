@@ -32,6 +32,10 @@ computation in these models is, to a first approximation, an operand plus a tran
 
 ## 1. Introduction
 
+When a language model completes *"The currency of Italy is—"*, does it represent
+*currency-of-Italy* as one fused thing, or as an entity plus an operation applied to it? This paper
+argues, causally, for the second reading.
+
 A line of work shows that a *task* or *relation* can be captured by a single addable vector in an LLM's
 residual stream (task vectors, Hendel et al. 2023; function vectors, Todd et al. 2024) and that many
 relations are approximately linear operators (LRE, Hernandez et al. 2024; Merullo et al. 2024). What has
@@ -110,7 +114,9 @@ the J-space paper locates the global workspace and where we build operator direc
 
 **Operator direction.** For operator `k`, `v(k) = mean_operand[ h(operand, k) − mean_op h(operand, ·) ]`
 at the workspace layers — the deviation of an operator from the operand's average over operators, averaged
-over operands (the function-vector construction; implementation details in Appendix A).
+over operands (the function-vector construction; implementation details in Appendix A). Intuitively:
+what states asking the *same question about different countries* share, once what *all questions about
+each country* share is removed.
 
 **Swap and controls.** Efficacy of `k_A → k_B` is the change in `logit(answer_B) − logit(answer_A)` at the
 query position when `α·(v(k_B) − v(k_A))` is added over the band, versus a **matched-norm random**
@@ -200,7 +206,8 @@ competence ceiling.
 
 ### 4.2 The representation factorizes into operator ⊕ operand
 
-Two-way ANOVA at a mid-workspace layer (1.7B / 8B):
+Does the state literally decompose into "the thing" plus "the question asked about it"? Two-way ANOVA
+at a mid-workspace layer (1.7B / 8B):
 
 | read position | operand | operator | interaction (fusion) |
 |---|---:|---:|---:|
@@ -288,7 +295,9 @@ Qwen3's. The operator–operand factorization is not an idiosyncrasy of one mode
 
 ### 4.6 The factorization is domain-specific (arithmetic and logic do not, under our setup)
 
-Extending the identical pipeline to arithmetic (+, ×, −) and comparison-logic operators, on 1.7B:
+If the factorization were an artifact of prompting, it should appear wherever the prompt has the same
+shape. It does not. Extending the identical pipeline to arithmetic (+, ×, −) and comparison-logic
+operators, on 1.7B:
 
 | domain | operator variance | interaction (fusion) | held-out generalization | swap vs random |
 |---|---:|---:|---|---|

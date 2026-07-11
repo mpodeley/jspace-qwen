@@ -1,5 +1,9 @@
 # Findings — J-lens readout vs. causal routing on Qwen3
 
+*This is the chronological lab notebook — technical and unpolished by design. For the story, start at
+[Explained simply](explained.md); for the claims with their controls, see
+[Evidence & controls](robustness.md).*
+
 *Working evidence document, 2026-07-10. Not a fixed thesis. It lays out every
 measurement, its controls, and the interpretive options — the framing decision
 is deliberately left open.*

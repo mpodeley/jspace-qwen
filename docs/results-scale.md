@@ -1,5 +1,13 @@
 # Results — scale
 
+!!! info "Archive — the original J-space replication study"
+    This is what the repository started as: replicating the J-space / global-workspace *readout* claim
+    on open weights. That readout claim did not survive our controls — an informative null, preserved
+    here with full rigor — and the project pivoted to the operator/operand finding on the
+    [main page](index.md). These pages are kept as-is.
+
+
+
 Does the J-space exist at every scale, or emerge and sharpen with size? We fit
 the identical J-lens on Qwen3 1.7B and 8B (32B in progress) and compare per-layer
 metrics (reindexed to a 0–100 depth scale) and the paper's pass@k lens-quality

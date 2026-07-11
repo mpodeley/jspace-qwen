@@ -1,5 +1,10 @@
 \section{Introduction}
 
+When a language model completes \emph{"The currency of Italy is---"},
+does it represent \emph{currency-of-Italy} as one fused thing, or as an
+entity plus an operation applied to it? This paper argues, causally, for
+the second reading.
+
 A line of work shows that a \emph{task} or \emph{relation} can be
 captured by a single addable vector in an LLM\textquotesingle s residual
 stream (task vectors, \citealp{hendel2023icl}; function vectors, \citealp{todd2024function}) and that many relations are approximately linear operators (LRE,
@@ -109,7 +114,9 @@ workspace and where we build operator directions.
 at the workspace layers --- the deviation of an operator from the
 operand\textquotesingle s average over operators, averaged over operands
 (the function-vector construction; implementation details in Appendix
-A).
+A). Intuitively: what states asking the \emph{same question about
+different countries} share, once what \emph{all questions about each
+country} share is removed.
 
 \textbf{Swap and controls.} Efficacy of \texttt{k\_A\ \ensuremath{\to}\ k\_B} is the
 change in \texttt{logit(answer\_B)\ -\ logit(answer\_A)} at the query
@@ -240,7 +247,8 @@ competence ceiling.
 \subsection{The representation factorizes into operator \ensuremath{\oplus}
 operand}
 
-Two-way ANOVA at a mid-workspace layer (1.7B / 8B):
+Does the state literally decompose into "the thing" plus "the question
+asked about it"? Two-way ANOVA at a mid-workspace layer (1.7B / 8B):
 
 {
 \begin{table*}[t]
@@ -384,8 +392,10 @@ family.
 logic do not, under our
 setup)}
 
-Extending the identical pipeline to arithmetic (+, \ensuremath{\times}, -) and
-comparison-logic operators, on 1.7B:
+If the factorization were an artifact of prompting, it should appear
+wherever the prompt has the same shape. It does not. Extending the
+identical pipeline to arithmetic (+, \ensuremath{\times}, -) and comparison-logic
+operators, on 1.7B:
 
 {
 \begin{table*}[t]

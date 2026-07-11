@@ -7,6 +7,8 @@ realizes them. Arithmetic and comparison-logic operators do **not** factorize �
 structure is specific to relational retrieval. All experiments run on a single AMD Strix
 Halo APU (no CUDA, no cloud).
 
+- **New to all this?** [The paper, explained simply](https://mpodeley.github.io/jspace-qwen/explained/)
+  ([español](https://mpodeley.github.io/jspace-qwen/es/explained/)) — for any curious reader.
 - **Site / paper / evidence log:** https://mpodeley.github.io/jspace-qwen/
 - **Interactive explorer** (3Blue1Brown-style, real model data):
   https://mpodeley.github.io/jspace-qwen/explorer/

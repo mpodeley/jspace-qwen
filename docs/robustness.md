@@ -1,9 +1,13 @@
 # Evidence & controls
 
-Every claim in the [paper](assets/paper.pdf), its experiment, the control that could have
-killed it, and the artifact that reproduces it. Statistical treatment: cluster-bootstrap 95%
-CIs at two levels (operands within a pair; **operators** as top-level clusters — the 20
-ordered pairs share 5 directions and are *not* independent observations).
+**How to read this page.** Every scientific claim can fail somewhere — the honest question is *where
+was this one allowed to fail, and did it?* Each row below puts a claim next to the experiment that tests
+it, the control that could have killed it, and the artifact that regenerates it. If you read only one
+page beyond the [simple explanation](explained.md), read this one.
+
+Statistical treatment throughout: cluster-bootstrap 95% CIs at two levels (operands within a
+pair; **operators** as top-level clusters — the 20 ordered pairs share 5 directions and are *not*
+independent observations). Full details in the [paper](assets/paper.pdf).
 
 ## Claim → experiment → control → artifact
 
