@@ -43,6 +43,12 @@ def load_geo(tag: str, domain: str = "relations"):
     p = GEO / f"{tag}_{domain}.json"
     return json.loads(p.read_text()) if p.exists() else None
 
+
+def _savefig(fig, stem: str):
+    """Write both a PNG (docs/site) and a vector PDF (paper) of a figure."""
+    fig.savefig(FIGS / f"{stem}.png", bbox_inches="tight")
+    fig.savefig(FIGS / f"{stem}.pdf", bbox_inches="tight")
+
 plt.rcParams.update({
     "figure.facecolor": SURF, "axes.facecolor": SURF, "savefig.facecolor": SURF,
     "axes.edgecolor": MUTED, "axes.labelcolor": INK, "text.color": INK,
@@ -247,7 +253,7 @@ def fig_op_geometry():
     axb.legend(frameon=False, fontsize=9, ncol=3, loc="upper center")
     axb.grid(axis="x")
     fig.suptitle("Where operand and operator live", fontsize=14, x=0.01, ha="left")
-    fig.savefig(FIGS / "op_geometry.png", bbox_inches="tight")
+    _savefig(fig, "op_geometry")
     plt.close(fig)
 
 
@@ -294,7 +300,7 @@ def fig_op_swap():
     fig.suptitle(f"Operator injection flips the answer: {flips}/{tot} pairs flip sign "
                  f"(matched-norm random control mean {np.mean(rand):+.1f})",
                  fontsize=12.5, x=0.01, ha="left")
-    fig.savefig(FIGS / "op_swap.png", bbox_inches="tight")
+    _savefig(fig, "op_swap")
     plt.close(fig)
 
 
@@ -353,7 +359,7 @@ def fig_op_syncretism():
                   fontsize=10, loc="left")
     fig.suptitle("Operation ≠ realization: the case is separable from the word",
                  fontsize=12.5, x=0.01, ha="left")
-    fig.savefig(FIGS / "op_syncretism.png", bbox_inches="tight")
+    _savefig(fig, "op_syncretism")
     plt.close(fig)
 
 

@@ -1,0 +1,8 @@
+# build artifacts (regenerate with tectonic/pdflatex)
+main.pdf
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
