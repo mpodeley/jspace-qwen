@@ -45,6 +45,8 @@ UNI = {
 # lines) and match the LaTeX-escaped text (& -> \&). Order: \citet forms first.
 CITES = [
     (r"Geva et al\.\s*\(EMNLP\s+2023\)", r"\\citet{geva2023dissecting}"),
+    (r"Wang et al\.\s*\(2024\)", r"\\citet{wang2024locating}"),
+    (r"Wang et al\.\s+2024", r"\\citealp{wang2024locating}"),
     (r"Christ et al\.\s*\(2025\)", r"\\citet{christ2025structure}"),
     (r"Christ et al\.\s*\(Oct\s+2025\)", r"\\citet{christ2025structure}"),
     (r"the J-space paper", r"\\citet{gurnee2026workspace}"),
@@ -99,14 +101,17 @@ def longtable_to_table(tex: str) -> str:
     """Convert every pandoc longtable to a floating table/tabular (booktabs kept).
     Tables whose widest row exceeds a column's worth of text go to table* (full
     text width) — a two-column layout cannot hold them in one column."""
-    CAPTIONS = [  # wide floats need captions to be findable once they float away
-        (r"operator variance", "Cross-domain factorization: relational operators "
-         "factorize and generalize; arithmetic and logic do not."),
+    CAPTIONS = [  # wide floats need captions to be findable once they float away.
+        # Patterns must be UNIQUE to one table's body (several tables share terms
+        # like "operator variance" -- match on a row label only that table has).
+        (r"logic \(compare\)", "Cross-domain factorization: relational operators "
+         "factorize and generalize; arithmetic and logic do not, under our setup."),
         (r"add-N \(operator = addend\)", "Reconciliation with the add-N cut: the "
          "linear-parameter family sits between relations and true two-operand "
          "arithmetic."),
-        (r"Qwen3-1\.7B", "Cross-architecture replication: every signature "
-         "reproduces on Gemma-2-9B with the largest effect sizes."),
+        (r"all-pairs swap contrast", "Cross-architecture replication: every "
+         "signature reproduces on Gemma-2-9B (logit units are not comparable "
+         "across architectures; compare flip rates and variance shares)."),
         (r"read position", "Two-way ANOVA of the workspace state: variance shares "
          "by read position (1.7B / 8B)."),
     ]
@@ -235,8 +240,16 @@ def main() -> None:
     if m:
         tex = tex[:m.start()] + tex[m.end():]
 
+    # appendices: split out and let main.tex place them after \bibliography
+    appendix = ""
+    ai = tex.find(r"\section{Appendix A:")
+    if ai >= 0:
+        appendix = re.sub(r"\\section\{Appendix [A-Z]: ", r"\\section{", tex[ai:])
+        tex = tex[:ai]
+
     suffix = "_public" if public else ""
     (ACL / f"abstract{suffix}.tex").write_text(abstract + "\n")
+    (ACL / f"appendix{suffix}.tex").write_text(appendix + "\n")
     (ACL / f"body{suffix}.tex").write_text(tex)
     bad = sorted({c for c in tex + abstract if ord(c) > 127})
     print(f"wrote paper/acl/body{suffix}.tex ({len(tex)} chars) + abstract{suffix}.tex "

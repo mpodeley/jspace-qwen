@@ -14,13 +14,24 @@ whether the operation \emph{factorizes} from its argument, whether that
 factorization \emph{generalizes}, whether the operation is separable
 from the \emph{word it produces}, and whether any of this holds
 \emph{beyond} relational facts, in arithmetic and logic. We answer these
-on Qwen3 and Gemma-2, and offer a morphological reading --- relational
-computation as \textbf{declension} --- as an organizing metaphor that
-anticipates the specific asymmetries we observe (syncretism at the level
-of the surface form, fusion in the interaction term).
+on Qwen3 and Gemma-2. A closing discussion (\S{}5) offers a morphological
+reading --- relational computation as \textbf{declension} --- as an
+organizing metaphor for the asymmetries we observe.
 
 \section{Related work and what is new
 here}
+
+\textbf{Extracting relational concepts.} The closest prior work is Wang
+et al. (2024), who locate hidden states that express a relation
+separately from its subject, transplant these relational representations
+between subjects, and rewrite relations across 22 relation types and
+several models. We instead characterize the \textbf{joint geometry} of
+relation and entity: we quantify its additive and interaction components
+(the two-way ANOVA with a measured fusion term), run exhaustive
+all-pairs swaps against matched-norm nulls, and test whether relation
+directions generalize causally across held-out entities, prompt
+contexts, architectures, and task domains --- including the domains
+where the factorization fails.
 
 \textbf{Operation as an addable vector.} Task Vectors (\citealp{hendel2023icl}) and Function Vectors (\citealp{todd2024function}) extract one
 vector per ICL task and add/patch it to trigger the task. In-Context
@@ -33,11 +44,10 @@ all-pairs swap with matched-norm nulls}, and a \textbf{held-out-operand
 generalization} test.
 
 \textbf{Relation as a linear operator.} LRE (\citealp{hernandez2024lre}) fits a full affine map \texttt{W\textperiodcentered{}s\ +\ b} per relation. That
-represents the relation as a \emph{monolithic} operator; we show a
-\textbf{low-dimensional additive operator \emph{direction}} that is
-arithmetically composable and \textbf{factorable from the operand}, and
-we quantify the operand/operator/interaction variance split, which LRE
-does not.
+represents the relation as a \emph{monolithic} operator; we show an
+\textbf{additive operator \emph{direction}} that is arithmetically
+composable and \textbf{factorable from the operand}, and we quantify the
+operand/operator/interaction variance split, which LRE does not.
 
 \textbf{Additive factual recall.} Summing Up the Facts (\citealp{chughtai2024summing}) decomposes factual recall into additive \emph{circuits} (subject
 vs relation contributions). Ours is a \textbf{representational two-way
@@ -76,8 +86,8 @@ quantified analysis: (1) an operator \ensuremath{\oplus} operand \textbf{factori
 the residual state itself} (two-way ANOVA with a measured
 interaction/fusion term and operator/operand subspace angles); (2) an
 \textbf{exhaustive all-pairs causal swap} with matched-norm nulls; (3)
-\textbf{held-out-operand generalization} as the discriminator between a
-real operator and interpolation among build examples; (4) the
+\textbf{held-out-operand generalization} as the test separating a
+transferable direction from interpolation among build examples; (4) the
 \textbf{operation-vs-realization dissociation} (language \ensuremath{\neq} demonym as
 directions despite identical output); and (5) a \textbf{cross-domain
 test} showing the factorization is specific to relational retrieval and
@@ -90,8 +100,8 @@ fusion in the interaction term) --- not an additional empirical claim.
 
 \textbf{Setup.} Qwen3-1.7B/8B throughout, plus Gemma-2-9B for the
 cross-architecture replication (\S{}4.5); all run in bf16 on a single AMD
-Strix Halo APU (see setup). A relation is rendered into
-a template; the canonical frame is
+Strix Halo APU (environment details in the supplementary repository). A
+relation is rendered into a template; the canonical frame is
 \texttt{"The\ \{op\}\ of\ \{a\}\ is"}, and \S{}4.4 additionally uses two
 paraphrase frames (question--answer and discourse-prefixed) that hold
 the \texttt{\{op\}\ of\ \{a\}} unit fixed while varying the surrounding
@@ -104,8 +114,8 @@ workspace and where we build operator directions.
 \texttt{v(k)\ =\ mean\_operand{[}\ h(operand,\ k)\ -\ mean\_op\ h(operand,\ \textperiodcentered{})\ {]}}
 at the workspace layers --- the deviation of an operator from the
 operand\textquotesingle s average over operators, averaged over operands
-(the function-vector construction;
-\texttt{scripts/op\_core.py:op\_dirs}).
+(the function-vector construction; implementation details in Appendix
+A).
 
 \textbf{Swap and controls.} Efficacy of \texttt{k\_A\ \ensuremath{\to}\ k\_B} is the
 change in \texttt{logit(answer\_B)\ -\ logit(answer\_A)} at the query
@@ -120,8 +130,7 @@ demonym\ensuremath{\leftrightarrow}language pairs and all 12 elsewhere).
 \textbf{Factorization.}
 \texttt{H{[}operand,\ operator{]}\ =\ \ensuremath{\mu}\ +\ operand(o)\ +\ operator(k)\ +\ interaction};
 we report the variance share of each term and the principal angles
-between the operand- and operator-subspaces
-(\texttt{scripts/op\_core.py:factorize}).
+between the operand- and operator-subspaces (Appendix A).
 
 \textbf{Generalization.} Build \texttt{v(op)} from half the operands;
 test the swap on the held-out half. This distinguishes a genuine
@@ -138,23 +147,24 @@ paradigm, the \textbf{operator} is the top-level cluster: a dyadic node
 bootstrap resamples the operator set with replacement, weights each
 ordered pair by the product of its endpoints\textquotesingle{}
 multiplicities, and resamples operands within surviving pairs
-(\texttt{op\_core.bootstrap\_pair\_ci} / \texttt{bootstrap\_family\_ci};
-per-operand values persisted in the \texttt{*\_long.parquet} artifacts).
+(per-operand values are released as long-form artifacts; Appendix A).
 
 \textbf{J-space controls.} We repeat readout-geometry in the J-lens
 readout \texttt{unembed(J\textperiodcentered{}h)} vs the logit-lens readout
 \texttt{unembed(h)}, and re-run efficacy with \textbf{spectrum-matched
 random-projection} and \textbf{permuted-vocabulary} null lenses
-(\texttt{scripts/control\_lens.py}).
+(Appendix B).
 
 \section{Results}
 
 \subsection{Relational operators are manipulable
 directions}
 
-All 20 ordered operator swaps flip the answer (mean swap \textbf{+21}
-logit units on 1.7B, \textbf{+25} on 8B) while the matched-norm random
-control is \textasciitilde0. Representative (1.7B):
+All 20 ordered operator swaps flip the \textbf{target-vs-source logit
+margin} (the sign of \texttt{logit(answer\_B)\ -\ logit(answer\_A)} at
+the distinguishing token; mean swap \textbf{+21} logit units on 1.7B,
+\textbf{+25} on 8B) while the matched-norm random control is
+\textasciitilde0. Representative (1.7B):
 
 {
 \begin{table}[H]
@@ -233,13 +243,15 @@ entity token & \textbf{59\% / 55\%} & 31\% / 34\% & 9\% / 11\% \\
 \end{table*}
 }
 
-\textasciitilde90\% additive; operand/operator subspaces largely
-orthogonal (principal angles 41--85\textdegree{} at the query token, across all
-three models). The operation- dominant representation \textbf{emerges
-along the sequence}: the entity enters operand-dominant and is
-\emph{declined} into an operator-marked form by the query position (the
-reading-position control rules out template echo; the causal swaps are
-the stronger control).
+\textasciitilde90\% additive; operand and operator components occupy
+distinct subspaces (principal angles 41--85\textdegree{} at the query token, all
+three models --- though near-orthogonality is the high-dimensional
+default, so the load- bearing evidence is the variance decomposition and
+the causal swaps, not the angles). The operation- dominant
+representation \textbf{emerges along the sequence}: the entity enters
+operand-dominant and is \emph{declined} into an operator-marked form by
+the query position (the reading-position control rules out template
+echo; the causal swaps are the stronger control).
 
 \begin{figure*}[t]
 \centering
@@ -276,9 +288,9 @@ cluster bootstrap on the held-out contrast: \textbf{+20.0 {[}+10.8,
 +29.5{]}} at 1.7B, \textbf{+22.8 {[}+14.0, +31.0{]}} at 8B; flip
 fraction \textbf{1.00 {[}1.00, 1.00{]}} at both.
 
-\textbf{Cross-frame transfer (paraphrase robustness).} To rule out
-template echo we render every relation in three paraphrase frames ---
-declarative (\texttt{The\ \{op\}\ of\ \{a\}\ is}), question--answer
+\textbf{Cross-frame transfer.} To rule out template echo we render every
+relation in three paraphrase frames --- declarative
+(\texttt{The\ \{op\}\ of\ \{a\}\ is}), question--answer
 (\texttt{Q:\ What\ is\ the\ \{op\}\ of\ \{a\}?\ A:\ It\ is}), and
 discourse-prefixed
 (\texttt{It\ is\ well\ known\ that\ the\ \{op\}\ of\ \{a\}\ is}) --- and
@@ -293,8 +305,10 @@ prompts; the operator\textquotesingle s causal effect does not. At 8B
 the pattern replicates --- \textbf{100/100 flips over the tested
 combinations (80/80 cross-frame, mean contrast +28.7)}, with the
 declarative-built direction again frame-invariant (+26.0 / +26.0 /
-+26.0). The operator direction is a property of the \textbf{relation},
-not of the prompt that elicits it.
++26.0). The operator direction is invariant to the prompt
+\textbf{context} around the fixed \texttt{\{op\}\ of\ \{a\}} unit.
+(Whether it is also invariant to the \emph{wording} of the relation
+itself is the stronger question --- tested next.)
 
 \subsection{Cross-architecture replication
 (Gemma-2-9B)}
@@ -322,7 +336,7 @@ pure desinence (clean \ensuremath{\to} +v) & -3.6 \ensuremath{\to} +12.5 & -2.9 
 \ensuremath{\to} +8.5} \\
 \bottomrule
 \end{tabular}
-\caption{Cross-domain factorization: relational operators factorize and generalize; arithmetic and logic do not.}
+\caption{Cross-architecture replication: every signature reproduces on Gemma-2-9B (logit units are not comparable across architectures; compare flip rates and variance shares).}
 \end{table*}
 }
 
@@ -330,13 +344,16 @@ Every qualitative signature replicates --- all-pairs flips with
 matched-norm nulls \ensuremath{\approx} 0, held-out-operand transfer, case-dominant
 factorization at the query token with single-digit fusion, the
 along-sequence shift (stem 37.6\% \ensuremath{\to} 8.4\% from the entity token to the
-query token), and the exponent-free desinence. Effect sizes are, if
-anything, largest in Gemma. The operator--operand factorization is not
-an idiosyncrasy of one model family.
+query token), and the exponent-free desinence. Raw logit units are not
+directly comparable across architectures (Gemma-2 soft-caps its final
+logits), so cross-model comparison should lean on the flip rates and
+variance shares, which match or exceed Qwen3\textquotesingle s. The
+operator--operand factorization is not an idiosyncrasy of one model
+family.
 
 \subsection{The factorization is domain-specific (arithmetic and
-logic do
-not)}
+logic do not, under our
+setup)}
 
 Extending the identical pipeline to arithmetic (+, \ensuremath{\times}, -) and
 comparison-logic operators, on 1.7B:
@@ -356,7 +373,7 @@ generalization & swap vs random \\
 +0.2 \\
 \bottomrule
 \end{tabular}
-\caption{Cross-domain factorization: relational operators factorize and generalize; arithmetic and logic do not.}
+\caption{Cross-domain factorization: relational operators factorize and generalize; arithmetic and logic do not, under our setup.}
 \end{table*}
 }
 
@@ -371,8 +388,8 @@ logical operators are \textbf{entangled with their operands} (2--4\ensuremath{\t
 interaction) and do \textbf{not} form a transferable direction ---
 consistent with arithmetic being a bag of heuristics / Fourier
 computation rather than a linear operator. The \textbf{held-out
-generalization test is the discriminator} between a real operator and
-memorized interpolation.
+generalization test is what separates} a transferable operator direction
+from memorized interpolation.
 
 \subsection{Reconciling with a contrary report: add-N vs.
 two-operand
@@ -425,20 +442,34 @@ is weak in absolute terms --- the \textbf{ordering} (relations \ensuremath{\gg} 
 \subsection{This is causal structure, not a J-space readout
 advantage}
 
-On four readout comparisons (bridge-entity pass@k, a surface-form logit
-difference, a number probe, and a concept-plane trajectory), the
-Jacobian-lens readout of \citealp{gurnee2026workspace} ---
-whose global-workspace result motivated this project, and whose
-"workspace" band we intervene on throughout --- shows \textbf{no readout
-advantage} over the logit-lens under matched controls; a
-spectrum-matched random projection reads number as well as the fitted
-J-lens, and the concept-plane "channel" does not survive a random-plane
-baseline (see findings \S{Part 1}). The
-operator/operand structure lives in the \textbf{causal} organization of
-the residual, and is \textbf{not} more legible in the J-space than in
-the raw stream (its 1.7B readout-geometry difference does not replicate
-at 8B). We therefore make no claim of a special readable subspace; the
-contribution is the operator/operand \emph{causal} factorization.
+This project began as a replication of the J-space readout claim of
+\citealp{gurnee2026workspace}, whose "workspace" band we
+intervene on throughout. Under matched controls --- including a
+spectrum-matched random projection --- the Jacobian-lens readout showed
+\textbf{no advantage} over the logit lens on any of four comparisons
+(Appendix B). The structure reported here is \textbf{causal}
+organization of the residual stream, not a privileged readable subspace.
+
+\section{Discussion: relational computation as
+declension}
+
+The measurements invite a morphological reading, offered as an
+organizing metaphor rather than an additional claim. In a declining
+language a noun\textquotesingle s role is marked by a case ending on a
+stem --- and each structural feature of a case system has a measured
+counterpart here. The same stem takes different endings (one country,
+five operator directions); the same ending applies across stems
+(held-out-operand transfer, \S{}4.4); two cases can share a surface form
+without being the same case (\textbf{syncretism}: \emph{language-of} and
+\emph{demonym-of} both emit "Italian", yet are distinct directions and
+their mutual swap is the weakest of the paradigm, \S{}4.3); and stem and
+ending do not compose perfectly (\textbf{fusion}: the
+\textasciitilde10\% interaction term, \S{}4.2). The exponent-free
+\textbf{desinence} is the metaphor\textquotesingle s sharpest prediction
+--- a case marker stripped of its surface form should still be causally
+functional, and it is (\S{}4.3). The metaphor also marks its own limits:
+arithmetic and logic operators do not decline (\S{}4.6); whatever those
+domains use, it is not a case system.
 
 \section{Limitations}
 
@@ -470,12 +501,12 @@ contribution is the operator/operand \emph{causal} factorization.
 
 \section{Conclusion}
 
-An LLM represents a relational operation as a low-dimensional,
-causally-manipulable operator direction that factorizes from the
-operand, generalizes to unseen operands, and separates the operation
-from the word that realizes it --- a structure well described as
-\textbf{declension}. This factorization is not universal: it is clean
-for relational retrieval and breaks down for arithmetic and logic, whose
-operators are entangled with their operands. The structure is causal; it
-is not a more-readable subspace.
+An LLM represents a relational operation as a causally manipulable
+operator direction that factorizes from the operand, generalizes to
+unseen operands, and separates the operation from the word that realizes
+it --- a structure well described as \textbf{declension}. This
+factorization is not universal: it is clean for relational retrieval and
+breaks down for arithmetic and logic, whose operators are entangled with
+their operands. The structure is causal; it is not a more-readable
+subspace.
 

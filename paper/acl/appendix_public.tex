@@ -1,0 +1,63 @@
+\section{Reproducibility, stimuli, and implementation
+details}
+
+\textbf{Checkpoints and hardware.} \texttt{Qwen/Qwen3-1.7B},
+\texttt{Qwen/Qwen3-8B}, \texttt{google/gemma-2-9b}, all bf16 on a single
+AMD Strix Halo APU (128 GB unified memory, ROCm PyTorch). Seeds default
+to 0 and affect only the random controls; direction building is
+deterministic.
+
+\textbf{Stimuli.} Operands (12 countries): Italy, Japan, Russia, China,
+France, Germany, Brazil, Egypt, India, Mexico, Sweden, Turkey.
+Relations: currency, capital, language, demonym ("word for a person
+from"), continent; every (country, relation) cell has a gold one-word
+answer (e.g. Italy \ensuremath{\to} euro, Rome, Italian, Italian, Europe); the full
+grid ships in \texttt{data/relations.json}, the lexical reformulations
+in \texttt{data/relations\_lex.json}, and the paraphrase frames in the
+dataset metadata.
+
+\textbf{Answer scoring and selection.} Answers are scored at the first
+token of \texttt{"\ "\ +\ answer}. Within each ordered operator pair,
+operands whose two answers collide at that token are dropped (4 of 12
+survive on the syncretic demonym\ensuremath{\leftrightarrow}language pairs; all 12 elsewhere).
+Whole-word single-token coverage: 0.92 (Qwen3 BPE), 0.95 (Gemma
+SentencePiece).
+
+\textbf{Directions, interventions, and controls.}
+\texttt{v(op){[}layer{]}} is the mean over (operand, frame) cells of the
+op\textquotesingle s residual minus that cell\textquotesingle s mean
+over ops, computed at \textasciitilde25 evenly spaced source layers
+restricted to the 38--92\% depth band. Interventions add
+\texttt{\ensuremath{\alpha}\ \textperiodcentered{}\ (v(to)\ -\ v(from))} at every position of the band (\ensuremath{\alpha} = 4
+unless swept). The matched-norm control draws one Gaussian vector per
+layer and rescales the band-concatenated stack to exactly the injected
+difference\textquotesingle s norm. Clean mean margins
+\texttt{logit(to)\ -\ logit(from)} are \ensuremath{\approx} -7 to -8 across models and
+frames; per-operand values for every experiment are released as
+long-form artifacts (\texttt{results/ablation/*\_long.parquet}).
+
+\textbf{Experiment drivers.} \texttt{op\_core.py} (directions, swaps,
+ANOVA, cluster bootstraps), \texttt{operator\_paradigm.py},
+\texttt{operator\_factorize.py}, \texttt{operator\_templates.py},
+\texttt{operator\_lexical.py}, \texttt{op\_dose.py},
+\texttt{op\_minimal.py}, \texttt{op\_geometry\_dump.py}.
+
+\section{The J-space readout
+comparisons}
+
+Four readout comparisons on Qwen3-1.7B (8B where noted) asked whether
+the Jacobian-lens readout exposes more than the logit lens:
+bridge-entity pass@k (a tie, drifting toward the logit lens at 8B); a
+surface-form logit difference with real competitors (logit lens matches
+or wins in every depth band); a grammatical-number probe with
+Hewitt--Liang selectivity (number decodable at ceiling from \emph{all}
+lenses --- including a \textbf{spectrum-matched random projection}, the
+decisive control); and the concept-plane trajectory that motivated the
+project (the J-lens path is longer on random planes too --- a generic
+magnitude effect, not a concept channel). A permuted-vocabulary lens
+control behaves accordingly. The 1.7B readout-geometry difference (cases
+reorganizing by output form in J-space) does not replicate at 8B and is
+not relied on. Full tables live in the project\textquotesingle s working
+log.
+
+

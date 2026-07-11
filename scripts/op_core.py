@@ -70,8 +70,11 @@ class Domain:
         return list(self.items)
 
     def render(self, operand_key, op_key, tpl: int = 0):
-        return self.templates[tpl].format(op=self.operators[op_key],
-                                          **self.items[operand_key]["args"])
+        args = self.items[operand_key]["args"]
+        phrase = self.operators[op_key]
+        if "{" in phrase:  # operand-bearing phrase, e.g. "money used in {a}"
+            phrase = phrase.format(**args)
+        return self.templates[tpl].format(op=phrase, **args)
 
     def answer(self, operand_key, op_key):
         return self.items[operand_key]["answers"][op_key]

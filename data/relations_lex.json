@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "domain": "relations_lex",
+    "template": "The {op} is",
+    "operators": {
+      "currency": "money used in {a}",
+      "capital": "seat of government in {a}",
+      "language": "language primarily spoken in {a}",
+      "demonym": "name for someone from {a}",
+      "continent": "world region containing {a}"
+    },
+    "operand_slots": ["a"],
+    "desinence_pair": ["language", "demonym"],
+    "note": "LEXICAL paraphrases of relations.json: the '{op} of {a}' unit itself is replaced (different content words, different syntax around the operand), not just the frame. Same operands and answers as relations.json, so operator directions built on formulation A (relations.json) can be tested on formulation B (this file) directly -- the cross-lexicalization test that separates 'direction of the relation' from 'direction of the phrasing'."
+  },
+  "items": {
+    "Italy":   {"args": {"a": "Italy"},   "answers": {"currency": "euro",   "capital": "Rome",      "language": "Italian",    "demonym": "Italian",    "continent": "Europe"}},
+    "Japan":   {"args": {"a": "Japan"},   "answers": {"currency": "yen",    "capital": "Tokyo",     "language": "Japanese",   "demonym": "Japanese",   "continent": "Asia"}},
+    "Russia":  {"args": {"a": "Russia"},  "answers": {"currency": "ruble",  "capital": "Moscow",    "language": "Russian",    "demonym": "Russian",    "continent": "Europe"}},
+    "China":   {"args": {"a": "China"},   "answers": {"currency": "yuan",   "capital": "Beijing",   "language": "Chinese",    "demonym": "Chinese",    "continent": "Asia"}},
+    "France":  {"args": {"a": "France"},  "answers": {"currency": "euro",   "capital": "Paris",     "language": "French",     "demonym": "French",     "continent": "Europe"}},
+    "Germany": {"args": {"a": "Germany"}, "answers": {"currency": "euro",   "capital": "Berlin",    "language": "German",     "demonym": "German",     "continent": "Europe"}},
+    "Brazil":  {"args": {"a": "Brazil"},  "answers": {"currency": "real",   "capital": "Brasilia",  "language": "Portuguese", "demonym": "Brazilian",  "continent": "America"}},
+    "Egypt":   {"args": {"a": "Egypt"},   "answers": {"currency": "pound",  "capital": "Cairo",     "language": "Arabic",     "demonym": "Egyptian",   "continent": "Africa"}},
+    "India":   {"args": {"a": "India"},   "answers": {"currency": "rupee",  "capital": "Delhi",     "language": "Hindi",      "demonym": "Indian",     "continent": "Asia"}},
+    "Mexico":  {"args": {"a": "Mexico"},  "answers": {"currency": "peso",   "capital": "Mexico",    "language": "Spanish",    "demonym": "Mexican",    "continent": "America"}},
+    "Sweden":  {"args": {"a": "Sweden"},  "answers": {"currency": "krona",  "capital": "Stockholm", "language": "Swedish",    "demonym": "Swedish",    "continent": "Europe"}},
+    "Turkey":  {"args": {"a": "Turkey"},  "answers": {"currency": "lira",   "capital": "Ankara",    "language": "Turkish",    "demonym": "Turkish",    "continent": "Asia"}}
+  }
+}
