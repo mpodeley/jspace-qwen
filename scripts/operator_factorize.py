@@ -78,15 +78,20 @@ def main() -> None:
               f"+desinence={des['desinence']:+.2f}")
 
     print("\n(C) held-out generalization: build v(op) on half the operands, swap the other half")
-    build, test, dfg = op_core.held_out_generalization(model, ws, dom, tok, seed=args.seed)
+    build, test, dfg, ldfg = op_core.held_out_generalization(model, ws, dom, tok, seed=args.seed)
     print(f"  build on {len(build)} operands, test on {len(test)} held-out")
     print(f"  held-out swaps flipped: {(dfg['swap'] > 0).sum()}/{len(dfg)}; "
           f"mean swap={dfg['swap'].mean():+.2f} vs random={dfg['random'].mean():+.2f}")
+    fam = op_core.bootstrap_family_ci(ldfg, seed=args.seed)
+    print(f"  family bootstrap: contrast {fam['contrast_mean']:+.2f} "
+          f"[{fam['contrast_lo']:+.2f}, {fam['contrast_hi']:+.2f}]; "
+          f"flip fraction {fam['flip_frac']:.2f} [{fam['flip_lo']:.2f}, {fam['flip_hi']:.2f}]")
 
     out = ROOT / "results" / "ablation" / f"{tag}_{args.domain}_heldout.parquet"
     out.parent.mkdir(parents=True, exist_ok=True)
     dfg.to_parquet(out)
-    print(f"\nsaved {out}")
+    ldfg.to_parquet(out.with_name(out.name.replace(".parquet", "_long.parquet")))
+    print(f"\nsaved {out} (+ _long)")
 
 
 if __name__ == "__main__":

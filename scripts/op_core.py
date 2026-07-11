@@ -55,6 +55,11 @@ class Domain:
     items: dict               # operand_key -> {"args": {...}, "answers": {op: ans}}
     desinence_pair: list | None
     answer_leading_space: bool = True  # False for digits (Qwen3 splits " 3" -> [space,3])
+    templates: list | None = None  # paraphrase frames; templates[0] == template (canonical)
+
+    def __post_init__(self):
+        if not self.templates:
+            self.templates = [self.template]
 
     @property
     def op_keys(self):
@@ -64,9 +69,9 @@ class Domain:
     def operand_keys(self):
         return list(self.items)
 
-    def render(self, operand_key, op_key):
-        return self.template.format(op=self.operators[op_key],
-                                    **self.items[operand_key]["args"])
+    def render(self, operand_key, op_key, tpl: int = 0):
+        return self.templates[tpl].format(op=self.operators[op_key],
+                                          **self.items[operand_key]["args"])
 
     def answer(self, operand_key, op_key):
         return self.items[operand_key]["answers"][op_key]
@@ -176,10 +181,12 @@ def op_dirs(model, ws, dom: Domain, operands=None):
     return v
 
 
-def measure_swaps(model, ws, dom: Domain, tok, seed=0, alpha=4.0, operands=None,
-                  build_operands=None):
-    """All-pairs operator swap: add alpha*(v[to]-v[from]) to a `from` prompt, read
-    the logit shift toward the `to` answer, vs a matched-norm random control. If
+def measure_swaps_long(model, ws, dom: Domain, tok, seed=0, alpha=4.0, operands=None,
+                       build_operands=None):
+    """All-pairs operator swap, one row PER (pair, operand): add alpha*(v[to]-v[frm])
+    to a `frm` prompt and read the logit shift toward the `to` answer, vs a
+    matched-norm random control. Long form is the substrate for distributions and
+    cluster-bootstrap CIs; `measure_swaps` aggregates it to per-pair means. If
     build_operands is set, v(op) is built from those and tested on `operands`
     (held-out generalization)."""
     import pandas as pd
@@ -195,7 +202,6 @@ def measure_swaps(model, ws, dom: Domain, tok, seed=0, alpha=4.0, operands=None,
         rv = {l: torch.randn(model.d_model, generator=g).to(dev) for l in ws}
         rn = torch.cat([rv[l] for l in ws]).norm()
         rv = {l: rv[l] / rn * norm for l in ws}
-        clean, swap, rand = [], [], []
         for o in test:
             af, at = dom.answer_tok(tok, o, frm), dom.answer_tok(tok, o, to)
             if af == at:
@@ -203,15 +209,98 @@ def measure_swaps(model, ws, dom: Domain, tok, seed=0, alpha=4.0, operands=None,
             p = dom.render(o, frm)
             L0, Ls, Lr = (final_logits(model, p), final_logits(model, p, dv),
                           final_logits(model, p, rv))
-            clean.append(float(L0[at] - L0[af]))
-            swap.append(float(Ls[at] - Ls[af]))
-            rand.append(float(Lr[at] - Lr[af]))
-        n = len(clean)
+            rows.append({"from": frm, "to": to, "operand": o,
+                         "clean": float(L0[at] - L0[af]),
+                         "swap": float(Ls[at] - Ls[af]),
+                         "random": float(Lr[at] - Lr[af])})
+    return pd.DataFrame(rows, columns=["from", "to", "operand", "clean", "swap", "random"])
+
+
+def measure_swaps(model, ws, dom: Domain, tok, seed=0, alpha=4.0, operands=None,
+                  build_operands=None, long_df=None):
+    """Per-pair means of `measure_swaps_long` in the legacy wide schema
+    (from, to, n, clean, swap, random). Pass `long_df` to aggregate an existing
+    long-form frame without re-running the model."""
+    import pandas as pd
+    ldf = long_df if long_df is not None else measure_swaps_long(
+        model, ws, dom, tok, seed=seed, alpha=alpha, operands=operands,
+        build_operands=build_operands)
+    rows = []
+    for frm, to in [(a, b) for a in dom.op_keys for b in dom.op_keys if a != b]:
+        sub = ldf[(ldf["from"] == frm) & (ldf["to"] == to)]
+        n = len(sub)
         rows.append({"from": frm, "to": to, "n": n,
-                     "clean": st.mean(clean) if n else float("nan"),
-                     "swap": st.mean(swap) if n else float("nan"),
-                     "random": st.mean(rand) if n else float("nan")})
+                     "clean": sub["clean"].mean() if n else float("nan"),
+                     "swap": sub["swap"].mean() if n else float("nan"),
+                     "random": sub["random"].mean() if n else float("nan")})
     return pd.DataFrame(rows)
+
+
+def bootstrap_pair_ci(long_df, n_boot=10_000, seed=0, ci=95):
+    """Percentile cluster-bootstrap CI per ordered pair, resampling OPERANDS with
+    replacement within the pair. The operand is the independent unit at this level;
+    the 20 ordered pairs share 5 operator directions and are NOT independent of one
+    another -- paradigm-level claims must use `bootstrap_family_ci`."""
+    import numpy as np
+    import pandas as pd
+    rng = np.random.default_rng(seed)
+    lo_q, hi_q = (100 - ci) / 2, 100 - (100 - ci) / 2
+    rows = []
+    for (frm, to), sub in long_df.groupby(["from", "to"], sort=False):
+        swap = sub["swap"].to_numpy()
+        contrast = (sub["swap"] - sub["random"]).to_numpy()
+        n = len(sub)
+        idx = rng.integers(0, n, size=(n_boot, n))
+        bs, bc = swap[idx].mean(axis=1), contrast[idx].mean(axis=1)
+        rows.append({"from": frm, "to": to, "n": n,
+                     "swap_mean": float(swap.mean()),
+                     "swap_lo": float(np.percentile(bs, lo_q)),
+                     "swap_hi": float(np.percentile(bs, hi_q)),
+                     "contrast_mean": float(contrast.mean()),
+                     "contrast_lo": float(np.percentile(bc, lo_q)),
+                     "contrast_hi": float(np.percentile(bc, hi_q))})
+    return pd.DataFrame(rows)
+
+
+def bootstrap_family_ci(long_df, n_boot=10_000, seed=0, ci=95):
+    """Paradigm-level cluster bootstrap honoring the dependence structure: the
+    ordered pairs reuse the same operator directions, so OPERATORS (not pairs) are
+    the top-level unit, operands the nested unit. Each replicate resamples the
+    operator set with replacement (a pair (a,b) enters with multiplicity
+    count(a)*count(b) -- the dyadic node bootstrap), then resamples operands within
+    each surviving pair. Returns percentile CIs for the weighted mean swap-random
+    contrast and for the weighted fraction of pairs whose mean swap is positive."""
+    import numpy as np
+    rng = np.random.default_rng(seed)
+    lo_q, hi_q = (100 - ci) / 2, 100 - (100 - ci) / 2
+    ops = list(dict.fromkeys(long_df["from"]))
+    groups = {(f, t): (s["swap"].to_numpy(), (s["swap"] - s["random"]).to_numpy())
+              for (f, t), s in long_df.groupby(["from", "to"], sort=False)}
+    contrasts, flips = np.empty(n_boot), np.empty(n_boot)
+    for b in range(n_boot):
+        cnt = {k: 0 for k in ops}
+        for k in rng.choice(ops, size=len(ops), replace=True):
+            cnt[k] += 1
+        tot_w = tot_c = tot_f = 0.0
+        for (f, t), (swap, contrast) in groups.items():
+            w = cnt[f] * cnt[t]
+            if w == 0:
+                continue
+            idx = rng.integers(0, len(swap), size=len(swap))
+            tot_w += w
+            tot_c += w * contrast[idx].mean()
+            tot_f += w * (swap[idx].mean() > 0)
+        contrasts[b] = tot_c / tot_w if tot_w else np.nan
+        flips[b] = tot_f / tot_w if tot_w else np.nan
+    obs_c = float((long_df["swap"] - long_df["random"]).mean())
+    wide = long_df.groupby(["from", "to"], sort=False)["swap"].mean()
+    return {"n_operators": len(ops), "n_pairs": len(groups),
+            "contrast_mean": obs_c,
+            "contrast_lo": float(np.nanpercentile(contrasts, lo_q)),
+            "contrast_hi": float(np.nanpercentile(contrasts, hi_q)),
+            "flip_frac": float((wide > 0).mean()),
+            "flip_lo": float(np.nanpercentile(flips, lo_q)),
+            "flip_hi": float(np.nanpercentile(flips, hi_q))}
 
 
 def measure_geometry(model, lens, ws, dom: Domain, use_j):
@@ -259,9 +348,10 @@ def held_out_generalization(model, ws, dom: Domain, tok, seed=0, alpha=4.0):
     ops = dom.operand_keys
     half = len(ops) // 2
     build, test = ops[:half], ops[half:]
-    df = measure_swaps(model, ws, dom, tok, seed=seed, alpha=alpha,
-                       operands=test, build_operands=build)
-    return build, test, df
+    ldf = measure_swaps_long(model, ws, dom, tok, seed=seed, alpha=alpha,
+                             operands=test, build_operands=build)
+    df = measure_swaps(model, ws, dom, tok, long_df=ldf)
+    return build, test, df, ldf
 
 
 def pure_desinence(model, ws, dom: Domain, tok, alpha=6.0):

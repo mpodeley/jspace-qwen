@@ -304,6 +304,60 @@ def fig_op_swap():
     plt.close(fig)
 
 
+def fig_op_swap_dist():
+    """Fig 2b -- the injection effect with its uncertainty. One row per ordered pair:
+    per-operand swap values (dots), per-operand random-control values (gray x), the
+    operand-bootstrap 95% CI on the swap mean, and the clean baseline mean (open
+    circle). States the dependence structure honestly: 20 ordered pairs share 5
+    operator directions, so operands are the independent unit within a pair; the
+    family-level CI (operators as clusters) is quoted in the title."""
+    import numpy as np
+    p = ABL / "1.7b_relations_operator_swap_long.parquet"
+    if not p.exists():
+        return
+    ldf = pd.read_parquet(p)
+    import sys
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import op_core
+    ci = op_core.bootstrap_pair_ci(ldf, seed=0)
+    fam = op_core.bootstrap_family_ci(ldf, seed=0)
+    ci = ci.sort_values("swap_mean").reset_index(drop=True)  # ascending: best on top
+
+    fig, ax = plt.subplots(figsize=(8.2, 7.6), constrained_layout=True)
+    rng = np.random.default_rng(0)
+    for i, r in ci.iterrows():
+        sub = ldf[(ldf["from"] == r["from"]) & (ldf["to"] == r["to"])]
+        jit = (rng.random(len(sub)) - 0.5) * 0.42
+        ax.scatter(sub["random"], i + jit, s=14, marker="x", color=MUTED,
+                   alpha=0.75, lw=1, zorder=2)
+        ax.scatter(sub["swap"], i + jit, s=17, color=OPERATOR_C, alpha=0.85,
+                   zorder=3, edgecolor=SURF, linewidth=0.4)
+        ax.plot([r["swap_lo"], r["swap_hi"]], [i, i], color=INK, lw=2.4,
+                zorder=4, solid_capstyle="round")
+        ax.plot(r["swap_mean"], i, "o", color=INK, ms=4.5, zorder=5)
+        ax.plot(sub["clean"].mean(), i, "o", mfc="none", mec=OPERAND_C, ms=6,
+                mew=1.4, zorder=4)
+    ax.axvline(0, color=MUTED, lw=1)
+    ax.set_yticks(range(len(ci)),
+                  [f"{r['from']} → {r['to']}" for _, r in ci.iterrows()], fontsize=8.5)
+    ax.set_xlabel("logit(to) − logit(from) per operand")
+    ax.set_title(
+        f"Every ordered operator swap flips, with uncertainty shown\n"
+        f"family level (operators as clusters): contrast {fam['contrast_mean']:+.1f} "
+        f"[{fam['contrast_lo']:+.1f}, {fam['contrast_hi']:+.1f}] · flip fraction "
+        f"{fam['flip_frac']:.0%} [{fam['flip_lo']:.0%}, {fam['flip_hi']:.0%}]",
+        fontsize=10, loc="left")
+    n_per = int(ldf.groupby(["from", "to"]).size().median())
+    fig.text(0.01, -0.015,
+             f"dots = swap per operand (orange, {n_per}/pair) · gray × = matched-norm random · "
+             f"bar = operand-bootstrap 95% CI · ○ = clean baseline mean\n"
+             f"20 ordered pairs share 5 operator directions — pairs are not independent; "
+             f"operands are the unit within a pair, operators across the paradigm.",
+             color=MUTED, fontsize=8.5, va="top")
+    _savefig(fig, "op_swap_dist")
+    plt.close(fig)
+
+
 def fig_op_syncretism():
     """Fig 4 -- operation ≠ realization. language & demonym both emit 'Italian' yet are
     distinct operator directions (their cosine is the least anti-aligned pair, but not
@@ -373,6 +427,7 @@ def main():
     fig_quant_control(data)
     fig_op_geometry()
     fig_op_swap()
+    fig_op_swap_dist()
     fig_op_syncretism()
     print("wrote:", sorted(p.name for p in FIGS.glob("*.png")))
 

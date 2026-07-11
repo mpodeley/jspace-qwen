@@ -59,12 +59,19 @@ def main() -> None:
           f"{rep['single_token_frac']:.2f}, min operator-pair signal {rep['min_pair_signal']} operands")
 
     print(f"\n(A) operator swap  [{tag}, {args.domain}]  clean<0; working swap>0; random~0")
-    df = op_core.measure_swaps(model, ws, dom, tok, seed=args.seed)
+    ldf = op_core.measure_swaps_long(model, ws, dom, tok, seed=args.seed)
+    df = op_core.measure_swaps(model, ws, dom, tok, long_df=ldf)
     print(df.to_string(index=False, float_format=lambda x: f"{x:+.2f}"))
     valid = df.dropna(subset=["swap"])
     print(f"  swaps that flipped sign: {(valid['swap'] > 0).sum()}/{len(valid)}; "
           f"random flipped: {(valid['random'] > 0).sum()}/{len(valid)}; "
           f"mean swap={valid['swap'].mean():+.2f} vs mean random={valid['random'].mean():+.2f}")
+
+    fam = op_core.bootstrap_family_ci(ldf, seed=args.seed)
+    print(f"  family bootstrap (operators as clusters, n={fam['n_operators']} operators, "
+          f"{fam['n_pairs']} pairs): swap-random contrast {fam['contrast_mean']:+.2f} "
+          f"[{fam['contrast_lo']:+.2f}, {fam['contrast_hi']:+.2f}]; "
+          f"flip fraction {fam['flip_frac']:.2f} [{fam['flip_lo']:.2f}, {fam['flip_hi']:.2f}]")
 
     if lens is not None:
         print("\n(B) paradigm geometry: mean |off-diagonal cosine| (lower = more distinct)")
@@ -78,7 +85,9 @@ def main() -> None:
     out = ROOT / "results" / "ablation" / f"{tag}_{args.domain}_operator_swap.parquet"
     out.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(out)
-    print(f"\nsaved {out}")
+    long_out = out.with_name(out.name.replace(".parquet", "_long.parquet"))
+    ldf.to_parquet(long_out)
+    print(f"\nsaved {out}\nsaved {long_out}")
 
 
 if __name__ == "__main__":
