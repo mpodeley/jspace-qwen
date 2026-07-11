@@ -848,7 +848,7 @@ role. The case metaphor is our explanatory device; the claims below stand on the
 interventions and the measured factorization.</em></p>
 <p><a class="md-button md-button--primary" href="../../assets/paper.pdf"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/></svg></span> Download the PDF</a>
 <a class="md-button" href="../explorer/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 16.5v-9l6 4.5M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> Interactive explorer</a></p>
-<p><em>Draft, 2026-07-10. Qwen3-1.7B/8B. All numbers reproducible from <code>scripts/</code> and <code>data/</code>; see
+<p><em>Draft, 2026-07-10. Qwen3-1.7B/8B + Gemma-2-9B. All numbers reproducible from <code>scripts/</code> and <code>data/</code>; see
 <a href="../reproduce/">"How to reproduce"</a> and the <a href="../findings/">working findings log</a>. An
 <a href="../explorer/">interactive explorer</a> animates the three central results (declension, injection,
 syncretism) and, for readers new to grammatical case, explains the linguistic analogy.</em></p>
@@ -884,7 +884,7 @@ relations are approximately linear operators (LRE, Hernandez et al. 2024; Merull
 not been characterized is the <strong>joint structure of operator and operand</strong>: whether the operation
 <em>factorizes</em> from its argument, whether that factorization <em>generalizes</em>, whether the operation is
 separable from the <em>word it produces</em>, and whether any of this holds <em>beyond</em> relational facts, in
-arithmetic and logic. We answer these on Qwen3, and offer a morphological reading — relational computation
+arithmetic and logic. We answer these on Qwen3 and Gemma-2, and offer a morphological reading — relational computation
 as <strong>declension</strong> — as an organizing metaphor that anticipates the specific asymmetries we observe
 (syncretism at the level of the surface form, fusion in the interaction term).</p>
 <h2 id="2-related-work-and-what-is-new-here">2. Related work and what is new here</h2>
@@ -937,14 +937,17 @@ over operands (the function-vector construction; <code>scripts/op_core.py:op_dir
 <p><strong>Swap and controls.</strong> Efficacy of <code>k_A → k_B</code> is the change in <code>logit(answer_B) − logit(answer_A)</code> at the
 query position when <code>α·(v(k_B) − v(k_A))</code> is added over the band, versus a <strong>matched-norm random</strong>
 direction. Answers are scored by their distinguishing token (bare digit for arithmetic, since Qwen3
-splits " 3" into [space, 3]); a tokenization guard drops operator pairs that collide at that token.</p>
+splits " 3" into [space, 3]); a tokenization guard drops, within each operator pair, the operands whose
+two answers collide at that token (for relations this leaves 4 of 12 operands on the syncretic
+demonym↔language pairs and all 12 elsewhere).</p>
 <p><strong>Factorization.</strong> <code>H[operand, operator] = μ + operand(o) + operator(k) + interaction</code>; we report the
 variance share of each term and the principal angles between the operand- and operator-subspaces
 (<code>scripts/op_core.py:factorize</code>).</p>
 <p><strong>Generalization.</strong> Build <code>v(op)</code> from half the operands; test the swap on the held-out half. This
 distinguishes a genuine operator from interpolation among the examples used to build it.</p>
 <p><strong>Statistical treatment.</strong> The 20 ordered swaps are <strong>not</strong> 20 independent observations: they are built
-from 5 operator directions (each participating in 8 ordered pairs) and evaluated on the same 12 operands.
+from 5 operator directions (each participating in 8 ordered pairs) and evaluated on the same shared
+operand set (12 operands, 4 on the syncretic pairs after the tokenization guard).
 We therefore report cluster-bootstrap percentile intervals (10,000 replicates) at two levels. Within a
 pair, the <strong>operand</strong> is the resampling unit (per-pair 95% CIs). Across the paradigm, the <strong>operator</strong> is
 the top-level cluster: a dyadic node bootstrap resamples the operator set with replacement, weights each
@@ -1002,6 +1005,11 @@ swap−random contrast is <strong>+22.6, 95% CI [+14.0, +32.1]</strong> at 1.7B 
 flip fraction is <strong>1.00 [1.00, 1.00]</strong> at both scales — every replicate flips every pair. Per-pair
 operand-bootstrap CIs never cross zero:</p>
 <p><img alt="Per-pair distributions: swap values per operand with operand-bootstrap 95% CIs, matched-norm random control, and clean baselines. No CI crosses zero; the weakest pairs are exactly the syncretic ones (demonym↔language and their neighbours)." src="../../figs/op_swap_dist.png" /></p>
+<p><em>Every ordered swap, with uncertainty. Orange dots = per-operand swap values (median 12/pair; the
+tokenization guard leaves 4 for the syncretic demonym↔language pairs); gray × = matched-norm random
+control; black bar = operand-bootstrap 95% CI; blue ○ = clean baseline mean. The weakest effects are
+precisely the syncretic pairs (<code>demonym ↔ language</code> and swaps into <code>demonym</code>) — where the two operations
+share their surface form.</em></p>
 <p><strong>Dose–response and collateral cost.</strong> Sweeping the intervention strength α (1.7B) separates the effect
 into its parts: the <strong>operator-specific</strong> component (swap − random) rises and <strong>saturates at ≈+23 by the
 default α = 4</strong>, while the matched-norm random control contributes a <strong>nonspecific</strong> margin shift of
@@ -1013,10 +1021,6 @@ edit substantially distorts off-task text. We report this as an honest cost of t
 all-position intervention rather than tuning it away; targeted (single-position) variants are the
 natural mitigation and are left to future work.</p>
 <p><img alt="Dose-response: the operator-specific effect saturates at the default dose α=4 while the nonspecific random shift stays flat; per-token KL on unrelated text grows monotonically — the edit is answer-surgical, not distribution-surgical." src="../../figs/op_dose.png" /></p>
-<p><em>Every ordered swap, with uncertainty. Orange dots = per-operand swap values (12/pair); gray × =
-matched-norm random control; black bar = operand-bootstrap 95% CI; blue ○ = clean baseline mean. The
-weakest effects are precisely the syncretic pairs (<code>demonym ↔ language</code> and swaps into <code>demonym</code>) — where
-the two operations share their surface form.</em></p>
 <h3 id="42-the-representation-factorizes-into-operator-operand">4.2 The representation factorizes into operator ⊕ operand</h3>
 <p>Two-way ANOVA at a mid-workspace layer (1.7B / 8B):</p>
 <table>
@@ -1043,7 +1047,8 @@ the two operations share their surface form.</em></p>
 </tr>
 </tbody>
 </table>
-<p>~90% additive; operand/operator subspaces largely orthogonal (principal angles 41–82°). The operation-
+<p>~90% additive; operand/operator subspaces largely orthogonal (principal angles 41–85° at the query
+token, across all three models). The operation-
 dominant representation <strong>emerges along the sequence</strong>: the entity enters operand-dominant and is
 <em>declined</em> into an operator-marked form by the query position (the reading-position control rules out
 template echo; the causal swaps are the stronger control).</p>
@@ -1056,7 +1061,7 @@ concept is </em><em>declined</em><em> along the sequence.</em></p>
 <p><em>language-of</em> and <em>demonym-of</em> emit the <strong>same word</strong> (Italian) yet are <strong>distinct operator directions</strong>;
 the swap between them is weak precisely because they share an exponent. A <strong>pure desinence</strong> built from
 the shared-output pairs (<code>mean[h(language) − h(demonym)]</code>, exponent cancelled) still installs the relation
-causally (1.7B: −3.7 → +12.5). The syncretism appears at the <em>exponent</em> level, not the <em>case</em> level — as
+causally (1.7B: −3.6 → +12.5). The syncretism appears at the <em>exponent</em> level, not the <em>case</em> level — as
 in Latin declension.</p>
 <p><img alt="Left: operator-direction cosines — all five operators are distinct directions (no off-diagonal near ±1); language and demonym, boxed, both emit &quot;Italian&quot; yet differ (cos −0.26). Right: the pure desinence, built where the two share an output word, still installs the relation causally (−3.6 → +12.5)." src="../../figs/op_syncretism.png" /></p>
 <p><em>Operation ≠ realization. Every operator is a distinct direction — including language and demonym (boxed),
@@ -1123,9 +1128,9 @@ direction is a property of the <strong>relation</strong>, not of the prompt that
 </tr>
 <tr>
 <td>pure desinence (clean → +v)</td>
-<td style="text-align: right;">−3.7 → +12.5</td>
+<td style="text-align: right;">−3.6 → +12.5</td>
 <td style="text-align: right;">−2.9 → +8.1</td>
-<td style="text-align: right;"><strong>−3.0 → +8.6</strong></td>
+<td style="text-align: right;"><strong>−3.0 → +8.5</strong></td>
 </tr>
 </tbody>
 </table>
