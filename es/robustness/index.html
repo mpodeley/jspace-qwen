@@ -752,9 +752,16 @@ ordered pairs share 5 directions and are <em>not</em> independent observations).
 <tr>
 <td>5</td>
 <td>It is <strong>not the prompt frame</strong></td>
-<td>build on frame <em>i</em>, swap on frame <em>j</em> (3 paraphrase frames)</td>
+<td>build on frame <em>i</em>, swap on frame <em>j</em> (3 context frames)</td>
 <td>clean baselines shift across frames; the contrast doesn't (1.7B 180/180, 8B 100/100)</td>
 <td><code>{model}_relations_templates*.parquet</code></td>
+</tr>
+<tr>
+<td>5b</td>
+<td>It is <strong>not the wording either</strong></td>
+<td>full re-lexicalization ("currency of" → "money used in", …), transfer both ways</td>
+<td>40/40 at 1.7B and 8B; transfer contrast ≈ within-formulation (+22.59 vs +22.62)</td>
+<td><code>{model}_relations_lexical*.parquet</code></td>
 </tr>
 <tr>
 <td>6</td>
@@ -790,6 +797,13 @@ ordered pairs share 5 directions and are <em>not</em> independent observations).
 <td>α sweep 0.5–12</td>
 <td>specific effect saturates at default α=4; off-task KL reported honestly (18 nats — answer-surgical, not distribution-surgical)</td>
 <td><code>1.7b_relations_dose.parquet</code></td>
+</tr>
+<tr>
+<td>10b</td>
+<td>The band is <strong>not doing the work</strong></td>
+<td>same directions at a single layer; real-activation patch at one position; greedy exact-match</td>
+<td>single layer: 20/20 margins at 4.5× lower KL; patch reroutes the <em>generated</em> answer at 51% vs 53% ceiling (additive: margins only)</td>
+<td><code>1.7b_relations_minimal*.{parquet,json}</code></td>
 </tr>
 <tr>
 <td>11</td>

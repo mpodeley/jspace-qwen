@@ -805,6 +805,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#29-cross-lexicalization-transfer-2026-07-11-reviewer-round" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.9 Cross-lexicalization transfer (2026-07-11, reviewer round)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#210-minimal-band-activation-patching-and-margins-vs-generation-2026-07-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.10 Minimal band, activation patching, and margins vs. generation (2026-07-11)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1373,6 +1395,23 @@ with the largest effect sizes of the three models:</strong> all-pairs swap 20/20
 <strong>6.8%</strong> (lowest of the three); along-sequence shift present (stem 37.6%→8.4%); pure desinence
 −3.0 → <strong>+8.5</strong>. Zero per-pair CIs cross zero. The factorization is not a Qwen idiosyncrasy —
 paper claims upgraded to two-family evidence (title now "…residual stream of LLMs").</p>
+<h3 id="29-cross-lexicalization-transfer-2026-07-11-reviewer-round">2.9 Cross-lexicalization transfer (2026-07-11, reviewer round)</h3>
+<p>The frame test (§2.7) held the <code>{op} of {a}</code> unit fixed — a reviewer rightly noted that proves
+<em>context</em> invariance, not <em>wording</em> invariance. New test (<code>operator_lexical.py</code>,
+<code>data/relations_lex.json</code>): re-lexicalize every relation (currency of → money used in; capital of →
+seat of government in; language of → language primarily spoken in; demonym → name for someone from;
+continent of → world region containing) and transfer directions both ways. <strong>1.7B: 40/40 flips, transfer
+contrast +22.59 vs +22.62 within-formulation. 8B: 40/40, +26.0/+27.6.</strong> Clean baselines differ across
+formulations; the causal effect does not. The direction is a property of the relation, not its wording —
+the lexical confound is closed.</p>
+<h3 id="210-minimal-band-activation-patching-and-margins-vs-generation-2026-07-11">2.10 Minimal band, activation patching, and margins vs. generation (2026-07-11)</h3>
+<p><code>op_minimal.py</code> (1.7B): a <strong>single mid-workspace layer</strong> flips 20/20 margins (+6.8 [+3.0, +8.9]) at
+4.5× lower off-task KL (4.6 vs 20.6 nats); half band +12.8 at 10.9 nats. Greedy honesty check: the
+additive injection at ANY width does <strong>not</strong> make the model emit answer_B in 3 greedy tokens (0%),
+while a <strong>query-position activation patch</strong> (real donor state, one position) does — <strong>51% vs the
+model's own 53% clean accuracy</strong> (ceiling). Random control 0%. Reading: the averaged difference
+direction rotates relative preference; the state-level patch reroutes the actual answer. Artifacts:
+<code>1.7b_relations_minimal.parquet</code> + <code>_minimal_margins.json</code>.</p>
 <hr />
 <h2 id="the-open-interpretive-question-deliberately-unresolved">The open interpretive question (deliberately unresolved)</h2>
 <p>The evidence splits cleanly into a negative half and a positive half:</p>

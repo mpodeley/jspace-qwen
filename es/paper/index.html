@@ -468,10 +468,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#46-the-factorization-is-domain-specific-arithmetic-and-logic-do-not" class="md-nav__link">
+  <a href="#46-the-factorization-is-domain-specific-arithmetic-and-logic-do-not-under-our-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.6 The factorization is domain-specific (arithmetic and logic do not)
+        4.6 The factorization is domain-specific (arithmetic and logic do not, under our setup)
       
     </span>
   </a>
@@ -506,10 +506,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-limitations" class="md-nav__link">
+  <a href="#5-discussion-relational-computation-as-declension" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Limitations
+        5. Discussion: relational computation as declension
       
     </span>
   </a>
@@ -517,10 +517,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-conclusion" class="md-nav__link">
+  <a href="#6-limitations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Conclusion
+        6. Limitations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-reproducibility-stimuli-and-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix A: Reproducibility, stimuli, and implementation details
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-b-the-j-space-readout-comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix B: The J-space readout comparisons
       
     </span>
   </a>
@@ -853,31 +886,21 @@ interventions and the measured factorization.</em></p>
 <a href="../explorer/">interactive explorer</a> animates the three central results (declension, injection,
 syncretism) and, for readers new to grammatical case, explains the linguistic analogy.</em></p>
 <h2 id="abstract">Abstract</h2>
-<p>We study how open-weights transformers (Qwen3-1.7B/8B, Gemma-2-9B) represent a <strong>relational operation</strong>
-applied to an entity — <em>currency-of</em>, <em>capital-of</em>, <em>language-of</em>, <em>demonym-of</em>, <em>continent-of</em> applied
-to a country.
-We find that the operation is carried by a <strong>manipulable operator direction</strong> in the residual stream
-that is largely <strong>separable from the operand</strong>. Adding <code>v(op_B) − v(op_A)</code> to a prompt performing <code>op_A</code>
-converts the model's answer to <code>op_B</code> for all 20 ordered operator pairs (matched-norm random controls
-null), and the direction <strong>generalizes to operands never used to build it</strong>, to <strong>unseen paraphrase
-frames</strong> (every build→test frame combination flips), and <strong>across architectures</strong> — the full pipeline
-replicates on Gemma-2-9B with the largest effect sizes of the three models tested. A two-way analysis of
-variance factorizes the representation as <code>H[operand, operator] = μ + operand + operator + interaction</code>,
-~90% additive with a ~10% <strong>fusion</strong> interaction, operator and operand occupying largely orthogonal
-subspaces; the operation-dominant representation <em>emerges along the sequence</em> (operand-dominant at the
-entity token → operator-dominant at the query token). Strikingly, the operation is <strong>separable from its
-surface realization</strong>: <em>language-of</em> and <em>demonym-of</em> are distinct operator directions even though both
-emit "Italian". As an explanatory device we borrow a morphological metaphor — the model <strong>declines</strong> a concept by its
-functional role (case), with <strong>syncretism</strong> (shared surface form) and <strong>fusion</strong> (non-additive
-stem+ending) as in a Latin declension. Testing generalization across domains, the factorization is
-<strong>specific to relational retrieval</strong>: for <strong>arithmetic</strong> (+, ×, −) and <strong>comparison-logic</strong> operators,
-the interaction term is 2–4× larger and the operator <strong>fails to generalize to held-out operands</strong>,
-consistent with arithmetic being computed by a "bag of heuristics" rather than a linear operator. A
-control that instead varies a <em>linear numeric parameter</em> (add-N) rather than the function generalizes
-better and is near-collinear, reconciling a contrary recent report (Christ et al. 2025). Finally,
-the structure is <strong>causal, not a readout advantage</strong>: the Jacobian-lens ("J-space") readout (Gurnee,
-Sofroniew, Lindsey et al. 2026) is not more
-legible than the raw residual on any of our metrics under matched controls.</p>
+<p>How do language models represent a relational operation — <em>currency-of</em>, <em>capital-of</em> — as distinct
+from the entity it applies to? Across Qwen3-1.7B/8B and Gemma-2-9B, we find the operation is carried by
+a <strong>manipulable operator direction</strong> in the residual stream, largely <strong>separable from the operand</strong>: a
+two-way analysis of variance factorizes the mid-network state as <code>H ≈ μ + operand + operator +
+interaction</code>, ~90% additive, with the operator component dominant at the query position. The direction
+is <strong>causal</strong>: adding <code>v(op_B) − v(op_A)</code> flips the target-vs-source logit margin for <strong>all 20 ordered
+relation pairs in all three models</strong> (a single mid-workspace layer suffices), while matched-norm random
+controls do nothing — and a query-position activation patch reroutes the greedy answer itself at the
+model's competence ceiling. It <strong>generalizes</strong>:
+directions built on half the operands flip the held-out half; directions built in one wording of a
+relation transfer to re-framed and fully re-lexicalized prompts; and the operation is separable from its <strong>surface realization</strong> —
+<em>language-of</em> and <em>demonym-of</em> are distinct directions even though both emit "Italian". The
+factorization is <strong>specific to relational retrieval</strong>: under the identical pipeline, arithmetic and
+comparison-logic operators show 2–4× the interaction and fail held-out generalization. Relational
+computation in these models is, to a first approximation, an operand plus a transplantable operator.</p>
 <h2 id="1-introduction">1. Introduction</h2>
 <p>A line of work shows that a <em>task</em> or <em>relation</em> can be captured by a single addable vector in an LLM's
 residual stream (task vectors, Hendel et al. 2023; function vectors, Todd et al. 2024) and that many
@@ -885,10 +908,16 @@ relations are approximately linear operators (LRE, Hernandez et al. 2024; Merull
 not been characterized is the <strong>joint structure of operator and operand</strong>: whether the operation
 <em>factorizes</em> from its argument, whether that factorization <em>generalizes</em>, whether the operation is
 separable from the <em>word it produces</em>, and whether any of this holds <em>beyond</em> relational facts, in
-arithmetic and logic. We answer these on Qwen3 and Gemma-2, and offer a morphological reading — relational computation
-as <strong>declension</strong> — as an organizing metaphor that anticipates the specific asymmetries we observe
-(syncretism at the level of the surface form, fusion in the interaction term).</p>
+arithmetic and logic. We answer these on Qwen3 and Gemma-2. A closing discussion (§5) offers a morphological reading —
+relational computation as <strong>declension</strong> — as an organizing metaphor for the asymmetries we observe.</p>
 <h2 id="2-related-work-and-what-is-new-here">2. Related work and what is new here</h2>
+<p><strong>Extracting relational concepts.</strong> The closest prior work is Wang et al. (2024), who locate hidden
+states that express a relation separately from its subject, transplant these relational representations
+between subjects, and rewrite relations across 22 relation types and several models. We instead
+characterize the <strong>joint geometry</strong> of relation and entity: we quantify its additive and interaction
+components (the two-way ANOVA with a measured fusion term), run exhaustive all-pairs swaps against
+matched-norm nulls, and test whether relation directions generalize causally across held-out entities,
+prompt contexts, architectures, and task domains — including the domains where the factorization fails.</p>
 <p><strong>Operation as an addable vector.</strong> Task Vectors (Hendel et al., EMNLP 2023) and Function Vectors (Todd
 et al., ICLR 2024) extract one vector per ICL task and add/patch it to trigger the task. In-Context
 Vectors (Liu et al., ICML 2024) and ActAdd (Turner et al. 2023) steer a task/style similarly. These
@@ -896,7 +925,7 @@ bundle operator <em>and</em> operand into one unfactored "task" direction and (f
 cross-task arithmetic without null controls. We contribute the <strong>factorization</strong> (operator ⊕ operand),
 an <strong>exhaustive all-pairs swap with matched-norm nulls</strong>, and a <strong>held-out-operand generalization</strong> test.</p>
 <p><strong>Relation as a linear operator.</strong> LRE (Hernandez et al., ICLR 2024) fits a full affine map <code>W·s + b</code> per
-relation. That represents the relation as a <em>monolithic</em> operator; we show a <strong>low-dimensional additive
+relation. That represents the relation as a <em>monolithic</em> operator; we show an <strong>additive
 operator <em>direction</em></strong> that is arithmetically composable and <strong>factorable from the operand</strong>, and we
 quantify the operand/operator/interaction variance split, which LRE does not.</p>
 <p><strong>Additive factual recall.</strong> Summing Up the Facts (Chughtai et al. 2024) decomposes factual recall into
@@ -923,7 +952,7 @@ vectors (task/function vectors) and linear decoders (LRE) is established; what h
 joint, quantified analysis: (1) an operator ⊕ operand <strong>factorization of the residual state itself</strong>
 (two-way ANOVA with a measured interaction/fusion term and operator/operand subspace angles); (2) an
 <strong>exhaustive all-pairs causal swap</strong> with matched-norm nulls; (3) <strong>held-out-operand generalization</strong> as
-the discriminator between a real operator and interpolation among build examples; (4) the
+the test separating a transferable direction from interpolation among build examples; (4) the
 <strong>operation-vs-realization dissociation</strong> (language ≠ demonym as directions despite identical output);
 and (5) a <strong>cross-domain test</strong> showing the factorization is specific to relational retrieval and breaks
 down for arithmetic and logic. The declension/case reading is our <em>presentation</em> of these measurements —
@@ -931,7 +960,7 @@ an organizing metaphor that anticipates the observed asymmetries (syncretism at 
 the interaction term) — not an additional empirical claim.</p>
 <h2 id="3-method">3. Method</h2>
 <p><strong>Setup.</strong> Qwen3-1.7B/8B throughout, plus Gemma-2-9B for the cross-architecture replication (§4.5); all
-run in bf16 on a single AMD Strix Halo APU (see <a href="../setup/">setup</a>). A relation is rendered into a template; the canonical frame is
+run in bf16 on a single AMD Strix Halo APU (environment details in the supplementary repository). A relation is rendered into a template; the canonical frame is
 <code>"The {op} of {a} is"</code>, and §4.4 additionally uses two paraphrase frames (question–answer and
 discourse-prefixed) that hold the <code>{op} of {a}</code> unit fixed while varying the surrounding frame, all
 ending in <em>is</em> so answer scoring is comparable.
@@ -939,7 +968,7 @@ Reading position is the query token unless stated; the depth "workspace" band (3
 the J-space paper locates the global workspace and where we build operator directions.</p>
 <p><strong>Operator direction.</strong> For operator <code>k</code>, <code>v(k) = mean_operand[ h(operand, k) − mean_op h(operand, ·) ]</code>
 at the workspace layers — the deviation of an operator from the operand's average over operators, averaged
-over operands (the function-vector construction; <code>scripts/op_core.py:op_dirs</code>).</p>
+over operands (the function-vector construction; implementation details in Appendix A).</p>
 <p><strong>Swap and controls.</strong> Efficacy of <code>k_A → k_B</code> is the change in <code>logit(answer_B) − logit(answer_A)</code> at the
 query position when <code>α·(v(k_B) − v(k_A))</code> is added over the band, versus a <strong>matched-norm random</strong>
 direction. Answers are scored by their distinguishing token (bare digit for arithmetic, since Qwen3
@@ -948,7 +977,7 @@ two answers collide at that token (for relations this leaves 4 of 12 operands on
 demonym↔language pairs and all 12 elsewhere).</p>
 <p><strong>Factorization.</strong> <code>H[operand, operator] = μ + operand(o) + operator(k) + interaction</code>; we report the
 variance share of each term and the principal angles between the operand- and operator-subspaces
-(<code>scripts/op_core.py:factorize</code>).</p>
+(Appendix A).</p>
 <p><strong>Generalization.</strong> Build <code>v(op)</code> from half the operands; test the swap on the held-out half. This
 distinguishes a genuine operator from interpolation among the examples used to build it.</p>
 <p><strong>Statistical treatment.</strong> The 20 ordered swaps are <strong>not</strong> 20 independent observations: they are built
@@ -958,14 +987,15 @@ We therefore report cluster-bootstrap percentile intervals (10,000 replicates) a
 pair, the <strong>operand</strong> is the resampling unit (per-pair 95% CIs). Across the paradigm, the <strong>operator</strong> is
 the top-level cluster: a dyadic node bootstrap resamples the operator set with replacement, weights each
 ordered pair by the product of its endpoints' multiplicities, and resamples operands within surviving
-pairs (<code>op_core.bootstrap_pair_ci</code> / <code>bootstrap_family_ci</code>; per-operand values persisted in the
-<code>*_long.parquet</code> artifacts).</p>
+pairs (per-operand values are released as long-form artifacts; Appendix A).</p>
 <p><strong>J-space controls.</strong> We repeat readout-geometry in the J-lens readout <code>unembed(J·h)</code> vs the logit-lens
 readout <code>unembed(h)</code>, and re-run efficacy with <strong>spectrum-matched random-projection</strong> and
-<strong>permuted-vocabulary</strong> null lenses (<code>scripts/control_lens.py</code>).</p>
+<strong>permuted-vocabulary</strong> null lenses (Appendix B).</p>
 <h2 id="4-results">4. Results</h2>
 <h3 id="41-relational-operators-are-manipulable-directions">4.1 Relational operators are manipulable directions</h3>
-<p>All 20 ordered operator swaps flip the answer (mean swap <strong>+21</strong> logit units on 1.7B, <strong>+25</strong> on 8B) while
+<p>All 20 ordered operator swaps flip the <strong>target-vs-source logit margin</strong> (the sign of
+<code>logit(answer_B) − logit(answer_A)</code> at the distinguishing token; mean swap <strong>+21</strong> logit units on 1.7B,
+<strong>+25</strong> on 8B) while
 the matched-norm random control is ~0. Representative (1.7B):</p>
 <table>
 <thead>
@@ -1026,6 +1056,17 @@ intervened) grows from 7.9 nats (α = 0.5) to 21 nats (α = 12) — 18.4 at the 
 edit substantially distorts off-task text. We report this as an honest cost of the band-wide,
 all-position intervention rather than tuning it away; targeted (single-position) variants are the
 natural mitigation and are left to future work.</p>
+<p><strong>Minimal intervention, and margins vs. generation.</strong> The band-wide injection is not the minimal
+effective intervention: restricting the same directions to a <strong>single mid-workspace layer</strong> still flips
+<strong>20/20 margins</strong> (contrast +6.8 [+3.0, +8.9]) at 4.5× lower off-task cost (KL 4.6 vs. 20.6 nats/token);
+the middle half-band gives +12.8 [+7.9, +16.3] at 10.9 nats. Greedy decoding sharpens the picture: the
+additive injection — at any width — flips the <em>relative</em> margin but does not make the model emit the
+target answer within three greedy tokens (0% exact match; consistent with its off-task distortion),
+whereas <strong>replacing the query-position residual with a real donor activation</strong> (same operand, target
+relation — classic activation patching: one position, no averaged direction) makes the model <em>say</em> the
+target answer at <strong>51%</strong>, essentially its own clean-prompt accuracy of 53%. The averaged difference
+direction manipulates preference; the state-level patch reroutes the generated answer at the model's
+competence ceiling.</p>
 <p><img alt="Dose-response: the operator-specific effect saturates at the default dose α=4 while the nonspecific random shift stays flat; per-token KL on unrelated text grows monotonically — the edit is answer-surgical, not distribution-surgical." src="../../figs/op_dose.png" /></p>
 <h3 id="42-the-representation-factorizes-into-operator-operand">4.2 The representation factorizes into operator ⊕ operand</h3>
 <p>Two-way ANOVA at a mid-workspace layer (1.7B / 8B):</p>
@@ -1053,8 +1094,9 @@ natural mitigation and are left to future work.</p>
 </tr>
 </tbody>
 </table>
-<p>~90% additive; operand/operator subspaces largely orthogonal (principal angles 41–85° at the query
-token, across all three models). The operation-
+<p>~90% additive; operand and operator components occupy distinct subspaces (principal angles 41–85° at the
+query token, all three models — though near-orthogonality is the high-dimensional default, so the load-
+bearing evidence is the variance decomposition and the causal swaps, not the angles). The operation-
 dominant representation <strong>emerges along the sequence</strong>: the entity enters operand-dominant and is
 <em>declined</em> into an operator-marked form by the query position (the reading-position control rules out
 template echo; the causal swaps are the stronger control).</p>
@@ -1078,7 +1120,7 @@ word (so the word cancels) still installs the relation: the case is separable fr
 <strong>20/20</strong> swaps — a genuine, transferable operator, not interpolation. Operator-level cluster bootstrap
 on the held-out contrast: <strong>+20.0 [+10.8, +29.5]</strong> at 1.7B, <strong>+22.8 [+14.0, +31.0]</strong> at 8B; flip
 fraction <strong>1.00 [1.00, 1.00]</strong> at both.</p>
-<p><strong>Cross-frame transfer (paraphrase robustness).</strong> To rule out template echo we render every relation in
+<p><strong>Cross-frame transfer.</strong> To rule out template echo we render every relation in
 three paraphrase frames — declarative (<code>The {op} of {a} is</code>), question–answer (<code>Q: What is the {op} of
 {a}? A: It is</code>), and discourse-prefixed (<code>It is well known that the {op} of {a} is</code>) — and test every
 build→test frame combination: <code>v(op)</code> built on frame <em>i</em>, all-pairs swap run on frame <em>j</em>. On 1.7B, <strong>all
@@ -1088,7 +1130,17 @@ all three test frames. The clean baselines do shift across frames (−7.0 / −8
 frames are genuinely different prompts; the operator's causal effect does not. At 8B the pattern
 replicates — <strong>100/100 flips over the tested combinations (80/80 cross-frame, mean contrast +28.7)</strong>,
 with the declarative-built direction again frame-invariant (+26.0 / +26.0 / +26.0). The operator
-direction is a property of the <strong>relation</strong>, not of the prompt that elicits it.</p>
+direction is invariant to the prompt <strong>context</strong> around the fixed <code>{op} of {a}</code> unit.</p>
+<p><strong>Cross-lexicalization transfer.</strong> The stronger question is whether the direction survives changing the
+<em>wording of the relation itself</em>. We re-lexicalize every relation — <em>currency of {a}</em> → <em>money used in
+{a}</em>, <em>capital of {a}</em> → <em>seat of government in {a}</em>, <em>language of {a}</em> → <em>language primarily spoken in
+{a}</em>, <em>demonym</em> → <em>name for someone from {a}</em>, <em>continent of {a}</em> → <em>world region containing {a}</em> — and
+test both transfer directions. Directions built on the of-phrasings flip the re-lexicalized prompts, and
+vice versa: <strong>40/40 at 1.7B (mean contrast +21.7) and 40/40 at 8B (+26.8)</strong>, with transfer contrasts
+indistinguishable from within-formulation ones (1.7B: +22.59 transferred vs. +22.62 within;
+operator-level 95% CIs overlap almost exactly). The clean baselines differ across formulations — the
+prompts are genuinely different — but the operator's causal effect does not. The direction is a property
+of the <strong>relation</strong>, not of its wording.</p>
 <h3 id="45-cross-architecture-replication-gemma-2-9b">4.5 Cross-architecture replication (Gemma-2-9B)</h3>
 <p>The entire pipeline transfers unchanged to <strong>Gemma-2-9B</strong> — a different pretraining corpus, tokenizer
 (SentencePiece; answer single-token coverage 0.95), and architecture family (soft-capped logits, GQA):</p>
@@ -1143,9 +1195,10 @@ direction is a property of the <strong>relation</strong>, not of the prompt that
 <p>Every qualitative signature replicates — all-pairs flips with matched-norm nulls ≈ 0, held-out-operand
 transfer, case-dominant factorization at the query token with single-digit fusion, the along-sequence
 shift (stem 37.6% → 8.4% from the entity token to the query token), and the exponent-free desinence.
-Effect sizes are, if anything, largest in Gemma. The operator–operand factorization is not an
-idiosyncrasy of one model family.</p>
-<h3 id="46-the-factorization-is-domain-specific-arithmetic-and-logic-do-not">4.6 The factorization is domain-specific (arithmetic and logic do not)</h3>
+Raw logit units are not directly comparable across architectures (Gemma-2 soft-caps its final logits),
+so cross-model comparison should lean on the flip rates and variance shares, which match or exceed
+Qwen3's. The operator–operand factorization is not an idiosyncrasy of one model family.</p>
+<h3 id="46-the-factorization-is-domain-specific-arithmetic-and-logic-do-not-under-our-setup">4.6 The factorization is domain-specific (arithmetic and logic do not, under our setup)</h3>
 <p>Extending the identical pipeline to arithmetic (+, ×, −) and comparison-logic operators, on 1.7B:</p>
 <table>
 <thead>
@@ -1187,7 +1240,8 @@ random). Monotone at both scales: relational ≫ arithmetic &gt; logic.</p>
 <p>Relational operators factorize cleanly and generalize; arithmetic and logical operators are <strong>entangled
 with their operands</strong> (2–4× the interaction) and do <strong>not</strong> form a transferable direction — consistent
 with arithmetic being a bag of heuristics / Fourier computation rather than a linear operator. The
-<strong>held-out generalization test is the discriminator</strong> between a real operator and memorized interpolation.</p>
+<strong>held-out generalization test is what separates</strong> a transferable operator direction from memorized
+interpolation.</p>
 <h3 id="47-reconciling-with-a-contrary-report-add-n-vs-two-operand-arithmetic">4.7 Reconciling with a contrary report: add-N vs. two-operand arithmetic</h3>
 <p>Christ et al. (2025) report the <em>opposite</em> sign for arithmetic: an operator built from an <strong>add-N</strong>
 relation (a fixed addend <code>N</code> applied to a single number) <strong>does</strong> generalize to held-out relations. The
@@ -1231,36 +1285,76 @@ varies the function) with no contradiction. The caveat is quantitative: Qwen3 BP
 single-digit results, so the add-N grid is small (5 operands) and its generalization is weak in absolute
 terms — the <strong>ordering</strong> (relations ≫ add-N &gt; <code>+ × −</code>), not the magnitude, is the claim.</p>
 <h3 id="48-this-is-causal-structure-not-a-j-space-readout-advantage">4.8 This is causal structure, not a J-space readout advantage</h3>
-<p>On four readout comparisons (bridge-entity pass@k, a surface-form logit difference, a number probe, and a
-concept-plane trajectory), the Jacobian-lens readout of Gurnee, Sofroniew, Lindsey et al. 2026 — whose
-global-workspace result motivated this project, and whose "workspace" band we intervene on throughout —
-shows <strong>no readout advantage</strong> over the logit-lens under matched
-controls; a spectrum-matched random projection reads number as well as the fitted J-lens, and the
-concept-plane "channel" does not survive a random-plane baseline (see <a href="../findings/">findings §Part 1</a>). The
-operator/operand structure lives in the <strong>causal</strong> organization of the residual, and is <strong>not</strong> more
-legible in the J-space than in the raw stream (its 1.7B readout-geometry difference does not replicate at
-8B). We therefore make no claim of a special readable subspace; the contribution is the operator/operand
-<em>causal</em> factorization.</p>
-<h2 id="5-limitations">5. Limitations</h2>
+<p>This project began as a replication of the J-space readout claim of Gurnee, Sofroniew, Lindsey et al.
+2026, whose "workspace" band we intervene on throughout. Under matched controls — including a
+spectrum-matched random projection — the Jacobian-lens readout showed <strong>no advantage</strong> over the logit
+lens on any of four comparisons (Appendix B). The structure reported here is <strong>causal</strong> organization of
+the residual stream, not a privileged readable subspace.</p>
+<h2 id="5-discussion-relational-computation-as-declension">5. Discussion: relational computation as declension</h2>
+<p>The measurements invite a morphological reading, offered as an organizing metaphor rather than an
+additional claim. In a declining language a noun's role is marked by a case ending on a stem — and each
+structural feature of a case system has a measured counterpart here. The same stem takes different
+endings (one country, five operator directions); the same ending applies across stems (held-out-operand
+transfer, §4.4); two cases can share a surface form without being the same case (<strong>syncretism</strong>:
+<em>language-of</em> and <em>demonym-of</em> both emit "Italian", yet are distinct directions and their mutual swap is
+the weakest of the paradigm, §4.3); and stem and ending do not compose perfectly (<strong>fusion</strong>: the ~10%
+interaction term, §4.2). The exponent-free <strong>desinence</strong> is the metaphor's sharpest prediction — a case
+marker stripped of its surface form should still be causally functional, and it is (§4.3). The metaphor
+also marks its own limits: arithmetic and logic operators do not decline (§4.6); whatever those domains
+use, it is not a case system.</p>
+<h2 id="6-limitations">6. Limitations</h2>
 <ul>
 <li><strong>Scale and family.</strong> 1.7–9B models from two families (Qwen3, Gemma 2) — both decoder-only
   transformers; no ≥30B model. Relational linearity holds for a subset of relations even in-domain
   (cf. LRE ~48%).</li>
-<li><strong>Relation coverage.</strong> Five hand-chosen country relations, English-only. Prompt variation covers three
-  paraphrase <em>frames</em> (§4.4) but all frames share the <code>{op} of {a}</code> phrasing unit; phrase-level
-  paraphrases, more relations, and other entity types remain open.</li>
+<li><strong>Relation coverage.</strong> Five hand-chosen country relations, English-only. Prompt variation covers
+  three context frames and a full re-lexicalization of every relation (§4.4); more relations, other
+  entity types, and other languages remain open.</li>
 <li><strong>Arithmetic coverage.</strong> Qwen3 BPE splits multi-digit numbers, so we restrict to single-digit results;
   the arithmetic null is on that regime and at 1.7B/8B, where arithmetic competence is itself limited.</li>
 <li><strong>Reading-position result</strong> restates known subject-enrichment→attribute-extraction dynamics.</li>
 <li><strong>No J-space claim.</strong> The readout-geometry difference is 1.7B-specific; the paper stands on the causal
   factorization, not on a J-lens readout advantage.</li>
 </ul>
-<h2 id="6-conclusion">6. Conclusion</h2>
-<p>An LLM represents a relational operation as a low-dimensional, causally-manipulable operator direction
+<h2 id="7-conclusion">7. Conclusion</h2>
+<p>An LLM represents a relational operation as a causally manipulable operator direction
 that factorizes from the operand, generalizes to unseen operands, and separates the operation from the
 word that realizes it — a structure well described as <strong>declension</strong>. This factorization is not universal:
 it is clean for relational retrieval and breaks down for arithmetic and logic, whose operators are
 entangled with their operands. The structure is causal; it is not a more-readable subspace.</p>
+<h2 id="appendix-a-reproducibility-stimuli-and-implementation-details">Appendix A: Reproducibility, stimuli, and implementation details</h2>
+<p><strong>Checkpoints and hardware.</strong> <code>Qwen/Qwen3-1.7B</code>, <code>Qwen/Qwen3-8B</code>, <code>google/gemma-2-9b</code>, all bf16 on a
+single AMD Strix Halo APU (128 GB unified memory, ROCm PyTorch). Seeds default to 0 and affect only the
+random controls; direction building is deterministic.</p>
+<p><strong>Stimuli.</strong> Operands (12 countries): Italy, Japan, Russia, China, France, Germany, Brazil, Egypt,
+India, Mexico, Sweden, Turkey. Relations: currency, capital, language, demonym ("word for a person
+from"), continent; every (country, relation) cell has a gold one-word answer (e.g. Italy → euro, Rome,
+Italian, Italian, Europe); the full grid ships in <code>data/relations.json</code>, the lexical reformulations in
+<code>data/relations_lex.json</code>, and the paraphrase frames in the dataset metadata.</p>
+<p><strong>Answer scoring and selection.</strong> Answers are scored at the first token of <code>" " + answer</code>. Within each
+ordered operator pair, operands whose two answers collide at that token are dropped (4 of 12 survive on
+the syncretic demonym↔language pairs; all 12 elsewhere). Whole-word single-token coverage: 0.92 (Qwen3
+BPE), 0.95 (Gemma SentencePiece).</p>
+<p><strong>Directions, interventions, and controls.</strong> <code>v(op)[layer]</code> is the mean over (operand, frame) cells of
+the op's residual minus that cell's mean over ops, computed at ~25 evenly spaced source layers restricted
+to the 38–92% depth band. Interventions add <code>α · (v(to) − v(from))</code> at every position of the band
+(α = 4 unless swept). The matched-norm control draws one Gaussian vector per layer and rescales the
+band-concatenated stack to exactly the injected difference's norm. Clean mean margins
+<code>logit(to) − logit(from)</code> are ≈ −7 to −8 across models and frames; per-operand values for every
+experiment are released as long-form artifacts (<code>results/ablation/*_long.parquet</code>).</p>
+<p><strong>Experiment drivers.</strong> <code>op_core.py</code> (directions, swaps, ANOVA, cluster bootstraps),
+<code>operator_paradigm.py</code>, <code>operator_factorize.py</code>, <code>operator_templates.py</code>, <code>operator_lexical.py</code>,
+<code>op_dose.py</code>, <code>op_minimal.py</code>, <code>op_geometry_dump.py</code>.</p>
+<h2 id="appendix-b-the-j-space-readout-comparisons">Appendix B: The J-space readout comparisons</h2>
+<p>Four readout comparisons on Qwen3-1.7B (8B where noted) asked whether the Jacobian-lens readout exposes
+more than the logit lens: bridge-entity pass@k (a tie, drifting toward the logit lens at 8B); a
+surface-form logit difference with real competitors (logit lens matches or wins in every depth band); a
+grammatical-number probe with Hewitt–Liang selectivity (number decodable at ceiling from <em>all</em> lenses —
+including a <strong>spectrum-matched random projection</strong>, the decisive control); and the concept-plane
+trajectory that motivated the project (the J-lens path is longer on random planes too — a generic
+magnitude effect, not a concept channel). A permuted-vocabulary lens control behaves accordingly. The
+1.7B readout-geometry difference (cases reorganizing by output form in J-space) does not replicate at
+8B and is not relied on. Full tables live in the project's working log.</p>
 <h2 id="references">References</h2>
 <p>Christ et al. 2025, <em>The Structure of Relation Decoding Linear Operators in Large Language Models</em>, NeurIPS (Spotlight), arXiv:2510.26543 ·
 Chughtai et al. 2024, <em>Summing Up the Facts</em>, arXiv:2402.07321 ·
@@ -1279,6 +1373,7 @@ Nanda et al. 2023, <em>Progress Measures for Grokking</em>, ICLR, arXiv:2301.052
 Nikankin et al. 2025, <em>Arithmetic Without Algorithms</em>, ICLR, arXiv:2410.21272 ·
 Todd et al. 2024, <em>Function Vectors in Large Language Models</em>, ICLR, arXiv:2310.15213 ·
 Turner et al. 2023, <em>Activation Addition (ActAdd)</em>, arXiv:2308.10248 ·
+Wang, Whyte &amp; Xu 2024, <em>Locating and Extracting Relational Concepts in Large Language Models</em>, ACL Findings, arXiv:2406.13184 ·
 Zhong et al. 2023, <em>The Clock and the Pizza</em>, NeurIPS, arXiv:2306.17844.</p>
 
 

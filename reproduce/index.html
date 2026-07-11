@@ -770,8 +770,10 @@ checkpoint. Lenses land in <code>out/lenses/&lt;tag&gt;.pt</code>.</p>
 other two) to <code>results/geometry/*.json|npz</code>, and writes the explorer's data bundle
 <code>docs/interactive/declension.data.js</code> (from the 1.7B relations run).</p>
 <p>Two further checks from the review pass:</p>
-<div class="highlight"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/operator_templates.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">   </span><span class="c1"># cross-frame transfer (3 paraphrase frames)</span>
+<div class="highlight"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/operator_templates.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">   </span><span class="c1"># cross-frame transfer (3 context frames)</span>
+.venv/bin/python<span class="w"> </span>scripts/operator_lexical.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">     </span><span class="c1"># cross-LEXICALIZATION transfer</span>
 .venv/bin/python<span class="w"> </span>scripts/op_dose.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">              </span><span class="c1"># alpha dose-response + off-task KL</span>
+.venv/bin/python<span class="w"> </span>scripts/op_minimal.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">           </span><span class="c1"># band sweep + activation patching + greedy exact match</span>
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Reproducibility box</p>
