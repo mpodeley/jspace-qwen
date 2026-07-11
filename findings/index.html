@@ -569,6 +569,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#26-reconciling-with-christ-et-al-251026543-add-n-vs-two-operand-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Reconciling with Christ et al. (2510.26543): add-N vs. two-operand arithmetic
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -619,6 +630,33 @@
     
   
     Paper draft — operator/operand factorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../explorer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactive explorer
   
 
     
@@ -1114,6 +1152,51 @@ a generalization test that pinpoint <em>why</em> it is not operator-linear. The 
 test is the discriminator: a clean in-sample swap (arithmetic swaps do flip
 in-sample) is <strong>not</strong> evidence of a real operator unless it generalizes.</p>
 <p>A <a href="../paper/">draft write-up is at <strong>paper.md</strong></a>.</p>
+<h3 id="26-reconciling-with-christ-et-al-251026543-add-n-vs-two-operand-arithmetic">2.6 Reconciling with Christ et al. (2510.26543): add-N vs. two-operand arithmetic</h3>
+<p>Christ et al. (Oct 2025) report that arithmetic <strong>generalizes</strong> across held-out
+relations when each relation is an <em>add-N</em> (fixed addend N). That is the opposite
+sign to our §2.5 arithmetic negative — so we reproduce their cut on Qwen3 and
+reconcile. In <em>add-N</em> the operator <strong>is the addend N</strong>, over a single number
+operand; because a number is a linear quantity, "generalizing across N" is
+number-line interpolation, not operator structure. Our <code>+ × −</code> cut instead varies
+the <strong>function</strong> over two operands.</p>
+<p>Measured (<code>--domain arith_addN</code> vs <code>arithmetic</code>), the reconciliation is directional
+but honest — the single-digit BPE constraint keeps the add-N grid tiny (5 operands),
+so we cannot reproduce their strong multi-digit generalization:</p>
+<table>
+<thead>
+<tr>
+<th>cut</th>
+<th>held-out generalization (1.7B / 8B)</th>
+<th style="text-align: right;">operator-set collinearity (top-1 var)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>relations (5 operations)</td>
+<td>20/20 · 20/20</td>
+<td style="text-align: right;">0.39 (spread paradigm)</td>
+</tr>
+<tr>
+<td><strong>add-N</strong> (operator = addend)</td>
+<td>5/12 (+0.10) · 6/12 (+0.05)</td>
+<td style="text-align: right;"><strong>0.76 (most 1-D / number-line)</strong></td>
+</tr>
+<tr>
+<td><code>+ × −</code> (operator = function)</td>
+<td>2/6 (−0.43) · 1/6 (−0.55)</td>
+<td style="text-align: right;">0.64</td>
+</tr>
+</tbody>
+</table>
+<p>So add-N sits between: it generalizes <em>better</em> than <code>+ × −</code> (positive vs clearly
+negative) and its operator directions are the <strong>most collinear</strong> (76% of the
+operator-set variance on one line) — consistent with add-N being a linear numeric
+family. The genuine-operation cut (<code>+ × −</code>) is entangled and generalizes worst.
+This matches Christ's positive (their cut varies a linear parameter) and our
+negative (ours varies the function) without contradiction; the constraint is that
+Qwen3 BPE limits us to single-digit arithmetic, so the add-N generalization is weak
+in absolute terms — the <em>ordering</em>, not the magnitude, is the point.</p>
 <hr />
 <h2 id="the-open-interpretive-question-deliberately-unresolved">The open interpretive question (deliberately unresolved)</h2>
 <p>The evidence splits cleanly into a negative half and a positive half:</p>

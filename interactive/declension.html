@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Declension explorer — operator/operand factorization</title>
+<style>
+  :root{
+    --bg:#0f1012; --panel:#17181c; --ink:#f4f4f2; --muted:#9aa0ab; --line:#2a2c33;
+    --blue:#4EA8DE; --orange:#FF7B54; --green:#43C59E; --violet:#B98AE0; --gold:#F2C14E;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Cambria","Georgia",serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px 18px 40px}
+  h1{font-size:20px;font-weight:600;margin:6px 0 2px;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px;line-height:1.45}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .tab{background:var(--panel);color:var(--muted);border:1px solid var(--line);
+    border-radius:9px;padding:8px 14px;cursor:pointer;font:inherit;font-size:14px;
+    transition:all .18s}
+  .tab:hover{color:var(--ink)}
+  .tab.on{color:var(--bg);background:var(--ink);border-color:var(--ink);font-weight:600}
+  .stage{position:relative;background:#0b0c0e;border:1px solid var(--line);
+    border-radius:14px;overflow:hidden}
+  canvas{display:block;width:100%;height:420px}
+  .ctl{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:14px;
+    background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 14px}
+  .ctl label{color:var(--muted);font-size:13px}
+  select,button.act{font:inherit;font-size:14px;background:#1f2127;color:var(--ink);
+    border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer}
+  button.act{background:var(--ink);color:var(--bg);font-weight:600;border-color:var(--ink)}
+  button.act:hover{opacity:.9}
+  input[type=range]{accent-color:var(--blue);width:220px;vertical-align:middle}
+  .toggle{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:13px;cursor:pointer}
+  .cap{color:var(--muted);font-size:13.5px;line-height:1.5;margin:14px 2px 0;min-height:42px}
+  .cap b{color:var(--ink);font-weight:600}
+  .k{font-variant-numeric:tabular-nums}
+  .foot{color:#6b7079;font-size:12px;margin-top:22px;border-top:1px solid var(--line);padding-top:12px}
+  .hide{display:none}
+  .primer{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:2px 16px;margin-bottom:16px}
+  .primer>summary{cursor:pointer;padding:12px 0;font-size:14.5px;color:var(--ink);
+    list-style:none;font-weight:600}
+  .primer>summary::-webkit-details-marker{display:none}
+  .primer>summary::before{content:"▸ ";color:var(--muted)}
+  .primer[open]>summary::before{content:"▾ "}
+  .primer .it{font-style:italic}
+  .pbody{padding:2px 0 14px;color:var(--muted);font-size:13.5px;line-height:1.55}
+  .pbody b{color:var(--ink);font-weight:600}
+  .pbody table{border-collapse:collapse;margin:12px 0;width:100%;font-size:13px}
+  .pbody th,.pbody td{text-align:left;padding:6px 12px 6px 0;border-bottom:1px solid var(--line);
+    vertical-align:top}
+  .pbody th{color:#7f8592;font-weight:600}
+  .pbody td:first-child{color:var(--ink);font-weight:600}
+  .pbody .claim{margin-top:12px;color:var(--ink);border-left:2px solid var(--blue);
+    padding-left:12px;font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The workspace <span style="font-style:italic">declines</span> a concept by its role</h1>
+  <p class="sub">Qwen3-1.7B · the 60 workspace states <span class="k">H[country, case]</span>
+  (5 relational operators × 12 countries), read live from the model. Three views of one claim:
+  the <b style="color:var(--ink)">operator</b> is a manipulable direction that factorizes from the
+  <b style="color:var(--ink)">operand</b>.</p>
+
+  <details class="primer" open>
+    <summary>What is <span class="it">declension</span>? — the linguistic analogy</summary>
+    <div class="pbody">
+      <p>Many languages mark a noun's <b>role</b> in a sentence by changing its <b>form</b>, not its
+      meaning. The noun (its <b>stem</b>) stays; a case-ending or particle — the <b>role marker</b> —
+      says <i>what job it is doing</i>. That is <b>declension</b>.</p>
+      <table>
+        <tr><th></th><th>stem (the thing)</th><th>role marker</th><th>reads as</th></tr>
+        <tr><td>Latin</td><td><span class="k">ros-</span> (rose)</td>
+          <td><span class="k">-a / -am / -ae</span></td><td>rose as subject / object / possessor</td></tr>
+        <tr><td>German</td><td><span class="k">der Hund</span> (the dog)</td>
+          <td><span class="k">der → den / dem</span></td><td>dog as subject / object / recipient</td></tr>
+        <tr><td>Japanese</td><td><span class="k">inu</span> (dog)</td>
+          <td>particle <span class="k">は / を / に</span></td><td>dog as topic / object / goal</td></tr>
+      </table>
+      <p>Two more terms this work borrows: <b>syncretism</b> — two roles that happen to share one form
+      (Latin <span class="k">-ae</span> is both genitive and dative singular; here <b>language</b> and
+      <b>demonym</b> both surface as “Italian”). And <b>fusion</b> — the ending isn't cleanly detachable
+      from the stem; they blend phonologically.</p>
+      <p class="claim">The finding: an LLM does the same. The <b>country</b> is the stem
+      (<i>operand</i>); the <b>relation</b> — currency-of, capital-of, language-of… — is the case
+      (<i>operator</i>): an addable direction that factorizes from the country, with its own syncretism
+      and fusion. Below, watch it happen.</p>
+    </div>
+  </details>
+
+  <div class="tabs">
+    <button class="tab on" data-scene="0">1 · Declension</button>
+    <button class="tab" data-scene="1">2 · Injection</button>
+    <button class="tab" data-scene="2">3 · Syncretism</button>
+  </div>
+
+  <div class="stage"><canvas id="cv"></canvas></div>
+
+  <!-- Scene 0 controls -->
+  <div class="ctl" data-ctl="0">
+    <label>country token</label>
+    <input id="s0" type="range" min="0" max="1" step="0.001" value="0">
+    <label>query token</label>
+    <button class="act" id="play0">▶ play</button>
+    <label>highlight</label>
+    <select id="hi0"></select>
+  </div>
+
+  <!-- Scene 1 controls -->
+  <div class="ctl hide" data-ctl="1">
+    <label>from</label><select id="from1"></select>
+    <label>to</label><select id="to1"></select>
+    <button class="act" id="inject1">inject v(to) − v(from)</button>
+    <label class="toggle"><input type="checkbox" id="rand1"> random control</label>
+    <button class="act" id="reset1" style="background:#1f2127;color:var(--ink)">reset</button>
+  </div>
+
+  <!-- Scene 2 controls -->
+  <div class="ctl hide" data-ctl="2">
+    <button class="act" id="des2">build the pure desinence (language − demonym)</button>
+    <button class="act" id="reset2" style="background:#1f2127;color:var(--ink)">reset</button>
+  </div>
+
+  <p class="cap" id="cap"></p>
+
+  <p class="foot">Colors encode the operator (case); identity is also carried by position and direct
+  labels. Numbers are the measured logit differences from <span class="k">op_core.measure_swaps</span> /
+  <span class="k">pure_desinence</span>. Source: <span class="k">scripts/op_geometry_dump.py</span>.</p>
+</div>
+
+<script src="declension.data.js"></script>
+<script>
+"use strict";
+const D = window.DATA;
+const OPS = D.operators, LANDS = D.operands;
+const COLOR = {currency:"#4EA8DE", capital:"#FF7B54", language:"#43C59E",
+               demonym:"#B98AE0", continent:"#F2C14E"};
+const col = k => COLOR[k] || "#9aa0ab";
+const ease = t => t<0?0:t>1?1:t*t*(3-2*t);
+const lerp = (a,b,t) => a+(b-a)*t;
+
+// ---- world bounds over both clouds so the morph never clips ----
+const allpts = D.cloud_country.concat(D.cloud_query);
+let X0=Infinity,X1=-Infinity,Y0=Infinity,Y1=-Infinity;
+for(const p of allpts){X0=Math.min(X0,p.x);X1=Math.max(X1,p.x);Y0=Math.min(Y0,p.y);Y1=Math.max(Y1,p.y);}
+
+const cv = document.getElementById("cv");
+const ctx = cv.getContext("2d");
+let W=0,H=0,DPR=1, TX;
+function resize(){
+  DPR = Math.min(window.devicePixelRatio||1, 2);
+  W = cv.clientWidth; H = cv.clientHeight;
+  cv.width = W*DPR; cv.height = H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  const pad=54, sx=(W-2*pad)/(X1-X0||1), sy=(H-2*pad)/(Y1-Y0||1), s=Math.min(sx,sy);
+  const cx=(X0+X1)/2, cy=(Y0+Y1)/2;
+  TX = {s, ox:W/2 - cx*s, oy:H/2 + cy*s};
+}
+const sx = x => TX.ox + x*TX.s;          // world -> screen x
+const sy = y => TX.oy - y*TX.s;          // world -> screen y (flip)
+window.addEventListener("resize", resize);
+
+// ---- generic tween manager ----
+let tweens=[];
+function tween(dur, cb, done){ tweens.push({t0:performance.now(),dur,cb,done}); }
+function step(now){
+  tweens = tweens.filter(tw=>{
+    let u=(now-tw.t0)/tw.dur; if(u>=1){tw.cb(1); tw.done&&tw.done(); return false;}
+    tw.cb(ease(u)); return true;
+  });
+}
+
+// ---- scene state ----
+let scene=0;
+let s0=0;                                    // declension morph 0..1
+let hi0=-1;                                   // highlighted country index (-1 none)
+let playing=false, playT0=0;
+let inj={from:"capital",to:"currency",prog:0,rand:false,active:false,val:null};
+let des={prog:0};
+const cap = document.getElementById("cap");
+
+// index helpers: point i -> operand i//5 (LANDS), operator i%5 (OPS)
+const nOp = OPS.length;
+function ptAt(i,t){ const a=D.cloud_country[i], b=D.cloud_query[i];
+  return [lerp(a.x,b.x,t), lerp(a.y,b.y,t)]; }
+
+// ================= drawing =================
+function clear(){ ctx.clearRect(0,0,W,H); }
+function dot(x,y,r,c,alpha=1){ ctx.globalAlpha=alpha; ctx.fillStyle=c;
+  ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.globalAlpha=1; }
+function label(x,y,txt,c,size=15){ ctx.font=`600 ${size}px Cambria,Georgia,serif`;
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.lineWidth=4; ctx.strokeStyle="rgba(11,12,14,.92)"; ctx.strokeText(txt,x,y);
+  ctx.fillStyle=c; ctx.fillText(txt,x,y); }
+function arrow(x0,y0,x1,y1,c,wd=2.5){
+  ctx.strokeStyle=c; ctx.fillStyle=c; ctx.lineWidth=wd; ctx.lineCap="round";
+  ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+  const a=Math.atan2(y1-y0,x1-x0), h=10;
+  ctx.beginPath(); ctx.moveTo(x1,y1);
+  ctx.lineTo(x1-h*Math.cos(a-.4),y1-h*Math.sin(a-.4));
+  ctx.lineTo(x1-h*Math.cos(a+.4),y1-h*Math.sin(a+.4));
+  ctx.closePath(); ctx.fill();
+}
+function centroidScreen(k){ const c=D.centroids_query[k]; return [sx(c[0]),sy(c[1])]; }
+
+function drawScene0(){
+  const t=s0;
+  // faint web per country (operator-order pentagon)
+  for(let o=0;o<LANDS.length;o++){
+    ctx.strokeStyle = (o===hi0)?"rgba(244,244,242,.55)":"rgba(154,160,171,.16)";
+    ctx.lineWidth = (o===hi0)?1.6:0.8;
+    ctx.beginPath();
+    for(let k=0;k<=nOp;k++){ const i=o*nOp+(k%nOp); const [x,y]=ptAt(i,t);
+      if(k===0) ctx.moveTo(sx(x),sy(y)); else ctx.lineTo(sx(x),sy(y)); }
+    ctx.stroke();
+  }
+  // points
+  for(let i=0;i<D.cloud_country.length;i++){
+    const o=Math.floor(i/nOp), k=i%nOp; const [x,y]=ptAt(i,t);
+    const on = (hi0<0||o===hi0);
+    dot(sx(x),sy(y), on?5.2:4, col(OPS[k]), on?1:0.28);
+    if(on && o===hi0) { ctx.lineWidth=1.4; ctx.strokeStyle="#f4f4f2";
+      ctx.beginPath(); ctx.arc(sx(x),sy(y),6.6,0,7); ctx.stroke(); }
+  }
+  // operator labels fade in as clusters form (t->1)
+  ctx.globalAlpha = ease(Math.max(0,(t-0.45)/0.55));
+  for(const k of OPS){ const [x,y]=centroidScreen(k); label(x,y-18,k,col(k),15); }
+  ctx.globalAlpha=1;
+  // position tag
+  label(sx((X0+X1)/2), H-22, t<0.5?"country token":"query token", "#9aa0ab", 14);
+}
+
+function barLogit(cx,cy,w,val,lo,hi){
+  // horizontal diverging bar for logit(to)-logit(from), 0 in the middle
+  const half=w/2, x0=cx-half, xm=cx, x1=cx+half;
+  ctx.strokeStyle="#2a2c33"; ctx.lineWidth=1;
+  ctx.strokeRect(x0,cy-13,w,26);
+  ctx.strokeStyle="#4a4d55"; ctx.beginPath(); ctx.moveTo(xm,cy-16); ctx.lineTo(xm,cy+16); ctx.stroke();
+  const frac = Math.max(-1,Math.min(1,val/hi));
+  ctx.fillStyle = val>=0? "#FF7B54":"#4EA8DE";
+  const bw = frac*half;
+  ctx.fillRect(xm, cy-11, bw, 22);
+  ctx.font="600 14px Cambria,Georgia,serif"; ctx.textBaseline="middle";
+  ctx.fillStyle="#f4f4f2"; ctx.textAlign = val>=0?"left":"right";
+  ctx.fillText((val>=0?"+":"")+val.toFixed(1), xm+bw+(val>=0?8:-8), cy);
+  ctx.textAlign="center"; ctx.fillStyle="#9aa0ab"; ctx.font="13px Cambria,Georgia,serif";
+  ctx.fillText("logit(to) − logit(from)", cx, cy+30);
+  ctx.textAlign="left"; ctx.fillText("← from wins", x0, cy-24);
+  ctx.textAlign="right"; ctx.fillText("to wins →", x1, cy-24);
+}
+
+function drawScene1(){
+  // query-token clusters (faint), labeled
+  for(let i=0;i<D.cloud_query.length;i++){ const k=i%nOp; const p=D.cloud_query[i];
+    dot(sx(p.x),sy(p.y),3.6,col(OPS[k]),0.22); }
+  for(const k of OPS){ const [x,y]=centroidScreen(k); label(x,y-16,k,col(k),13); }
+  const [fx,fy]=centroidScreen(inj.from), [tx,ty]=centroidScreen(inj.to);
+  const info = (D.swap[inj.from]||{})[inj.to] || {clean:0,swap:0,random:0};
+  const target = inj.rand ? info.random : info.swap;
+  // moving point
+  let px,py,cur;
+  if(inj.rand){
+    // random control: jitter around 'from', barely moves; value ~ random
+    const ang=(inj.from.length*1.7); const jx=Math.cos(ang)*26, jy=Math.sin(ang)*20;
+    px=lerp(fx,fx+jx,inj.prog); py=lerp(fy,fy+jy,inj.prog);
+    cur=lerp(info.clean,target,inj.prog);
+  } else {
+    if(inj.prog>0) arrow(fx,fy,lerp(fx,tx,inj.prog),lerp(fy,ty,inj.prog),"#f4f4f2",2.4);
+    px=lerp(fx,tx,inj.prog); py=lerp(fy,ty,inj.prog);
+    cur=lerp(info.clean,target,inj.prog);
+  }
+  dot(px,py,7.5,inj.rand?"#9aa0ab":col(inj.to),1);
+  ctx.lineWidth=1.6; ctx.strokeStyle="#f4f4f2"; ctx.beginPath(); ctx.arc(px,py,9.4,0,7); ctx.stroke();
+  // the logit bar
+  barLogit(W/2, H-42, Math.min(460,W-120), cur, info.clean, Math.max(info.swap, 8));
+}
+
+function drawScene2(){
+  const lang="language", dem="demonym";
+  // all clusters faint
+  for(let i=0;i<D.cloud_query.length;i++){ const k=i%nOp; const p=D.cloud_query[i];
+    const hot = (OPS[k]===lang||OPS[k]===dem);
+    dot(sx(p.x),sy(p.y),hot?5:3.4,col(OPS[k]),hot?1:0.16); }
+  const [lx,ly]=centroidScreen(lang), [dx,dy]=centroidScreen(dem);
+  ctx.setLineDash([5,5]); ctx.strokeStyle="rgba(244,244,242,.5)"; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(dx,dy); ctx.stroke(); ctx.setLineDash([]);
+  label((lx+dx)/2,(ly+dy)/2-14,'both emit "Italian"',"#f4f4f2",13);
+  label(lx,ly-18,lang,col(lang),15); label(dx,dy-18,dem,col(dem),15);
+  const cosLD = D.cos.matrix[D.cos.labels.indexOf(lang)][D.cos.labels.indexOf(dem)];
+  label((lx+dx)/2,(ly+dy)/2+14,"cos = "+cosLD.toFixed(2)+"  (distinct, not +1)","#9aa0ab",13);
+  // desinence meter (bottom): clean -> +desinence
+  const c0=D.desinence.clean, c1=D.desinence.desinence;
+  const cur=lerp(c0,c1,des.prog);
+  barLogit(W/2, H-40, Math.min(460,W-120), cur, c0, Math.max(c1,8));
+  ctx.textAlign="center"; ctx.fillStyle="#9aa0ab"; ctx.font="13px Cambria,Georgia,serif";
+  ctx.fillText("pure desinence installs the relation on a "+D.desinence.other+" prompt", W/2, H-6);
+}
+
+// ================= loop =================
+function frame(now){
+  step(now);
+  if(scene===0 && playing){ const u=(now-playT0)/2600; s0=u>=1?(playing=false,1):u;
+    document.getElementById("s0").value=s0; }
+  resizeIfNeeded();
+  clear();
+  if(scene===0) drawScene0(); else if(scene===1) drawScene1(); else drawScene2();
+  requestAnimationFrame(frame);
+}
+let lastW=0,lastH=0;
+function resizeIfNeeded(){ if(cv.clientWidth!==lastW||cv.clientHeight!==lastH){
+  lastW=cv.clientWidth; lastH=cv.clientHeight; resize(); } }
+
+// ================= captions =================
+const CAPS=[
+  ()=>`Drag the slider from <b>country token</b> to <b>query token</b>. Colored by operator: at the
+       country token the colors <b>intermix</b> — the state is organized by <b>operand</b> (stem 59%).
+       At the query token they snap into five <b>case clusters</b> — organized by <b>operator</b>
+       (case 86%). Each country's five case-forms (a web) start together and are pulled apart: the concept
+       is <b>declined</b>.`,
+  ()=>{ const i=(D.swap[inj.from]||{})[inj.to]||{clean:0,swap:0,random:0};
+       return `Injecting <b>v(${inj.to}) − v(${inj.from})</b> into a “${inj.from}” prompt slides the state
+       into the <b>${inj.to}</b> cluster and the answer flips: clean
+       <span class="k">${i.clean.toFixed(1)}</span> → swapped <span class="k">+${i.swap.toFixed(1)}</span>.
+       Toggle <b>random control</b>: a matched-norm random direction barely moves it
+       (<span class="k">${i.random.toFixed(1)}</span>).`; },
+  ()=>`<b>language</b> and <b>demonym</b> emit the identical word “Italian”, yet sit at distinct points
+       (cos ${(D.cos.matrix[D.cos.labels.indexOf("language")][D.cos.labels.indexOf("demonym")]).toFixed(2)},
+       not +1). Build a <b>pure desinence</b> from exactly the pairs where they share the output word (so
+       the word cancels): it <b>still</b> installs the relation causally,
+       <span class="k">${D.desinence.clean.toFixed(1)}</span> →
+       <span class="k">+${D.desinence.desinence.toFixed(1)}</span>. The operation is separable from the word.`
+];
+function setCap(){ cap.innerHTML = CAPS[scene](); }
+
+// ================= wiring =================
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  scene=+b.dataset.scene;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t===b));
+  document.querySelectorAll("[data-ctl]").forEach(c=>c.classList.toggle("hide",+c.dataset.ctl!==scene));
+  playing=false; setCap();
+});
+// scene 0
+const s0el=document.getElementById("s0");
+s0el.oninput=()=>{ s0=+s0el.value; playing=false; setCap(); };
+document.getElementById("play0").onclick=()=>{ playing=true; playT0=performance.now(); s0=0; };
+const hi0el=document.getElementById("hi0");
+hi0el.innerHTML='<option value="-1">none</option>'+LANDS.map((c,i)=>`<option value="${i}">${c}</option>`).join("");
+hi0el.onchange=()=>{ hi0=+hi0el.value; };
+// scene 1
+const from1=document.getElementById("from1"), to1=document.getElementById("to1");
+from1.innerHTML=OPS.map(o=>`<option>${o}</option>`).join(""); from1.value="capital";
+to1.innerHTML=OPS.map(o=>`<option>${o}</option>`).join(""); to1.value="currency";
+from1.onchange=to1.onchange=()=>{ inj.from=from1.value; inj.to=to1.value; inj.prog=0; setCap(); };
+document.getElementById("rand1").onchange=e=>{ inj.rand=e.target.checked; inj.prog=0; };
+document.getElementById("inject1").onclick=()=>{ inj.prog=0;
+  tween(1100,u=>inj.prog=u); };
+document.getElementById("reset1").onclick=()=>{ inj.prog=0; };
+// scene 2
+document.getElementById("des2").onclick=()=>{ des.prog=0; tween(1200,u=>des.prog=u); };
+document.getElementById("reset2").onclick=()=>{ des.prog=0; };
+
+// deep-link a scene with #1 / #2 (0 = declension by default)
+const hs = parseInt((location.hash.match(/[0-2]/)||[])[0]);
+if(hs>=0 && hs<=2){ const b=document.querySelector(`.tab[data-scene="${hs}"]`); b&&b.click(); }
+
+resize(); setCap(); requestAnimationFrame(frame);
+</script>
+</body>
+</html>
