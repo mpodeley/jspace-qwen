@@ -929,6 +929,9 @@ factorization is <strong>specific to relational retrieval</strong>: under the id
 comparison-logic operators show 2–4× the interaction and fail held-out generalization. Relational
 computation in these models is, to a first approximation, an operand plus a transplantable operator.</p>
 <h2 id="1-introduction">1. Introduction</h2>
+<p>When a language model completes <em>"The currency of Italy is—"</em>, does it represent
+<em>currency-of-Italy</em> as one fused thing, or as an entity plus an operation applied to it? This paper
+argues, causally, for the second reading.</p>
 <p>A line of work shows that a <em>task</em> or <em>relation</em> can be captured by a single addable vector in an LLM's
 residual stream (task vectors, Hendel et al. 2023; function vectors, Todd et al. 2024) and that many
 relations are approximately linear operators (LRE, Hernandez et al. 2024; Merullo et al. 2024). What has
@@ -995,7 +998,9 @@ Reading position is the query token unless stated; the depth "workspace" band (3
 the J-space paper locates the global workspace and where we build operator directions.</p>
 <p><strong>Operator direction.</strong> For operator <code>k</code>, <code>v(k) = mean_operand[ h(operand, k) − mean_op h(operand, ·) ]</code>
 at the workspace layers — the deviation of an operator from the operand's average over operators, averaged
-over operands (the function-vector construction; implementation details in Appendix A).</p>
+over operands (the function-vector construction; implementation details in Appendix A). Intuitively:
+what states asking the <em>same question about different countries</em> share, once what <em>all questions about
+each country</em> share is removed.</p>
 <p><strong>Swap and controls.</strong> Efficacy of <code>k_A → k_B</code> is the change in <code>logit(answer_B) − logit(answer_A)</code> at the
 query position when <code>α·(v(k_B) − v(k_A))</code> is added over the band, versus a <strong>matched-norm random</strong>
 direction. Answers are scored by their distinguishing token (bare digit for arithmetic, since Qwen3
@@ -1096,7 +1101,8 @@ direction manipulates preference; the state-level patch reroutes the generated a
 competence ceiling.</p>
 <p><img alt="Dose-response: the operator-specific effect saturates at the default dose α=4 while the nonspecific random shift stays flat; per-token KL on unrelated text grows monotonically — the edit is answer-surgical, not distribution-surgical." src="../../figs/op_dose.png" /></p>
 <h3 id="42-the-representation-factorizes-into-operator-operand">4.2 The representation factorizes into operator ⊕ operand</h3>
-<p>Two-way ANOVA at a mid-workspace layer (1.7B / 8B):</p>
+<p>Does the state literally decompose into "the thing" plus "the question asked about it"? Two-way ANOVA
+at a mid-workspace layer (1.7B / 8B):</p>
 <table>
 <thead>
 <tr>
@@ -1226,7 +1232,9 @@ Raw logit units are not directly comparable across architectures (Gemma-2 soft-c
 so cross-model comparison should lean on the flip rates and variance shares, which match or exceed
 Qwen3's. The operator–operand factorization is not an idiosyncrasy of one model family.</p>
 <h3 id="46-the-factorization-is-domain-specific-arithmetic-and-logic-do-not-under-our-setup">4.6 The factorization is domain-specific (arithmetic and logic do not, under our setup)</h3>
-<p>Extending the identical pipeline to arithmetic (+, ×, −) and comparison-logic operators, on 1.7B:</p>
+<p>If the factorization were an artifact of prompting, it should appear wherever the prompt has the same
+shape. It does not. Extending the identical pipeline to arithmetic (+, ×, −) and comparison-logic
+operators, on 1.7B:</p>
 <table>
 <thead>
 <tr>
