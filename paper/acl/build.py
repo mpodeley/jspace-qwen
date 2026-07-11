@@ -39,6 +39,35 @@ UNI = {
 }
 
 
+# prose citation -> natbib. \citet for narrative mentions, \citealp for mentions
+# already inside prose parentheses. Patterns are whitespace-tolerant (pandoc wraps
+# lines) and match the LaTeX-escaped text (& -> \&). Order: \citet forms first.
+CITES = [
+    (r"Geva et al\.\s*\(EMNLP\s+2023\)", r"\\citet{geva2023dissecting}"),
+    (r"Christ et al\.\s*\(2025\)", r"\\citet{christ2025structure}"),
+    (r"Christ et al\.\s*\(Oct\s+2025\)", r"\\citet{christ2025structure}"),
+    (r"the J-space paper", r"\\citet{gurnee2026workspace}"),
+    (r"Hendel et al\.,?\s+(?:EMNLP\s+)?2023", r"\\citealp{hendel2023icl}"),
+    (r"Todd et al\.,?\s+(?:ICLR\s+)?2024", r"\\citealp{todd2024function}"),
+    (r"Liu et al\.,?\s+(?:ICML\s+)?2024", r"\\citealp{liu2024icv}"),
+    (r"Turner et al\.\s+2023", r"\\citealp{turner2023actadd}"),
+    (r"Hernandez et al\.,?\s+(?:ICLR\s+)?2024", r"\\citealp{hernandez2024lre}"),
+    (r"Merullo et al\.\s+2024", r"\\citealp{merullo2024vector}"),
+    (r"Chughtai et al\.\s+2024", r"\\citealp{chughtai2024summing}"),
+    (r"Huang et al\.,?\s+(?:ACL\s+)?2024", r"\\citealp{huang2024ravel}"),
+    (r"Geva et al\.\s+\(?EMNLP\s+2023\)?", r"\\citealp{geva2023dissecting}"),
+    (r"Nikankin et al\.\s+2025", r"\\citealp{nikankin2025heuristics}"),
+    (r"Nanda et al\.\s+2023", r"\\citealp{nanda2023grokking}"),
+    (r"Zhong et al\.\s+2023", r"\\citealp{zhong2023clock}"),
+    (r"Kantamneni \\& Tegmark\s+2025", r"\\citealp{kantamneni2025trig}"),
+    (r"Gurnee \\& Tegmark\s+2024", r"\\citealp{gurnee2024space}"),
+    (r"Marks \\& Tegmark\s+2023", r"\\citealp{marks2023geometry}"),
+    (r"Hong et al\.\s+2024", r"\\citealp{hong2024implies}"),
+    (r"Christ et al\.\s+2025", r"\\citealp{christ2025structure}"),
+    (r"Christ et al\.", r"\\citeauthor{christ2025structure}"),
+]
+
+
 def md_source() -> str:
     lines = MD.read_text().splitlines()
     out, skip_para = [], False
@@ -146,6 +175,11 @@ def main() -> None:
         tex = re.sub(pat, r"[link redacted for review]", tex)
     # internal docs links (reproduce.md etc.) -> plain text
     tex = re.sub(r"\\href\{[^}]*\}\{([^}]*)\}", r"\1", tex)
+
+    # prose citations -> natbib, then drop the prose References section (bibtex now)
+    for pat, rep in CITES:
+        tex = re.sub(pat, rep, tex)
+    tex = re.sub(r"\\section\{References\}.*\Z", "", tex, flags=re.S)
 
     # split out the abstract
     m = re.search(r"\\section\{Abstract\}\s*(.*?)(?=\\section\{)", tex, re.S)

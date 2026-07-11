@@ -2,9 +2,8 @@
 
 A line of work shows that a \emph{task} or \emph{relation} can be
 captured by a single addable vector in an LLM\textquotesingle s residual
-stream (task vectors, Hendel et al. 2023; function vectors, Todd et al.
-2024) and that many relations are approximately linear operators (LRE,
-Hernandez et al. 2024; Merullo et al. 2024). What has not been
+stream (task vectors, \citealp{hendel2023icl}; function vectors, \citealp{todd2024function}) and that many relations are approximately linear operators (LRE,
+\citealp{hernandez2024lre}; \citealp{merullo2024vector}). What has not been
 characterized is the \textbf{joint structure of operator and operand}:
 whether the operation \emph{factorizes} from its argument, whether that
 factorization \emph{generalizes}, whether the operation is separable
@@ -18,10 +17,9 @@ surface form, fusion in the interaction term).
 \section{Related work and what is new
 here}
 
-\textbf{Operation as an addable vector.} Task Vectors (Hendel et al.,
-EMNLP 2023) and Function Vectors (Todd et al., ICLR 2024) extract one
+\textbf{Operation as an addable vector.} Task Vectors (\citealp{hendel2023icl}) and Function Vectors (\citealp{todd2024function}) extract one
 vector per ICL task and add/patch it to trigger the task. In-Context
-Vectors (Liu et al., ICML 2024) and ActAdd (Turner et al. 2023) steer a
+Vectors (\citealp{liu2024icv}) and ActAdd (\citealp{turner2023actadd}) steer a
 task/style similarly. These bundle operator \emph{and} operand into one
 unfactored "task" direction and (for FVs) show \emph{partial} cross-task
 arithmetic without null controls. We contribute the
@@ -29,34 +27,31 @@ arithmetic without null controls. We contribute the
 all-pairs swap with matched-norm nulls}, and a \textbf{held-out-operand
 generalization} test.
 
-\textbf{Relation as a linear operator.} LRE (Hernandez et al., ICLR
-2024) fits a full affine map \texttt{W\textperiodcentered{}s\ +\ b} per relation. That
+\textbf{Relation as a linear operator.} LRE (\citealp{hernandez2024lre}) fits a full affine map \texttt{W\textperiodcentered{}s\ +\ b} per relation. That
 represents the relation as a \emph{monolithic} operator; we show a
 \textbf{low-dimensional additive operator \emph{direction}} that is
 arithmetically composable and \textbf{factorable from the operand}, and
 we quantify the operand/operator/interaction variance split, which LRE
 does not.
 
-\textbf{Additive factual recall.} Summing Up the Facts (Chughtai et al.
-2024) decomposes factual recall into additive \emph{circuits} (subject
+\textbf{Additive factual recall.} Summing Up the Facts (\citealp{chughtai2024summing}) decomposes factual recall into additive \emph{circuits} (subject
 vs relation contributions). Ours is a \textbf{representational two-way
 ANOVA of the residual state} with an explicit, measured
 \textbf{interaction/fusion term} --- a different object.
 
-\textbf{Attribute subspaces / reading position.} RAVEL (Huang et al.,
-ACL 2024) disentangles multiple \emph{attributes of one entity} into
+\textbf{Attribute subspaces / reading position.} RAVEL (\citealp{huang2024ravel}) disentangles multiple \emph{attributes of one entity} into
 subspaces (operators sharing an operand); we measure the orthogonal
 axis, \textbf{operator vs operand}. The operand\ensuremath{\to}operator shift along the
 sequence restates the subject-enrichment \ensuremath{\to} attribute-extraction dynamics
-of Geva et al. (EMNLP 2023) in operator/operand terms --- our least
+of \citet{geva2023dissecting} in operator/operand terms --- our least
 novel point, included as confirmation.
 
 \textbf{Arithmetic and logic.} Arithmetic in LLMs is reported as a "bag
-of heuristics" (Nikankin et al. 2025) and Fourier/helical procedures
-(Nanda et al. 2023; Zhong et al. 2023; Kantamneni \& Tegmark 2025), with
-the operand \emph{value} cleanly linear (Gurnee \& Tegmark 2024). Truth
-is a steerable direction (Marks \& Tegmark 2023) and logical-operator
-heads exist (Hong et al. 2024). No prior work reports a
+of heuristics" (\citealp{nikankin2025heuristics}) and Fourier/helical procedures
+(\citealp{nanda2023grokking}; \citealp{zhong2023clock}; \citealp{kantamneni2025trig}), with
+the operand \emph{value} cleanly linear (\citealp{gurnee2024space}). Truth
+is a steerable direction (\citealp{marks2023geometry}) and logical-operator
+heads exist (\citealp{hong2024implies}). No prior work reports a
 \textbf{cross-domain operator/operand factorization}; we provide one and
 show it \textbf{breaks down} for arithmetic and logic --- itself a
 result.
@@ -88,7 +83,7 @@ paraphrase frames (question--answer and discourse-prefixed) that hold
 the \texttt{\{op\}\ of\ \{a\}} unit fixed while varying the surrounding
 frame, all ending in \emph{is} so answer scoring is comparable. Reading
 position is the query token unless stated; the depth "workspace" band
-(38--92\% of layers) is where the J-space paper locates the global
+(38--92\% of layers) is where \citet{gurnee2026workspace} locates the global
 workspace and where we build operator directions.
 
 \textbf{Operator direction.} For operator \texttt{k},
@@ -331,14 +326,14 @@ memorized interpolation.
 two-operand
 arithmetic}
 
-Christ et al. (2025) report the \emph{opposite} sign for arithmetic: an
+\citet{christ2025structure} report the \emph{opposite} sign for arithmetic: an
 operator built from an \textbf{add-N} relation (a fixed addend
 \texttt{N} applied to a single number) \textbf{does} generalize to
 held-out relations. The two results do not conflict --- they cut
 arithmetic along different axes. In add-N the operator \textbf{is the
 addend \texttt{N}} over one numeric operand, so "generalizing across
 \texttt{N}" is interpolation along the number line (the operand
-\emph{value} is itself linear; Gurnee \& Tegmark 2024), not transfer of
+\emph{value} is itself linear; \citealp{gurnee2024space}), not transfer of
 a \emph{function}. Our \texttt{+\ \ensuremath{\times}\ -} cut varies the \textbf{function}
 over two operands. Running both cuts on Qwen3
 (\texttt{op\_core.py\ -\/-domain\ arith\_addN} vs \texttt{arithmetic};
@@ -425,28 +420,3 @@ for relational retrieval and breaks down for arithmetic and logic, whose
 operators are entangled with their operands. The structure is causal; it
 is not a more-readable subspace.
 
-\section{References}
-
-Christ et al. 2025, \emph{The Structure of Relation Decoding Linear
-Operators in Large Language Models}, NeurIPS (Spotlight),
-arXiv:2510.26543 \textperiodcentered{} Chughtai et al. 2024, \emph{Summing Up the Facts},
-arXiv:2402.07321 \textperiodcentered{} Geva et al. 2023, \emph{Dissecting Recall of Factual
-Associations}, EMNLP \textperiodcentered{} Gurnee \& Tegmark 2024, \emph{Language Models
-Represent Space and Time}, ICLR \textperiodcentered{} Hendel et al. 2023, \emph{In-Context
-Learning Creates Task Vectors}, EMNLP Findings, arXiv:2310.15916 \textperiodcentered{}
-Hernandez et al. 2024, \emph{Linearity of Relation Decoding in
-Transformer LMs} (LRE), ICLR, arXiv:2308.09124 \textperiodcentered{} Hong et al. 2024,
-\emph{A Implies B: Circuit Analysis for Propositional Logic},
-arXiv:2411.04105 \textperiodcentered{} Huang et al. 2024, \emph{RAVEL}, ACL,
-arXiv:2402.17700 \textperiodcentered{} Kantamneni \& Tegmark 2025, \emph{Language Models Use
-Trigonometry to Do Addition}, arXiv:2502.00873 \textperiodcentered{} Liu et al. 2024,
-\emph{In-Context Vectors}, ICML, arXiv:2311.06668 \textperiodcentered{} Marks \& Tegmark
-2023, \emph{The Geometry of Truth}, arXiv:2310.06824 \textperiodcentered{} Merullo et al.
-2024, \emph{Language Models Implement Simple Word2Vec-style Vector
-Arithmetic}, NAACL, arXiv:2305.16130 \textperiodcentered{} Nanda et al. 2023, \emph{Progress
-Measures for Grokking}, ICLR, arXiv:2301.05217 \textperiodcentered{} Nikankin et al. 2025,
-\emph{Arithmetic Without Algorithms}, ICLR, arXiv:2410.21272 \textperiodcentered{} Todd et
-al. 2024, \emph{Function Vectors in Large Language Models}, ICLR,
-arXiv:2310.15213 \textperiodcentered{} Turner et al. 2023, \emph{Activation Addition
-(ActAdd)}, arXiv:2308.10248 \textperiodcentered{} Zhong et al. 2023, \emph{The Clock and the
-Pizza}, NeurIPS, arXiv:2306.17844.
