@@ -59,6 +59,20 @@ done
 other two) to `results/geometry/*.json|npz`, and writes the explorer's data bundle
 `docs/interactive/declension.data.js` (from the 1.7B relations run).
 
+Two further checks from the review pass:
+
+```bash
+.venv/bin/python scripts/operator_templates.py 1.7b   # cross-frame transfer (3 paraphrase frames)
+.venv/bin/python scripts/op_dose.py 1.7b              # alpha dose-response + off-task KL
+```
+
+!!! note "Reproducibility box"
+    All experiments are seeded (`--seed 0` default; the RNG seeds only the matched-norm
+    random controls — direction building is deterministic). Checkpoints: `Qwen/Qwen3-1.7B`,
+    `Qwen/Qwen3-8B` (bf16), `google/gemma-2-9b` for the cross-architecture run. Per-operand
+    long-form values are persisted as `results/ablation/*_long.parquet`; every figure
+    regenerates from `scripts/plots.py`. License MIT; contact `mpodeley@gmail.com`.
+
 ## 5. Figures and site
 
 ```bash
