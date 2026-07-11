@@ -6,7 +6,7 @@ cloud. See [setup](setup.md) for why the environment is a plain `uv` venv.
 ## 1. Environment
 
 ```bash
-git clone <this repo> && cd jspace-qwen
+git clone https://github.com/mpodeley/jspace-qwen.git && cd jspace-qwen
 git clone https://github.com/anthropics/jacobian-lens
 bash env/install.sh                     # ROCm torch + jlens stack
 .venv/bin/python scripts/00_smoke.py    # forward+backward of Qwen3-1.7B on the iGPU
