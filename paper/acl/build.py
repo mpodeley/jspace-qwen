@@ -26,7 +26,11 @@ ACL = ROOT / "paper" / "acl"
 MD = ROOT / "docs" / "paper.md"
 
 UNI = {
+    # multi-char sequences first (dict order is application order)
+    "10⁻⁸": r"\ensuremath{10^{-8}}",
     "−": "-", "–": "--", "—": "---", "×": r"\ensuremath{\times}",
+    "Δ": r"\ensuremath{\Delta}", "∈": r"\ensuremath{\in}",
+    "≡": r"\ensuremath{\equiv}",
     "≈": r"\ensuremath{\approx}", "≠": r"\ensuremath{\neq}",
     "≫": r"\ensuremath{\gg}", "≪": r"\ensuremath{\ll}",
     "⊕": r"\ensuremath{\oplus}", "→": r"\ensuremath{\to}",
@@ -116,6 +120,21 @@ def longtable_to_table(tex: str) -> str:
          "across architectures; compare flip rates and variance shares)."),
         (r"read position", "Two-way ANOVA of the workspace state: variance shares "
          "by read position (1.7B / 8B)."),
+        (r"full donor", "Decomposing the donor activation (1.7B, 224 cells; clean "
+         "greedy ceiling 53\\%): a state composed from the factorization's additive "
+         "parts makes the model emit the target answer as well as the real donor "
+         "does; the interaction term is not needed. \"Held-out cell\" rebuilds the "
+         "components without ever seeing the target cell; \"wrong operand\" "
+         "redirects the answer to the swapped operand."),
+        (r"permuted labels", "The null battery (1.7B, $\\alpha=4$). Semantic nulls "
+         "-- permuted relation labels and random directions inside the operator "
+         "subspace -- abolish the effect; structural probes remain nonzero for "
+         "mechanistically explained reasons (\\S4.1)."),
+        (r"sentence-initial \(wrong\)", "Where the vector must land (1.7B, "
+         "$\\alpha=4$): position $\\times$ layer scope, with the metrics flips "
+         "hide. Ranks are medians over 224 cells."),
+        (r"suffice to generate", "The paper's claims, each with its main evidence, "
+         "the control that could kill it, and its scope."),
     ]
 
     def repl(m):

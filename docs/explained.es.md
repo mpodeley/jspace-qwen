@@ -45,6 +45,14 @@ punto. Y esas flechas se pueden manipular:
   *"la capital de Italia"* y lo trasplantamos dentro del mismo modelo mientras piensa *"la
   moneda de Italia"*. El modelo **responde "Roma"**: cambia su respuesta real, no solo su
   preferencia.
+- **El ensamblaje (el resultado nuevo):** lo mejor de todo — ni siquiera hace falta copiar ese
+  estado. Lo **armamos con tres ingredientes promediados** — una base genérica, una parte
+  "Italia" y una parte "capital-de" —, escribimos el pensamiento ensamblado en un solo punto, y
+  el modelo responde **"Roma" tan seguido como responde cualquier cosa normalmente** (52%,
+  cuando su propia precisión es 53%). Si en cambio ponemos la parte "Francia", responde *París*.
+  El pensamiento de verdad está hecho de partes, y las partes alcanzan. (Que antes las flechas
+  no lo hicieran *hablar* resultó ser una sobredosis: con un empujón suave — de la fuerza justa —
+  el empujón también lo hace hablar.)
 
 ## Las flechas son de verdad, no un truco del ejemplo
 

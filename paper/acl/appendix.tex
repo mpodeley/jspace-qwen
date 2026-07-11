@@ -36,11 +36,147 @@ difference\textquotesingle s norm. Clean mean margins
 frames; per-operand values for every experiment are released as
 long-form artifacts (\texttt{results/ablation/*\_long.parquet}).
 
-\textbf{Experiment drivers.} \texttt{op\_core.py} (directions, swaps,
-ANOVA, cluster bootstraps), \texttt{operator\_paradigm.py},
+\textbf{Method schematic.}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{op_method}
+\caption{Method in one schematic: the model\textquotesingle s state is a token-by-layer grid of residual vectors; the entity token and the query token are the two reading positions; averaging query-token states over operands yields one operator direction per layer --- identically the ANOVA operator main effect --- which is then applied by addition (steering), by replacement (composition), or read out (ANOVA).}
+\end{figure*}
+
+\textbf{The animal-taxonomy domain.} Operands (12): shark, eagle, frog,
+snake, bee, whale, owl, lizard, cow, salmon, penguin, deer. Relations:
+class, habitat, diet, covering; every cell has a stable 1-to-1 answer
+(e.g. shark \ensuremath{\to} fish, ocean, carnivore, scales), screened so all four
+answers are first-token distinct per operand (single-token coverage 0.62
+--- multi-token answers like \emph{carnivore} depress the greedy ceiling
+but not the first-token margin metric); three paraphrase frames mirror
+the country domain; grid in \texttt{data/animals.json}, authoring gate
+in \texttt{build\_op\_datasets.py}.
+
+\textbf{Cross-architecture replication (full table, \S{}4.7).}
+
+{
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+measure & Qwen3-1.7B & Qwen3-8B & \textbf{Gemma-2-9B} \\
+\midrule
+all-pairs swap contrast & +22.6 {[}+14.0, +32.1{]} & +26.0 {[}+17.9,
++32.8{]} & \textbf{+30.4 {[}+23.8, +34.8{]}} \\
+flips (swap \textgreater{} 0) & 20/20 & 20/20 & \textbf{20/20} \\
+held-out-operand contrast & +20.0 {[}+10.8, +29.5{]} & +22.8 {[}+14.0,
++31.0{]} & \textbf{+26.6 {[}+20.6, +33.2{]}} \\
+operator variance @ query & 86\% & 82\% & \textbf{84.8\%} \\
+interaction (fusion) & 9\% & 13\% & \textbf{6.8\%} \\
+exponent-free marker (clean \ensuremath{\to} +v) & -3.6 \ensuremath{\to} +12.5 & -2.9 \ensuremath{\to} +8.1 &
+\textbf{-3.0 \ensuremath{\to} +8.5} \\
+\bottomrule
+\end{tabular}
+\caption{Cross-architecture replication: every signature reproduces on Gemma-2-9B (logit units are not comparable across architectures; compare flip rates and variance shares).}
+\end{table*}
+}
+
+\textbf{Per-pair distributions.}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{op_swap_dist}
+\caption{Per-pair distributions: swap values per operand with operand-bootstrap 95\% CIs, matched-norm random control, and clean baselines. No CI crosses zero; the weakest pairs are exactly the syncretic ones (demonym\ensuremath{\leftrightarrow}language and their neighbours).}
+\end{figure*}
+
+\textbf{The null battery (full results, 1.7B relations, \ensuremath{\alpha} = 4).}
+Contrast vs. matched-norm random with operator-level cluster-bootstrap
+95\% CIs; stochastic nulls pool 20 redraws:
+
+{
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{lrr}
+\toprule
+condition & contrast {[}95\% CI{]} & flip fraction \\
+\midrule
+real swap & +22.62 {[}+14.0, +32.1{]} & 1.00 \\
+permuted labels (per-operand) & +0.68 {[}-0.8, +3.9{]} & 0.45 \\
+permuted labels (global) & +0.57 {[}-2.1, +3.0{]} & 0.35 \\
+random in operator subspace & +0.75 {[}-2.2, +3.5{]} & 0.45 \\
+wrong layer (early band) & +9.77 {[}+5.2, +13.3{]} & 1.00 \\
+other-relation direction & +11.09 {[}+6.7, +17.1{]} & 0.80 \\
+shuffled answers & +21.12 {[}+11.2, +32.2{]} & 1.00 \\
+\bottomrule
+\end{tabular}
+\caption{The null battery (1.7B, $\alpha=4$). Semantic nulls -- permuted relation labels and random directions inside the operator subspace -- abolish the effect; structural probes remain nonzero for mechanistically explained reasons (\S4.1).}
+\end{table*}
+}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{op_nulls}
+\caption{Forest plot of the null battery: semantic nulls (permuted labels, subspace-random) collapse to zero; structural probes remain nonzero for mechanistically explained reasons (source-uninstall component, category-level boost, additive persistence across layers).}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{op_dose}
+\caption{Dose-response with both signs: the operator-specific effect is monotone through zero and reverses with the direction\textquotesingle s sign, saturating at both ends, while the matched-norm random control is flat; per-token KL on unrelated text grows with dose.}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{op_geometry}
+\caption{PCA of the 60 workspace vectors H{[}operand, operator{]}, colored by operator. At the country token the operators intermix (operand-organized, operand 59\%); at the query token they separate into clean operator clusters (operator-organized, operator 86\%). The faint web links each country\textquotesingle s five operator-forms --- short at the country token, splayed at the query token. Bottom: the variance split, 1.7B and 8B.}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{op_syncretism}
+\caption{Left: operator-direction cosines --- all five operators are distinct directions (no off-diagonal near \ensuremath{\pm}1); language and demonym, boxed, both emit "Italian" yet differ (cos -0.26). Right: the exponent-free marker, built where the two share an output word, still installs the relation causally (-3.6 \ensuremath{\to} +12.5).}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{op_layer_sweep}
+\caption{Layer sweep: the ANOVA operator share peaks early (92\% at 19\% depth) while the single-layer causal contrast peaks late (+21.3 at 89\% depth); held-out-operand decodability is at ceiling at every layer.}
+\end{figure*}
+
+\textbf{The add-N comparison (moved from \S{}4.8).} Held-out generalization
+and operator-set collinearity for the three operator families:
+
+{
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{llr}
+\toprule
+cut & held-out generalization (1.7B / 8B) & operator-set collinearity
+(top-1 var) \\
+\midrule
+relations (5 operations) & 20/20 \textperiodcentered{} 20/20 & 0.39 (spread paradigm) \\
+add-N (operator = addend) & 5/12 \textperiodcentered{} 6/12 (+0.10 / +0.05) & 0.76 (most 1-D
+/ number-line) \\
+\texttt{+\ \ensuremath{\times}\ -} (operator = function) & 2/6 \textperiodcentered{} 1/6 (-0.43 / -0.55) &
+0.64 \\
+\bottomrule
+\end{tabular}
+\caption{Reconciliation with the add-N cut: the linear-parameter family sits between relations and true two-operand arithmetic.}
+\end{table*}
+}
+
+Qwen3 BPE restricts add-N to single-digit results (5 operands), so its
+generalization is weak in absolute terms; the claim is the ordering, not
+the magnitude.
+
+\textbf{Experiment drivers.} \texttt{op\_core.py} (directions \ensuremath{\equiv} ANOVA
+components, swaps, position-restricted hooks, metric bundle, cluster
+bootstraps), \texttt{operator\_paradigm.py},
 \texttt{operator\_factorize.py}, \texttt{operator\_templates.py},
-\texttt{operator\_lexical.py}, \texttt{op\_dose.py},
-\texttt{op\_minimal.py}, \texttt{op\_geometry\_dump.py}.
+\texttt{operator\_lexical.py}, \texttt{op\_dose.py} (signed \ensuremath{\alpha} sweep),
+\texttt{op\_minimal.py}, \texttt{op\_patch\_decomp.py} (composition
+ladder), \texttt{op\_positions.py} (position \ensuremath{\times} scope \ensuremath{\times} dose),
+\texttt{op\_nulls.py} (the battery above), \texttt{op\_layer\_sweep.py}
+(decodability vs. causal effect per layer),
+\texttt{op\_geometry\_dump.py}; \texttt{verify\_numbers.py} recomputes
+every number in this paper from the persisted artifacts.
 
 \section{The J-space readout
 comparisons}

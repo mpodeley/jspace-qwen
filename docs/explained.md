@@ -45,6 +45,13 @@ arrows can be handled:
   thinks *"the capital of Italy"* and transplant it into the same model while it thinks *"the
   currency of Italy"*. The model **answers "Rome"**: its actual answer changes, not just its
   preference.
+- **The assembly (the new headline):** best of all — we don't even need to copy that state. We
+  **build it from three averaged ingredients** — a generic base, an "Italy" part, and a
+  "capital-of" part — write the assembled thought into a single spot, and the model answers
+  **"Rome" as often as it normally answers anything** (52%, when its own accuracy is 53%). Swap
+  in the "France" part instead and it answers *Paris*. The thought really is made of parts, and
+  the parts are enough. (Our earlier failure to make it *speak* by nudging arrows turned out to
+  be an overdose: push gently — with the right strength — and the nudge makes it speak too.)
 
 ## The arrows are real, not a quirk of our examples
 

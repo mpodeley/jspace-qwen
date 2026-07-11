@@ -338,6 +338,154 @@ model's own 53% clean accuracy** (ceiling). Random control 0%. Reading: the aver
 direction rotates relative preference; the state-level patch reroutes the actual answer. Artifacts:
 `1.7b_relations_minimal.parquet` + `_minimal_margins.json`.
 
+### 2.11 Decomposing the donor: a COMPOSED state generates (2026-07-11, reviewer round 2)
+
+The §2.10 gap ("the patch has more information than the direction") demanded an answer to *which*
+information. `op_patch_decomp.py` decomposes the donor at the query position by the exact two-way
+factorization `H = μ + stem(operand) + case(operator) + inter` and patches partial reconstructions
+(μ included in every variant — the hook replaces the state, so a variant must be a plausible
+full-magnitude residual). 1.7B relations, 224 (pair, operand) cells, clean greedy ceiling 53%:
+
+| patched state | says target | says source | says other | Δmargin | rank(to) | top-1 |
+|---|---:|---:|---:|---:|---:|---:|
+| magnitude control (μ + random, norm-matched) | 4.5% | 33.5% | 0.0% | +6.6 | 2889 | 0% |
+| interaction only (μ + inter) | 7.1% | 35.3% | 0.0% | +8.5 | 906 | 0% |
+| operand only (μ + stem) | 7.6% | 37.5% | 0.0% | +6.9 | 275 | 0% |
+| operator only (μ + case) | 20.1% | 14.7% | 1.8% | +12.8 | 174 | 0% |
+| **operator + operand (μ + stem + case)** | **51.8%** | 13.4% | 1.8% | +12.9 | 90 | 31.7% |
+| operator + operand, **held-out cell** | **35.7%** | 18.8% | 1.8% | +11.5 | 98 | 17.9% |
+| operator + **wrong** operand (μ + stem′ + case) | 20.1% | 11.6% | **34.4%** | +12.4 | 670 | 0% |
+| full donor (μ + stem + case + inter) | 50.9% | 12.5% | 1.8% | +13.8 | 79 | 31.2% |
+
+**The reviewer's hypothesis inverts.** The expected result was that generation needs the non-additive
+interaction term the averaged direction lacks. It does not: the purely additive composition
+`μ + stem + case` generates **at the donor's own level** (51.8% vs 50.9%), i.e. at the model's clean
+ceiling; the interaction term alone does nothing (7.1%). The two controls close the loopholes:
+**leave-one-cell-out** (stem and case rebuilt without ever seeing cell (o,to)) still generates at
+35.7% — composition, not leakage — and **swapping the stem redirects the answer to the swapped
+operand** (34.4% says-other vs 1.8% baseline): the state is compositional in exactly the way the
+factorization claims.
+
+**And the direction IS the component.** `v(k)` from `op_dirs` equals the ANOVA main effect `case[k]`
+**identically** (max relative deviation 8.5e-08 across the band — same algebra, verified numerically).
+So steering and patching apply the *same object* in two different ways: steering **adds**
+`α·(case[to] − case[frm])` on top of a state that already contains `case[frm]` (at α=4 over a 13-layer
+band: a far off-manifold overshoot), while the composition **replaces** the state with
+`μ + stem + case[to]`. The §2.10 dissociation is therefore a fact about the *mode and dose* of
+intervention, not about missing information — the additive factorization is behaviorally sufficient.
+(The dose × position sweep in `op_positions.py` tests the α-artifact reading directly.)
+Artifacts: `1.7b_relations_patch_decomp.parquet` + `.json` (band), `_patch_decomp_single.*` (one layer).
+
+**Single-layer variant.** Replacing the query state at ONE mid-workspace layer: `μ + case[to]` *alone*
+generates at 44.6% ≈ full donor 40.6% — the operand is re-read from the unpatched layers and positions
+(consistently, the stem-swap no longer redirects there: 1.3% vs 34.4% at the band). The operator
+injection point is local; the operand identity is distributed and recoverable.
+
+**8B replication (2026-07-11 evening): every number sharpens.** Clean ceiling 68%; composed
+`μ+stem+case` **62.1%** ≈ donor 65.2%; **leave-one-cell-out 50.4%** (1.7B: 35.7%); **stem-swap
+redirect 48.2%** (1.7B: 34.4%); interaction-only 3.6%; magnitude control 2.2%. Artifact:
+`8b_relations_patch_decomp.parquet` + `.json`.
+
+### 2.12 Dose × position: steering DOES generate at the calibrated dose (2026-07-11)
+
+`op_positions.py` (1.7B relations, 224 cells/condition). The α-artifact reading of §2.11 is confirmed
+quantitatively — the peak generation dose lands exactly where the algebra predicts (on-manifold at
+`α ≈ 1` for one layer; `α ≈ 1/n_layers ≈ 0.1` for the 13-layer band, since band additions accumulate):
+
+| condition | α | greedy exact match | Δmargin |
+|---|---:|---:|---:|
+| band, all positions | **0.1** | **51.3%** | +16.7 |
+| band, all positions | 4.0 (old default) | 0.4% | +28.9 |
+| band, query only | 0.1 | 39.3% | +13.4 |
+| single layer, query only | **1.0** | **38.4%** | +12.1 |
+| single layer, query only | 0.1 | 3.1% | +0.3 |
+| single layer, query only | 4.0 | 9.8% | +13.7 |
+
+An inverted-U in generation centered at the predicted dose, while the margin keeps climbing
+monotonically past it: **overdosing keeps shifting preference but pushes the state off-manifold and
+kills generation** (on-task KL at band/α=4: 29 nats). The old "≤0.5% exact match" was an overdose
+artifact. At the calibrated dose, additive steering generates at the model's ceiling — level (iii)
+is reached by *addition*, not only by replacement.
+
+**Position specificity (α=4 battery).** Query-token-only injection ≈ all-positions on the margin
+(+28.7 vs +28.9, sign-correct 98%) at **60× lower off-task cost** (KL 0.29 vs 18.4 nats/token);
+operand-token and sentence-initial ("wrong") controls do ~nothing (+1.8 / +2.3, sign+ 4% / 16%).
+Single layer + query position: target rank 570 → 69, off-task KL 0.04. The margin effect is a
+**localized edit of the queried relation**, not a global perturbation — the reviewer's objection is
+answered directly. Artifacts: `1.7b_relations_positions.parquet` + `.json`, `_posdose.parquet`.
+
+### 2.13 The competitive null battery: semantics is everything; the margin has parts (2026-07-11)
+
+`op_nulls.py` (1.7B relations, α=4; 20 redraws per stochastic null; the script proves its swap loop
+identical to `op_core.measure_swaps_long` before running, max Δ 0.0). Contrast vs matched-norm random,
+operator-level cluster bootstrap:
+
+| null | contrast [95% CI] | flips | reading |
+|---|---:|---:|---|
+| **real swap** | **+22.62 [+14.0, +32.1]** | 1.00 | |
+| permuted labels (per-operand) | +0.68 [−0.8, +3.9] | 0.45 | **the decisive null: → 0** |
+| permuted labels (global) | +0.57 [−2.1, +3.0] | 0.35 | → 0 |
+| random in operator **subspace** | +0.75 [−2.2, +3.5] | 0.45 | right home, wrong content: → 0 |
+| wrong layer (early band) | +9.77 [+5.2, +13.3] | 1.00 | additions **persist** downstream |
+| other-relation direction | +11.09 [+6.7, +17.1] | 0.80 | −case(source) alone ≈ half the margin |
+| shuffled answers | +21.12 [+11.2, +32.2] | 1.00 | +case(target) boosts the whole **category** |
+
+**Group A (semantic nulls) all go to zero** — permuting the operator labels preserves every statistical
+property of the extraction (same residuals, same averaging, same norms) and kills the effect entirely;
+even a random direction *inside the operator subspace* does nothing. The contrast is carried by the
+specific, correctly-labeled content.
+
+**Group B (structural probes) stay nonzero for mechanistically informative reasons**, not as confounds:
+(1) the margin decomposes like the representation does — injecting `case(other) − case(source)` keeps
+the *uninstall-source* half and yields ≈ half the effect (+11 of +22.6); (2) `+case(target)` raises the
+whole answer **category** (any capital city), which is why the margin toward a *shuffled* operand's
+answer also moves — **operand specificity lives in generation, not in the margin** (the composed-state
+patch says the *correct* operand's answer at 51.8% and the stem-swap redirects it, §2.11); (3) a vector
+added at an early layer **persists** in the residual stream into the workspace, so "wrong layer" is not
+actually absent from the right layer — per-layer locality is measured properly by the layer sweep
+(§2.14), where building and injection co-vary. Artifacts: `1.7b_relations_nulls.parquet` + `.json`.
+
+### 2.14 Layer sweep: represented early, causal late, readable everywhere (2026-07-11)
+
+`op_layer_sweep.py` (1.7B relations; the direction is built AND injected at each single source layer).
+Three per-layer profiles of the same object:
+
+- **Trivial readability:** leave-one-operand-out operator classification is **100% at every layer,
+  including layer 0** — attention mixes the operator token into the query position immediately, so
+  decodability-style evidence locates nothing.
+- **Representation:** the ANOVA operator share peaks **early** — 92.4% at L5 (18.5% depth) — and decays
+  monotonically to 56.5% at the end of the stream.
+- **Causal leverage:** the single-layer swap contrast is ≈0 early, rises through the band, and peaks
+  **late** — +21.28 [+13.8, +28.2] at L24 (88.9% depth), essentially the full band's +22.6 from ONE
+  layer.
+
+The two informative curves peak ~70 depth-points apart. Bonus diagnosis: op_minimal's "single
+mid-workspace layer" (L17, +6.8) was far below the late-band optimum — the minimal high-effect
+intervention is one LATE layer at the query position. Artifacts:
+`1.7b_relations_layersweep.parquet` + `.json`.
+
+### 2.15 The animals domain: everything replicates, one floor caveat (2026-07-11)
+
+An independently curated non-geographic domain (`data/animals.json`: class/habitat/diet/covering × 12
+animals, tokenizer-screened by `build_op_datasets.py --only animals`, 3 paraphrase frames). 1.7B:
+
+- **Swap:** 12/12 ordered pairs flip; contrast **+18.08 [+13.53, +22.81]**, flip fraction 1.00.
+- **Held-out operands:** 12/12, **+18.04 [+13.59, +22.74]** — transfer ≡ within.
+- **Cross-frame:** 72/72 flips, mean +17.26, frame-invariant to two decimals (+17.50 / +17.50).
+- **Nulls:** permuted per-operand **−0.53 [−5.1, +3.0]**, global +1.10, subspace +0.17 — all at zero.
+  Structural probes replicate quantitatively: other-relation retains ≈half (+8.5 of +18.1 = 47%; the
+  countries figure is 49%), shuffled answers ≈ full (+18.1, category-level boost), wrong layer +10.7.
+- **Factorization:** query position operand 16.3% / operator 61.7% / **interaction 22.0%**; entity
+  token operand-dominant 79.4%. More fusion than countries (9%) — yet transfer is perfect, while
+  arithmetic (23% interaction) fails held-out: the domain discriminator is TRANSFER, not fusion share.
+- **Minimal band:** single layer 12/12 (+6.88), full band +18.08; off-task KL 6.3 vs 19.5 nats.
+- **Floor caveat:** clean greedy accuracy is only **6%** (multi-token answers; single-token coverage
+  0.62), so the generation-level readout is uninformative here — composed patch 2.1% = full donor 2.1%
+  (consistent, at floor), Δmargin discriminates as usual (+6.8/+7.3 vs +3.5 magnitude control).
+  Sufficiency in animals is attested by margins/rank, not exact match.
+
+Artifacts: `1.7b_animals_{operator_swap,heldout,templates,nulls,minimal,patch_decomp,positions,dose}*`.
+
 ---
 
 ## The open interpretive question (deliberately unresolved)
