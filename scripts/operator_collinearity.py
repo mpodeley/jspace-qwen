@@ -7,13 +7,15 @@ Measure, for each domain, how much of the operator-direction set lies on a singl
 line: the fraction of variance the top singular vector of the mean-centred
 operator directions explains (1.0 = perfectly collinear)."""
 import os, sys, json
+from pathlib import Path
 os.environ.setdefault("HF_HOME", "/var/home/matias/Projects/jspace-qwen/models")
 sys.path.insert(0, "/var/home/matias/Projects/jspace-qwen/scripts")
 import torch
 import op_core
-from _common import band_layers, evenly_spaced_layers, load_model
+from _common import band_layers, evenly_spaced_layers, load_model, resolve_tag
 
-model = load_model("1.7b")
+MODEL_KEY = sys.argv[1] if len(sys.argv) > 1 else "1.7b"
+model = load_model(MODEL_KEY)
 ws = band_layers(evenly_spaced_layers(model.n_layers), model.n_layers)["workspace"]
 
 
@@ -35,9 +37,18 @@ def collinearity(domain):
     return keys, top1, coss
 
 
+results = {}
 for dom in ("arith_addN", "arithmetic", "relations"):
     keys, top1, coss = collinearity(dom)
+    results[dom] = {"operators": keys, "top1_singular_variance": round(top1, 4),
+                    "consecutive_difference_cosines": [round(c, 4) for c in coss]}
     print(f"\n{dom}  ({len(keys)} operators: {keys})")
     print(f"  top-1 singular variance of operator set: {top1:.3f}  (1.0 = collinear / on one line)")
     if coss:
         print(f"  consecutive-difference cosines: {[round(c,2) for c in coss]}")
+
+out = (Path(__file__).resolve().parent.parent / "results" / "geometry"
+       / f"{resolve_tag(MODEL_KEY)}_collinearity.json")
+out.parent.mkdir(parents=True, exist_ok=True)
+out.write_text(json.dumps(results, indent=2))
+print(f"\nsaved {out}")

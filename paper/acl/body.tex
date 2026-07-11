@@ -1,3 +1,8 @@
+:material-file-document: Download the PDF\{
+.md-button .md-button-\/-primary \}
+:material-play-circle: Interactive explorer\{
+.md-button \}
+
 \section{Introduction}
 
 A line of work shows that a \emph{task} or \emph{relation} can be
@@ -9,10 +14,10 @@ whether the operation \emph{factorizes} from its argument, whether that
 factorization \emph{generalizes}, whether the operation is separable
 from the \emph{word it produces}, and whether any of this holds
 \emph{beyond} relational facts, in arithmetic and logic. We answer these
-on Qwen3, and offer a morphological reading --- relational computation
-as \textbf{declension} --- as an organizing metaphor that anticipates
-the specific asymmetries we observe (syncretism at the level of the
-surface form, fusion in the interaction term).
+on Qwen3 and Gemma-2, and offer a morphological reading --- relational
+computation as \textbf{declension} --- as an organizing metaphor that
+anticipates the specific asymmetries we observe (syncretism at the level
+of the surface form, fusion in the interaction term).
 
 \section{Related work and what is new
 here}
@@ -76,10 +81,10 @@ fusion in the interaction term) --- not an additional empirical claim.
 \section{Method}
 
 \textbf{Setup.} Qwen3-1.7B/8B throughout, plus Gemma-2-9B for the
-cross-architecture replication (\S{}4.5); all run on a single AMD Strix
-Halo APU (see setup; an int8 path keeps larger models
-in range). A relation is rendered into a template; the canonical frame
-is \texttt{"The\ \{op\}\ of\ \{a\}\ is"}, and \S{}4.4 additionally uses two
+cross-architecture replication (\S{}4.5); all run in bf16 on a single AMD
+Strix Halo APU (see setup). A relation is rendered into
+a template; the canonical frame is
+\texttt{"The\ \{op\}\ of\ \{a\}\ is"}, and \S{}4.4 additionally uses two
 paraphrase frames (question--answer and discourse-prefixed) that hold
 the \texttt{\{op\}\ of\ \{a\}} unit fixed while varying the surrounding
 frame, all ending in \emph{is} so answer scoring is comparable. Reading
@@ -99,8 +104,10 @@ change in \texttt{logit(answer\_B)\ -\ logit(answer\_A)} at the query
 position when \texttt{\ensuremath{\alpha}\textperiodcentered{}(v(k\_B)\ -\ v(k\_A))} is added over the band,
 versus a \textbf{matched-norm random} direction. Answers are scored by
 their distinguishing token (bare digit for arithmetic, since Qwen3
-splits " 3" into {[}space, 3{]}); a tokenization guard drops operator
-pairs that collide at that token.
+splits " 3" into {[}space, 3{]}); a tokenization guard drops, within
+each operator pair, the operands whose two answers collide at that token
+(for relations this leaves 4 of 12 operands on the syncretic
+demonym\ensuremath{\leftrightarrow}language pairs and all 12 elsewhere).
 
 \textbf{Factorization.}
 \texttt{H{[}operand,\ operator{]}\ =\ \ensuremath{\mu}\ +\ operand(o)\ +\ operator(k)\ +\ interaction};
@@ -114,14 +121,15 @@ operator from interpolation among the examples used to build it.
 
 \textbf{Statistical treatment.} The 20 ordered swaps are \textbf{not} 20
 independent observations: they are built from 5 operator directions
-(each participating in 8 ordered pairs) and evaluated on the same 12
-operands. We therefore report cluster-bootstrap percentile intervals
-(10,000 replicates) at two levels. Within a pair, the \textbf{operand}
-is the resampling unit (per-pair 95\% CIs). Across the paradigm, the
-\textbf{operator} is the top-level cluster: a dyadic node bootstrap
-resamples the operator set with replacement, weights each ordered pair
-by the product of its endpoints\textquotesingle{} multiplicities, and
-resamples operands within surviving pairs
+(each participating in 8 ordered pairs) and evaluated on the same shared
+operand set (12 operands, 4 on the syncretic pairs after the
+tokenization guard). We therefore report cluster-bootstrap percentile
+intervals (10,000 replicates) at two levels. Within a pair, the
+\textbf{operand} is the resampling unit (per-pair 95\% CIs). Across the
+paradigm, the \textbf{operator} is the top-level cluster: a dyadic node
+bootstrap resamples the operator set with replacement, weights each
+ordered pair by the product of its endpoints\textquotesingle{}
+multiplicities, and resamples operands within surviving pairs
 (\texttt{op\_core.bootstrap\_pair\_ci} / \texttt{bootstrap\_family\_ci};
 per-operand values persisted in the \texttt{*\_long.parquet} artifacts).
 
@@ -147,13 +155,11 @@ control is \textasciitilde0. Representative (1.7B):
 \toprule
 swap & clean & +operator & +random \\
 \midrule
-
-\bottomrule
-
 currency \ensuremath{\to} capital & -7.9 & \textbf{+31.5} & -1.2 \\
 capital \ensuremath{\to} currency & -12.0 & \textbf{+33.0} & -2.5 \\
 capital \ensuremath{\to} language & -8.5 & \textbf{+32.5} & +3.0 \\
 continent \ensuremath{\to} language & -1.9 & \textbf{+23.0} & +1.4 \\
+\bottomrule
 \end{tabular}
 \end{table}
 }
@@ -177,6 +183,22 @@ operand-bootstrap CIs never cross zero:
 \caption{Per-pair distributions: swap values per operand with operand-bootstrap 95\% CIs, matched-norm random control, and clean baselines. No CI crosses zero; the weakest pairs are exactly the syncretic ones (demonym\ensuremath{\leftrightarrow}language and their neighbours).}
 \end{figure*}
 
+\textbf{Dose--response and collateral cost.} Sweeping the intervention
+strength \ensuremath{\alpha} (1.7B) separates the effect into its parts: the
+\textbf{operator-specific} component (swap - random) rises and
+\textbf{saturates at \ensuremath{\approx}+23 by the default \ensuremath{\alpha} = 4}, while the matched-norm
+random control contributes a \textbf{nonspecific} margin shift of \ensuremath{\approx}+6
+that is flat in \ensuremath{\alpha} --- any large perturbation degrades the clean
+answer\textquotesingle s dominance somewhat, which is why all headline
+numbers are swap - random contrasts. The intervention is
+\emph{answer}-surgical, not \emph{distribution}-surgical: with the same
+hook active on unrelated WikiText, per-token KL(clean \ensuremath{\,\Vert\,} intervened)
+grows from 7.9 nats (\ensuremath{\alpha} = 0.5) to 21 nats (\ensuremath{\alpha} = 12) --- 18.4 at the
+default --- so the band-wide edit substantially distorts off-task text.
+We report this as an honest cost of the band-wide, all-position
+intervention rather than tuning it away; targeted (single-position)
+variants are the natural mitigation and are left to future work.
+
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{op_dose}
@@ -195,22 +217,21 @@ Two-way ANOVA at a mid-workspace layer (1.7B / 8B):
 \toprule
 read position & operand & operator & interaction (fusion) \\
 \midrule
-
-\bottomrule
-
 query token & 5\% / 6\% & \textbf{86\% / 82\%} & 9\% / 13\% \\
 entity token & \textbf{59\% / 55\%} & 31\% / 34\% & 9\% / 11\% \\
+\bottomrule
 \end{tabular}
 \caption{Two-way ANOVA of the workspace state: variance shares by read position (1.7B / 8B).}
 \end{table*}
 }
 
 \textasciitilde90\% additive; operand/operator subspaces largely
-orthogonal (principal angles 41--82\textdegree{}). The operation- dominant
-representation \textbf{emerges along the sequence}: the entity enters
-operand-dominant and is \emph{declined} into an operator-marked form by
-the query position (the reading-position control rules out template
-echo; the causal swaps are the stronger control).
+orthogonal (principal angles 41--85\textdegree{} at the query token, across all
+three models). The operation- dominant representation \textbf{emerges
+along the sequence}: the entity enters operand-dominant and is
+\emph{declined} into an operator-marked form by the query position (the
+reading-position control rules out template echo; the causal swaps are
+the stronger control).
 
 \begin{figure*}[t]
 \centering
@@ -226,7 +247,7 @@ echo; the causal swaps are the stronger control).
 between them is weak precisely because they share an exponent. A
 \textbf{pure desinence} built from the shared-output pairs
 (\texttt{mean{[}h(language)\ -\ h(demonym){]}}, exponent cancelled)
-still installs the relation causally (1.7B: -3.7 \ensuremath{\to} +12.5). The
+still installs the relation causally (1.7B: -3.6 \ensuremath{\to} +12.5). The
 syncretism appears at the \emph{exponent} level, not the \emph{case}
 level --- as in Latin declension.
 
@@ -282,9 +303,6 @@ logits, GQA):
 \toprule
 measure & Qwen3-1.7B & Qwen3-8B & \textbf{Gemma-2-9B} \\
 \midrule
-
-\bottomrule
-
 all-pairs swap contrast & +22.6 {[}+14.0, +32.1{]} & +26.0 {[}+17.9,
 +32.8{]} & \textbf{+30.4 {[}+23.8, +34.8{]}} \\
 flips (swap \textgreater{} 0) & 20/20 & 20/20 & \textbf{20/20} \\
@@ -292,8 +310,9 @@ held-out-operand contrast & +20.0 {[}+10.8, +29.5{]} & +22.8 {[}+14.0,
 +31.0{]} & \textbf{+26.6 {[}+20.6, +33.2{]}} \\
 operator variance @ query & 86\% & 82\% & \textbf{84.8\%} \\
 interaction (fusion) & 9\% & 13\% & \textbf{6.8\%} \\
-pure desinence (clean \ensuremath{\to} +v) & -3.7 \ensuremath{\to} +12.5 & -2.9 \ensuremath{\to} +8.1 & \textbf{-3.0
-\ensuremath{\to} +8.6} \\
+pure desinence (clean \ensuremath{\to} +v) & -3.6 \ensuremath{\to} +12.5 & -2.9 \ensuremath{\to} +8.1 & \textbf{-3.0
+\ensuremath{\to} +8.5} \\
+\bottomrule
 \end{tabular}
 \caption{Cross-domain factorization: relational operators factorize and generalize; arithmetic and logic do not.}
 \end{table*}
@@ -322,14 +341,12 @@ comparison-logic operators, on 1.7B:
 domain & operator variance & interaction (fusion) & held-out
 generalization & swap vs random \\
 \midrule
-
-\bottomrule
-
 \textbf{relational} & 86\% & 9\% & \textbf{20/20} flip & +21 vs
 \textasciitilde0 \\
 \textbf{arithmetic} & 55\% & 23\% & 2/6 (\ensuremath{\leq} random) & +0.4 vs +0.3 \\
 \textbf{logic (compare)} & 33\% & 34\% & 2/6 (\ensuremath{\leq} random) & +1.2 vs
 +0.2 \\
+\bottomrule
 \end{tabular}
 \caption{Cross-domain factorization: relational operators factorize and generalize; arithmetic and logic do not.}
 \end{table*}
@@ -375,14 +392,12 @@ relations and the genuine-function cut:
 cut & held-out generalization (1.7B / 8B) & operator-set collinearity
 (top-1 var) \\
 \midrule
-
-\bottomrule
-
 relations (5 operations) & 20/20 \textperiodcentered{} 20/20 & 0.39 (spread paradigm) \\
 \textbf{add-N} (operator = addend) & 5/12 \textperiodcentered{} 6/12 (+0.10 / +0.05) &
 \textbf{0.76 (most 1-D / number-line)} \\
 \texttt{+\ \ensuremath{\times}\ -} (operator = function) & 2/6 \textperiodcentered{} 1/6 (-0.43 / -0.55) &
 0.64 \\
+\bottomrule
 \end{tabular}
 \end{table*}
 }

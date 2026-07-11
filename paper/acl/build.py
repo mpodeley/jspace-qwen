@@ -112,6 +112,13 @@ def longtable_to_table(tex: str) -> str:
     def repl(m):
         colspec = m.group(1)
         body = m.group(2)
+        # pandoc longtable: [toprule+header+midrule] \endhead [bottomrule]
+        # \endlastfoot [data]. Reassemble as header + data + closing bottomrule,
+        # dropping the foot content from the middle (else \bottomrule lands ABOVE
+        # the data rows and the table renders with no closing rule).
+        sec = re.search(r"(.*?)\\endhead(?:.*?)\\endlastfoot(.*)", body, re.S)
+        if sec:
+            body = sec.group(1).strip() + "\n" + sec.group(2).strip() + "\n\\bottomrule"
         body = re.sub(r"\\end(head|firsthead|foot|lastfoot)", "", body)
         body = body.replace(r"\noalign{}", "")
         plain = re.sub(r"\\[a-zA-Z]+\{?|[{}]", "", body)

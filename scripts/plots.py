@@ -349,7 +349,8 @@ def fig_op_swap_dist():
         fontsize=10, loc="left")
     n_per = int(ldf.groupby(["from", "to"]).size().median())
     fig.text(0.01, -0.015,
-             f"dots = swap per operand (orange, {n_per}/pair) · gray × = matched-norm random · "
+             f"dots = swap per operand (orange, median {n_per}/pair; 4 on the syncretic "
+             f"demonym–language pairs) · gray × = matched-norm random · "
              f"bar = operand-bootstrap 95% CI · ○ = clean baseline mean\n"
              f"20 ordered pairs share 5 operator directions — pairs are not independent; "
              f"operands are the unit within a pair, operators across the paradigm.",

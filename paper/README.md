@@ -1,4 +1,12 @@
-# LaTeX build — arXiv preprint
+# LaTeX builds
+
+**Submission (BlackboxNLP / OpenReview): `acl/main.pdf`** — anonymized ([review] mode,
+line numbers, links redacted). Built by `acl/build.py` + tectonic.
+**Public preprint (site): `acl/main_public.pdf`** — de-anonymized ([final] + author), built
+with `acl/build.py --public`; copied to `docs/assets/paper.pdf`.
+⚠️ Do not upload `main_public.pdf` to OpenReview.
+
+# LaTeX build — arXiv preprint (single-column, legacy)
 
 `main.tex` is the preprint; the body is generated from `../docs/paper.md` via pandoc and
 lives in `body.tex`. Figures are the vector PDFs in `figs/` (produced by
