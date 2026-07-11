@@ -1,0 +1,53 @@
+# Evidence & controls
+
+Every claim in the [paper](assets/paper.pdf), its experiment, the control that could have
+killed it, and the artifact that reproduces it. Statistical treatment: cluster-bootstrap 95%
+CIs at two levels (operands within a pair; **operators** as top-level clusters — the 20
+ordered pairs share 5 directions and are *not* independent observations).
+
+## Claim → experiment → control → artifact
+
+| # | Claim | Experiment | Control / would-have-killed-it | Artifact |
+|---|---|---|---|---|
+| 1 | The operator is a **manipulable direction** | all-pairs swap `v(to)−v(from)`, 20 ordered pairs | **matched-norm random direction** ≈ 0 (nonspecific shift +6, flat in dose) | `results/ablation/{model}_relations_operator_swap*.parquet` |
+| 2 | Effects are **not noise** | operand-bootstrap CIs per pair; dyadic operator bootstrap for the family | no per-pair CI crosses zero; family flip fraction 1.00 [1.00, 1.00] | `*_long.parquet` + `op_core.bootstrap_*` |
+| 3 | The representation **factorizes** (operand ⊕ operator) | two-way ANOVA of `H[operand, operator]` | reading-position control: operand-dominant at the entity token → operator-dominant at the query token (not template echo) | `results/geometry/{model}_relations.json` |
+| 4 | The operator **generalizes** | build `v(op)` on half the operands, swap the held-out half | interpolation would fail here; random ≈ 0 | `{model}_relations_heldout*.parquet` |
+| 5 | It is **not the prompt frame** | build on frame *i*, swap on frame *j* (3 paraphrase frames) | clean baselines shift across frames; the contrast doesn't (1.7B 180/180, 8B 100/100) | `{model}_relations_templates*.parquet` |
+| 6 | It is **not one architecture** | identical pipeline on Gemma-2-9B | different corpus/tokenizer/softcap — strongest effects of the three models | `gemma-2-9b_relations_*` |
+| 7 | **Operation ≠ realization** | language vs demonym (both emit "Italian"); exponent-free desinence | the shared output word cancels in the desinence, yet it still installs the relation (−3.0…−3.7 → +8.1…+12.5) | `results/geometry/*.json` (cosines, desinence) |
+| 8 | Factorization is **domain-specific** | same pipeline on arithmetic (+ × −) and comparison logic | held-out generalization *fails* (≤ random); 2–4× interaction — a negative that validates the method's discriminative power | `{model}_{arithmetic,logic}_*` |
+| 9 | The add-N literature **reconciles** | add-N (operator = addend) vs + × − (operator = function) | add-N generalizes better *and* is the most collinear (76% one line) — a linear numeric family, not distinct operations | `*_arith_addN_*`, `operator_collinearity.py` |
+| 10 | Intervention effects are **dose-sane** | α sweep 0.5–12 | specific effect saturates at default α=4; off-task KL reported honestly (18 nats — answer-surgical, not distribution-surgical) | `1.7b_relations_dose.parquet` |
+| 11 | No privileged **readable subspace** | 4 readout comparisons (pass@k, form, number probe, concept plane) | spectrum-matched **random projection** reads as well as the fitted J-lens; random-plane baseline kills the "channel" | [working log, Part 1](findings.md) |
+
+## The distribution behind the headline
+
+![Per-pair distributions with operand-bootstrap CIs, random control and clean baseline](figs/op_swap_dist.png)
+
+Orange = per-operand swap values (12/pair); gray × = matched-norm random; black bar =
+operand-bootstrap 95% CI; ○ = clean baseline. The weakest pairs are exactly the **syncretic**
+ones (demonym ↔ language) — where two operations share their surface form, as the declension
+reading predicts.
+
+## Dose–response
+
+![Dose-response and collateral cost](figs/op_dose.png)
+
+The operator-specific effect (swap − random) saturates at the default dose; the matched-norm
+random control's +6 nonspecific shift is why every headline number is a *contrast*. The
+band-wide edit is **not** free off-task (right panel) — reported, not hidden.
+
+## Cross-domain gradient
+
+| domain | operator variance | interaction | held-out | verdict |
+|---|---:|---:|---|---|
+| relational | 82–86% | 7–13% | 20/20 flip | clean operator |
+| arithmetic | 42–55% | 23–25% | ≤ random | bag of heuristics |
+| comparison logic | 25–33% | 34–45% | ≤ random | entangled |
+
+Monotone at both Qwen3 scales; the held-out test is what separates a real operator from
+memorized interpolation.
+
+*Full evidence trail, including the deliberate nulls: [working log](findings.md). Reproduce
+any cell: [How to reproduce](reproduce.md).*

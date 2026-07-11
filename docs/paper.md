@@ -4,6 +4,9 @@
 role. The case metaphor is our explanatory device; the claims below stand on the causal
 interventions and the measured factorization.*
 
+[:material-file-document: Download the PDF](assets/paper.pdf){ .md-button .md-button--primary }
+[:material-play-circle: Interactive explorer](explorer.md){ .md-button }
+
 *Draft, 2026-07-10. Qwen3-1.7B/8B. All numbers reproducible from `scripts/` and `data/`; see
 ["How to reproduce"](reproduce.md) and the [working findings log](findings.md). An
 [interactive explorer](explorer.md) animates the three central results (declension, injection,
@@ -94,7 +97,7 @@ the interaction term) — not an additional empirical claim.
 ## 3. Method
 
 **Setup.** Qwen3-1.7B/8B throughout, plus Gemma-2-9B for the cross-architecture replication (§4.5); all
-run on a single AMD Strix Halo APU (see [setup](setup.md); an int8 path keeps larger models in range). A relation is rendered into a template; the canonical frame is
+run in bf16 on a single AMD Strix Halo APU (see [setup](setup.md)). A relation is rendered into a template; the canonical frame is
 `"The {op} of {a} is"`, and §4.4 additionally uses two paraphrase frames (question–answer and
 discourse-prefixed) that hold the `{op} of {a}` unit fixed while varying the surrounding frame, all
 ending in *is* so answer scoring is comparable.
@@ -137,7 +140,7 @@ readout `unembed(h)`, and re-run efficacy with **spectrum-matched random-project
 All 20 ordered operator swaps flip the answer (mean swap **+21** logit units on 1.7B, **+25** on 8B) while
 the matched-norm random control is ~0. Representative (1.7B):
 
-| swap | clean (from wins) | +operator | +random |
+| swap | clean | +operator | +random |
 |---|---:|---:|---:|
 | currency → capital | −7.9 | **+31.5** | −1.2 |
 | capital → currency | −12.0 | **+33.0** | −2.5 |

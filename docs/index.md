@@ -1,60 +1,64 @@
-# The J-space on Qwen3
+# Relational operations factorize from their operands in LLMs
 
-Reproducing Anthropic's **global-workspace / Jacobian-lens** result
-([Gurnee, Sofroniew, Lindsey et al., 2026](https://transformer-circuits.pub/2026/workspace/index.html))
-on open-weights **Qwen3**, and measuring **when** the *J-space* emerges and
-**when** it is causally important — run entirely on a single AMD Strix Halo APU.
+<p class="hero-sub">Causal interventions reveal <b>transferable operator directions</b> for factual
+relations — replicated on <b>Qwen3-1.7B/8B and Gemma-2-9B</b> — while arithmetic and logic remain
+entangled with their operands.</p>
 
-## What this is
+<div class="stats" markdown>
+<div class="stat"><span class="n">20/20 × 3</span><span class="d">operator swaps flip the answer, in
+all three models — matched-norm random controls ≈ 0</span></div>
+<div class="stat"><span class="n">82–86%</span><span class="d">of workspace variance at the query
+token is the operator; ~7–13% interaction ("fusion")</span></div>
+<div class="stat"><span class="n">180/180</span><span class="d">swaps flip under held-out operands
+and unseen paraphrase frames — a real operator, not interpolation</span></div>
+</div>
 
-The paper introduces the **Jacobian lens (J-lens)**, which reads out what an
-internal activation is "poised to make the model say", and the **J-space**: a
-small, sparse subspace of the residual stream that behaves like a *global
-workspace* — it holds a few concepts at a time, accounts for <10% of activation
-variance, and is organised by depth into sensory → workspace → motor regimes.
+<div class="hero-buttons" markdown>
+[:material-play-circle: Interactive result](explorer.md){ .md-button .md-button--primary }
+[:material-file-document: Paper (PDF)](assets/paper.pdf){ .md-button }
+[:material-flask: Evidence & controls](robustness.md){ .md-button }
+[:material-github: Code](https://github.com/mpodeley/jspace-qwen){ .md-button }
+</div>
 
-The original study is on Claude. This project asks the question the paper
-cannot: on open weights, **does the J-space exist at every scale, or does it
-emerge and sharpen as models grow?** We run the identical pipeline on Qwen3
-**1.7B, 8B, and 32B** and compare.
+<div class="hero-gif" markdown>
+[![The declension morph: the same 60 workspace states, organized by operand at the country token, reorganize by operator at the query token](figs/declension.gif)](explorer.md)
+</div>
 
-- [**Method**](method.md) — the J-lens math and every metric we compute.
-- [**Setup**](setup.md) — the AMD/ROCm recipe, the 48 GB memory wall, and the
-  custom int8 path that keeps 32B in the study.
-- [**Results — scale**](results-scale.md) · [**Results — causal**](results-causal.md)
-- [**How to reproduce**](reproduce.md)
+## The idea in 60 seconds
 
-## Preliminary finding (1.7B)
+Latin marks a noun's *role* with a case ending: `ros-a / ros-am` — same stem, different job.
+We find LLMs do something structurally similar with factual relations. Ask *"The currency of
+Italy is"* and, mid-network, the state of the sentence is well described as
 
-The smallest model already shows a clean split between *structure* and
-*legibility*:
+```
+state ≈ μ + operand(Italy) + operator(currency-of) + small interaction
+```
 
-- **The causal workspace signature is present.** Swapping a bridge entity's
-  J-lens direction across the mid-layer *workspace* band flips the model's
-  two-hop answer (flip-rate 0.30) far more than the early (0.17) or late (0.04)
-  bands — while a matched-norm **random control flips nothing (0.00)**.
-- **The readout advantage has not yet emerged.** On the two-hop pass@k eval the
-  J-lens only matches the logit-lens baseline at 1.7B.
-- The J-space read directions hold ~2% of residual variance, and top-1
-  readout **persistence peaks inside the workspace band** — both workspace
-  signatures.
+The **operator part is a real, causal object**: add `v(capital) − v(currency)` to the residual
+stream and the model answers *Rome* instead of *euro* — for **every** ordered pair of the five
+relations we test, in **all three models**. The direction **transfers**: built on half the
+countries it flips the other half; built on one phrasing it flips paraphrased prompts unchanged.
+And the operation is **not its output word**: *language-of* and *demonym-of* both produce
+"Italian", yet are distinct directions — the model separates the grammatical role from the word
+that realizes it, the way declension separates case from surface form (*syncretism*).
 
-Whether the readout advantage and a sharper workspace emerge at 8B and 32B is
-the scale question this project answers.
+The factorization is **specific to relational retrieval**: run the identical pipeline on
+arithmetic (+, ×, −) or comparison logic and the operator is entangled with its operands
+(2–4× the interaction) and fails to generalize — consistent with "arithmetic as a bag of
+heuristics". [Explore it interactively](explorer.md), [read the paper](assets/paper.pdf), or
+[check every claim against its control](robustness.md).
 
-## Headline (1.7B → 8B)
+!!! note "Methodological note — the honest null that started this"
+    This project began as a replication of the J-space/global-workspace readout claim. Under
+    matched controls (including a spectrum-matched random projection), the **J-lens readout did
+    not outperform the logit lens** on any of our metrics. The operator/operand structure above
+    is *causal* organization, not a privileged readable subspace — and the negative half is
+    documented with the same rigor in the [archive](method.md) and [working log](findings.md).
 
-- **The causal workspace sharpens with scale.** Swapping a bridge entity's
-  J-lens direction in the mid-layer *workspace* band flips the two-hop answer
-  with rate **0.30 → 0.55** from 1.7B to 8B, and *localizes* (the early band
-  collapses 0.17 → 0.04); the matched-norm control stays ~0.
-- **The J-space concentrates** (read variance fraction 0.027 → 0.014).
-- **But the readout advantage does not emerge**: on pass@k the J-lens only ties
-  the logit-lens on Qwen3 at both scales — an honest departure from the Claude
-  result.
-- **int8 preserves the J-space** (structural metrics within ~1–2%, correlations
-  ≥ 0.98), so the 32B-int8 run is trustworthy.
+---
 
-!!! note "Status"
-    1.7B and 8B complete (both bf16 + int8). 32B (int8) is the next scale point.
-    Figures and numbers update as it completes.
+**Reproducibility.** Everything runs on one AMD Strix Halo APU (no CUDA). Seeds, exact
+checkpoints (`Qwen/Qwen3-1.7B`, `Qwen/Qwen3-8B`, `google/gemma-2-9b`), per-operand long-form
+artifacts, and every figure's generator are in the repo — see [How to reproduce](reproduce.md).
+MIT license · Matias Podeley · <mpodeley@gmail.com> ·
+[How to cite](https://github.com/mpodeley/jspace-qwen#how-to-cite)

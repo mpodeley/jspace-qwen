@@ -71,12 +71,20 @@ CITES = [
 
 def md_source() -> str:
     lines = MD.read_text().splitlines()
-    out, skip_para = [], False
+    out, skip_para, after_image = [], False, 0
     for ln in lines:
         if ln.startswith("# "):          # H1 title -> handled by main.tex
             continue
         if ln.startswith("*Subtitle:") or ln.startswith("*Draft, "):
             skip_para = True             # docs-only preamble paragraphs
+        # italic caption paragraph following an image: the alt text becomes the
+        # LaTeX \caption, so the site-facing italic caption would be a duplicate
+        if after_image and ln.startswith("*"):
+            skip_para = True
+        if ln.startswith("!["):
+            after_image = 2
+        elif ln.strip():
+            after_image = max(0, after_image - 1)
         if skip_para:
             if not ln.strip():
                 skip_para = False
@@ -89,6 +97,18 @@ def longtable_to_table(tex: str) -> str:
     """Convert every pandoc longtable to a floating table/tabular (booktabs kept).
     Tables whose widest row exceeds a column's worth of text go to table* (full
     text width) — a two-column layout cannot hold them in one column."""
+    CAPTIONS = [  # wide floats need captions to be findable once they float away
+        (r"operator variance", "Cross-domain factorization: relational operators "
+         "factorize and generalize; arithmetic and logic do not."),
+        (r"add-N \(operator = addend\)", "Reconciliation with the add-N cut: the "
+         "linear-parameter family sits between relations and true two-operand "
+         "arithmetic."),
+        (r"Qwen3-1\.7B", "Cross-architecture replication: every signature "
+         "reproduces on Gemma-2-9B with the largest effect sizes."),
+        (r"read position", "Two-way ANOVA of the workspace state: variance shares "
+         "by read position (1.7B / 8B)."),
+    ]
+
     def repl(m):
         colspec = m.group(1)
         body = m.group(2)
@@ -96,10 +116,16 @@ def longtable_to_table(tex: str) -> str:
         body = body.replace(r"\noalign{}", "")
         plain = re.sub(r"\\[a-zA-Z]+\{?|[{}]", "", body)
         widest = max((len(r) for r in plain.splitlines() if "&" in r), default=0)
-        env = "table*" if widest > 55 else "table"
-        return (f"\\begin{{{env}}}[t]\n\\centering\\small\n"
+        if widest > 55:  # wide: span both columns, floats to a page top -> caption it
+            cap = next((c for pat, c in CAPTIONS if re.search(pat, body)), "")
+            captex = f"\\caption{{{cap}}}\n" if cap else ""
+            return ("\\begin{table*}[t]\n\\centering\\small\n"
+                    f"\\begin{{tabular}}{{{colspec}}}\n{body.strip()}\n"
+                    f"\\end{{tabular}}\n{captex}\\end{{table*}}")
+        # narrow: keep inline exactly where the prose introduces it
+        return ("\\begin{table}[H]\n\\centering\\small\n"
                 f"\\begin{{tabular}}{{{colspec}}}\n{body.strip()}\n"
-                f"\\end{{tabular}}\n\\end{{{env}}}")
+                "\\end{tabular}\n\\end{table}")
     return re.sub(
         r"\\begin\{longtable\}\[\]\{@\{\}(\w+)@\{\}\}(.*?)\\end\{longtable\}",
         repl, tex, flags=re.S)
@@ -146,6 +172,8 @@ def figures(tex: str) -> str:
 
 
 def main() -> None:
+    import sys
+    public = "--public" in sys.argv  # de-anonymized preprint build (site PDF)
     md = md_source()
     tex = subprocess.run(
         ["pandoc", "-f", "gfm", "-t", "latex", "--shift-heading-level-by=-1"],
@@ -175,10 +203,11 @@ def main() -> None:
     # kill pandoc's labels (avoid duplicate-label warnings after renaming)
     tex = re.sub(r"\\label\{[^}]*\}", "", tex)
 
-    # anonymity: no identifying URLs anywhere
-    for pat in (r"https?://mpodeley\.github\.io[^\s}]*",
-                r"https?://github\.com/mpodeley[^\s}]*"):
-        tex = re.sub(pat, r"[link redacted for review]", tex)
+    if not public:
+        # anonymity: no identifying URLs anywhere
+        for pat in (r"https?://mpodeley\.github\.io[^\s}]*",
+                    r"https?://github\.com/mpodeley[^\s}]*"):
+            tex = re.sub(pat, r"[link redacted for review]", tex)
     # internal docs links (reproduce.md etc.) -> plain text
     tex = re.sub(r"\\href\{[^}]*\}\{([^}]*)\}", r"\1", tex)
 
@@ -193,10 +222,11 @@ def main() -> None:
     if m:
         tex = tex[:m.start()] + tex[m.end():]
 
-    (ACL / "abstract.tex").write_text(abstract + "\n")
-    (ACL / "body.tex").write_text(tex)
+    suffix = "_public" if public else ""
+    (ACL / f"abstract{suffix}.tex").write_text(abstract + "\n")
+    (ACL / f"body{suffix}.tex").write_text(tex)
     bad = sorted({c for c in tex + abstract if ord(c) > 127})
-    print(f"wrote paper/acl/body.tex ({len(tex)} chars) + abstract.tex "
+    print(f"wrote paper/acl/body{suffix}.tex ({len(tex)} chars) + abstract{suffix}.tex "
           f"({len(abstract)} chars); non-ascii remaining: {bad if bad else 'none'}")
 
 

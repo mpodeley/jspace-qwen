@@ -1,7 +1,9 @@
-site_name: The J-space on Qwen3
+site_name: Operator–Operand Factorization in LLMs
+site_url: https://mpodeley.github.io/jspace-qwen/
 site_description: >-
-  Reproducing Anthropic's global-workspace / Jacobian-lens result on open-weights
-  Qwen3, and measuring when the J-space emerges and when it is causally important.
+  Relational operations factorize from their operands in LLMs: causal interventions
+  reveal transferable operator directions — replicated on Qwen3 (1.7B/8B) and
+  Gemma-2-9B — while arithmetic and logic remain entangled.
 theme:
   name: material
   palette:
@@ -20,20 +22,54 @@ theme:
     - toc.integrate
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.arithmatex: {generic: true}
   - tables
+extra_css:
+  - stylesheets/extra.css
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: es
+          name: Español
+          build: true
+          nav_translations:
+            Main finding: Hallazgo principal
+            Paper: Paper
+            Interactive explorer: Explorador interactivo
+            Evidence & controls: Evidencia y controles
+            How to reproduce: Cómo reproducir
+            J-space replication (archive): Réplica J-space (archivo)
+            Method (J-lens & J-space): Método (J-lens y J-space)
+            Results — scale: Resultados — escala
+            Results — causal: Resultados — causal
+            Setup (AMD/ROCm): Setup (AMD/ROCm)
+            Working log (findings): Bitácora (findings)
 nav:
-  - Overview: index.md
-  - Method (J-lens & J-space): method.md
-  - Reproducible setup (AMD/ROCm): setup.md
-  - Results — scale: results-scale.md
-  - Results — causal importance: results-causal.md
-  - Findings (working doc, 2026-07-10): findings.md
-  - Paper draft — operator/operand factorization: paper.md
+  - Main finding: index.md
+  - Paper: paper.md
   - Interactive explorer: explorer.md
+  - Evidence & controls: robustness.md
   - How to reproduce: reproduce.md
-# Spanish translation added as a final pass via mkdocs-static-i18n.
+  - J-space replication (archive):
+      - Method (J-lens & J-space): method.md
+      - Results — scale: results-scale.md
+      - Results — causal: results-causal.md
+      - Setup (AMD/ROCm): setup.md
+  - Working log (findings): findings.md

@@ -76,10 +76,10 @@ fusion in the interaction term) --- not an additional empirical claim.
 \section{Method}
 
 \textbf{Setup.} Qwen3-1.7B/8B throughout, plus Gemma-2-9B for the
-cross-architecture replication (\S{}4.5); all run on a single AMD Strix
-Halo APU (see setup; an int8 path keeps larger models
-in range). A relation is rendered into a template; the canonical frame
-is \texttt{"The\ \{op\}\ of\ \{a\}\ is"}, and \S{}4.4 additionally uses two
+cross-architecture replication (\S{}4.5); all run in bf16 on a single AMD
+Strix Halo APU (see setup). A relation is rendered into
+a template; the canonical frame is
+\texttt{"The\ \{op\}\ of\ \{a\}\ is"}, and \S{}4.4 additionally uses two
 paraphrase frames (question--answer and discourse-prefixed) that hold
 the \texttt{\{op\}\ of\ \{a\}} unit fixed while varying the surrounding
 frame, all ending in \emph{is} so answer scoring is comparable. Reading

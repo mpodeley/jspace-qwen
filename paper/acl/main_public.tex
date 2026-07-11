@@ -1,8 +1,7 @@
-% BlackboxNLP 2026 submission — anonymized review build.
-% Build body: .venv/bin/python paper/acl/build.py   (from docs/paper.md)
-% Compile:    tectonic -X compile main.tex           (in paper/acl/)
+% De-anonymized preprint build (site PDF). Body: build.py --public
+% Compile: tectonic -X compile main_public.tex
 \documentclass[11pt]{article}
-\usepackage[review]{acl}   % review = anonymous + line numbers; drop for camera-ready
+\usepackage[final]{acl}   % final = show authors, no line numbers
 \usepackage{times}
 \usepackage{latexsym}
 \usepackage[T1]{fontenc}
@@ -11,9 +10,9 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{textcomp}
-\usepackage{float}   % [H] for inline (non-floating) narrow tables
+\usepackage{float}
+\graphicspath{{figs/}}
 
-% many two-column floats in few pages: pack them instead of dumping at the end
 \renewcommand{\topfraction}{0.92}
 \renewcommand{\dbltopfraction}{0.92}
 \renewcommand{\textfraction}{0.05}
@@ -22,9 +21,7 @@
 \setcounter{topnumber}{3}
 \setcounter{dbltopnumber}{3}
 \setcounter{totalnumber}{6}
-\graphicspath{{figs/}}
 
-% pandoc helpers
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \providecommand{\pandocbounded}[1]{#1}
 \providecommand{\passthrough}[1]{#1}
@@ -32,18 +29,19 @@
 
 \title{Causal Operator--Operand Factorization in the Residual Stream of LLMs}
 
-% review mode suppresses authors; kept for camera-ready:
-\author{Anonymous \\ \texttt{anonymous@example.org}}
+\author{Matias Podeley \\
+  Independent researcher \\
+  \texttt{mpodeley@gmail.com}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-\input{abstract}
+\input{abstract_public}
 \end{abstract}
 
-\input{body}
+\input{body_public}
 
-\bibliography{custom}   % acl.sty already sets \bibliographystyle{acl_natbib}
+\bibliography{custom}
 
 \end{document}

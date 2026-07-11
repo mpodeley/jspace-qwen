@@ -1,0 +1,39 @@
+We study how open-weights transformers (Qwen3-1.7B/8B, Gemma-2-9B)
+represent a \textbf{relational operation} applied to an entity ---
+\emph{currency-of}, \emph{capital-of}, \emph{language-of},
+\emph{demonym-of}, \emph{continent-of} applied to a country. We find
+that the operation is carried by a \textbf{manipulable operator
+direction} in the residual stream that is largely \textbf{separable from
+the operand}. Adding \texttt{v(op\_B)\ -\ v(op\_A)} to a prompt
+performing \texttt{op\_A} converts the model\textquotesingle s answer to
+\texttt{op\_B} for all 20 ordered operator pairs (matched-norm random
+controls null), and the direction \textbf{generalizes to operands never
+used to build it}, to \textbf{unseen paraphrase frames} (every
+build\ensuremath{\to}test frame combination flips), and \textbf{across architectures}
+--- the full pipeline replicates on Gemma-2-9B with the largest effect
+sizes of the three models tested. A two-way analysis of variance
+factorizes the representation as
+\texttt{H{[}operand,\ operator{]}\ =\ \ensuremath{\mu}\ +\ operand\ +\ operator\ +\ interaction},
+\textasciitilde90\% additive with a \textasciitilde10\% \textbf{fusion}
+interaction, operator and operand occupying largely orthogonal
+subspaces; the operation-dominant representation \emph{emerges along the
+sequence} (operand-dominant at the entity token \ensuremath{\to} operator-dominant at
+the query token). Strikingly, the operation is \textbf{separable from
+its surface realization}: \emph{language-of} and \emph{demonym-of} are
+distinct operator directions even though both emit "Italian". As an
+explanatory device we borrow a morphological metaphor --- the model
+\textbf{declines} a concept by its functional role (case), with
+\textbf{syncretism} (shared surface form) and \textbf{fusion}
+(non-additive stem+ending) as in a Latin declension. Testing
+generalization across domains, the factorization is \textbf{specific to
+relational retrieval}: for \textbf{arithmetic} (+, \ensuremath{\times}, -) and
+\textbf{comparison-logic} operators, the interaction term is 2--4\ensuremath{\times}
+larger and the operator \textbf{fails to generalize to held-out
+operands}, consistent with arithmetic being computed by a "bag of
+heuristics" rather than a linear operator. A control that instead varies
+a \emph{linear numeric parameter} (add-N) rather than the function
+generalizes better and is near-collinear, reconciling a contrary recent
+report (\citealp{christ2025structure}). Finally, the structure is \textbf{causal,
+not a readout advantage}: the Jacobian-lens ("J-space") readout is not
+more legible than the raw residual on any of our metrics under matched
+controls.
