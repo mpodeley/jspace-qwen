@@ -1,0 +1,41 @@
+{
+  "arith_addN": {
+    "operators": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "top1_singular_variance": 0.7628,
+    "consecutive_difference_cosines": [
+      -0.0266,
+      -0.138
+    ]
+  },
+  "arithmetic": {
+    "operators": [
+      "plus",
+      "times",
+      "minus"
+    ],
+    "top1_singular_variance": 0.637,
+    "consecutive_difference_cosines": [
+      -0.6805
+    ]
+  },
+  "relations": {
+    "operators": [
+      "currency",
+      "capital",
+      "language",
+      "demonym",
+      "continent"
+    ],
+    "top1_singular_variance": 0.3856,
+    "consecutive_difference_cosines": [
+      -0.345,
+      -0.5811,
+      -0.5273
+    ]
+  }
+}
