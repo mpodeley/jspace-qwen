@@ -194,7 +194,7 @@ operand}
 Two-way ANOVA at a mid-workspace layer (1.7B / 8B):
 
 {
-\begin{table}[t]
+\begin{table*}[t]
 \centering\small
 \begin{tabular}{lrrr}
 \toprule
@@ -206,7 +206,7 @@ read position & operand & operator & interaction (fusion) \\
 query token & 5\% / 6\% & \textbf{86\% / 82\%} & 9\% / 13\% \\
 entity token & \textbf{59\% / 55\%} & 31\% / 34\% & 9\% / 11\% \\
 \end{tabular}
-\end{table}
+\end{table*}
 }
 
 \textasciitilde90\% additive; operand/operator subspaces largely
@@ -292,7 +292,7 @@ Extending the identical pipeline to arithmetic (+, \ensuremath{\times}, -) and
 comparison-logic operators, on 1.7B:
 
 {
-\begin{table}[t]
+\begin{table*}[t]
 \centering\small
 \begin{tabular}{lrrll}
 \toprule
@@ -308,7 +308,7 @@ generalization & swap vs random \\
 \textbf{logic (compare)} & 33\% & 34\% & 2/6 (\ensuremath{\leq} random) & +1.2 vs
 +0.2 \\
 \end{tabular}
-\end{table}
+\end{table*}
 }
 
 The gradient replicates and sharpens at \textbf{8B}: relational held-out
@@ -344,7 +344,7 @@ over two operands. Running both cuts on Qwen3
 relations and the genuine-function cut:
 
 {
-\begin{table}[t]
+\begin{table*}[t]
 \centering\small
 \begin{tabular}{llr}
 \toprule
@@ -360,7 +360,7 @@ relations (5 operations) & 20/20 \textperiodcentered{} 20/20 & 0.39 (spread para
 \texttt{+\ \ensuremath{\times}\ -} (operator = function) & 2/6 \textperiodcentered{} 1/6 (-0.43 / -0.55) &
 0.64 \\
 \end{tabular}
-\end{table}
+\end{table*}
 }
 
 add-N generalizes \textbf{better} than \texttt{+\ \ensuremath{\times}\ -} (positive vs.

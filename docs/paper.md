@@ -269,8 +269,11 @@ legible in the J-space than in the raw stream (its 1.7B readout-geometry differe
 
 ## 5. Limitations
 
-- **Scale.** 1.7B and 8B; no 32B lens yet. Relational linearity holds for a subset of relations even
-  in-domain (cf. LRE ~48%); our five relations are hand-chosen and English-only.
+- **Scale and family.** 1.7B and 8B, one model family (Qwen3); no 32B. Relational linearity holds for a
+  subset of relations even in-domain (cf. LRE ~48%).
+- **Relation coverage.** Five hand-chosen country relations, English-only. Prompt variation covers three
+  paraphrase *frames* (§4.4) but all frames share the `{op} of {a}` phrasing unit; phrase-level
+  paraphrases, more relations, and other entity types remain open.
 - **Arithmetic coverage.** Qwen3 BPE splits multi-digit numbers, so we restrict to single-digit results;
   the arithmetic null is on that regime and at 1.7B/8B, where arithmetic competence is itself limited.
 - **Reading-position result** restates known subject-enrichment→attribute-extraction dynamics.

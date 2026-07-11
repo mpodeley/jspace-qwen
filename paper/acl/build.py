@@ -85,15 +85,20 @@ def md_source() -> str:
 
 
 def longtable_to_table(tex: str) -> str:
-    """Convert every pandoc longtable to a floating table/tabular (booktabs kept)."""
+    """Convert every pandoc longtable to a floating table/tabular (booktabs kept).
+    Tables whose widest row exceeds a column's worth of text go to table* (full
+    text width) — a two-column layout cannot hold them in one column."""
     def repl(m):
         colspec = m.group(1)
         body = m.group(2)
         body = re.sub(r"\\end(head|firsthead|foot|lastfoot)", "", body)
         body = body.replace(r"\noalign{}", "")
-        return ("\\begin{table}[t]\n\\centering\\small\n"
+        plain = re.sub(r"\\[a-zA-Z]+\{?|[{}]", "", body)
+        widest = max((len(r) for r in plain.splitlines() if "&" in r), default=0)
+        env = "table*" if widest > 55 else "table"
+        return (f"\\begin{{{env}}}[t]\n\\centering\\small\n"
                 f"\\begin{{tabular}}{{{colspec}}}\n{body.strip()}\n"
-                "\\end{tabular}\n\\end{table}")
+                f"\\end{{tabular}}\n\\end{{{env}}}")
     return re.sub(
         r"\\begin\{longtable\}\[\]\{@\{\}(\w+)@\{\}\}(.*?)\\end\{longtable\}",
         repl, tex, flags=re.S)
