@@ -207,8 +207,10 @@ build→test frame combination: `v(op)` built on frame *i*, all-pairs swap run o
 9 combinations flip 20/20** (180/180; off-diagonal transfer 120/120, mean contrast **+24.2**), and the
 contrast is *frame-invariant to two decimals*: directions built on the declarative frame produce +22.6 on
 all three test frames. The clean baselines do shift across frames (−7.0 / −8.1 / −7.9), confirming the
-frames are genuinely different prompts; the operator's causal effect does not. The operator direction is
-a property of the **relation**, not of the prompt that elicits it.
+frames are genuinely different prompts; the operator's causal effect does not. At 8B the pattern
+replicates — **100/100 flips over the tested combinations (80/80 cross-frame, mean contrast +28.7)**,
+with the declarative-built direction again frame-invariant (+26.0 / +26.0 / +26.0). The operator
+direction is a property of the **relation**, not of the prompt that elicits it.
 
 ### 4.5 The factorization is domain-specific (arithmetic and logic do not)
 

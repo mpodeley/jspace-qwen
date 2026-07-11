@@ -281,6 +281,27 @@ negative (ours varies the function) without contradiction; the constraint is tha
 Qwen3 BPE limits us to single-digit arithmetic, so the add-N generalization is weak
 in absolute terms — the *ordering*, not the magnitude, is the point.
 
+### 2.7 Statistical treatment and paraphrase-frame transfer (2026-07-10, evening)
+
+Two reviewer-driven upgrades, both landing the same conclusions with proper uncertainty:
+
+- **Cluster bootstrap.** The 20 ordered swaps reuse 5 operator directions over 12 shared operands — not
+  20 independent observations. Per-operand values are now persisted (`*_operator_swap_long.parquet`)
+  and CIs are cluster-bootstrapped at two levels (operands within pair; operators as top-level clusters
+  via a dyadic node bootstrap — `op_core.bootstrap_pair_ci` / `bootstrap_family_ci`). Operator-level
+  swap−random contrast: **1.7B +22.6 [+14.0, +32.1]; 8B +26.0 [+17.9, +32.8]**; held-out-operand
+  contrast **+20.0 [+10.8, +29.5] / +22.8 [+14.0, +31.0]**; flip fraction **1.00 [1.00, 1.00]**
+  everywhere. No per-pair operand-bootstrap CI crosses zero (see `figs/op_swap_dist.png`).
+
+- **Cross-frame transfer** (`operator_templates.py`). Three paraphrase frames (declarative / QA /
+  discourse-prefixed) holding the `{op} of {a}` unit fixed. 1.7B, all 9 build→test combinations:
+  **180/180 flips** (off-diagonal 120/120, mean contrast **+24.2**), contrast frame-invariant to ~0.02
+  while clean baselines shift (−7.0/−8.1/−7.9) — the frames are genuinely different prompts, the
+  operator's causal effect is a property of the relation, not the template. Kills the template-echo
+  reading beyond the reading-position control. **8B replicates: 100/100 flips on the tested combos
+  (80/80 cross-frame, mean contrast +28.7), declarative-built direction frame-invariant
+  (+26.0/+26.0/+26.0), QA-built strongest (+35.3).**
+
 ---
 
 ## The open interpretive question (deliberately unresolved)
