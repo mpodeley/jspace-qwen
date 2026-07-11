@@ -51,6 +51,7 @@ plugins:
           build: true
           nav_translations:
             Main finding: Hallazgo principal
+            Explained simply: Explicado fácil
             Paper: Paper
             Interactive explorer: Explorador interactivo
             Evidence & controls: Evidencia y controles
@@ -63,6 +64,7 @@ plugins:
             Working log (findings): Bitácora (findings)
 nav:
   - Main finding: index.md
+  - Explained simply: explained.md
   - Paper: paper.md
   - Interactive explorer: explorer.md
   - Evidence & controls: robustness.md

@@ -39,6 +39,7 @@ factorization is a property of *relational retrieval*, not of prompting in gener
 
 <div class="hero-buttons" markdown>
 [:material-play-circle: Interactive result](explorer.md){ .md-button .md-button--primary }
+[:material-school: Explained simply](explained.md){ .md-button }
 [:material-file-document: Paper (PDF)](assets/paper.pdf){ .md-button }
 [:material-flask: Evidence & controls](robustness.md){ .md-button }
 [:material-github: Code](https://github.com/mpodeley/jspace-qwen){ .md-button }

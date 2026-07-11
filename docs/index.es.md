@@ -42,6 +42,7 @@ general.
 
 <div class="hero-buttons" markdown>
 [:material-play-circle: Resultado interactivo](explorer.md){ .md-button .md-button--primary }
+[:material-school: Explicado fácil](explained.md){ .md-button }
 [:material-file-document: Paper (PDF)](assets/paper.pdf){ .md-button }
 [:material-flask: Evidencia y controles](robustness.md){ .md-button }
 [:material-github: Código](https://github.com/mpodeley/jspace-qwen){ .md-button }
