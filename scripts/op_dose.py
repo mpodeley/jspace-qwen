@@ -31,17 +31,27 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 @torch.no_grad()
-def all_pos_logits(model, ids, hook_vecs=None):
+def all_pos_logits(model, ids, hook_vecs=None, positions=None):
     """Full-sequence final-layer logits [seq, vocab], optionally with the
-    intervention hook active (same hook construction as op_core.final_logits)."""
+    intervention hook active (same hook construction as op_core.final_logits).
+    `positions` restricts the add to those sequence indices (negatives resolved
+    against this sequence's length), so a position-restricted intervention is
+    charged the collateral cost of the same hook it actually uses."""
     final = model.n_layers - 1
+    n = ids.shape[1]
+    pos = None if positions is None else [p % n for p in positions]
     handles = []
     if hook_vecs:
         for l, v in hook_vecs.items():
             def mk(vec):
                 def h(m, i, o):
                     a = o[0] if isinstance(o, tuple) else o
-                    a = a + vec.to(a.dtype)
+                    if pos is None:
+                        a = a + vec.to(a.dtype)
+                    else:
+                        a = a.clone()
+                        for p_ in pos:
+                            a[:, p_, :] = a[:, p_, :] + vec.to(a.dtype)
                     return (a, *o[1:]) if isinstance(o, tuple) else a
                 return h
             handles.append(model.layers[l].register_forward_hook(mk(v)))
@@ -53,14 +63,15 @@ def all_pos_logits(model, ids, hook_vecs=None):
     return model.unembed(h.float())
 
 
-def collateral(model, prompts, dv, max_len=64):
+def collateral(model, prompts, dv, max_len=64, positions=None):
     """Mean per-token KL(clean || hooked) in nats and mean delta-NLL of the actual
-    continuation, over unrelated corpus prompts."""
+    continuation, over unrelated corpus prompts. `positions` mirrors the
+    intervention's own position restriction (None = every position)."""
     kls, dnlls = [], []
     for p in prompts:
         ids = model.encode(p, max_length=max_len)
         Lc = all_pos_logits(model, ids)
-        Lh = all_pos_logits(model, ids, dv)
+        Lh = all_pos_logits(model, ids, dv, positions=positions)
         pc, ph = F.log_softmax(Lc, -1), F.log_softmax(Lh, -1)
         kls.append(float((pc.exp() * (pc - ph)).sum(-1).mean()))
         tgt = ids[0, 1:]

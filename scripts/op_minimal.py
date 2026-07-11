@@ -34,11 +34,15 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 @torch.no_grad()
-def greedy(model, prompt, k=3, add=None, patch=None):
-    """Greedy-decode k tokens. `add`: {layer: vec} added at every position.
-    `patch`: {layer: vec} REPLACING the residual at the last prompt position."""
+def greedy(model, prompt, k=3, add=None, patch=None, add_positions=None):
+    """Greedy-decode k tokens. `add`: {layer: vec} added at every position, or --
+    when `add_positions` is given -- only at those prompt indices (negatives
+    resolved against the prompt length once, so they stay pinned to the same
+    tokens as the sequence grows). `patch`: {layer: vec} REPLACING the residual
+    at the last prompt position."""
     ids = model.encode(prompt, max_length=64)
     n_prompt = ids.shape[1]
+    pos = None if add_positions is None else [p % n_prompt for p in add_positions]
     out = []
     for _ in range(k):
         handles = []
@@ -46,7 +50,12 @@ def greedy(model, prompt, k=3, add=None, patch=None):
             def mk_add(vec):
                 def h(m, i, o):
                     a = o[0] if isinstance(o, tuple) else o
-                    a = a + vec.to(a.dtype)
+                    if pos is None:
+                        a = a + vec.to(a.dtype)
+                    else:
+                        a = a.clone()
+                        for p_ in pos:
+                            a[:, p_, :] = a[:, p_, :] + vec.to(a.dtype)
                     return (a, *o[1:]) if isinstance(o, tuple) else a
                 return h
             handles.append(model.layers[l].register_forward_hook(mk_add(v)))

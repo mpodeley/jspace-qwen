@@ -156,6 +156,78 @@ def final_logits(model, prompt, hook_vecs=None):
 
 
 @torch.no_grad()
+def hooked_logits(model, prompt, add=None, add_positions=None, patch=None):
+    """Final-position logits under a generalized intervention. `add` ({layer: vec})
+    is added at every position when `add_positions` is None (identical to
+    `final_logits`), else only at the given prompt indices (negatives resolved
+    against the prompt length). `patch` ({layer: vec}) REPLACES the residual at the
+    last prompt position (the query token), the op_minimal patch convention."""
+    ids = model.encode(prompt, max_length=64)
+    n_prompt = ids.shape[1]
+    pos = None if add_positions is None else [p % n_prompt for p in add_positions]
+    final = model.n_layers - 1
+    handles = []
+    for l, v in (add or {}).items():
+        def mk_add(vec):
+            def h(m, i, o):
+                a = o[0] if isinstance(o, tuple) else o
+                if pos is None:
+                    a = a + vec.to(a.dtype)
+                else:
+                    a = a.clone()
+                    for p_ in pos:
+                        a[:, p_, :] = a[:, p_, :] + vec.to(a.dtype)
+                return (a, *o[1:]) if isinstance(o, tuple) else a
+            return h
+        handles.append(model.layers[l].register_forward_hook(mk_add(v)))
+    for l, v in (patch or {}).items():
+        def mk_patch(vec):
+            def h(m, i, o):
+                a = o[0] if isinstance(o, tuple) else o
+                a = a.clone()
+                a[:, n_prompt - 1, :] = vec.to(a.dtype)
+                return (a, *o[1:]) if isinstance(o, tuple) else a
+            return h
+        handles.append(model.layers[l].register_forward_hook(mk_patch(v)))
+    with ActivationRecorder(model.layers, at=[final]) as rec:
+        model.forward(ids)
+        h = rec.activations[final][0, -1]
+    for hd in handles:
+        hd.remove()
+    return model.unembed(h[None])[0]
+
+
+@torch.no_grad()
+def metric_bundle(model, dom: Domain, tok, o, frm, to, add=None, add_positions=None,
+                  patch=None, tpl=0, clean_logits=None, k=3):
+    """The full per-cell metric set for one (pair, operand, condition): margin
+    (logit(to)-logit(from), the paper's convention), target rank before/after
+    (0 = top-1), top-1 hit, normalized margin shift (dimensionless, comparable
+    across models with different logit scales), on-task KL(clean || intervened) at
+    the query position, and greedy k-token exact match of the target answer.
+    One hooked forward + one clean forward (if not precomputed) + one greedy."""
+    import torch.nn.functional as F
+    import op_minimal  # lazy: op_minimal imports op_core
+    p = dom.render(o, frm, tpl)
+    af, at = dom.answer_tok(tok, o, frm), dom.answer_tok(tok, o, to)
+    L0 = clean_logits if clean_logits is not None else final_logits(model, p)
+    L = hooked_logits(model, p, add=add, add_positions=add_positions, patch=patch)
+    m0, m1 = float(L0[at] - L0[af]), float(L[at] - L[af])
+    lp0, lp1 = F.log_softmax(L0.float(), -1), F.log_softmax(L.float(), -1)
+    text = op_minimal.greedy(model, p, k=k, add=add, patch=patch,
+                             add_positions=add_positions)
+    return {"margin_clean": m0, "margin": m1, "delta_margin": m1 - m0,
+            "norm_margin": (m1 - m0) / (abs(m0) + 1e-9),
+            "rank_to_clean": int((L0 > L0[at]).sum()),
+            "rank_to": int((L > L[at]).sum()),
+            "top1": bool(int(L.argmax()) == at),
+            "kl_ontask": float((lp0.exp() * (lp0 - lp1)).sum()),
+            "exact_match": op_minimal.hit(text, str(dom.answer(o, to))),
+            "text": text}  # the decoded continuation, so callers can score it
+                           # against other answers without a second greedy pass
+
+
+@torch.no_grad()
 def readout(model, lens, ws, prompt, use_j):
     ll, _, _ = lens.apply(model, prompt, layers=lens.source_layers,
                           positions=[-1], use_jacobian=use_j)
@@ -168,26 +240,100 @@ def _cos(a, b):
 
 # --- operator directions -----------------------------------------------------
 
+def op_resids(model, ws, dom: Domain, operands=None, templates=None):
+    """The residual grid R[(operand, op, template)] -> {layer: vec} that `op_dirs`
+    averages. Exposed so callers that redraw label assignments many times (the
+    permuted-relations null) reuse one grid instead of re-running the model."""
+    ops = dom.op_keys
+    operands = operands or dom.operand_keys
+    tpls = templates or [0]
+    return {(o, k, t): resid(model, ws, dom.render(o, k, t))
+            for o in operands for k in ops for t in tpls}
+
+
+def dirs_from_resids(R, ws, ops, operands, tpls, d_model, relabel=None):
+    """The averaging step of `op_dirs` over a precomputed grid. `relabel`, if set,
+    maps (operand, template) -> {op_label: op_whose_residual_to_use} and implements
+    the label-permutation nulls; the cell mean is permutation-invariant, so only
+    the numerator assignment changes."""
+    dev = next(iter(R.values()))[ws[0]].device
+    v = {k: {l: torch.zeros(d_model, device=dev) for l in ws} for k in ops}
+    cells = len(operands) * len(tpls)
+    for o in operands:
+        for t in tpls:
+            lab = relabel[(o, t)] if relabel else None
+            for l in ws:
+                mean_l = sum(R[(o, k, t)][l] for k in ops) / len(ops)
+                for k in ops:
+                    src = lab[k] if lab else k
+                    v[k][l] += (R[(o, src, t)][l] - mean_l) / cells
+    return v
+
+
 def op_dirs(model, ws, dom: Domain, operands=None, templates=None):
     """v(op)[layer] = mean over (operand, template) cells of (op's residual - the
     cell's mean over ops). The function-vector construction, generalized. `operands`
     restricts the build set (held-out generalization); `templates` (list of indices
     into dom.templates, default [0]) restricts the paraphrase frames used to build."""
-    ops = dom.op_keys
     operands = operands or dom.operand_keys
     tpls = templates or [0]
-    R = {(o, k, t): resid(model, ws, dom.render(o, k, t))
-         for o in operands for k in ops for t in tpls}
-    dev = next(iter(R.values()))[ws[0]].device
-    v = {k: {l: torch.zeros(model.d_model, device=dev) for l in ws} for k in ops}
-    cells = len(operands) * len(tpls)
-    for o in operands:
-        for t in tpls:
-            for l in ws:
-                mean_l = sum(R[(o, k, t)][l] for k in ops) / len(ops)
-                for k in ops:
-                    v[k][l] += (R[(o, k, t)][l] - mean_l) / cells
-    return v
+    R = op_resids(model, ws, dom, operands, tpls)
+    return dirs_from_resids(R, ws, dom.op_keys, operands, tpls, model.d_model)
+
+
+def permuted_op_dirs(model, ws, dom: Domain, seed=0, per_operand=True, R=None,
+                     templates=None):
+    """Directions built with PERMUTED operator labels (the decisive null: keeps
+    every statistical property of the extraction -- same residuals, same averaging,
+    same norms -- while destroying the intended semantics). `per_operand=True`
+    draws an independent permutation per (operand, template) cell, which destroys
+    label coherence entirely; False applies one global permutation, which keeps the
+    directions coherent but mis-assigned (v'(k) = v(pi(k))). Pass a precomputed
+    `R` from `op_resids` to redraw cheaply across seeds."""
+    import random as _random
+    ops = dom.op_keys
+    operands = dom.operand_keys
+    tpls = templates or [0]
+    if R is None:
+        R = op_resids(model, ws, dom, operands, tpls)
+    rng = _random.Random(seed)
+    def draw():
+        perm = ops[:]
+        rng.shuffle(perm)
+        return dict(zip(ops, perm))
+    if per_operand:
+        relabel = {(o, t): draw() for o in operands for t in tpls}
+    else:
+        one = draw()
+        relabel = {(o, t): one for o in operands for t in tpls}
+    return dirs_from_resids(R, ws, ops, operands, tpls, model.d_model, relabel)
+
+
+def operator_subspace_basis(dirs, ws):
+    """Per-layer orthonormal basis Q[l] (d_model x r) of the span of the operator
+    directions (already mean-centered across ops by construction; r <= n_ops-1).
+    Substrate for the random-within-operator-subspace null."""
+    ops = list(dirs)
+    Q = {}
+    for l in ws:
+        M = torch.stack([dirs[k][l] for k in ops], dim=1)  # [d, n_ops]
+        M = M - M.mean(1, keepdim=True)
+        Qf, Rf = torch.linalg.qr(M)
+        d = Rf.diagonal().abs()
+        Q[l] = Qf[:, d > 1e-6 * max(float(d.max()), 1e-30)]
+    return Q
+
+
+def random_in_subspace(Q, norms, gen):
+    """{layer: random vector inside span(Q[l])}, per-layer norm matched to
+    `norms[l]` (typically the injected dv's norms) -- a far more competitive null
+    than the full-space Gaussian, since it lives in the operator subspace."""
+    out = {}
+    for l, Ql in Q.items():
+        c = torch.randn(Ql.shape[1], generator=gen).to(Ql.device, Ql.dtype)
+        u = Ql @ c
+        out[l] = u / (u.norm() + 1e-9) * norms[l]
+    return out
 
 
 def measure_swaps_long(model, ws, dom: Domain, tok, seed=0, alpha=4.0, operands=None,
@@ -357,6 +503,32 @@ def factorize(model, lens, layer, pos, dom: Domain, use_j):
     angles = [round(float(a), 1) for a in torch.rad2deg(torch.arccos(sv))]
     return {"stem": v_stem / tot, "case": v_case / tot,
             "interaction": inter / tot, "angles": angles}
+
+
+@torch.no_grad()
+def factorize_components(model, ws, dom: Domain, pos=-1):
+    """Per-layer component VECTORS of the two-way factorization at `pos` -- the
+    same math as `factorize` (which reports variance shares) but retaining the
+    parts, so partial reconstructions can be patched back into the model
+    (op_patch_decomp). For every layer l in ws:
+
+        H[(o,k)][l] == mu[l] + stem[l][o] + case[l][k] + inter[l][(o,k)]   exactly,
+
+    because inter is defined as the cell residual. One forward per (operand, op)
+    cell; all ws layers are recorded in that single pass."""
+    ops, operands = dom.op_keys, dom.operand_keys
+    H = {(o, k): resid(model, ws, dom.render(o, k), pos)
+         for o in operands for k in ops}
+    mu, stem, case, inter = {}, {}, {}, {}
+    for l in ws:
+        mu[l] = torch.stack([H[(o, k)][l] for o in operands for k in ops]).mean(0)
+        stem[l] = {o: torch.stack([H[(o, k)][l] for k in ops]).mean(0) - mu[l]
+                   for o in operands}
+        case[l] = {k: torch.stack([H[(o, k)][l] for o in operands]).mean(0) - mu[l]
+                   for k in ops}
+        inter[l] = {(o, k): H[(o, k)][l] - mu[l] - stem[l][o] - case[l][k]
+                    for o in operands for k in ops}
+    return {"mu": mu, "stem": stem, "case": case, "inter": inter}
 
 
 def held_out_generalization(model, ws, dom: Domain, tok, seed=0, alpha=4.0):

@@ -1,0 +1,155 @@
+{
+  "meta": {
+    "domain": "animals",
+    "template": "The {op} of {a} is",
+    "templates": [
+      "The {op} of {a} is",
+      "Q: What is the {op} of {a}? A: It is",
+      "It is well known that the {op} of {a} is"
+    ],
+    "operators": {
+      "class": "class",
+      "habitat": "habitat",
+      "diet": "diet",
+      "covering": "covering"
+    },
+    "operand_slots": [
+      "a"
+    ],
+    "note": "animal -> taxonomic attribute (class/habitat/diet/covering); curated for stable atemporal 1-to-1 answers, ambiguous relations excluded; multi-token answers allowed (first-token logit metric), single-token coverage reported for the greedy ceiling."
+  },
+  "items": {
+    "shark": {
+      "args": {
+        "a": "shark"
+      },
+      "answers": {
+        "class": "fish",
+        "habitat": "ocean",
+        "diet": "carnivore",
+        "covering": "scales"
+      }
+    },
+    "eagle": {
+      "args": {
+        "a": "eagle"
+      },
+      "answers": {
+        "class": "bird",
+        "habitat": "mountain",
+        "diet": "carnivore",
+        "covering": "feathers"
+      }
+    },
+    "frog": {
+      "args": {
+        "a": "frog"
+      },
+      "answers": {
+        "class": "amphibian",
+        "habitat": "pond",
+        "diet": "insectivore",
+        "covering": "skin"
+      }
+    },
+    "snake": {
+      "args": {
+        "a": "snake"
+      },
+      "answers": {
+        "class": "reptile",
+        "habitat": "desert",
+        "diet": "carnivore",
+        "covering": "scales"
+      }
+    },
+    "bee": {
+      "args": {
+        "a": "bee"
+      },
+      "answers": {
+        "class": "insect",
+        "habitat": "hive",
+        "diet": "herbivore",
+        "covering": "hair"
+      }
+    },
+    "whale": {
+      "args": {
+        "a": "whale"
+      },
+      "answers": {
+        "class": "mammal",
+        "habitat": "ocean",
+        "diet": "carnivore",
+        "covering": "skin"
+      }
+    },
+    "owl": {
+      "args": {
+        "a": "owl"
+      },
+      "answers": {
+        "class": "bird",
+        "habitat": "forest",
+        "diet": "carnivore",
+        "covering": "feathers"
+      }
+    },
+    "lizard": {
+      "args": {
+        "a": "lizard"
+      },
+      "answers": {
+        "class": "reptile",
+        "habitat": "desert",
+        "diet": "insectivore",
+        "covering": "scales"
+      }
+    },
+    "cow": {
+      "args": {
+        "a": "cow"
+      },
+      "answers": {
+        "class": "mammal",
+        "habitat": "farm",
+        "diet": "herbivore",
+        "covering": "hair"
+      }
+    },
+    "salmon": {
+      "args": {
+        "a": "salmon"
+      },
+      "answers": {
+        "class": "fish",
+        "habitat": "river",
+        "diet": "carnivore",
+        "covering": "scales"
+      }
+    },
+    "penguin": {
+      "args": {
+        "a": "penguin"
+      },
+      "answers": {
+        "class": "bird",
+        "habitat": "ice",
+        "diet": "carnivore",
+        "covering": "feathers"
+      }
+    },
+    "deer": {
+      "args": {
+        "a": "deer"
+      },
+      "answers": {
+        "class": "mammal",
+        "habitat": "forest",
+        "diet": "herbivore",
+        "covering": "fur"
+      }
+    }
+  }
+}

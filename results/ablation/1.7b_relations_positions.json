@@ -1,0 +1,327 @@
+{
+  "band/all": {
+    "n": 224,
+    "delta_margin": 28.846609933035715,
+    "delta_margin_lo": 16.193017578125,
+    "delta_margin_hi": 39.93085937499999,
+    "norm_margin": 4.530769230091902,
+    "rank_to_clean": 569.5,
+    "rank_to": 431.0,
+    "top1": 0.004464285714285714,
+    "exact_match": 0.004464285714285714,
+    "sign_correct": 0.9821428571428571,
+    "flip_frac": 1.0,
+    "kl_ontask": 29.161606201103755,
+    "kl_offtask": 18.377604166666668
+  },
+  "band/query": {
+    "n": 224,
+    "delta_margin": 28.679129464285715,
+    "delta_margin_lo": 16.10419921875,
+    "delta_margin_hi": 39.763216145833326,
+    "norm_margin": 4.520245869695815,
+    "rank_to_clean": 569.5,
+    "rank_to": 368.5,
+    "top1": 0.004464285714285714,
+    "exact_match": 0.022321428571428572,
+    "sign_correct": 0.9821428571428571,
+    "flip_frac": 1.0,
+    "kl_ontask": 28.769746209893906,
+    "kl_offtask": 0.2864583333333333
+  },
+  "band/operand": {
+    "n": 224,
+    "delta_margin": 1.7664620535714286,
+    "delta_margin_lo": 1.0,
+    "delta_margin_hi": 2.463387044270833,
+    "norm_margin": 0.22817460313844798,
+    "rank_to_clean": 569.5,
+    "rank_to": 3193.5,
+    "top1": 0.0,
+    "exact_match": 0.004464285714285714,
+    "sign_correct": 0.03571428571428571,
+    "flip_frac": 0.05,
+    "kl_ontask": 0.8816938993986696,
+    "kl_offtask": 0.2568359375
+  },
+  "band/wrong": {
+    "n": 224,
+    "delta_margin": 2.321986607142857,
+    "delta_margin_lo": -0.22714843750000002,
+    "delta_margin_hi": 4.778645833333333,
+    "norm_margin": 0.33909437458605307,
+    "rank_to_clean": 569.5,
+    "rank_to": 194.0,
+    "top1": 0.0,
+    "exact_match": 0.03571428571428571,
+    "sign_correct": 0.15625,
+    "flip_frac": 0.15,
+    "kl_ontask": 1.7189953364618955,
+    "kl_offtask": 1.5633138020833335
+  },
+  "single/all": {
+    "n": 224,
+    "delta_margin": 13.747000558035714,
+    "delta_margin_lo": 8.012343343098957,
+    "delta_margin_hi": 17.070196533203124,
+    "norm_margin": 1.9469617137785467,
+    "rank_to_clean": 569.5,
+    "rank_to": 1210.5,
+    "top1": 0.0,
+    "exact_match": 0.0,
+    "sign_correct": 0.9419642857142857,
+    "flip_frac": 1.0,
+    "kl_ontask": 10.787328173007284,
+    "kl_offtask": 5.098307291666667
+  },
+  "single/query": {
+    "n": 224,
+    "delta_margin": 13.727329799107142,
+    "delta_margin_lo": 7.658793131510416,
+    "delta_margin_hi": 18.31265811011905,
+    "norm_margin": 1.9097222219251235,
+    "rank_to_clean": 569.5,
+    "rank_to": 69.0,
+    "top1": 0.08928571428571429,
+    "exact_match": 0.09821428571428571,
+    "sign_correct": 0.9107142857142857,
+    "flip_frac": 0.95,
+    "kl_ontask": 9.65316670707294,
+    "kl_offtask": 0.04122161865234375
+  },
+  "single/operand": {
+    "n": 224,
+    "delta_margin": 1.3441685267857142,
+    "delta_margin_lo": 0.6600857204861111,
+    "delta_margin_hi": 1.9946149553571426,
+    "norm_margin": 0.13278236912837404,
+    "rank_to_clean": 569.5,
+    "rank_to": 1603.5,
+    "top1": 0.0,
+    "exact_match": 0.004464285714285714,
+    "sign_correct": 0.013392857142857142,
+    "flip_frac": 0.0,
+    "kl_ontask": 0.5295438484047607,
+    "kl_offtask": 0.040459950764973954
+  },
+  "single/wrong": {
+    "n": 224,
+    "delta_margin": 0.9038783482142857,
+    "delta_margin_lo": 0.3924479166666667,
+    "delta_margin_hi": 1.2783365885416664,
+    "norm_margin": 0.13592375363390302,
+    "rank_to_clean": 569.5,
+    "rank_to": 454.0,
+    "top1": 0.0,
+    "exact_match": 0.017857142857142856,
+    "sign_correct": 0.06696428571428571,
+    "flip_frac": 0.0,
+    "kl_ontask": 0.05064601397680235,
+    "kl_offtask": 0.060211181640625
+  },
+  "_dose": [
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 0.1,
+      "exact_match": 0.5133928571428571,
+      "delta_margin": 16.700334821428573,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 0.25,
+      "exact_match": 0.07142857142857142,
+      "delta_margin": 19.631766183035715,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 0.5,
+      "exact_match": 0.022321428571428572,
+      "delta_margin": 21.955322265625,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 1.0,
+      "exact_match": 0.004464285714285714,
+      "delta_margin": 25.34765625,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 2.0,
+      "exact_match": 0.004464285714285714,
+      "delta_margin": 27.65234375,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 4.0,
+      "exact_match": 0.004464285714285714,
+      "delta_margin": 28.846609933035715,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 8.0,
+      "exact_match": 0.004464285714285714,
+      "delta_margin": 29.281877790178573,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 0.1,
+      "exact_match": 0.39285714285714285,
+      "delta_margin": 13.406808035714286,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 0.25,
+      "exact_match": 0.3169642857142857,
+      "delta_margin": 19.156808035714285,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 0.5,
+      "exact_match": 0.17410714285714285,
+      "delta_margin": 21.336181640625,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 1.0,
+      "exact_match": 0.05803571428571429,
+      "delta_margin": 24.650599888392858,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 2.0,
+      "exact_match": 0.04017857142857143,
+      "delta_margin": 27.318638392857142,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 4.0,
+      "exact_match": 0.022321428571428572,
+      "delta_margin": 28.679129464285715,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 8.0,
+      "exact_match": 0.022321428571428572,
+      "delta_margin": 29.193429129464285,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 0.1,
+      "exact_match": 0.03125,
+      "delta_margin": 0.2904575892857143,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 0.25,
+      "exact_match": 0.03125,
+      "delta_margin": 1.09375,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 0.5,
+      "exact_match": 0.044642857142857144,
+      "delta_margin": 4.640625,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 1.0,
+      "exact_match": 0.38392857142857145,
+      "delta_margin": 12.128766741071429,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 2.0,
+      "exact_match": 0.33482142857142855,
+      "delta_margin": 14.061662946428571,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 4.0,
+      "exact_match": 0.09821428571428571,
+      "delta_margin": 13.727329799107142,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 8.0,
+      "exact_match": 0.04017857142857143,
+      "delta_margin": 13.761343819754464,
+      "n": 224
+    }
+  ],
+  "_meta": {
+    "tag": "1.7b",
+    "domain": "relations",
+    "alpha": 4.0,
+    "ws": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "single_layer": 17,
+    "positions": {
+      "all": "all",
+      "query": [
+        -1
+      ],
+      "operand": [
+        -2
+      ],
+      "wrong": [
+        0
+      ]
+    },
+    "bootstrap_unit": "operator (dyadic node), operands nested",
+    "note": "rank columns are medians; \u0394margin CIs are 95% cluster bootstrap"
+  }
+}

@@ -125,17 +125,100 @@ def build_arith_addN():
     }
 
 
+def build_animals():
+    """A non-geographic domain (reviewer round 2): animal -> taxonomic attribute.
+    Curated for the same discipline as relations -- stable, 1-to-1, atemporal
+    answers; ambiguous or many-to-many relations excluded. Four operators, twelve
+    animals, three paraphrase frames mirroring relations.json. No desinence pair
+    (animals have no natural syncretism).
+
+    The screening GATE below refuses to write unless, for every operand, the four
+    answers are pairwise first-token distinct (else that operand carries no swap
+    signal), matching the arithmetic/logic discipline. Multi-token answers
+    (mammal/reptile/carnivore ...) are allowed -- the efficacy metric scores the
+    first token of a logit difference -- but depress the greedy exact-match ceiling,
+    so we print single-token coverage for the paper to report (as with Gemma)."""
+    ops = {"class": "class", "habitat": "habitat", "diet": "diet",
+           "covering": "covering"}
+    templates = [
+        "The {op} of {a} is",
+        "Q: What is the {op} of {a}? A: It is",
+        "It is well known that the {op} of {a} is",
+    ]
+    grid = {
+        "shark":   {"class": "fish",      "habitat": "ocean",    "diet": "carnivore",   "covering": "scales"},
+        "eagle":   {"class": "bird",      "habitat": "mountain", "diet": "carnivore",   "covering": "feathers"},
+        "frog":    {"class": "amphibian", "habitat": "pond",     "diet": "insectivore", "covering": "skin"},
+        "snake":   {"class": "reptile",   "habitat": "desert",   "diet": "carnivore",   "covering": "scales"},
+        "bee":     {"class": "insect",    "habitat": "hive",     "diet": "herbivore",   "covering": "hair"},
+        "whale":   {"class": "mammal",    "habitat": "ocean",    "diet": "carnivore",   "covering": "skin"},
+        "owl":     {"class": "bird",      "habitat": "forest",   "diet": "carnivore",   "covering": "feathers"},
+        "lizard":  {"class": "reptile",   "habitat": "desert",   "diet": "insectivore", "covering": "scales"},
+        "cow":     {"class": "mammal",    "habitat": "farm",     "diet": "herbivore",   "covering": "hair"},
+        "salmon":  {"class": "fish",      "habitat": "river",    "diet": "carnivore",   "covering": "scales"},
+        "penguin": {"class": "bird",      "habitat": "ice",      "diet": "carnivore",   "covering": "feathers"},
+        "deer":    {"class": "mammal",    "habitat": "forest",   "diet": "herbivore",   "covering": "fur"},
+    }
+    op_keys = list(ops)
+    # GATE 1: within each operand, the four answers first-token distinct.
+    bad = []
+    for a, ans in grid.items():
+        fts = {k: ft(ans[k]) for k in op_keys}
+        if len(set(fts.values())) < len(op_keys):
+            bad.append((a, {k: ans[k] for k in op_keys}))
+    if bad:
+        raise SystemExit(f"animals screening FAILED (first-token collisions): {bad}")
+    # GATE 2: every operator pair has signal on >= 8 of 12 operands.
+    import itertools
+    weak = []
+    for ka, kb in itertools.combinations(op_keys, 2):
+        n = sum(1 for a in grid if ft(grid[a][ka]) != ft(grid[a][kb]))
+        if n < 8:
+            weak.append((ka, kb, n))
+    if weak:
+        raise SystemExit(f"animals screening FAILED (weak operator pairs): {weak}")
+    items = {a: {"args": {"a": a}, "answers": grid[a]} for a in grid}
+    return {
+        "meta": {
+            "domain": "animals",
+            "template": templates[0],
+            "templates": templates,
+            "operators": ops,
+            "operand_slots": ["a"],
+            "note": "animal -> taxonomic attribute (class/habitat/diet/covering); "
+                    "curated for stable atemporal 1-to-1 answers, ambiguous relations "
+                    "excluded; multi-token answers allowed (first-token logit metric), "
+                    "single-token coverage reported for the greedy ceiling.",
+        },
+        "items": items,
+    }
+
+
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--only", nargs="*", default=None,
+                    help="subset of {arithmetic,logic,arith_addN,animals} to (re)write; "
+                         "default writes all EXCEPT animals to avoid clobbering")
+    args = ap.parse_args()
     assert single("True") and single("False") and ft("True") != ft("False"), \
         "True/False must be single distinct tokens"
-    for name, obj in (("arithmetic", build_arithmetic()), ("logic", build_logic()),
-                      ("arith_addN", build_arith_addN())):
+    builders = {"arithmetic": build_arithmetic, "logic": build_logic,
+                "arith_addN": build_arith_addN, "animals": build_animals}
+    default = ["arithmetic", "logic", "arith_addN"]  # animals only on explicit --only
+    names = args.only if args.only else default
+    for name in names:
+        obj = builders[name]()
         path = ROOT / "data" / f"{name}.json"
         path.write_text(json.dumps(obj, indent=2))
         n = len(obj["items"])
+        # single-token coverage across the whole grid (the greedy-ceiling caveat)
+        cells = [(a, k) for a in obj["items"] for k in obj["meta"]["operators"]]
+        cov = sum(1 for a, k in cells
+                  if single(obj["items"][a]["answers"][k])) / len(cells)
         print(f"wrote {path.relative_to(ROOT)}: {n} operands, "
-              f"{len(obj['meta']['operators'])} operators")
-        # show a couple
+              f"{len(obj['meta']['operators'])} operators, "
+              f"single-token coverage {cov:.2f}")
         for k in list(obj["items"])[:3]:
             print(f"    {k}: {obj['items'][k]['answers']}")
 

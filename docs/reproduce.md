@@ -68,6 +68,40 @@ Two further checks from the review pass:
 .venv/bin/python scripts/op_minimal.py 1.7b           # band sweep + activation patching + greedy exact match
 ```
 
+## 4b. The reviewer round: composition, positions, nulls, layers, a second domain
+
+```bash
+bash scripts/run_revision.sh 1.7b     # the whole battery below, sequentially
+bash scripts/run_revision.sh 8b
+```
+
+Individually:
+
+```bash
+# Does a state COMPOSED from the factorization's parts generate the answer?
+# (the decomposition ladder, incl. the leave-one-cell-out reconstruction)
+.venv/bin/python scripts/op_patch_decomp.py 1.7b --domain relations
+
+# WHERE must the vector land, and what do flips hide? (positions x layer scope,
+# with target rank / top-1 / exact match / on- and off-task KL; plus the
+# dose x position sweep on generation)
+.venv/bin/python scripts/op_positions.py 1.7b --domain relations
+
+# The competitive null battery (permuted operator labels, operator-subspace random,
+# wrong layer, other-relation direction, shuffled answers)
+.venv/bin/python scripts/op_nulls.py 1.7b --domain relations --seeds 20
+
+# Where is the operator most READABLE vs most CAUSAL?
+.venv/bin/python scripts/op_layer_sweep.py 1.7b --domain relations
+
+# Is the direction a signed axis? (negative alphas)
+.venv/bin/python scripts/op_dose.py 1.7b --alphas -12 -8 -4 -2 -1 -0.5 0.5 1 2 4 6 8 12
+
+# The non-geographic domain (animals -> class/habitat/diet/covering)
+.venv/bin/python scripts/build_op_datasets.py --only animals   # tokenizer-screening gate
+.venv/bin/python scripts/operator_paradigm.py 1.7b --domain animals
+```
+
 !!! note "Reproducibility box"
     All experiments are seeded (`--seed 0` default; the RNG seeds only the matched-norm
     random controls — direction building is deterministic). Checkpoints: `Qwen/Qwen3-1.7B`,
