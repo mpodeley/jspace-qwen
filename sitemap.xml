@@ -8,6 +8,13 @@
         <xhtml:link rel="alternate" hreflang="es" href="https://mpodeley.github.io/jspace-qwen/es/"/>
     </url>
     <url>
+        <loc>https://mpodeley.github.io/jspace-qwen/explained/</loc>
+        <lastmod>2026-07-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://mpodeley.github.io/jspace-qwen/explained/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://mpodeley.github.io/jspace-qwen/es/explained/"/>
+    </url>
+    <url>
         <loc>https://mpodeley.github.io/jspace-qwen/explorer/</loc>
         <lastmod>2026-07-11</lastmod>
         <changefreq>daily</changefreq>
@@ -76,6 +83,13 @@
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="es" href="https://mpodeley.github.io/jspace-qwen/es/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://mpodeley.github.io/jspace-qwen/"/>
+    </url>
+    <url>
+        <loc>https://mpodeley.github.io/jspace-qwen/es/explained/</loc>
+        <lastmod>2026-07-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://mpodeley.github.io/jspace-qwen/es/explained/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://mpodeley.github.io/jspace-qwen/explained/"/>
     </url>
     <url>
         <loc>https://mpodeley.github.io/jspace-qwen/es/explorer/</loc>

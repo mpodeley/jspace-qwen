@@ -10,33 +10,35 @@
       
       
       
-        <link rel="canonical" href="https://mpodeley.github.io/jspace-qwen/es/">
+        <link rel="canonical" href="https://mpodeley.github.io/jspace-qwen/es/explained/">
       
       
+        <link rel="prev" href="../">
       
-        <link rel="next" href="explained/">
+      
+        <link rel="next" href="../paper/">
       
       
         
-          <link rel="alternate" href="/jspace-qwen/" hreflang="en">
+          <link rel="alternate" href="../../explained/" hreflang="en">
         
-          <link rel="alternate" href="/jspace-qwen/es/" hreflang="es">
+          <link rel="alternate" href="./" hreflang="es">
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Hallazgo principal - Operator–Operand Factorization in LLMs</title>
+        <title>Explicado fácil - Operator–Operand Factorization in LLMs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -55,9 +57,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -82,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#las-operaciones-relacionales-se-factorizan-de-sus-operandos-en-llms" class="md-skip">
+        <a href="#el-paper-explicado-facil" class="md-skip">
           Saltar a contenido
         </a>
       
@@ -98,7 +100,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Cabecera">
-    <a href="./" title="Operator–Operand Factorization in LLMs" class="md-header__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
+    <a href="../" title="Operator–Operand Factorization in LLMs" class="md-header__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -118,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Hallazgo principal
+              Explicado fácil
             
           </span>
         </div>
@@ -165,13 +167,13 @@
       <ul class="md-select__list">
         
           <li class="md-select__item">
-            <a href="/jspace-qwen/" hreflang="en" class="md-select__link">
+            <a href="../../explained/" hreflang="en" class="md-select__link">
               English
             </a>
           </li>
         
           <li class="md-select__item">
-            <a href="/jspace-qwen/es/" hreflang="es" class="md-select__link">
+            <a href="./" hreflang="es" class="md-select__link">
               Español
             </a>
           </li>
@@ -250,7 +252,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="./" title="Operator–Operand Factorization in LLMs" class="md-nav__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
+    <a href="../" title="Operator–Operand Factorization in LLMs" class="md-nav__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -260,6 +262,33 @@
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hallazgo principal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
     
       
       
@@ -284,7 +313,7 @@
   <span class="md-ellipsis">
     
   
-    Hallazgo principal
+    Explicado fácil
   
 
     
@@ -302,7 +331,7 @@
   <span class="md-ellipsis">
     
   
-    Hallazgo principal
+    Explicado fácil
   
 
     
@@ -328,10 +357,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#el-hallazgo-conceptualmente" class="md-nav__link">
+  <a href="#primero-que-es-un-modelo-de-lenguaje" class="md-nav__link">
     <span class="md-ellipsis">
       
-        El hallazgo, conceptualmente
+        Primero: ¿qué es un modelo de lenguaje?
       
     </span>
   </a>
@@ -339,10 +368,76 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#los-numeros" class="md-nav__link">
+  <a href="#la-pregunta-del-paper" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Los números
+        La pregunta del paper
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lo-que-encontramos-son-dos-piezas-y-se-pueden-operar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lo que encontramos: son dos piezas, y se pueden operar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#las-flechas-son-de-verdad-no-un-truco-del-ejemplo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Las flechas son de verdad, no un truco del ejemplo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#el-detalle-mas-lindo-la-pregunta-no-es-la-respuesta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        El detalle más lindo: la pregunta no es la respuesta
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lo-que-no-funciona-asi-y-por-que-es-igual-de-interesante" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lo que NO funciona así (y por qué es igual de interesante)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#y-esto-para-que-sirve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ¿Y esto para qué sirve?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lo-que-este-trabajo-no-dice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lo que este trabajo NO dice
       
     </span>
   </a>
@@ -364,34 +459,7 @@
   
   
     <li class="md-nav__item">
-      <a href="explained/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Explicado fácil
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="paper/" class="md-nav__link">
+      <a href="../paper/" class="md-nav__link">
         
   
   
@@ -418,7 +486,7 @@
   
   
     <li class="md-nav__item">
-      <a href="explorer/" class="md-nav__link">
+      <a href="../explorer/" class="md-nav__link">
         
   
   
@@ -445,7 +513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="robustness/" class="md-nav__link">
+      <a href="../robustness/" class="md-nav__link">
         
   
   
@@ -472,7 +540,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reproduce/" class="md-nav__link">
+      <a href="../reproduce/" class="md-nav__link">
         
   
   
@@ -551,7 +619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="method/" class="md-nav__link">
+      <a href="../method/" class="md-nav__link">
         
   
   
@@ -579,7 +647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="results-scale/" class="md-nav__link">
+      <a href="../results-scale/" class="md-nav__link">
         
   
   
@@ -607,7 +675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="results-causal/" class="md-nav__link">
+      <a href="../results-causal/" class="md-nav__link">
         
   
   
@@ -635,7 +703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="setup/" class="md-nav__link">
+      <a href="../setup/" class="md-nav__link">
         
   
   
@@ -670,7 +738,7 @@
   
   
     <li class="md-nav__item">
-      <a href="findings/" class="md-nav__link">
+      <a href="../findings/" class="md-nav__link">
         
   
   
@@ -707,74 +775,94 @@
 
 
 
-<h1 id="las-operaciones-relacionales-se-factorizan-de-sus-operandos-en-llms">Las operaciones relacionales se factorizan de sus operandos en LLMs</h1>
-<p class="hero-sub">¿Cómo representa un modelo de lenguaje <i>"la capital de Italia"</i>?
-Encontramos que divide el pensamiento en dos: <b>la cosa</b> (Italia) y <b>la operación que se le
-aplica</b> (capital-de) — y la operación vive como su propia <b>dirección</b> en el espacio de
-activaciones: se la puede agarrar, mover y trasplantar.</p>
-
-<h2 id="el-hallazgo-conceptualmente">El hallazgo, conceptualmente</h2>
-<p>El latín marca el <em>rol</em> de un sustantivo con una desinencia — <code>ros-a / ros-am</code>, misma raíz,
-distinta función. A mitad de la red, un LLM hace algo estructuralmente similar con las
-relaciones factuales. Mientras <em>"The currency of Italy is"</em> fluye por el modelo, el estado
-interno de la oración se describe bien como una suma:</p>
-<div class="highlight"><pre><span></span><code>estado ≈ μ + operando(Italia) + operador(moneda-de) + interacción pequeña
-</code></pre></div>
-<p>Tres cosas hacen que esto sea más que un ajuste de curvas:</p>
+<h1 id="el-paper-explicado-facil">El paper, explicado fácil</h1>
+<p><em>Para cualquier persona curiosa, sin matemática ni jerga. Simple, pero sin mentir.</em></p>
+<h2 id="primero-que-es-un-modelo-de-lenguaje">Primero: ¿qué es un modelo de lenguaje?</h2>
+<p>ChatGPT, Gemini y compañía son programas entrenados para una sola cosa: <strong>continuar texto</strong>.
+Leen millones de libros y páginas web, y aprenden a predecir qué palabra viene después. De ese
+entrenamiento sale algo sorprendente: para continuar bien la frase <em>"La capital de Italia es…"</em>,
+el programa necesita, de alguna manera, <em>saber</em> cuál es la capital de Italia.</p>
+<p>Por dentro no hay palabras: hay números. En cada instante, el "estado mental" del modelo es una
+lista enorme de números — miles de ellos. Podés imaginarlo como <strong>un punto en un mapa gigante</strong>:
+cada pensamiento posible es un lugar distinto del mapa.</p>
+<h2 id="la-pregunta-del-paper">La pregunta del paper</h2>
+<p>Cuando el modelo procesa <em>"la capital de Italia"</em>, ¿cómo guarda ese pensamiento?</p>
+<ul>
+<li><strong>Opción A:</strong> como un bloque indivisible — "capital-de-Italia" es una sola cosa, distinta e
+  independiente de "moneda-de-Italia" o "capital-de-Francia".</li>
+<li><strong>Opción B:</strong> en <strong>dos piezas separadas</strong> — por un lado <em>la cosa</em> (Italia), por otro <em>la
+  pregunta que se le hace</em> (¿capital de…?).</li>
+</ul>
+<p>Parece un detalle técnico, pero es la diferencia entre memorizar cada combinación por separado
+y tener un sistema con partes reutilizables — como la diferencia entre memorizar "2+3=5,
+2+4=6, 2+5=7…" y saber sumar.</p>
+<h2 id="lo-que-encontramos-son-dos-piezas-y-se-pueden-operar">Lo que encontramos: son dos piezas, y se pueden operar</h2>
+<p>La respuesta es la <strong>Opción B</strong>, y lo sabemos porque hicimos algo mejor que mirar: <strong>operamos</strong>.</p>
+<p>En el mapa de pensamientos del modelo, cada pregunta — <em>¿capital de…?</em>, <em>¿moneda de…?</em>,
+<em>¿idioma de…?</em> — resulta ser <strong>una flecha</strong>: una dirección concreta en la que se desplaza el
+punto. Y esas flechas se pueden manipular:</p>
+<ul>
+<li><strong>El experimento estrella:</strong> mientras el modelo piensa <em>"la moneda de Italia es…"</em>, le
+  restamos la flecha <em>moneda-de</em> y le sumamos la flecha <em>capital-de</em> — sin tocar la palabra
+  "Italia" ni nada más. Su preferencia se invierte por completo: deja de inclinarse por
+  <em>"euro"</em> y se inclina por <em>"Roma"</em>. Funciona con <strong>los 20 pares de preguntas que probamos,
+  en 3 modelos distintos</strong> (incluso de empresas diferentes). Y si en lugar de la flecha
+  correcta sumamos una flecha aleatoria del mismo tamaño, <strong>no pasa nada</strong> — no es que
+  cualquier empujón rompa al modelo.</li>
+<li><strong>El trasplante:</strong> mejor todavía — tomamos el estado interno completo de un modelo pensando
+  <em>"la capital de Italia"</em> y lo trasplantamos dentro del mismo modelo mientras piensa <em>"la
+  moneda de Italia"</em>. El modelo <strong>responde "Roma"</strong>: cambia su respuesta real, no solo su
+  preferencia.</li>
+</ul>
+<h2 id="las-flechas-son-de-verdad-no-un-truco-del-ejemplo">Las flechas son de verdad, no un truco del ejemplo</h2>
+<p>Tres controles para convencer al escéptico:</p>
 <ol>
-<li><strong>El operador es causal.</strong> Sumá la diferencia de direcciones <code>v(capital) − v(moneda)</code> al
-   residual stream y el modelo deja de decir <em>euro</em> y dice <em>Roma</em> — para <strong>todos</strong> los pares
-   ordenados de relaciones que probamos. Una dirección aleatoria del mismo tamaño no hace nada.</li>
-<li><strong>Transfiere.</strong> Construido con la mitad de los países, flipea la otra mitad. Construido con
-   una redacción, flipea paráfrasis que nunca vio. Construida la receta en Qwen, funciona igual
-   en Gemma.</li>
-<li><strong>La operación no es su palabra de salida.</strong> <em>Idioma-de</em> y <em>gentilicio-de</em> terminan ambas en
-   "Italian" — y sin embargo son direcciones distintas, y un marcador construido exactamente
-   donde las dos comparten la palabra sigue instalando la relación. El modelo separa el rol
-   gramatical de la forma superficial, como la declinación separa el caso de la desinencia
-   (<em>sincretismo</em>).</li>
+<li><strong>Países nunca vistos.</strong> Construimos la flecha <em>capital-de</em> usando solo 6 países… y funciona
+   perfectamente sobre los otros 6. No memorizó ejemplos: capturó la <em>operación</em>.</li>
+<li><strong>Otras palabras.</strong> Construimos la flecha con frases tipo <em>"la moneda de Francia"</em> y la
+   probamos sobre <em>"el dinero que se usa en Francia"</em> — otra redacción, mismas flechas, mismo
+   resultado. La flecha representa <strong>la pregunta</strong>, no las palabras con que se hace.</li>
+<li><strong>Otro modelo.</strong> Repetimos toda la receta en un modelo de otra empresa, con otro
+   entrenamiento y otro diccionario interno. Todo se repite.</li>
 </ol>
-<p>Y el límite es igual de informativo: corré el mismo pipeline sobre <strong>aritmética</strong> (+, ×, −) o
-<strong>lógica de comparación</strong>, y el operador queda entrelazado con sus operandos y se niega a
-transferir — consistente con "la aritmética como bolsa de heurísticas", y evidencia de que la
-factorización limpia es una propiedad de la <em>recuperación relacional</em>, no del prompting en
-general.</p>
-<div class="hero-gif">
-<p><a href="explorer/"><img alt="La declinación: los mismos 60 estados del workspace, organizados por operando en el token del país, se reorganizan por operador en el token de consulta" src="../figs/declension.gif" /></a></p>
-</div>
-<div class="hero-buttons">
-<p><a class="md-button md-button--primary" href="explorer/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 16.5v-9l6 4.5M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> Resultado interactivo</a>
-<a class="md-button" href="explained/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17z"/></svg></span> Explicado fácil</a>
-<a class="md-button" href="../assets/paper.pdf"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/></svg></span> Paper (PDF)</a>
-<a class="md-button" href="robustness/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 22a3 3 0 0 1-3-3c0-.6.18-1.16.5-1.63L9 7.81V6a1 1 0 0 1-1-1V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1v1.81l5.5 9.56c.32.47.5 1.03.5 1.63a3 3 0 0 1-3 3zm-1-3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1c0-.21-.07-.41-.18-.57l-2.29-3.96L14 17l-5.07-5.07-3.75 6.5c-.11.16-.18.36-.18.57m8-9a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1"/></svg></span> Evidencia y controles</a>
-<a class="md-button" href="https://github.com/mpodeley/jspace-qwen"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> Código</a></p>
-</div>
-<h2 id="los-numeros">Los números</h2>
-<div class="stats">
-<div class="stat"><span class="n">20/20 × 3</span><span class="d">swaps ordenados de operador
-cambian la respuesta en Qwen3-1.7B, Qwen3-8B y Gemma-2-9B; controles aleatorios ≈ 0</span></div>
-<div class="stat"><span class="n">82–86%</span><span class="d">de la varianza del workspace en el
-token de consulta es el operador; la interacción ("fusión") queda en un dígito</span></div>
-<div class="stat"><span class="n">180/180</span><span class="d">flips con operandos held-out y
-paráfrasis nunca vistas — un operador transferible, no interpolación</span></div>
-</div>
-<p>Todos los efectos principales llevan IC bootstrap 95% a nivel de operador y ninguno cruza cero —
-ver <a href="robustness/">Evidencia y controles</a>: cada claim junto al control que podía matarlo.</p>
-<div class="admonition note">
-<p class="admonition-title">Nota metodológica — el null honesto que originó esto</p>
-<p>Este proyecto empezó como réplica del claim de legibilidad del J-space / global workspace
-(<a href="https://transformer-circuits.pub/2026/workspace/index.html">Gurnee, Sofroniew, Lindsey et al., 2026</a>).
-Bajo controles apareados (incluida una proyección aleatoria de espectro igualado), el
-<strong>readout del J-lens no superó al logit lens</strong> en ninguna métrica. La estructura de arriba es
-organización <em>causal</em>, no un subespacio privilegiadamente legible — la mitad negativa está
-documentada con el mismo rigor en el <a href="method/">archivo</a> y la <a href="findings/">bitácora</a>.</p>
-</div>
+<h2 id="el-detalle-mas-lindo-la-pregunta-no-es-la-respuesta">El detalle más lindo: la pregunta no es la respuesta</h2>
+<p><em>"¿Qué idioma se habla en Italia?"</em> y <em>"¿Cómo se le dice a alguien de Italia?"</em> tienen la
+<strong>misma respuesta</strong>: "italiano". Si el modelo solo guardara respuestas, esos dos pensamientos
+serían idénticos por dentro. <strong>No lo son</strong>: son dos flechas distintas. El modelo separa <em>qué le
+están preguntando</em> de <em>qué palabra va a decir</em> — como vos distinguís la pregunta de la
+respuesta aunque dos preguntas distintas terminen en la misma palabra.</p>
+<p>Los lingüistas tienen un nombre viejo para esta estructura: <strong>declinación</strong>. En latín, <em>rosa</em> y
+<em>rosam</em> son la misma flor cumpliendo roles distintos en la oración — una terminación marca el
+rol sin cambiar la cosa. El modelo hace algo parecido: "Italia" es la raíz, y <em>capital-de</em> es
+la terminación que marca qué rol cumple. Hasta el fenómeno de que dos roles compartan una misma
+forma superficial (como acá "italiano") tiene nombre en gramática: <em>sincretismo</em>.</p>
+<h2 id="lo-que-no-funciona-asi-y-por-que-es-igual-de-interesante">Lo que NO funciona así (y por qué es igual de interesante)</h2>
+<p>Probamos la misma receta con la aritmética: ¿existe una flecha <em>sumar</em>, una flecha
+<em>multiplicar</em>? <strong>No.</strong> Las "flechas" de las operaciones matemáticas salen enredadas con los
+números a los que se aplican y no se pueden trasplantar. Esto encaja con lo que otros
+investigadores venían encontrando: estos modelos no hacen matemática con reglas limpias sino
+con una <strong>bolsa de trucos memorizados</strong>. Que el método distinga dónde hay estructura limpia y
+dónde no, es justamente lo que lo hace creíble.</p>
+<h2 id="y-esto-para-que-sirve">¿Y esto para qué sirve?</h2>
+<p>Estos sistemas se usan cada vez más y casi nadie sabe <strong>cómo</strong> deciden lo que dicen. Este tipo
+de trabajo — se llama <em>interpretabilidad</em> — es abrir el capó: entender las piezas internas es
+el primer paso para poder auditarlas, corregirlas y confiar (o desconfiar) con fundamento.
+Acá mostramos que, al menos para preguntas sobre hechos, hay piezas internas con estructura
+clara: una parte para la cosa, una parte para la pregunta, y se pueden separar y trasplantar.</p>
+<h2 id="lo-que-este-trabajo-no-dice">Lo que este trabajo NO dice</h2>
+<ul>
+<li>No dice que el modelo "entienda" ni que "piense" como una persona. Hablamos de geometría:
+  puntos y flechas en un espacio de números.</li>
+<li>Probamos 5 tipos de pregunta, en inglés, sobre 12 países, en 3 modelos de tamaño mediano.
+  El mundo es más grande que eso, y el paper lo dice.</li>
+<li>Empujar las flechas tiene costo: mientras la operación cambia la pregunta con precisión,
+  también perturba otras cosas alrededor. Medimos y reportamos ese costo también.</li>
+</ul>
 <hr />
-<p><strong>Reproducibilidad.</strong> Todo corre en una sola APU AMD Strix Halo (sin CUDA). Semillas,
-checkpoints exactos (<code>Qwen/Qwen3-1.7B</code>, <code>Qwen/Qwen3-8B</code>, <code>google/gemma-2-9b</code>), artefactos
-long-form por operando y el generador de cada figura están en el repo — ver
-<a href="reproduce/">Cómo reproducir</a>. Licencia MIT · Matias Podeley · <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#112;&#111;&#100;&#101;&#108;&#101;&#121;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#109;&#112;&#111;&#100;&#101;&#108;&#101;&#121;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a> ·
-<a href="https://github.com/mpodeley/jspace-qwen#how-to-cite">Cómo citar</a></p>
+<p><strong>¿Querés verlo con tus propios ojos?</strong> El <a href="../explorer/">explorador interactivo</a> te deja mover
+las flechas vos misma/o y ver cómo cambia la respuesta. Los detalles completos, con todos los
+números y controles, están en el <a href="../../assets/paper.pdf">paper</a> y en
+<a href="../robustness/">evidencia y controles</a>.</p>
 
 
 
@@ -830,10 +918,10 @@ long-form por operando y el generador de cada figura están en el repo — ver
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
