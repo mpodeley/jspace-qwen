@@ -238,7 +238,7 @@ entangled with their operands. The structure is causal; it is not a more-readabl
 
 ## References
 
-Christ et al. 2025, *[title TK]*, arXiv:2510.26543 ·
+Christ et al. 2025, *The Structure of Relation Decoding Linear Operators in Large Language Models*, NeurIPS (Spotlight), arXiv:2510.26543 ·
 Chughtai et al. 2024, *Summing Up the Facts*, arXiv:2402.07321 ·
 Geva et al. 2023, *Dissecting Recall of Factual Associations*, EMNLP ·
 Gurnee & Tegmark 2024, *Language Models Represent Space and Time*, ICLR ·

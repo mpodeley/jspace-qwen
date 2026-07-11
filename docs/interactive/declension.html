@@ -38,6 +38,10 @@
   .k{font-variant-numeric:tabular-nums}
   .foot{color:#6b7079;font-size:12px;margin-top:22px;border-top:1px solid var(--line);padding-top:12px}
   .hide{display:none}
+  /* bare mode: show only the animated stage (for GIF capture / embeds) */
+  body.bare .wrap>*:not(.stage){display:none}
+  body.bare .wrap{padding:0;max-width:none}
+  body.bare .stage{border:none;border-radius:0}
   .primer{background:var(--panel);border:1px solid var(--line);border-radius:12px;
     padding:2px 16px;margin-bottom:16px}
   .primer>summary{cursor:pointer;padding:12px 0;font-size:14.5px;color:var(--ink);
@@ -365,6 +369,14 @@ document.getElementById("reset2").onclick=()=>{ des.prog=0; };
 // deep-link a scene with #1 / #2 (0 = declension by default)
 const hs = parseInt((location.hash.match(/[0-2]/)||[])[0]);
 if(hs>=0 && hs<=2){ const b=document.querySelector(`.tab[data-scene="${hs}"]`); b&&b.click(); }
+
+// query params: ?bare=1 (stage only) and frozen state for frame capture / deep-linking
+const q = new URLSearchParams(location.search);
+if(q.get("bare")) document.body.classList.add("bare");
+const clamp=v=>Math.max(0,Math.min(1,+v));
+if(q.has("t")){ scene=0; s0=clamp(q.get("t")); playing=false; }
+if(q.has("p")){ scene=1; if(q.get("from"))inj.from=q.get("from"); if(q.get("to"))inj.to=q.get("to"); inj.prog=clamp(q.get("p")); }
+if(q.has("des")){ scene=2; des.prog=clamp(q.get("des")); }
 
 resize(); setCap(); requestAnimationFrame(frame);
 </script>
