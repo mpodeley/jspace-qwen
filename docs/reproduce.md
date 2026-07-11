@@ -43,11 +43,27 @@ done
 
 Results are written to `results/metrics/` and `results/ablation/`.
 
-## 4. Figures and site
+## 4. Operator/operand experiments + geometry dump
+
+The paper's figures and the interactive explorer draw on the operator/operand runs:
 
 ```bash
-.venv/bin/python scripts/plots.py        # -> docs/figs/*.png
-.venv/bin/python -m mkdocs serve         # preview the site
+for m in 1.7b 8b; do
+  .venv/bin/python scripts/operator_paradigm.py  $m --domain relations  # all-pairs swap
+  .venv/bin/python scripts/operator_factorize.py $m --domain relations  # ANOVA + held-out
+  .venv/bin/python scripts/op_geometry_dump.py   $m --domain relations  # geometry -> results/geometry/
+done
+```
+
+`op_geometry_dump.py` persists the factorization/PCA/cosine geometry (print-only in the
+other two) to `results/geometry/*.json|npz`, and writes the explorer's data bundle
+`docs/interactive/declension.data.js` (from the 1.7B relations run).
+
+## 5. Figures and site
+
+```bash
+.venv/bin/python scripts/plots.py        # -> docs/figs/*.png (incl. op_geometry/op_swap/op_syncretism)
+.venv/bin/python -m mkdocs serve         # preview the site (incl. the interactive explorer)
 ```
 
 ## The whole batch

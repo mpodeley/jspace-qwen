@@ -30,6 +30,19 @@ COLOR = {"1.7b": "#2a78d6", "8b": "#1baf7a", "32b-int8": "#eda100", "8b-int8": "
 SWEEP = ["1.7b", "8b", "32b-int8"]  # the scale sweep (bf16 where possible, int8 for 32B)
 INK, MUTED, GRID, SURF = "#0b0b0b", "#898781", "#e1e0d9", "#fcfcfb"
 
+# categorical color BY OPERATOR, fixed order (validated: adjacent CVD dE 26.1, labels
+# supply the sub-3:1 contrast relief). Used in the operator/operand geometry figures.
+OP5 = ["#2a78d6", "#e0632f", "#1baf7a", "#9b5de5", "#eda100"]
+# operand / operator / fusion for the variance split (blue vs orange = max CVD safety)
+OPERAND_C, OPERATOR_C, FUSION_C = "#2a78d6", "#e0632f", MUTED
+
+GEO = ROOT / "results" / "geometry"
+
+
+def load_geo(tag: str, domain: str = "relations"):
+    p = GEO / f"{tag}_{domain}.json"
+    return json.loads(p.read_text()) if p.exists() else None
+
 plt.rcParams.update({
     "figure.facecolor": SURF, "axes.facecolor": SURF, "savefig.facecolor": SURF,
     "axes.edgecolor": MUTED, "axes.labelcolor": INK, "text.color": INK,
@@ -161,6 +174,189 @@ def fig_quant_control(data):
     plt.close(fig)
 
 
+def fig_op_geometry():
+    """Fig 1 -- where operand and operator live. Two PCA clouds of the 60 workspace
+    vectors H[operand, operator], colored by operator: at the country token the cases
+    intermix (operand-organized); at the query token they separate into case clusters
+    (operator-organized). Faint webs link each country's 5 case-forms -- short at the
+    country token, splayed at the query token: the concept is *declined*. Bottom: the
+    variance split that quantifies the shift."""
+    import numpy as np
+    import matplotlib.patheffects as pe
+    g, g8 = load_geo("1.7b"), load_geo("8b")
+    if not g:
+        return
+    ops = g["operators"]
+    opcol = {k: OP5[i % len(OP5)] for i, k in enumerate(ops)}
+
+    fig = plt.figure(figsize=(11, 8.4), constrained_layout=True)
+    gs = fig.add_gridspec(2, 2, height_ratios=[1.5, 1])
+    for col, (cloud, title, sub) in enumerate([
+        (g["cloud_country"], "At the country token",
+         "colors intermixed — organized by operand (stem 59%)"),
+        (g["cloud_query"], "At the query token",
+         "colors cluster — organized by operator (case 86%)")]):
+        ax = fig.add_subplot(gs[0, col])
+        by_op = {}
+        for pt in cloud:
+            by_op.setdefault(pt["operand"], []).append(pt)
+        for pts in by_op.values():  # web linking a country's 5 case-forms
+            xs = [p["x"] for p in pts] + [pts[0]["x"]]
+            ys = [p["y"] for p in pts] + [pts[0]["y"]]
+            ax.plot(xs, ys, color=MUTED, lw=0.5, alpha=0.3, zorder=1)
+        for pt in cloud:
+            ax.scatter(pt["x"], pt["y"], color=opcol[pt["operator"]], s=42,
+                       zorder=3, edgecolor=SURF, linewidth=0.7)
+        if col == 1:  # direct operator labels at the query-token clusters
+            for k, (x, y) in g["centroids_query"].items():
+                ax.annotate(k, (x, y), color=opcol[k], fontsize=10, fontweight="bold",
+                            ha="center", va="center", zorder=6, xytext=(0, 13),
+                            textcoords="offset points",
+                            path_effects=[pe.withStroke(linewidth=3.5, foreground=SURF)])
+        ax.set_title(title, fontsize=12, loc="left")
+        ax.text(0.0, -0.06, sub, transform=ax.transAxes, color=MUTED, fontsize=9.5)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_aspect("equal", adjustable="datalim")
+
+    axb = fig.add_subplot(gs[1, :])
+    groups, stems, cases, inter = [], [], [], []
+    for tag, gg in (("1.7B", g), ("8B", g8)):
+        if not gg:
+            continue
+        for pos in ("country", "query"):
+            v = gg["variance"][pos]
+            groups.append(f"{tag}\n{pos} token")
+            stems.append(v["stem"]); cases.append(v["case"]); inter.append(v["interaction"])
+    x = np.arange(len(groups))
+    axb.bar(x, stems, 0.6, color=OPERAND_C, label="operand (stem)")
+    axb.bar(x, cases, 0.6, bottom=stems, color=OPERATOR_C, label="operator (case)")
+    axb.bar(x, inter, 0.6, bottom=[s + c for s, c in zip(stems, cases)],
+            color=FUSION_C, label="interaction (fusion)")
+    for i in range(len(groups)):
+        axb.text(i, stems[i] / 2, f"{stems[i]:.0%}", ha="center", va="center",
+                 color=SURF, fontsize=9, fontweight="bold")
+        axb.text(i, stems[i] + cases[i] / 2, f"{cases[i]:.0%}", ha="center",
+                 va="center", color=SURF, fontsize=9, fontweight="bold")
+    axb.set_xticks(x, groups, fontsize=9.5)
+    axb.set_ylim(0, 1)
+    axb.set_ylabel("variance share")
+    axb.set_title("The concept is declined along the sequence: operand-dominant → "
+                  "operator-dominant  (fusion ~9–13%, subspaces 41–82° apart)",
+                  fontsize=10.5, loc="left")
+    axb.legend(frameon=False, fontsize=9, ncol=3, loc="upper center")
+    axb.grid(axis="x")
+    fig.suptitle("Where operand and operator live", fontsize=14, x=0.01, ha="left")
+    fig.savefig(FIGS / "op_geometry.png", bbox_inches="tight")
+    plt.close(fig)
+
+
+def fig_op_swap():
+    """Fig 2 -- what happens when you inject. All-pairs relational operator swap as a
+    from×to heatmap: clean (baseline, 'from' wins, blue) vs after injecting
+    v(to)−v(from) ('to' wins, red). 20/20 pairs flip sign; matched-norm random ~0."""
+    import numpy as np
+    g = load_geo("1.7b")
+    if not g or not g["swap"]:
+        return
+    ops = g["operators"]
+    n = len(ops)
+    clean = np.full((n, n), np.nan)
+    swap = np.full((n, n), np.nan)
+    rand = []
+    for i, a in enumerate(ops):
+        for j, b in enumerate(ops):
+            c = g["swap"].get(a, {}).get(b)
+            if c:
+                clean[i, j], swap[i, j] = c["clean"], c["swap"]
+                rand.append(c["random"])
+    vmax = float(np.nanmax([np.nanmax(np.abs(clean)), np.nanmax(np.abs(swap))]))
+    flips = int(np.nansum(swap > 0))
+    tot = int(np.sum(~np.isnan(swap)))
+
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.8), constrained_layout=True)
+    for ax, M, title in ((axes[0], clean, "Clean — “from” wins (baseline)"),
+                         (axes[1], swap, "Inject  v(to) − v(from)  — “to” wins")):
+        im = ax.imshow(M, cmap="RdBu_r", vmin=-vmax, vmax=vmax)
+        ax.set_xticks(range(n), ops, rotation=35, ha="right", fontsize=9)
+        ax.set_yticks(range(n), ops, fontsize=9)
+        ax.set_xlabel("to (target operator)")
+        if ax is axes[0]:
+            ax.set_ylabel("from (source operator)")
+        for i in range(n):
+            for j in range(n):
+                if not np.isnan(M[i, j]):
+                    ax.text(j, i, f"{M[i, j]:+.0f}", ha="center", va="center",
+                            fontsize=8.5, color=INK if abs(M[i, j]) < vmax * 0.55 else SURF)
+        ax.set_title(title, fontsize=11, loc="left")
+        ax.grid(False)
+    fig.colorbar(im, ax=axes, shrink=0.8, label="logit(to) − logit(from)")
+    fig.suptitle(f"Operator injection flips the answer: {flips}/{tot} pairs flip sign "
+                 f"(matched-norm random control mean {np.mean(rand):+.1f})",
+                 fontsize=12.5, x=0.01, ha="left")
+    fig.savefig(FIGS / "op_swap.png", bbox_inches="tight")
+    plt.close(fig)
+
+
+def fig_op_syncretism():
+    """Fig 4 -- operation ≠ realization. language & demonym both emit 'Italian' yet are
+    distinct operator directions (their cosine is the least anti-aligned pair, but not
+    1). The pure desinence, built where the two share an output word, still installs the
+    relation causally."""
+    import numpy as np
+    from matplotlib.patches import Rectangle
+    g = load_geo("1.7b")
+    if not g:
+        return
+    labels = g["cos"]["labels"]
+    M = np.array(g["cos"]["matrix"])
+    n = len(labels)
+    des = g["desinence"]
+
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.6), constrained_layout=True,
+                             gridspec_kw={"width_ratios": [1.25, 1]})
+    ax = axes[0]
+    Mm = M.copy()
+    np.fill_diagonal(Mm, np.nan)
+    vmax = float(np.nanmax(np.abs(Mm)))
+    im = ax.imshow(Mm, cmap="RdBu_r", vmin=-vmax, vmax=vmax)
+    ax.set_xticks(range(n), labels, rotation=35, ha="right", fontsize=9)
+    ax.set_yticks(range(n), labels, fontsize=9)
+    for i in range(n):
+        for j in range(n):
+            if not np.isnan(Mm[i, j]):
+                ax.text(j, i, f"{Mm[i, j]:+.2f}", ha="center", va="center", fontsize=8.5,
+                        color=INK if abs(Mm[i, j]) < vmax * 0.6 else SURF)
+    if des and des["pair"][0] in labels and des["pair"][1] in labels:
+        a, b = labels.index(des["pair"][0]), labels.index(des["pair"][1])
+        for (r, c) in ((a, b), (b, a)):
+            ax.add_patch(Rectangle((c - 0.5, r - 0.5), 1, 1, fill=False,
+                                   edgecolor=OPERATOR_C, lw=2.5))
+    ax.grid(False)
+    ax.set_title("All five operators are distinct directions — even language &\ndemonym "
+                 "(boxed), which both emit “Italian”, differ (cos −0.26, not +1)",
+                 fontsize=10, loc="left")
+
+    ax2 = axes[1]
+    if des:
+        vals = [des["clean"], des["desinence"]]
+        bars = ax2.bar([0, 1], vals, 0.55, color=[MUTED, OPERATOR_C])
+        ax2.axhline(0, color=MUTED, lw=1)
+        ax2.set_xticks([0, 1], ["clean\n(currency prompt)", "+ pure\ndesinence"], fontsize=9.5)
+        ax2.set_ylabel(f"logit({des['pair'][0]}) − logit({des['other']})")
+        ax2.set_ylim(min(vals) - 2, max(vals) + 3)
+        for bx, v in zip(bars, vals):
+            ax2.text(bx.get_x() + bx.get_width() / 2, v + (0.5 if v >= 0 else -0.5),
+                     f"{v:+.1f}", ha="center", va="bottom" if v >= 0 else "top",
+                     fontsize=10.5, fontweight="bold", color=INK)
+    ax2.set_title("The desinence built from the shared word\nstill installs the relation",
+                  fontsize=10, loc="left")
+    fig.suptitle("Operation ≠ realization: the case is separable from the word",
+                 fontsize=12.5, x=0.01, ha="left")
+    fig.savefig(FIGS / "op_syncretism.png", bbox_inches="tight")
+    plt.close(fig)
+
+
 def main():
     FIGS.mkdir(parents=True, exist_ok=True)
     data = load_metrics()
@@ -169,6 +365,9 @@ def main():
     fig_lenseval(data)
     fig_causal()
     fig_quant_control(data)
+    fig_op_geometry()
+    fig_op_swap()
+    fig_op_syncretism()
     print("wrote:", sorted(p.name for p in FIGS.glob("*.png")))
 
 

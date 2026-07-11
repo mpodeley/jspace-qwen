@@ -34,5 +34,6 @@ nav:
   - Results — causal importance: results-causal.md
   - Findings (working doc, 2026-07-10): findings.md
   - Paper draft — operator/operand factorization: paper.md
+  - Interactive explorer: explorer.md
   - How to reproduce: reproduce.md
 # Spanish translation added as a final pass via mkdocs-static-i18n.

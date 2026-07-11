@@ -1,0 +1,985 @@
+{
+  "model": "8b",
+  "domain": "relations",
+  "operands": [
+    "Italy",
+    "Japan",
+    "Russia",
+    "China",
+    "France",
+    "Germany",
+    "Brazil",
+    "Egypt",
+    "India",
+    "Mexico",
+    "Sweden",
+    "Turkey"
+  ],
+  "operators": [
+    "currency",
+    "capital",
+    "language",
+    "demonym",
+    "continent"
+  ],
+  "variance": {
+    "query": {
+      "stem": 0.0555921385022426,
+      "case": 0.8195617825820508,
+      "interaction": 0.12484611197090088,
+      "angles": [
+        41.1,
+        69.4,
+        74.4,
+        77.1,
+        81.7
+      ]
+    },
+    "country": {
+      "stem": 0.5462561382660631,
+      "case": 0.3442703921363235,
+      "interaction": 0.10947350856666065,
+      "angles": [
+        30.5,
+        82.6,
+        85.2,
+        85.5,
+        86.3
+      ]
+    }
+  },
+  "cloud_country": [
+    {
+      "operand": "Italy",
+      "operator": "currency",
+      "x": -15.812920570373535,
+      "y": 34.28192901611328
+    },
+    {
+      "operand": "Italy",
+      "operator": "capital",
+      "x": 3.4592700004577637,
+      "y": 29.899564743041992
+    },
+    {
+      "operand": "Italy",
+      "operator": "language",
+      "x": 16.24205780029297,
+      "y": -8.121491432189941
+    },
+    {
+      "operand": "Italy",
+      "operator": "demonym",
+      "x": -65.63597106933594,
+      "y": -45.00840759277344
+    },
+    {
+      "operand": "Italy",
+      "operator": "continent",
+      "x": 63.65010452270508,
+      "y": -30.52584457397461
+    },
+    {
+      "operand": "Japan",
+      "operator": "currency",
+      "x": -18.418170928955078,
+      "y": 41.73244094848633
+    },
+    {
+      "operand": "Japan",
+      "operator": "capital",
+      "x": 2.805846691131592,
+      "y": 29.80191421508789
+    },
+    {
+      "operand": "Japan",
+      "operator": "language",
+      "x": 18.69554901123047,
+      "y": -6.605489730834961
+    },
+    {
+      "operand": "Japan",
+      "operator": "demonym",
+      "x": -62.473079681396484,
+      "y": -43.358428955078125
+    },
+    {
+      "operand": "Japan",
+      "operator": "continent",
+      "x": 60.14321517944336,
+      "y": -30.733606338500977
+    },
+    {
+      "operand": "Russia",
+      "operator": "currency",
+      "x": -8.049674987792969,
+      "y": 39.627410888671875
+    },
+    {
+      "operand": "Russia",
+      "operator": "capital",
+      "x": 9.174946784973145,
+      "y": 32.33003616333008
+    },
+    {
+      "operand": "Russia",
+      "operator": "language",
+      "x": 20.269765853881836,
+      "y": -4.023953437805176
+    },
+    {
+      "operand": "Russia",
+      "operator": "demonym",
+      "x": -53.4112548828125,
+      "y": -43.98127746582031
+    },
+    {
+      "operand": "Russia",
+      "operator": "continent",
+      "x": 61.297237396240234,
+      "y": -28.366403579711914
+    },
+    {
+      "operand": "China",
+      "operator": "currency",
+      "x": -19.459365844726562,
+      "y": 43.35680389404297
+    },
+    {
+      "operand": "China",
+      "operator": "capital",
+      "x": -1.9188917875289917,
+      "y": 39.09274673461914
+    },
+    {
+      "operand": "China",
+      "operator": "language",
+      "x": 16.193105697631836,
+      "y": -2.5165750980377197
+    },
+    {
+      "operand": "China",
+      "operator": "demonym",
+      "x": -65.09522247314453,
+      "y": -47.177162170410156
+    },
+    {
+      "operand": "China",
+      "operator": "continent",
+      "x": 53.3593635559082,
+      "y": -35.11750411987305
+    },
+    {
+      "operand": "France",
+      "operator": "currency",
+      "x": -20.115581512451172,
+      "y": 41.652923583984375
+    },
+    {
+      "operand": "France",
+      "operator": "capital",
+      "x": -12.237471580505371,
+      "y": 40.60419464111328
+    },
+    {
+      "operand": "France",
+      "operator": "language",
+      "x": 5.568045616149902,
+      "y": 2.5944554805755615
+    },
+    {
+      "operand": "France",
+      "operator": "demonym",
+      "x": -66.65498352050781,
+      "y": -42.00861740112305
+    },
+    {
+      "operand": "France",
+      "operator": "continent",
+      "x": 55.8287239074707,
+      "y": -28.373220443725586
+    },
+    {
+      "operand": "Germany",
+      "operator": "currency",
+      "x": -22.046850204467773,
+      "y": 47.98811721801758
+    },
+    {
+      "operand": "Germany",
+      "operator": "capital",
+      "x": -0.5968599915504456,
+      "y": 42.8038444519043
+    },
+    {
+      "operand": "Germany",
+      "operator": "language",
+      "x": 4.124967098236084,
+      "y": 8.242094039916992
+    },
+    {
+      "operand": "Germany",
+      "operator": "demonym",
+      "x": -66.82868194580078,
+      "y": -40.63311767578125
+    },
+    {
+      "operand": "Germany",
+      "operator": "continent",
+      "x": 51.10900115966797,
+      "y": -22.41402244567871
+    },
+    {
+      "operand": "Brazil",
+      "operator": "currency",
+      "x": -13.434371948242188,
+      "y": 43.74399185180664
+    },
+    {
+      "operand": "Brazil",
+      "operator": "capital",
+      "x": 6.644576072692871,
+      "y": 31.08299446105957
+    },
+    {
+      "operand": "Brazil",
+      "operator": "language",
+      "x": 17.295963287353516,
+      "y": 1.7204737663269043
+    },
+    {
+      "operand": "Brazil",
+      "operator": "demonym",
+      "x": -53.482303619384766,
+      "y": -34.79813766479492
+    },
+    {
+      "operand": "Brazil",
+      "operator": "continent",
+      "x": 58.345603942871094,
+      "y": -21.940868377685547
+    },
+    {
+      "operand": "Egypt",
+      "operator": "currency",
+      "x": -11.834478378295898,
+      "y": 36.59091567993164
+    },
+    {
+      "operand": "Egypt",
+      "operator": "capital",
+      "x": 3.26997709274292,
+      "y": 27.396772384643555
+    },
+    {
+      "operand": "Egypt",
+      "operator": "language",
+      "x": 19.113208770751953,
+      "y": -12.057798385620117
+    },
+    {
+      "operand": "Egypt",
+      "operator": "demonym",
+      "x": -54.20135498046875,
+      "y": -44.10044479370117
+    },
+    {
+      "operand": "Egypt",
+      "operator": "continent",
+      "x": 58.768035888671875,
+      "y": -33.0565185546875
+    },
+    {
+      "operand": "India",
+      "operator": "currency",
+      "x": -13.779536247253418,
+      "y": 44.436824798583984
+    },
+    {
+      "operand": "India",
+      "operator": "capital",
+      "x": 5.811275959014893,
+      "y": 36.50375747680664
+    },
+    {
+      "operand": "India",
+      "operator": "language",
+      "x": 25.50699806213379,
+      "y": -12.235593795776367
+    },
+    {
+      "operand": "India",
+      "operator": "demonym",
+      "x": -58.64513397216797,
+      "y": -48.524139404296875
+    },
+    {
+      "operand": "India",
+      "operator": "continent",
+      "x": 70.95082092285156,
+      "y": -35.3646240234375
+    },
+    {
+      "operand": "Mexico",
+      "operator": "currency",
+      "x": -27.280460357666016,
+      "y": 60.19485092163086
+    },
+    {
+      "operand": "Mexico",
+      "operator": "capital",
+      "x": 5.788638591766357,
+      "y": 23.0506649017334
+    },
+    {
+      "operand": "Mexico",
+      "operator": "language",
+      "x": 14.17892074584961,
+      "y": -8.473907470703125
+    },
+    {
+      "operand": "Mexico",
+      "operator": "demonym",
+      "x": -60.72126388549805,
+      "y": -46.79488754272461
+    },
+    {
+      "operand": "Mexico",
+      "operator": "continent",
+      "x": 64.83721160888672,
+      "y": -36.53889846801758
+    },
+    {
+      "operand": "Sweden",
+      "operator": "currency",
+      "x": -20.039783477783203,
+      "y": 48.981300354003906
+    },
+    {
+      "operand": "Sweden",
+      "operator": "capital",
+      "x": -2.5157482624053955,
+      "y": 35.98483657836914
+    },
+    {
+      "operand": "Sweden",
+      "operator": "language",
+      "x": 7.420958995819092,
+      "y": 5.6219801902771
+    },
+    {
+      "operand": "Sweden",
+      "operator": "demonym",
+      "x": -62.4499626159668,
+      "y": -35.03969192504883
+    },
+    {
+      "operand": "Sweden",
+      "operator": "continent",
+      "x": 53.75727462768555,
+      "y": -23.82757568359375
+    },
+    {
+      "operand": "Turkey",
+      "operator": "currency",
+      "x": -13.34577751159668,
+      "y": 42.798213958740234
+    },
+    {
+      "operand": "Turkey",
+      "operator": "capital",
+      "x": 11.65262508392334,
+      "y": 25.018491744995117
+    },
+    {
+      "operand": "Turkey",
+      "operator": "language",
+      "x": 21.09649658203125,
+      "y": -7.778173923492432
+    },
+    {
+      "operand": "Turkey",
+      "operator": "demonym",
+      "x": -52.84200668334961,
+      "y": -43.40275192260742
+    },
+    {
+      "operand": "Turkey",
+      "operator": "continent",
+      "x": 56.96758270263672,
+      "y": -34.23605728149414
+    }
+  ],
+  "cloud_query": [
+    {
+      "operand": "Italy",
+      "operator": "currency",
+      "x": -30.94949722290039,
+      "y": 66.68161010742188
+    },
+    {
+      "operand": "Italy",
+      "operator": "capital",
+      "x": -9.003936767578125,
+      "y": -28.404760360717773
+    },
+    {
+      "operand": "Italy",
+      "operator": "language",
+      "x": 30.12468147277832,
+      "y": 57.883827209472656
+    },
+    {
+      "operand": "Italy",
+      "operator": "demonym",
+      "x": -91.256103515625,
+      "y": -47.5657958984375
+    },
+    {
+      "operand": "Italy",
+      "operator": "continent",
+      "x": 98.46038055419922,
+      "y": -58.68351745605469
+    },
+    {
+      "operand": "Japan",
+      "operator": "currency",
+      "x": -24.61054039001465,
+      "y": 68.39720153808594
+    },
+    {
+      "operand": "Japan",
+      "operator": "capital",
+      "x": 0.08455812186002731,
+      "y": -27.798137664794922
+    },
+    {
+      "operand": "Japan",
+      "operator": "language",
+      "x": 17.82024383544922,
+      "y": 64.63146209716797
+    },
+    {
+      "operand": "Japan",
+      "operator": "demonym",
+      "x": -88.61506652832031,
+      "y": -47.219970703125
+    },
+    {
+      "operand": "Japan",
+      "operator": "continent",
+      "x": 101.77884674072266,
+      "y": -58.79172134399414
+    },
+    {
+      "operand": "Russia",
+      "operator": "currency",
+      "x": -29.388099670410156,
+      "y": 73.27542114257812
+    },
+    {
+      "operand": "Russia",
+      "operator": "capital",
+      "x": -5.315938472747803,
+      "y": -25.587726593017578
+    },
+    {
+      "operand": "Russia",
+      "operator": "language",
+      "x": 32.30335235595703,
+      "y": 51.55390548706055
+    },
+    {
+      "operand": "Russia",
+      "operator": "demonym",
+      "x": -86.83854675292969,
+      "y": -46.456451416015625
+    },
+    {
+      "operand": "Russia",
+      "operator": "continent",
+      "x": 96.33975219726562,
+      "y": -55.78093338012695
+    },
+    {
+      "operand": "China",
+      "operator": "currency",
+      "x": -25.71945571899414,
+      "y": 63.36635208129883
+    },
+    {
+      "operand": "China",
+      "operator": "capital",
+      "x": -9.06450366973877,
+      "y": -24.867351531982422
+    },
+    {
+      "operand": "China",
+      "operator": "language",
+      "x": 19.592269897460938,
+      "y": 49.41362380981445
+    },
+    {
+      "operand": "China",
+      "operator": "demonym",
+      "x": -85.73182678222656,
+      "y": -49.733829498291016
+    },
+    {
+      "operand": "China",
+      "operator": "continent",
+      "x": 98.62840270996094,
+      "y": -60.103797912597656
+    },
+    {
+      "operand": "France",
+      "operator": "currency",
+      "x": -32.117801666259766,
+      "y": 63.221168518066406
+    },
+    {
+      "operand": "France",
+      "operator": "capital",
+      "x": -16.172212600708008,
+      "y": -29.468971252441406
+    },
+    {
+      "operand": "France",
+      "operator": "language",
+      "x": 23.119918823242188,
+      "y": 56.96240997314453
+    },
+    {
+      "operand": "France",
+      "operator": "demonym",
+      "x": -92.8324966430664,
+      "y": -48.89900207519531
+    },
+    {
+      "operand": "France",
+      "operator": "continent",
+      "x": 98.61575317382812,
+      "y": -57.867000579833984
+    },
+    {
+      "operand": "Germany",
+      "operator": "currency",
+      "x": -30.58030891418457,
+      "y": 66.48700714111328
+    },
+    {
+      "operand": "Germany",
+      "operator": "capital",
+      "x": -9.437468528747559,
+      "y": -24.47054672241211
+    },
+    {
+      "operand": "Germany",
+      "operator": "language",
+      "x": 23.267820358276367,
+      "y": 51.91371536254883
+    },
+    {
+      "operand": "Germany",
+      "operator": "demonym",
+      "x": -90.20780944824219,
+      "y": -46.71210479736328
+    },
+    {
+      "operand": "Germany",
+      "operator": "continent",
+      "x": 100.73474884033203,
+      "y": -57.40037155151367
+    },
+    {
+      "operand": "Brazil",
+      "operator": "currency",
+      "x": -31.171003341674805,
+      "y": 75.66053771972656
+    },
+    {
+      "operand": "Brazil",
+      "operator": "capital",
+      "x": -5.329768180847168,
+      "y": -22.40343475341797
+    },
+    {
+      "operand": "Brazil",
+      "operator": "language",
+      "x": 29.3308048248291,
+      "y": 71.71846771240234
+    },
+    {
+      "operand": "Brazil",
+      "operator": "demonym",
+      "x": -86.55746459960938,
+      "y": -41.1585807800293
+    },
+    {
+      "operand": "Brazil",
+      "operator": "continent",
+      "x": 100.21622467041016,
+      "y": -56.9732551574707
+    },
+    {
+      "operand": "Egypt",
+      "operator": "currency",
+      "x": -35.22799301147461,
+      "y": 83.19132232666016
+    },
+    {
+      "operand": "Egypt",
+      "operator": "capital",
+      "x": -5.144838809967041,
+      "y": -24.856101989746094
+    },
+    {
+      "operand": "Egypt",
+      "operator": "language",
+      "x": 30.898082733154297,
+      "y": 58.48427963256836
+    },
+    {
+      "operand": "Egypt",
+      "operator": "demonym",
+      "x": -86.14970397949219,
+      "y": -47.03877639770508
+    },
+    {
+      "operand": "Egypt",
+      "operator": "continent",
+      "x": 98.12494659423828,
+      "y": -59.4393310546875
+    },
+    {
+      "operand": "India",
+      "operator": "currency",
+      "x": -29.17514419555664,
+      "y": 70.7979965209961
+    },
+    {
+      "operand": "India",
+      "operator": "capital",
+      "x": -6.82059907913208,
+      "y": -24.6068058013916
+    },
+    {
+      "operand": "India",
+      "operator": "language",
+      "x": 47.32463836669922,
+      "y": 39.08135223388672
+    },
+    {
+      "operand": "India",
+      "operator": "demonym",
+      "x": -78.93592834472656,
+      "y": -48.448360443115234
+    },
+    {
+      "operand": "India",
+      "operator": "continent",
+      "x": 106.57080078125,
+      "y": -59.145851135253906
+    },
+    {
+      "operand": "Mexico",
+      "operator": "currency",
+      "x": -48.1462516784668,
+      "y": 80.7464370727539
+    },
+    {
+      "operand": "Mexico",
+      "operator": "capital",
+      "x": -2.6261138916015625,
+      "y": -26.940364837646484
+    },
+    {
+      "operand": "Mexico",
+      "operator": "language",
+      "x": 31.273021697998047,
+      "y": 64.58695983886719
+    },
+    {
+      "operand": "Mexico",
+      "operator": "demonym",
+      "x": -91.70728302001953,
+      "y": -45.58934020996094
+    },
+    {
+      "operand": "Mexico",
+      "operator": "continent",
+      "x": 103.0153579711914,
+      "y": -58.087554931640625
+    },
+    {
+      "operand": "Sweden",
+      "operator": "currency",
+      "x": -33.670989990234375,
+      "y": 70.18553161621094
+    },
+    {
+      "operand": "Sweden",
+      "operator": "capital",
+      "x": -11.367764472961426,
+      "y": -19.427127838134766
+    },
+    {
+      "operand": "Sweden",
+      "operator": "language",
+      "x": 13.4246244430542,
+      "y": 65.26770782470703
+    },
+    {
+      "operand": "Sweden",
+      "operator": "demonym",
+      "x": -88.97514343261719,
+      "y": -41.95378494262695
+    },
+    {
+      "operand": "Sweden",
+      "operator": "continent",
+      "x": 97.29779815673828,
+      "y": -58.24001693725586
+    },
+    {
+      "operand": "Turkey",
+      "operator": "currency",
+      "x": -32.455020904541016,
+      "y": 76.7555160522461
+    },
+    {
+      "operand": "Turkey",
+      "operator": "capital",
+      "x": -2.102046012878418,
+      "y": -27.028175354003906
+    },
+    {
+      "operand": "Turkey",
+      "operator": "language",
+      "x": 21.82160758972168,
+      "y": 67.84563446044922
+    },
+    {
+      "operand": "Turkey",
+      "operator": "demonym",
+      "x": -82.6539306640625,
+      "y": -42.276893615722656
+    },
+    {
+      "operand": "Turkey",
+      "operator": "continent",
+      "x": 95.88996887207031,
+      "y": -58.68368911743164
+    }
+  ],
+  "centroids_query": {
+    "currency": [
+      -31.934341430664062,
+      71.5638427734375
+    ],
+    "capital": [
+      -6.858386516571045,
+      -25.488290786743164
+    ],
+    "language": [
+      26.691755294799805,
+      58.27861404418945
+    ],
+    "demonym": [
+      -87.53844451904297,
+      -46.08774185180664
+    ],
+    "continent": [
+      99.6394271850586,
+      -58.26641845703125
+    ]
+  },
+  "cos": {
+    "labels": [
+      "currency",
+      "capital",
+      "language",
+      "demonym",
+      "continent"
+    ],
+    "matrix": [
+      [
+        0.9999998807907104,
+        -0.18753816187381744,
+        -0.16478432714939117,
+        -0.1479065865278244,
+        -0.43927106261253357
+      ],
+      [
+        -0.18753816187381744,
+        1.0,
+        -0.34656450152397156,
+        -0.21906647086143494,
+        -0.15429656207561493
+      ],
+      [
+        -0.16478432714939117,
+        -0.34656450152397156,
+        1.0000001192092896,
+        -0.25452595949172974,
+        -0.17221498489379883
+      ],
+      [
+        -0.1479065865278244,
+        -0.21906647086143494,
+        -0.25452595949172974,
+        1.0,
+        -0.3954683244228363
+      ],
+      [
+        -0.43927106261253357,
+        -0.15429656207561493,
+        -0.17221498489379883,
+        -0.3954683244228363,
+        1.0
+      ]
+    ]
+  },
+  "desinence": {
+    "pair": [
+      "language",
+      "demonym"
+    ],
+    "other": "currency",
+    "n_same": 8,
+    "clean": -2.8671875,
+    "desinence": 8.109375
+  },
+  "swap": {
+    "currency": {
+      "capital": {
+        "clean": -8.401041666666666,
+        "swap": 32.197916666666664,
+        "random": -1.4430338541666667,
+        "n": 12
+      },
+      "language": {
+        "clean": -3.2760416666666665,
+        "swap": 27.447916666666668,
+        "random": -1.517578125,
+        "n": 12
+      },
+      "demonym": {
+        "clean": -0.7708333333333334,
+        "swap": 17.486490885416668,
+        "random": -1.38671875,
+        "n": 12
+      },
+      "continent": {
+        "clean": -9.552083333333334,
+        "swap": 23.364583333333332,
+        "random": 1.0032552083333333,
+        "n": 12
+      }
+    },
+    "capital": {
+      "currency": {
+        "clean": -12.494791666666666,
+        "swap": 35.520833333333336,
+        "random": -3.4778645833333335,
+        "n": 12
+      },
+      "language": {
+        "clean": -8.567708333333334,
+        "swap": 32.895833333333336,
+        "random": 2.3714192708333335,
+        "n": 12
+      },
+      "demonym": {
+        "clean": -7.984375,
+        "swap": 28.135416666666668,
+        "random": 0.169921875,
+        "n": 12
+      },
+      "continent": {
+        "clean": -9.536458333333334,
+        "swap": 23.075520833333332,
+        "random": -0.9329427083333334,
+        "n": 12
+      }
+    },
+    "language": {
+      "currency": {
+        "clean": -14.151041666666666,
+        "swap": 25.481770833333332,
+        "random": -1.0911458333333333,
+        "n": 12
+      },
+      "capital": {
+        "clean": -9.442708333333334,
+        "swap": 32.40625,
+        "random": -1.1399739583333333,
+        "n": 12
+      },
+      "demonym": {
+        "clean": -2.4375,
+        "swap": 15.765625,
+        "random": 2.42578125,
+        "n": 4
+      },
+      "continent": {
+        "clean": -13.421875,
+        "swap": 26.46875,
+        "random": -3.8977864583333335,
+        "n": 12
+      }
+    },
+    "demonym": {
+      "currency": {
+        "clean": -11.994791666666666,
+        "swap": 14.890625,
+        "random": -0.9775390625,
+        "n": 12
+      },
+      "capital": {
+        "clean": -8.776041666666666,
+        "swap": 28.3125,
+        "random": 3.3463541666666665,
+        "n": 12
+      },
+      "language": {
+        "clean": -5.34375,
+        "swap": 14.890625,
+        "random": -0.20703125,
+        "n": 4
+      },
+      "continent": {
+        "clean": -12.421875,
+        "swap": 18.15625,
+        "random": -2.8958333333333335,
+        "n": 12
+      }
+    },
+    "continent": {
+      "currency": {
+        "clean": -6.096354166666667,
+        "swap": 25.578125,
+        "random": 1.3463541666666667,
+        "n": 12
+      },
+      "capital": {
+        "clean": -3.9583333333333335,
+        "swap": 23.875,
+        "random": 0.2604166666666667,
+        "n": 12
+      },
+      "language": {
+        "clean": -2.3802083333333335,
+        "swap": 28.03125,
+        "random": -1.7447916666666667,
+        "n": 12
+      },
+      "demonym": {
+        "clean": -2.1979166666666665,
+        "swap": 18.177083333333332,
+        "random": -2.28515625,
+        "n": 12
+      }
+    }
+  }
+}

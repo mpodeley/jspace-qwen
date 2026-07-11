@@ -1,7 +1,9 @@
 # The workspace declines concepts by role: operator/operand factorization in an open-weights LLM
 
 *Draft, 2026-07-10. Qwen3-1.7B/8B. All numbers reproducible from `scripts/` and `data/`; see
-["How to reproduce"](reproduce.md) and the [working findings log](findings.md).*
+["How to reproduce"](reproduce.md) and the [working findings log](findings.md). An
+[interactive explorer](explorer.md) animates the three central results (declension, injection,
+syncretism) and, for readers new to grammatical case, explains the linguistic analogy.*
 
 ## Abstract
 
@@ -21,7 +23,9 @@ functional role (case), with **syncretism** (shared surface form) and **fusion**
 stem+ending) as in a Latin declension. Testing generalization across domains, the factorization is
 **specific to relational retrieval**: for **arithmetic** (+, ×, −) and **comparison-logic** operators,
 the interaction term is 2–4× larger and the operator **fails to generalize to held-out operands**,
-consistent with arithmetic being computed by a "bag of heuristics" rather than a linear operator. Finally,
+consistent with arithmetic being computed by a "bag of heuristics" rather than a linear operator. A
+control that instead varies a *linear numeric parameter* (add-N) rather than the function generalizes
+better and is near-collinear, reconciling a contrary recent report (Christ et al. 2025). Finally,
 the structure is **causal, not a readout advantage**: the Jacobian-lens ("J-space") readout is not more
 legible than the raw residual on any of our metrics under matched controls.
 
@@ -114,6 +118,11 @@ the matched-norm random control is ~0. Representative (1.7B):
 | capital → language | −8.5 | **+32.5** | +3.0 |
 | continent → language | −1.9 | **+23.0** | +1.4 |
 
+![All-pairs operator swap: clean (baseline, "from" wins, blue) vs. injecting v(to)−v(from) ("to" wins, red). 20/20 pairs flip sign; matched-norm random control ≈ 0.](figs/op_swap.png)
+
+*Injecting the operator difference `v(to) − v(from)` flips every one of the 20 ordered pairs: clean (left,
+"from" wins, blue) → swapped (right, "to" wins, red). The matched-norm random control moves nothing.*
+
 ### 4.2 The representation factorizes into operator ⊕ operand
 
 Two-way ANOVA at a mid-workspace layer (1.7B / 8B):
@@ -128,6 +137,13 @@ dominant representation **emerges along the sequence**: the entity enters operan
 *declined* into an operator-marked form by the query position (the reading-position control rules out
 template echo; the causal swaps are the stronger control).
 
+![PCA of the 60 workspace vectors H[operand, operator], colored by operator. At the country token the cases intermix (operand-organized, stem 59%); at the query token they separate into clean case clusters (operator-organized, case 86%). The faint web links each country's five case-forms — short at the country token, splayed at the query token. Bottom: the variance split, 1.7B and 8B.](figs/op_geometry.png)
+
+*Where operand and operator live. Colored by operator throughout: at the **country token** the colors
+intermix (the cloud is organized by operand); at the **query token** the same points separate into five
+case clusters. Each country's five case-forms (faint web) start together and are pulled apart — the
+concept is **declined** along the sequence.*
+
 ### 4.3 Operation ≠ realization (syncretism)
 
 *language-of* and *demonym-of* emit the **same word** (Italian) yet are **distinct operator directions**;
@@ -135,6 +151,12 @@ the swap between them is weak precisely because they share an exponent. A **pure
 the shared-output pairs (`mean[h(language) − h(demonym)]`, exponent cancelled) still installs the relation
 causally (1.7B: −3.7 → +12.5). The syncretism appears at the *exponent* level, not the *case* level — as
 in Latin declension.
+
+![Left: operator-direction cosines — all five operators are distinct directions (no off-diagonal near ±1); language and demonym, boxed, both emit "Italian" yet differ (cos −0.26). Right: the pure desinence, built where the two share an output word, still installs the relation causally (−3.6 → +12.5).](figs/op_syncretism.png)
+
+*Operation ≠ realization. Every operator is a distinct direction — including language and demonym (boxed),
+which emit the identical word "Italian". A desinence built precisely where the two **share** their output
+word (so the word cancels) still installs the relation: the case is separable from the word that realizes it.*
 
 ### 4.4 Operators generalize to held-out operands
 
@@ -160,7 +182,32 @@ with their operands** (2–4× the interaction) and do **not** form a transferab
 with arithmetic being a bag of heuristics / Fourier computation rather than a linear operator. The
 **held-out generalization test is the discriminator** between a real operator and memorized interpolation.
 
-### 4.6 This is causal structure, not a J-space readout advantage
+### 4.6 Reconciling with a contrary report: add-N vs. two-operand arithmetic
+
+Christ et al. (2025) report the *opposite* sign for arithmetic: an operator built from an **add-N**
+relation (a fixed addend `N` applied to a single number) **does** generalize to held-out relations. The
+two results do not conflict — they cut arithmetic along different axes. In add-N the operator **is the
+addend `N`** over one numeric operand, so "generalizing across `N`" is interpolation along the number
+line (the operand *value* is itself linear; Gurnee & Tegmark 2024), not transfer of a *function*. Our
+`+ × −` cut varies the **function** over two operands. Running both cuts on Qwen3
+(`op_core.py --domain arith_addN` vs `arithmetic`; `scripts/operator_collinearity.py`) places add-N
+exactly between relations and the genuine-function cut:
+
+| cut | held-out generalization (1.7B / 8B) | operator-set collinearity (top-1 var) |
+|---|---|---:|
+| relations (5 operations) | 20/20 · 20/20 | 0.39 (spread paradigm) |
+| **add-N** (operator = addend) | 5/12 · 6/12 (+0.10 / +0.05) | **0.76 (most 1-D / number-line)** |
+| `+ × −` (operator = function) | 2/6 · 1/6 (−0.43 / −0.55) | 0.64 |
+
+add-N generalizes **better** than `+ × −` (positive vs. clearly negative) and its operator directions are
+the **most collinear** of the three families — 76% of the operator-set variance on a single line —
+consistent with add-N being a linear numeric family rather than a set of distinct operations. This
+reproduces Christ et al.'s positive (their cut varies a linear parameter) alongside our negative (ours
+varies the function) with no contradiction. The caveat is quantitative: Qwen3 BPE restricts us to
+single-digit results, so the add-N grid is small (5 operands) and its generalization is weak in absolute
+terms — the **ordering** (relations ≫ add-N > `+ × −`), not the magnitude, is the claim.
+
+### 4.7 This is causal structure, not a J-space readout advantage
 
 On four readout comparisons (bridge-entity pass@k, a surface-form logit difference, a number probe, and a
 concept-plane trajectory), the J-lens readout shows **no advantage** over the logit-lens under matched
@@ -191,6 +238,7 @@ entangled with their operands. The structure is causal; it is not a more-readabl
 
 ## References
 
+Christ et al. 2025, *[title TK]*, arXiv:2510.26543 ·
 Chughtai et al. 2024, *Summing Up the Facts*, arXiv:2402.07321 ·
 Geva et al. 2023, *Dissecting Recall of Factual Associations*, EMNLP ·
 Gurnee & Tegmark 2024, *Language Models Represent Space and Time*, ICLR ·
