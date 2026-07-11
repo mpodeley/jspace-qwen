@@ -11,7 +11,7 @@
       "lo": 14.03,
       "hi": 32.07,
       "kl_offtask": 20.586,
-      "greedy_answerB": 0.0
+      "greedy_answerB": 0.004
     },
     "half band": {
       "layers": 6,
@@ -20,7 +20,7 @@
       "lo": 7.92,
       "hi": 16.31,
       "kl_offtask": 10.922,
-      "greedy_answerB": 0.0
+      "greedy_answerB": 0.004
     },
     "single layer": {
       "layers": 1,

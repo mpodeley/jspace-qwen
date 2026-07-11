@@ -1,8 +1,3 @@
-:material-file-document: Download the PDF\{
-.md-button .md-button-\/-primary \}
-:material-play-circle: Interactive explorer\{
-.md-button \}
-
 \section{Introduction}
 
 A line of work shows that a \emph{task} or \emph{relation} can be
@@ -21,8 +16,7 @@ organizing metaphor for the asymmetries we observe.
 \section{Related work and what is new
 here}
 
-\textbf{Extracting relational concepts.} The closest prior work is Wang
-et al. (2024), who locate hidden states that express a relation
+\textbf{Extracting relational concepts.} The closest prior work is \citet{wang2024locating}, who locate hidden states that express a relation
 separately from its subject, transplant these relational representations
 between subjects, and rewrite relations across 22 relation types and
 several models. We instead characterize the \textbf{joint geometry} of
@@ -217,23 +211,25 @@ We report this as an honest cost of the band-wide, all-position
 intervention rather than tuning it away; targeted (single-position)
 variants are the natural mitigation and are left to future work.
 
-\textbf{Minimal intervention, and margins vs. generation.} The band-wide
-injection is not the minimal effective intervention: restricting the
-same directions to a \textbf{single mid-workspace layer} still flips
-\textbf{20/20 margins} (contrast +6.8 {[}+3.0, +8.9{]}) at 4.5\ensuremath{\times} lower
-off-task cost (KL 4.6 vs. 20.6 nats/token); the middle half-band gives
-+12.8 {[}+7.9, +16.3{]} at 10.9 nats. Greedy decoding sharpens the
-picture: the additive injection --- at any width --- flips the
-\emph{relative} margin but does not make the model emit the target
-answer within three greedy tokens (0\% exact match; consistent with its
-off-task distortion), whereas \textbf{replacing the query-position
-residual with a real donor activation} (same operand, target relation
---- classic activation patching: one position, no averaged direction)
-makes the model \emph{say} the target answer at \textbf{51\%},
-essentially its own clean-prompt accuracy of 53\%. The averaged
-difference direction manipulates preference; the state-level patch
-reroutes the generated answer at the model\textquotesingle s competence
-ceiling.
+\textbf{Minimal intervention, and margins vs. generation (1.7B).} The
+band-wide injection is not the minimal effective intervention:
+restricting the same directions to a \textbf{single mid-workspace layer}
+still flips \textbf{20/20 margins} (contrast +6.8 {[}+3.0, +8.9{]}) at
+4.4\ensuremath{\times} lower off-task cost (KL 4.6 vs. 20.6 nats/token here; the dose
+sweep\textquotesingle s 18.4 at \ensuremath{\alpha} = 4 reflects a different pair/prompt
+sample); the middle half-band gives +12.8 {[}+7.9, +16.3{]} at 10.9
+nats. Greedy decoding sharpens the picture: the additive injection ---
+at any width --- flips the \emph{relative} margin but does not make the
+model emit the target answer within three greedy tokens (\ensuremath{\leq}0.5\% exact
+match, 1/224 items at the wider bands, 0/224 at a single layer;
+consistent with its off-task distortion), whereas \textbf{replacing the
+query-position residual with a real donor activation} (same operand,
+target relation --- classic activation patching: one position, no
+averaged direction) makes the model \emph{say} the target answer at
+\textbf{51\%}, essentially its own clean-prompt accuracy of 53\%. The
+averaged difference direction manipulates preference; the state-level
+patch reroutes the generated answer at the model\textquotesingle s
+competence ceiling.
 
 \begin{figure*}[t]
 \centering

@@ -20,7 +20,7 @@ a **manipulable operator direction** in the residual stream, largely **separable
 two-way analysis of variance factorizes the mid-network state as `H ≈ μ + operand + operator +
 interaction`, ~90% additive, with the operator component dominant at the query position. The direction
 is **causal**: adding `v(op_B) − v(op_A)` flips the target-vs-source logit margin for **all 20 ordered
-relation pairs in all three models** (a single mid-workspace layer suffices), while matched-norm random
+relation pairs in all three models** (at 1.7B a single mid-workspace layer suffices), while matched-norm random
 controls do nothing — and a query-position activation patch reroutes the greedy answer itself at the
 model's competence ceiling. It **generalizes**:
 directions built on half the operands flip the held-out half; directions built in one wording of a
@@ -184,12 +184,12 @@ edit substantially distorts off-task text. We report this as an honest cost of t
 all-position intervention rather than tuning it away; targeted (single-position) variants are the
 natural mitigation and are left to future work.
 
-**Minimal intervention, and margins vs. generation.** The band-wide injection is not the minimal
+**Minimal intervention, and margins vs. generation (1.7B).** The band-wide injection is not the minimal
 effective intervention: restricting the same directions to a **single mid-workspace layer** still flips
-**20/20 margins** (contrast +6.8 [+3.0, +8.9]) at 4.5× lower off-task cost (KL 4.6 vs. 20.6 nats/token);
+**20/20 margins** (contrast +6.8 [+3.0, +8.9]) at 4.4× lower off-task cost (KL 4.6 vs. 20.6 nats/token here; the dose sweep's 18.4 at α = 4 reflects a different pair/prompt sample);
 the middle half-band gives +12.8 [+7.9, +16.3] at 10.9 nats. Greedy decoding sharpens the picture: the
 additive injection — at any width — flips the *relative* margin but does not make the model emit the
-target answer within three greedy tokens (0% exact match; consistent with its off-task distortion),
+target answer within three greedy tokens (≤0.5% exact match, 1/224 items at the wider bands, 0/224 at a single layer; consistent with its off-task distortion),
 whereas **replacing the query-position residual with a real donor activation** (same operand, target
 relation — classic activation patching: one position, no averaged direction) makes the model *say* the
 target answer at **51%**, essentially its own clean-prompt accuracy of 53%. The averaged difference

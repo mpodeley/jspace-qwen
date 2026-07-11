@@ -318,7 +318,7 @@ def fig_op_swap():
         ax.set_title(title, fontsize=11, loc="left")
         ax.grid(False)
     fig.colorbar(im, ax=axes, shrink=0.8, label="logit(to) − logit(from)")
-    fig.suptitle(f"Operator injection flips the answer: {flips}/{tot} pairs flip sign "
+    fig.suptitle(f"Operator injection flips the logit margin: {flips}/{tot} pairs flip sign "
                  f"(matched-norm random control mean {np.mean(rand):+.1f})",
                  fontsize=12.5, x=0.01, ha="left")
     _savefig(fig, "op_swap")

@@ -45,8 +45,8 @@ UNI = {
 # lines) and match the LaTeX-escaped text (& -> \&). Order: \citet forms first.
 CITES = [
     (r"Geva et al\.\s*\(EMNLP\s+2023\)", r"\\citet{geva2023dissecting}"),
-    (r"Wang et al\.\s*\(2024\)", r"\\citet{wang2024locating}"),
-    (r"Wang et al\.\s+2024", r"\\citealp{wang2024locating}"),
+    (r"Wang\s+et al\.\s*\(2024\)", r"\\citet{wang2024locating}"),
+    (r"Wang\s+et al\.\s+2024", r"\\citealp{wang2024locating}"),
     (r"Christ et al\.\s*\(2025\)", r"\\citet{christ2025structure}"),
     (r"Christ et al\.\s*\(Oct\s+2025\)", r"\\citet{christ2025structure}"),
     (r"the J-space paper", r"\\citet{gurnee2026workspace}"),
@@ -81,6 +81,8 @@ def md_source() -> str:
             continue
         if ln.startswith("*Subtitle:") or ln.startswith("*Draft, "):
             skip_para = True             # docs-only preamble paragraphs
+        if ln.startswith("[:material-"):
+            continue                     # mkdocs button lines (site-only)
         # italic caption paragraph following an image: the alt text becomes the
         # LaTeX \caption, so the site-facing italic caption would be a duplicate
         if after_image and ln.startswith("*"):
