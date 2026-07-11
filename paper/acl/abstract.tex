@@ -8,14 +8,17 @@ of variance factorizes the mid-network state as
 \textasciitilde90\% additive, with the operator component dominant at
 the query position. The direction is \textbf{causal}: adding
 \texttt{v(op\_B)\ -\ v(op\_A)} flips the target-vs-source logit margin
-for \textbf{all 20 ordered relation pairs in all three models}, while
-matched-norm random controls do nothing. It \textbf{generalizes}:
-directions built on half the operands flip the held-out half; directions
-built in one prompt formulation transfer to unseen ones; and the
-operation is separable from its \textbf{surface realization} ---
-\emph{language-of} and \emph{demonym-of} are distinct directions even
-though both emit "Italian". The factorization is \textbf{specific to
-relational retrieval}: under the identical pipeline, arithmetic and
+for \textbf{all 20 ordered relation pairs in all three models} (a single
+mid-workspace layer suffices), while matched-norm random controls do
+nothing --- and a query-position activation patch reroutes the greedy
+answer itself at the model\textquotesingle s competence ceiling. It
+\textbf{generalizes}: directions built on half the operands flip the
+held-out half; directions built in one wording of a relation transfer to
+re-framed and fully re-lexicalized prompts; and the operation is
+separable from its \textbf{surface realization} --- \emph{language-of}
+and \emph{demonym-of} are distinct directions even though both emit
+"Italian". The factorization is \textbf{specific to relational
+retrieval}: under the identical pipeline, arithmetic and
 comparison-logic operators show 2--4\ensuremath{\times} the interaction and fail held-out
 generalization. Relational computation in these models is, to a first
 approximation, an operand plus a transplantable operator.

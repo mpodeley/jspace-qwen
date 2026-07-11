@@ -217,6 +217,24 @@ We report this as an honest cost of the band-wide, all-position
 intervention rather than tuning it away; targeted (single-position)
 variants are the natural mitigation and are left to future work.
 
+\textbf{Minimal intervention, and margins vs. generation.} The band-wide
+injection is not the minimal effective intervention: restricting the
+same directions to a \textbf{single mid-workspace layer} still flips
+\textbf{20/20 margins} (contrast +6.8 {[}+3.0, +8.9{]}) at 4.5\ensuremath{\times} lower
+off-task cost (KL 4.6 vs. 20.6 nats/token); the middle half-band gives
++12.8 {[}+7.9, +16.3{]} at 10.9 nats. Greedy decoding sharpens the
+picture: the additive injection --- at any width --- flips the
+\emph{relative} margin but does not make the model emit the target
+answer within three greedy tokens (0\% exact match; consistent with its
+off-task distortion), whereas \textbf{replacing the query-position
+residual with a real donor activation} (same operand, target relation
+--- classic activation patching: one position, no averaged direction)
+makes the model \emph{say} the target answer at \textbf{51\%},
+essentially its own clean-prompt accuracy of 53\%. The averaged
+difference direction manipulates preference; the state-level patch
+reroutes the generated answer at the model\textquotesingle s competence
+ceiling.
+
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{op_dose}
@@ -307,8 +325,23 @@ combinations (80/80 cross-frame, mean contrast +28.7)}, with the
 declarative-built direction again frame-invariant (+26.0 / +26.0 /
 +26.0). The operator direction is invariant to the prompt
 \textbf{context} around the fixed \texttt{\{op\}\ of\ \{a\}} unit.
-(Whether it is also invariant to the \emph{wording} of the relation
-itself is the stronger question --- tested next.)
+
+\textbf{Cross-lexicalization transfer.} The stronger question is whether
+the direction survives changing the \emph{wording of the relation
+itself}. We re-lexicalize every relation --- \emph{currency of \{a\}} \ensuremath{\to}
+\emph{money used in \{a\}}, \emph{capital of \{a\}} \ensuremath{\to} \emph{seat of
+government in \{a\}}, \emph{language of \{a\}} \ensuremath{\to} \emph{language
+primarily spoken in \{a\}}, \emph{demonym} \ensuremath{\to} \emph{name for someone from
+\{a\}}, \emph{continent of \{a\}} \ensuremath{\to} \emph{world region containing \{a\}}
+--- and test both transfer directions. Directions built on the
+of-phrasings flip the re-lexicalized prompts, and vice versa:
+\textbf{40/40 at 1.7B (mean contrast +21.7) and 40/40 at 8B (+26.8)},
+with transfer contrasts indistinguishable from within-formulation ones
+(1.7B: +22.59 transferred vs. +22.62 within; operator-level 95\% CIs
+overlap almost exactly). The clean baselines differ across formulations
+--- the prompts are genuinely different --- but the
+operator\textquotesingle s causal effect does not. The direction is a
+property of the \textbf{relation}, not of its wording.
 
 \subsection{Cross-architecture replication
 (Gemma-2-9B)}
@@ -482,10 +515,9 @@ domains use, it is not a case system.
   \textasciitilde48\%).
 \item
   \textbf{Relation coverage.} Five hand-chosen country relations,
-  English-only. Prompt variation covers three paraphrase \emph{frames}
-  (\S{}4.4) but all frames share the \texttt{\{op\}\ of\ \{a\}} phrasing
-  unit; phrase-level paraphrases, more relations, and other entity types
-  remain open.
+  English-only. Prompt variation covers three context frames and a full
+  re-lexicalization of every relation (\S{}4.4); more relations, other
+  entity types, and other languages remain open.
 \item
   \textbf{Arithmetic coverage.} Qwen3 BPE splits multi-digit numbers, so
   we restrict to single-digit results; the arithmetic null is on that

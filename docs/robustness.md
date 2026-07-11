@@ -20,6 +20,7 @@ ordered pairs share 5 directions and are *not* independent observations).
 | 8 | Factorization is **domain-specific** | same pipeline on arithmetic (+ × −) and comparison logic | held-out generalization *fails* (≤ random); 2–4× interaction — a negative that validates the method's discriminative power | `{model}_{arithmetic,logic}_*` |
 | 9 | The add-N literature **reconciles** | add-N (operator = addend) vs + × − (operator = function) | add-N generalizes better *and* is the most collinear (76% one line) — a linear numeric family, not distinct operations | `*_arith_addN_*`, `operator_collinearity.py` |
 | 10 | Intervention effects are **dose-sane** | α sweep 0.5–12 | specific effect saturates at default α=4; off-task KL reported honestly (18 nats — answer-surgical, not distribution-surgical) | `1.7b_relations_dose.parquet` |
+| 10b | The band is **not doing the work** | same directions at a single layer; real-activation patch at one position; greedy exact-match | single layer: 20/20 margins at 4.5× lower KL; patch reroutes the *generated* answer at 51% vs 53% ceiling (additive: margins only) | `1.7b_relations_minimal*.{parquet,json}` |
 | 11 | No privileged **readable subspace** | 4 readout comparisons (pass@k, form, number probe, concept plane) | spectrum-matched **random projection** reads as well as the fitted J-lens; random-plane baseline kills the "channel" | [working log, Part 1](findings.md) |
 
 ## The distribution behind the headline

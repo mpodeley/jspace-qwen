@@ -139,6 +139,23 @@ def main() -> None:
     df.to_parquet(out)
     print(f"saved {out}")
 
+    print("\nmargin flips per band (operator-level cluster-bootstrap CIs):")
+    margins = {}
+    for bname, bl in bands.items():
+        dirs = {k: {l: v[k][l] for l in bl} for k in ops}
+        ldf = op_core.measure_swaps_long(model, bl, dom, tok, seed=args.seed, dirs=dirs)
+        wide = op_core.measure_swaps(model, bl, dom, tok, long_df=ldf)
+        fam = op_core.bootstrap_family_ci(ldf, seed=args.seed)
+        valid = wide.dropna(subset=["swap"])
+        margins[bname] = {"layers": len(bl),
+                          "flips": f"{int((valid['swap'] > 0).sum())}/{len(valid)}",
+                          "contrast": round(fam["contrast_mean"], 2),
+                          "lo": round(fam["contrast_lo"], 2),
+                          "hi": round(fam["contrast_hi"], 2)}
+        m = margins[bname]
+        print(f"  {bname:<14} {m['flips']}  contrast {m['contrast']:+.2f} "
+              f"[{m['lo']:+.2f}, {m['hi']:+.2f}]")
+
     if not args.no_kl:
         from op_dose import collateral
         from _common import get_corpus
@@ -150,7 +167,21 @@ def main() -> None:
                 dv = {l: args.alpha * (v[to][l] - v[frm][l]) for l in bl}
                 k, _ = collateral(model, corpus, dv)
                 kl += k / 2
+            margins[bname]["kl_offtask"] = round(kl, 3)
             print(f"  {bname:<14} KL {kl:.3f}")
+
+    import json
+    mj = out.with_name(out.name.replace("_minimal.parquet", "_minimal_margins.json"))
+    mj.write_text(json.dumps({
+        "model": tag, "domain": args.domain, "alpha": args.alpha, "bands": margins,
+        "activation_patch": {"positions": 1,
+                             "greedy_answerB": round(float(df["activation patch"].mean()), 3),
+                             "clean_greedy_answerA": round(float(df["clean"].mean()), 3)},
+        "random_control": {"greedy_answerB": round(float(df["random"].mean()), 3)},
+        "greedy_by_band": {c: round(float(df[c].mean()), 3)
+                           for c in ("full band", "half band", "single layer")},
+    }, indent=2))
+    print(f"saved {mj}")
 
 
 if __name__ == "__main__":

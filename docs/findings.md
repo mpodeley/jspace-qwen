@@ -324,6 +324,16 @@ contrast +22.59 vs +22.62 within-formulation. 8B: 40/40, +26.0/+27.6.** Clean ba
 formulations; the causal effect does not. The direction is a property of the relation, not its wording —
 the lexical confound is closed.
 
+### 2.10 Minimal band, activation patching, and margins vs. generation (2026-07-11)
+
+`op_minimal.py` (1.7B): a **single mid-workspace layer** flips 20/20 margins (+6.8 [+3.0, +8.9]) at
+4.5× lower off-task KL (4.6 vs 20.6 nats); half band +12.8 at 10.9 nats. Greedy honesty check: the
+additive injection at ANY width does **not** make the model emit answer_B in 3 greedy tokens (0%),
+while a **query-position activation patch** (real donor state, one position) does — **51% vs the
+model's own 53% clean accuracy** (ceiling). Random control 0%. Reading: the averaged difference
+direction rotates relative preference; the state-level patch reroutes the actual answer. Artifacts:
+`1.7b_relations_minimal.parquet` + `_minimal_margins.json`.
+
 ---
 
 ## The open interpretive question (deliberately unresolved)

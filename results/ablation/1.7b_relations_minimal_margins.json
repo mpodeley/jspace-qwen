@@ -1,0 +1,43 @@
+{
+  "model": "1.7b",
+  "domain": "relations",
+  "alpha": 4.0,
+  "note": "margin flips/contrast per band width; exact-match rates in *_minimal.parquet; regenerate via op_minimal.py",
+  "bands": {
+    "full band": {
+      "layers": 13,
+      "margin_flips": "20/20",
+      "contrast": 22.62,
+      "lo": 14.03,
+      "hi": 32.07,
+      "kl_offtask": 20.586,
+      "greedy_answerB": 0.0
+    },
+    "half band": {
+      "layers": 6,
+      "margin_flips": "20/20",
+      "contrast": 12.77,
+      "lo": 7.92,
+      "hi": 16.31,
+      "kl_offtask": 10.922,
+      "greedy_answerB": 0.0
+    },
+    "single layer": {
+      "layers": 1,
+      "margin_flips": "20/20",
+      "contrast": 6.76,
+      "lo": 3.03,
+      "hi": 8.94,
+      "kl_offtask": 4.649,
+      "greedy_answerB": 0.0
+    }
+  },
+  "activation_patch": {
+    "positions": 1,
+    "greedy_answerB": 0.51,
+    "clean_greedy_answerA": 0.53
+  },
+  "random_control": {
+    "greedy_answerB": 0.0
+  }
+}

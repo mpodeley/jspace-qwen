@@ -20,7 +20,9 @@ a **manipulable operator direction** in the residual stream, largely **separable
 two-way analysis of variance factorizes the mid-network state as `H ≈ μ + operand + operator +
 interaction`, ~90% additive, with the operator component dominant at the query position. The direction
 is **causal**: adding `v(op_B) − v(op_A)` flips the target-vs-source logit margin for **all 20 ordered
-relation pairs in all three models**, while matched-norm random controls do nothing. It **generalizes**:
+relation pairs in all three models** (a single mid-workspace layer suffices), while matched-norm random
+controls do nothing — and a query-position activation patch reroutes the greedy answer itself at the
+model's competence ceiling. It **generalizes**:
 directions built on half the operands flip the held-out half; directions built in one wording of a
 relation transfer to re-framed and fully re-lexicalized prompts; and the operation is separable from its **surface realization** —
 *language-of* and *demonym-of* are distinct directions even though both emit "Italian". The
@@ -181,6 +183,18 @@ intervened) grows from 7.9 nats (α = 0.5) to 21 nats (α = 12) — 18.4 at the 
 edit substantially distorts off-task text. We report this as an honest cost of the band-wide,
 all-position intervention rather than tuning it away; targeted (single-position) variants are the
 natural mitigation and are left to future work.
+
+**Minimal intervention, and margins vs. generation.** The band-wide injection is not the minimal
+effective intervention: restricting the same directions to a **single mid-workspace layer** still flips
+**20/20 margins** (contrast +6.8 [+3.0, +8.9]) at 4.5× lower off-task cost (KL 4.6 vs. 20.6 nats/token);
+the middle half-band gives +12.8 [+7.9, +16.3] at 10.9 nats. Greedy decoding sharpens the picture: the
+additive injection — at any width — flips the *relative* margin but does not make the model emit the
+target answer within three greedy tokens (0% exact match; consistent with its off-task distortion),
+whereas **replacing the query-position residual with a real donor activation** (same operand, target
+relation — classic activation patching: one position, no averaged direction) makes the model *say* the
+target answer at **51%**, essentially its own clean-prompt accuracy of 53%. The averaged difference
+direction manipulates preference; the state-level patch reroutes the generated answer at the model's
+competence ceiling.
 
 ![Dose-response: the operator-specific effect saturates at the default dose α=4 while the nonspecific random shift stays flat; per-token KL on unrelated text grows monotonically — the edit is answer-surgical, not distribution-surgical.](figs/op_dose.png)
 
