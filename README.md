@@ -15,9 +15,10 @@ Halo APU (no CUDA, no cloud).
 - **Preprint builds:** `paper/` (single-column) and `paper/acl/` (ACL two-column).
 
 Headline numbers (operator-level cluster-bootstrap 95% CIs): all-pairs swap contrast
-**+22.6 [+14.0, +32.1]** (1.7B) / **+26.0 [+17.9, +32.8]** (8B); held-out-operand transfer
-**+20.0 / +22.8**; cross-frame transfer **180/180** (1.7B) and **100/100** (8B) flips;
-flip fraction **1.00 [1.00, 1.00]** throughout. The J-lens/J-space readout shows **no
+**+22.6 [+14.0, +32.1]** (Qwen3-1.7B) / **+26.0 [+17.9, +32.8]** (Qwen3-8B) /
+**+30.4 [+23.8, +34.8]** (Gemma-2-9B — full cross-architecture replication); held-out-operand
+transfer **+20.0 / +22.8 / +26.6**; cross-frame transfer **180/180** (1.7B) and **100/100** (8B)
+flips; flip fraction **1.00 [1.00, 1.00]** throughout. The J-lens/J-space readout shows **no
 legibility advantage** over the logit lens under matched controls — the contribution is
 causal structure, reported with its controls.
 

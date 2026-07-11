@@ -1,5 +1,5 @@
-We study how an open-weights transformer (Qwen3) represents a
-\textbf{relational operation} applied to an entity ---
+We study how open-weights transformers (Qwen3-1.7B/8B, Gemma-2-9B)
+represent a \textbf{relational operation} applied to an entity ---
 \emph{currency-of}, \emph{capital-of}, \emph{language-of},
 \emph{demonym-of}, \emph{continent-of} applied to a country. We find
 that the operation is carried by a \textbf{manipulable operator
@@ -8,8 +8,11 @@ the operand}. Adding \texttt{v(op\_B)\ -\ v(op\_A)} to a prompt
 performing \texttt{op\_A} converts the model\textquotesingle s answer to
 \texttt{op\_B} for all 20 ordered operator pairs (matched-norm random
 controls null), and the direction \textbf{generalizes to operands never
-used to build it}. A two-way analysis of variance factorizes the
-representation as
+used to build it}, to \textbf{unseen paraphrase frames} (every
+build\ensuremath{\to}test frame combination flips), and \textbf{across architectures}
+--- the full pipeline replicates on Gemma-2-9B with the largest effect
+sizes of the three models tested. A two-way analysis of variance
+factorizes the representation as
 \texttt{H{[}operand,\ operator{]}\ =\ \ensuremath{\mu}\ +\ operand\ +\ operator\ +\ interaction},
 \textasciitilde90\% additive with a \textasciitilde10\% \textbf{fusion}
 interaction, operator and operand occupying largely orthogonal

@@ -75,10 +75,11 @@ fusion in the interaction term) --- not an additional empirical claim.
 
 \section{Method}
 
-\textbf{Setup.} Qwen3-1.7B and 8B, run on a single AMD Strix Halo APU
-(see setup; an int8 path keeps larger models in range).
-A relation is rendered into a template; the canonical frame is
-\texttt{"The\ \{op\}\ of\ \{a\}\ is"}, and \S{}4.4 additionally uses two
+\textbf{Setup.} Qwen3-1.7B/8B throughout, plus Gemma-2-9B for the
+cross-architecture replication (\S{}4.5); all run on a single AMD Strix
+Halo APU (see setup; an int8 path keeps larger models
+in range). A relation is rendered into a template; the canonical frame
+is \texttt{"The\ \{op\}\ of\ \{a\}\ is"}, and \S{}4.4 additionally uses two
 paraphrase frames (question--answer and discourse-prefixed) that hold
 the \texttt{\{op\}\ of\ \{a\}} unit fixed while varying the surrounding
 frame, all ending in \emph{is} so answer scoring is comparable. Reading
@@ -306,6 +307,45 @@ declarative-built direction again frame-invariant (+26.0 / +26.0 /
 +26.0). The operator direction is a property of the \textbf{relation},
 not of the prompt that elicits it.
 
+\subsection{Cross-architecture replication
+(Gemma-2-9B)}
+
+The entire pipeline transfers unchanged to \textbf{Gemma-2-9B} --- a
+different pretraining corpus, tokenizer (SentencePiece; answer
+single-token coverage 0.95), and architecture family (soft-capped
+logits, GQA):
+
+{
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+measure & Qwen3-1.7B & Qwen3-8B & \textbf{Gemma-2-9B} \\
+\midrule
+
+\bottomrule
+
+all-pairs swap contrast & +22.6 {[}+14.0, +32.1{]} & +26.0 {[}+17.9,
++32.8{]} & \textbf{+30.4 {[}+23.8, +34.8{]}} \\
+flips (swap \textgreater{} 0) & 20/20 & 20/20 & \textbf{20/20} \\
+held-out-operand contrast & +20.0 {[}+10.8, +29.5{]} & +22.8 {[}+14.0,
++31.0{]} & \textbf{+26.6 {[}+20.6, +33.2{]}} \\
+operator variance @ query & 86\% & 82\% & \textbf{84.8\%} \\
+interaction (fusion) & 9\% & 13\% & \textbf{6.8\%} \\
+pure desinence (clean \ensuremath{\to} +v) & -3.7 \ensuremath{\to} +12.5 & -2.9 \ensuremath{\to} +8.1 & \textbf{-3.0
+\ensuremath{\to} +8.6} \\
+\end{tabular}
+\end{table*}
+}
+
+Every qualitative signature replicates --- all-pairs flips with
+matched-norm nulls \ensuremath{\approx} 0, held-out-operand transfer, case-dominant
+factorization at the query token with single-digit fusion, the
+along-sequence shift (stem 37.6\% \ensuremath{\to} 8.4\% from the entity token to the
+query token), and the exponent-free desinence. Effect sizes are, if
+anything, largest in Gemma. The operator--operand factorization is not
+an idiosyncrasy of one model family.
+
 \subsection{The factorization is domain-specific (arithmetic and
 logic do
 not)}
@@ -417,9 +457,10 @@ contribution is the operator/operand \emph{causal} factorization.
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Scale and family.} 1.7B and 8B, one model family (Qwen3); no
-  32B. Relational linearity holds for a subset of relations even
-  in-domain (cf. LRE \textasciitilde48\%).
+  \textbf{Scale and family.} 1.7--9B models from two families (Qwen3,
+  Gemma 2) --- both decoder-only transformers; no \ensuremath{\geq}30B model. Relational
+  linearity holds for a subset of relations even in-domain (cf. LRE
+  \textasciitilde48\%).
 \item
   \textbf{Relation coverage.} Five hand-chosen country relations,
   English-only. Prompt variation covers three paraphrase \emph{frames}

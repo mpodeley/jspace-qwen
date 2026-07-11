@@ -302,6 +302,17 @@ Two reviewer-driven upgrades, both landing the same conclusions with proper unce
   (80/80 cross-frame, mean contrast +28.7), declarative-built direction frame-invariant
   (+26.0/+26.0/+26.0), QA-built strongest (+35.3).**
 
+### 2.8 Cross-architecture replication: Gemma-2-9B (2026-07-10, night)
+
+The full pipeline transfers unchanged to `google/gemma-2-9b` (different corpus, SentencePiece
+tokenizer with 0.95 single-token answer coverage, soft-capped logits). **Everything replicates,
+with the largest effect sizes of the three models:** all-pairs swap 20/20, operator-level contrast
+**+30.4 [+23.8, +34.8]** (vs +22.6 / +26.0 for Qwen3-1.7B/8B); held-out operands 20/20 at
+**+26.6 [+20.6, +33.2]**; factorization at the query token stem 8.4% / **case 84.8%** / fusion
+**6.8%** (lowest of the three); along-sequence shift present (stem 37.6%→8.4%); pure desinence
+−3.0 → **+8.6**. Zero per-pair CIs cross zero. The factorization is not a Qwen idiosyncrasy —
+paper claims upgraded to two-family evidence (title now "…residual stream of LLMs").
+
 ---
 
 ## The open interpretive question (deliberately unresolved)

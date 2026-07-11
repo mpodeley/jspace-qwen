@@ -1,4 +1,4 @@
-# Causal operator–operand factorization in the residual stream of Qwen3
+# Causal operator–operand factorization in the residual stream of LLMs
 
 *Subtitle: relational computation as declension — the model marks concepts by their functional
 role. The case metaphor is our explanatory device; the claims below stand on the causal
@@ -11,12 +11,15 @@ syncretism) and, for readers new to grammatical case, explains the linguistic an
 
 ## Abstract
 
-We study how an open-weights transformer (Qwen3) represents a **relational operation** applied to an
-entity — *currency-of*, *capital-of*, *language-of*, *demonym-of*, *continent-of* applied to a country.
+We study how open-weights transformers (Qwen3-1.7B/8B, Gemma-2-9B) represent a **relational operation**
+applied to an entity — *currency-of*, *capital-of*, *language-of*, *demonym-of*, *continent-of* applied
+to a country.
 We find that the operation is carried by a **manipulable operator direction** in the residual stream
 that is largely **separable from the operand**. Adding `v(op_B) − v(op_A)` to a prompt performing `op_A`
 converts the model's answer to `op_B` for all 20 ordered operator pairs (matched-norm random controls
-null), and the direction **generalizes to operands never used to build it**. A two-way analysis of
+null), and the direction **generalizes to operands never used to build it**, to **unseen paraphrase
+frames** (every build→test frame combination flips), and **across architectures** — the full pipeline
+replicates on Gemma-2-9B with the largest effect sizes of the three models tested. A two-way analysis of
 variance factorizes the representation as `H[operand, operator] = μ + operand + operator + interaction`,
 ~90% additive with a ~10% **fusion** interaction, operator and operand occupying largely orthogonal
 subspaces; the operation-dominant representation *emerges along the sequence* (operand-dominant at the
@@ -90,8 +93,8 @@ the interaction term) — not an additional empirical claim.
 
 ## 3. Method
 
-**Setup.** Qwen3-1.7B and 8B, run on a single AMD Strix Halo APU (see [setup](setup.md); an int8 path
-keeps larger models in range). A relation is rendered into a template; the canonical frame is
+**Setup.** Qwen3-1.7B/8B throughout, plus Gemma-2-9B for the cross-architecture replication (§4.5); all
+run on a single AMD Strix Halo APU (see [setup](setup.md); an int8 path keeps larger models in range). A relation is rendered into a template; the canonical frame is
 `"The {op} of {a} is"`, and §4.4 additionally uses two paraphrase frames (question–answer and
 discourse-prefixed) that hold the `{op} of {a}` unit fixed while varying the surrounding frame, all
 ending in *is* so answer scoring is comparable.
@@ -225,7 +228,27 @@ replicates — **100/100 flips over the tested combinations (80/80 cross-frame, 
 with the declarative-built direction again frame-invariant (+26.0 / +26.0 / +26.0). The operator
 direction is a property of the **relation**, not of the prompt that elicits it.
 
-### 4.5 The factorization is domain-specific (arithmetic and logic do not)
+### 4.5 Cross-architecture replication (Gemma-2-9B)
+
+The entire pipeline transfers unchanged to **Gemma-2-9B** — a different pretraining corpus, tokenizer
+(SentencePiece; answer single-token coverage 0.95), and architecture family (soft-capped logits, GQA):
+
+| measure | Qwen3-1.7B | Qwen3-8B | **Gemma-2-9B** |
+|---|---:|---:|---:|
+| all-pairs swap contrast | +22.6 [+14.0, +32.1] | +26.0 [+17.9, +32.8] | **+30.4 [+23.8, +34.8]** |
+| flips (swap > 0) | 20/20 | 20/20 | **20/20** |
+| held-out-operand contrast | +20.0 [+10.8, +29.5] | +22.8 [+14.0, +31.0] | **+26.6 [+20.6, +33.2]** |
+| operator variance @ query | 86% | 82% | **84.8%** |
+| interaction (fusion) | 9% | 13% | **6.8%** |
+| pure desinence (clean → +v) | −3.7 → +12.5 | −2.9 → +8.1 | **−3.0 → +8.6** |
+
+Every qualitative signature replicates — all-pairs flips with matched-norm nulls ≈ 0, held-out-operand
+transfer, case-dominant factorization at the query token with single-digit fusion, the along-sequence
+shift (stem 37.6% → 8.4% from the entity token to the query token), and the exponent-free desinence.
+Effect sizes are, if anything, largest in Gemma. The operator–operand factorization is not an
+idiosyncrasy of one model family.
+
+### 4.6 The factorization is domain-specific (arithmetic and logic do not)
 
 Extending the identical pipeline to arithmetic (+, ×, −) and comparison-logic operators, on 1.7B:
 
@@ -244,7 +267,7 @@ with their operands** (2–4× the interaction) and do **not** form a transferab
 with arithmetic being a bag of heuristics / Fourier computation rather than a linear operator. The
 **held-out generalization test is the discriminator** between a real operator and memorized interpolation.
 
-### 4.6 Reconciling with a contrary report: add-N vs. two-operand arithmetic
+### 4.7 Reconciling with a contrary report: add-N vs. two-operand arithmetic
 
 Christ et al. (2025) report the *opposite* sign for arithmetic: an operator built from an **add-N**
 relation (a fixed addend `N` applied to a single number) **does** generalize to held-out relations. The
@@ -269,7 +292,7 @@ varies the function) with no contradiction. The caveat is quantitative: Qwen3 BP
 single-digit results, so the add-N grid is small (5 operands) and its generalization is weak in absolute
 terms — the **ordering** (relations ≫ add-N > `+ × −`), not the magnitude, is the claim.
 
-### 4.7 This is causal structure, not a J-space readout advantage
+### 4.8 This is causal structure, not a J-space readout advantage
 
 On four readout comparisons (bridge-entity pass@k, a surface-form logit difference, a number probe, and a
 concept-plane trajectory), the J-lens readout shows **no advantage** over the logit-lens under matched
@@ -282,8 +305,9 @@ legible in the J-space than in the raw stream (its 1.7B readout-geometry differe
 
 ## 5. Limitations
 
-- **Scale and family.** 1.7B and 8B, one model family (Qwen3); no 32B. Relational linearity holds for a
-  subset of relations even in-domain (cf. LRE ~48%).
+- **Scale and family.** 1.7–9B models from two families (Qwen3, Gemma 2) — both decoder-only
+  transformers; no ≥30B model. Relational linearity holds for a subset of relations even in-domain
+  (cf. LRE ~48%).
 - **Relation coverage.** Five hand-chosen country relations, English-only. Prompt variation covers three
   paraphrase *frames* (§4.4) but all frames share the `{op} of {a}` phrasing unit; phrase-level
   paraphrases, more relations, and other entity types remain open.
