@@ -35,6 +35,7 @@ UNI = {
     "ℓ": r"\ensuremath{\ell}", "°": r"\textdegree{}",
     "·": r"\textperiodcentered{}", "±": r"\ensuremath{\pm}",
     "§": r"\S{}", "↔": r"\ensuremath{\leftrightarrow}", "○": r"$\circ$",
+    "‖": r"\ensuremath{\,\Vert\,}",
     "“": "``", "”": "''", "‘": "`", "’": "'", "…": r"\ldots{}",
 }
 
