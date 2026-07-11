@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="es" class="no-js">
   <head>
     
       <meta charset="utf-8">
@@ -10,35 +10,35 @@
       
       
       
-        <link rel="canonical" href="https://mpodeley.github.io/jspace-qwen/results-causal/">
+        <link rel="canonical" href="https://mpodeley.github.io/jspace-qwen/es/method/">
       
       
-        <link rel="prev" href="../results-scale/">
+        <link rel="prev" href="../reproduce/">
       
       
-        <link rel="next" href="../setup/">
+        <link rel="next" href="../results-scale/">
       
       
         
-          <link rel="alternate" href="./" hreflang="en">
+          <link rel="alternate" href="../../method/" hreflang="en">
         
-          <link rel="alternate" href="../es/results-causal/" hreflang="es">
+          <link rel="alternate" href="./" hreflang="es">
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Results — causal - Operator–Operand Factorization in LLMs</title>
+        <title>Método (J-lens y J-space) - Operator–Operand Factorization in LLMs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -57,9 +57,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -84,8 +84,8 @@
     <div data-md-component="skip">
       
         
-        <a href="#results-causal-importance" class="md-skip">
-          Skip to content
+        <a href="#method-the-jacobian-lens-and-the-j-space" class="md-skip">
+          Saltar a contenido
         </a>
       
     </div>
@@ -99,8 +99,8 @@
   
 
 <header class="md-header md-header--shadow" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Operator–Operand Factorization in LLMs" class="md-header__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../" title="Operator–Operand Factorization in LLMs" class="md-header__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -120,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Results — causal
+              Método (J-lens y J-space)
             
           </span>
         </div>
@@ -160,20 +160,20 @@
       <div class="md-header__option">
   <div class="md-select">
     
-    <button class="md-header__button md-icon" aria-label="Select language">
+    <button class="md-header__button md-icon" aria-label="Seleccionar idioma">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
     </button>
     <div class="md-select__inner">
       <ul class="md-select__list">
         
           <li class="md-select__item">
-            <a href="./" hreflang="en" class="md-select__link">
+            <a href="../../method/" hreflang="en" class="md-select__link">
               English
             </a>
           </li>
         
           <li class="md-select__item">
-            <a href="../es/results-causal/" hreflang="es" class="md-select__link">
+            <a href="./" hreflang="es" class="md-select__link">
               Español
             </a>
           </li>
@@ -194,16 +194,16 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
         
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
-      <nav class="md-search__options" aria-label="Search">
+      <nav class="md-search__options" aria-label="Buscar">
         
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
@@ -214,7 +214,7 @@
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
-            Initializing search
+            Inicializando búsqueda
           </div>
           <ol class="md-search-result__list" role="presentation"></ol>
         </div>
@@ -250,9 +250,9 @@
 
   
 
-<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Operator–Operand Factorization in LLMs" class="md-nav__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
+    <a href="../" title="Operator–Operand Factorization in LLMs" class="md-nav__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -270,14 +270,14 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Main finding
+    Hallazgo principal
   
 
     
@@ -331,7 +331,7 @@
   <span class="md-ellipsis">
     
   
-    Interactive explorer
+    Explorador interactivo
   
 
     
@@ -358,7 +358,7 @@
   <span class="md-ellipsis">
     
   
-    Evidence & controls
+    Evidencia y controles
   
 
     
@@ -385,7 +385,7 @@
   <span class="md-ellipsis">
     
   
-    How to reproduce
+    Cómo reproducir
   
 
     
@@ -430,7 +430,7 @@
   <span class="md-ellipsis">
     
   
-    J-space replication (archive)
+    Réplica J-space (archivo)
   
 
     
@@ -446,67 +446,11 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    J-space replication (archive)
+    Réplica J-space (archivo)
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../method/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Method (J-lens & J-space)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../results-scale/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Results — scale
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -531,7 +475,7 @@
   <span class="md-ellipsis">
     
   
-    Results — causal
+    Método (J-lens y J-space)
   
 
     
@@ -549,7 +493,7 @@
   <span class="md-ellipsis">
     
   
-    Results — causal
+    Método (J-lens y J-space)
   
 
     
@@ -561,7 +505,7 @@
       
         
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
   
   
   
@@ -570,15 +514,15 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      Tabla de contenidos
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-workspace-band-is-causally-potent-and-sharpens-with-scale" class="md-nav__link">
+  <a href="#the-jacobian-lens-j-lens" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The workspace band is causally potent — and sharpens with scale
+        The Jacobian lens (J-lens)
       
     </span>
   </a>
@@ -586,10 +530,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#channels-workspace-output" class="md-nav__link">
+  <a href="#from-the-logit-lens-to-the-jacobian-lens" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Channels: workspace → output
+        From the logit lens to the Jacobian lens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-j-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The J-space
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-we-measure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What we measure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-scale-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The scale question
       
     </span>
   </a>
@@ -600,6 +577,62 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../results-scale/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resultados — escala
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../results-causal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resultados — causal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -654,7 +687,7 @@
   <span class="md-ellipsis">
     
   
-    Working log (findings)
+    Bitácora (findings)
   
 
     
@@ -684,88 +717,160 @@
 
 
 
-<h1 id="results-causal-importance">Results — causal importance</h1>
-<p>Is the J-space merely <em>readable</em>, or does it actually <strong>steer</strong> the computation?
-Using the paper's shipped two-hop <code>probe-swap</code> set, we move the residual
-component along a bridge entity's J-lens direction onto a different entity's
-direction, across a layer band, and check whether the model's greedy answer
-flips accordingly — against a matched-norm <strong>random control</strong>.</p>
-<p><img alt="Causal swap by band" src="../figs/causal.png" /></p>
-<h2 id="the-workspace-band-is-causally-potent-and-sharpens-with-scale">The workspace band is causally potent — and sharpens with scale</h2>
+<h1 id="method-the-jacobian-lens-and-the-j-space">Method: the Jacobian lens and the J-space</h1>
+<p>This project reproduces the method of Anthropic's
+<a href="https://transformer-circuits.pub/2026/workspace/index.html"><em>Verbalizable Representations Form a Global Workspace in Language Models</em></a>
+(Gurnee, Sofroniew, Lindsey et al., 2026) on open-weights Qwen3 models, using
+the authors' reference implementation
+<a href="https://github.com/anthropics/jacobian-lens"><code>anthropics/jacobian-lens</code></a>.</p>
+<h2 id="the-jacobian-lens-j-lens">The Jacobian lens (J-lens)</h2>
+<p>A <em>lens</em> reads out what an intermediate residual-stream activation is "poised to
+make the model say". The <strong>logit lens</strong> does this by decoding a mid-layer
+residual <span class="arithmatex">\(h_\ell\)</span> directly with the model's unembedding <span class="arithmatex">\(W_U\)</span>. The <strong>Jacobian
+lens</strong> first <em>transports</em> <span class="arithmatex">\(h_\ell\)</span> into the final-layer basis with the average
+input–output Jacobian of the network:</p>
+<div class="arithmatex">\[
+\text{lens}_\ell(h) = \operatorname{softmax}\big(W_U\,\operatorname{norm}(J_\ell\, h)\big),
+\qquad
+J_\ell = \mathbb{E}\!\left[\frac{\partial h_{\text{final}}}{\partial h_\ell}\right].
+\]</div>
+<p>The expectation is taken over a corpus of pretraining-like prompts, over source
+positions, and over all current-and-future target positions. Intuitively, for
+every vocabulary token the J-lens finds the internal activity pattern that makes
+the model more likely to emit that token <em>at some point in the future</em> — it
+measures <strong>causal influence on the output</strong>, not mere presence.</p>
+<p>Computing <span class="arithmatex">\(J_\ell\)</span> requires backward passes through the model: for each of the
+<span class="arithmatex">\(d_{\text{model}}\)</span> output dimensions a one-hot cotangent is injected at every
+valid target position and backpropagated to layer <span class="arithmatex">\(\ell\)</span>. This is why the whole
+pipeline needs autograd on the GPU (not just inference) — see
+<a href="../setup/">the setup page</a>.</p>
+<h2 id="from-the-logit-lens-to-the-jacobian-lens">From the logit lens to the Jacobian lens</h2>
+<p>It helps to build the J-lens up from the simplest readout.</p>
+<p>The <strong>logit lens</strong> (<a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens">nostalgebraist, 2020</a>)
+decodes a mid-layer residual <em>in place</em> with the model's own output head:</p>
+<div class="arithmatex">\[
+\text{logit-lens}(h_\ell) = \operatorname{softmax}\big(W_U\,\operatorname{norm}(h_\ell)\big).
+\]</div>
+<p>It asks "if the model stopped at layer <span class="arithmatex">\(\ell\)</span> and read out now, what would it
+say?" The catch is a <strong>basis mismatch</strong>: the residual stream at layer <span class="arithmatex">\(\ell\)</span> is
+not yet in the coordinate system the unembedding expects — the remaining layers
+still rotate and rescale it. So the logit lens is reasonable in late layers
+(basis already close to final) but noisy and systematically <em>under-reads</em>
+content in the early and middle layers — exactly where the workspace lives.</p>
+<p>The <strong>Jacobian lens</strong> fixes the basis by <em>transporting</em> <span class="arithmatex">\(h_\ell\)</span> with the
+model's own average input–output Jacobian before decoding:</p>
+<div class="arithmatex">\[
+\text{J-lens}(h_\ell) = \operatorname{softmax}\big(W_U\,\operatorname{norm}(J_\ell\, h_\ell)\big).
+\]</div>
+<p>Because <span class="arithmatex">\(J_\ell\)</span> is the model's first-order sensitivity — how a nudge to <span class="arithmatex">\(h_\ell\)</span>
+actually propagates to the output, averaged over real text — three things follow:</p>
+<ul>
+<li><strong>It reads in the right basis.</strong> Instead of assuming the mid-layer basis equals
+  the final one, it carries <span class="arithmatex">\(h_\ell\)</span> forward with the network's own derivative.</li>
+<li><strong>It measures influence, not presence.</strong> A direction that exists in <span class="arithmatex">\(h_\ell\)</span>
+  but that the downstream network ignores contributes nothing to <span class="arithmatex">\(J_\ell h_\ell\)</span>;
+  the lens filters for what actually reaches the output.</li>
+<li><strong>It is derived, not trained.</strong> Unlike the <em>tuned lens</em> (a learned affine probe
+  fit to predict the next token), <span class="arithmatex">\(J_\ell\)</span> comes from the model itself, so it
+  cannot hallucinate content that is not causally there.</li>
+</ul>
 <table>
 <thead>
 <tr>
-<th>model</th>
-<th style="text-align: right;">early</th>
-<th style="text-align: right;"><strong>workspace</strong></th>
-<th style="text-align: right;">late</th>
-<th style="text-align: right;">control</th>
-<th style="text-align: right;">n solved</th>
+<th>lens</th>
+<th>transport into final basis</th>
+<th>trained?</th>
+<th>main failure mode</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1.7B</td>
-<td style="text-align: right;">0.17</td>
-<td style="text-align: right;"><strong>0.30</strong></td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">23</td>
+<td>logit lens</td>
+<td>none (<span class="arithmatex">\(J_\ell = I\)</span>)</td>
+<td>no</td>
+<td>basis mismatch → under-reads mid layers</td>
 </tr>
 <tr>
-<td>8B</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;"><strong>0.55</strong></td>
-<td style="text-align: right;">0.02</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;">47</td>
+<td>tuned lens</td>
+<td>learned affine <span class="arithmatex">\(A_\ell h + b_\ell\)</span></td>
+<td>yes (fit to next token)</td>
+<td>can hallucinate / overfit</td>
+</tr>
+<tr>
+<td><strong>Jacobian lens</strong></td>
+<td>model's average Jacobian <span class="arithmatex">\(J_\ell\)</span></td>
+<td>no (derived)</td>
+<td>needs backward passes to build</td>
 </tr>
 </tbody>
 </table>
-<p>This is the project's cleanest result. Three things:</p>
-<ol>
-<li><strong>The workspace band dominates</strong>, at both scales — exactly where the paper
-   locates the workspace.</li>
-<li><strong>The control does nothing.</strong> A random direction of identical norm never
-   produces the swapped answer, so the effect is specific to the J-lens
-   directions, not to perturbation magnitude.</li>
-<li><strong>It sharpens with scale.</strong> From 1.7B to 8B the workspace flip-rate nearly
-   doubles (0.30 → 0.55) <em>and localizes</em>: the early band collapses (0.17 → 0.04),
-   so at 8B the workspace is ~14× more causally potent than the early/late bands
-   (vs ~2× at 1.7B). The global workspace becomes both stronger and more
-   sharply localized as the model grows.</li>
-</ol>
-<p>The striking dissociation: this causal structure is strong <em>before</em> any readout
-advantage appears (see <a href="../results-scale/">scale</a>) — the workspace steers the
-two-hop even though the J-lens does not yet out-read the logit-lens on Qwen3.</p>
-<div class="admonition note">
-<p class="admonition-title">In progress</p>
-<p>32B (int8) is the third point; the question is whether the workspace
-sharpening continues.</p>
-</div>
-<h2 id="channels-workspace-output">Channels: workspace → output</h2>
-<p>A complementary view of <em>how</em> a concept reaches the output. For a two-hop probe
-we project the residual — transported into the final basis by the J-lens — onto
-a 2D plane spanned by two concept tokens (the intermediate and the answer), and
-trace the path layer by layer.</p>
-<p><img alt="Concept flow, 1.7B" src="../figs/flow_1.7b.png" /></p>
+<p><strong>The logit lens is exactly the special case <span class="arithmatex">\(J_\ell = I\)</span></strong> — turn off the
+transport and the J-lens <em>is</em> the logit lens. In this codebase that is a single
+flag, <code>lens.apply(..., use_jacobian=False)</code>, so every "J-lens vs logit-lens"
+comparison in the results is controlled: same activations, same unembedding, the
+only difference is whether <span class="arithmatex">\(h_\ell\)</span> is carried through the model's Jacobian
+first. If the J-lens beats the logit lens, the improvement is due to the
+transport and nothing else.</p>
+<h2 id="the-j-space">The J-space</h2>
+<p>The <strong>J-space</strong> is a small, sparse subspace of the residual stream spanned by
+the J-lens vectors that are active at a given moment (typical sparsity
+<span class="arithmatex">\(k \le 25\)</span>). Its defining properties, which we measure across scale:</p>
 <ul>
-<li><strong>Right — read-channel profile.</strong> The build-up of the answer concept along
-  depth: it climbs steeply <em>through the workspace band</em> and peaks late — this is
-  literally which layers assemble the output.</li>
-<li><strong>Left — concept-plane flow.</strong> The J-lens path (blue) travels far across the
-  concept plane, while the logit-lens path (orange) stays cramped near the
-  origin — a visual of why the untransported logit lens <em>under-reads</em> the middle
-  of the network (see <a href="../method/">Method</a>).</li>
+<li>it accounts for a <strong>small fraction of activation variance</strong> (never more than
+  ~10%, varying by layer);</li>
+<li>far more model components read from and write to it than to ordinary
+  directions (up to ~100× in parts of the network);</li>
+<li>it is organised by depth into a <strong>sensory</strong> regime (early layers), a
+  <strong>workspace</strong> regime (the middle band, where abstract content persists), and a
+  <strong>motor</strong> regime (late layers, aligned with the output).</li>
 </ul>
-<div class="admonition warning">
-<p class="admonition-title">Metaphor, and a small model</p>
-<p>Attention mixes positions, so this is a projected trajectory, not an
-autonomous vector field — "streamline" is a visual metaphor for the path.
-At 1.7B the J-lens path is jagged (an immature workspace); the 8B/32B
-versions should be smoother and move more cleanly from the intermediate axis
-to the output axis.</p>
-</div>
+<h2 id="what-we-measure">What we measure</h2>
+<p><strong>Per-layer metrics</strong> (<code>scripts/metrics.py</code>), reindexed to a 0–100 depth scale:</p>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>what it captures</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jlens_top1/5</code>, <code>logitlens_top1</code></td>
+<td>next-token accuracy of the readout; J-lens vs logit-lens baseline</td>
+</tr>
+<tr>
+<td><code>read_var_frac</code></td>
+<td>fraction of residual variance in the J-lens' top-<span class="arithmatex">\(k\)</span> read directions (the "&lt;10%" claim)</td>
+</tr>
+<tr>
+<td><code>eff_dim</code></td>
+<td>participation ratio of <span class="arithmatex">\(J_\ell\)</span>'s singular values (effective dimensionality of the workspace)</td>
+</tr>
+<tr>
+<td><code>kurtosis</code></td>
+<td>excess kurtosis of the lens logits (a few concepts dominate → workspace signature)</td>
+</tr>
+<tr>
+<td><code>top1_autocorr</code></td>
+<td>persistence of the top-1 readout across adjacent positions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lens quality</strong> (<code>scripts/lens_eval.py</code>): on the paper's shipped two-hop set,
+pass@<span class="arithmatex">\(k\)</span> = the fraction of hidden bridge entities (e.g. <em>Brazil</em> in "the country
+where the Amazon ends") that appear at lens rank <span class="arithmatex">\(\le k\)</span> at their best layer.</p>
+<p><strong>Causal importance</strong> (<code>scripts/causal_swap.py</code>): using the shipped <code>probe-swap</code>
+set, we move the residual component along a bridge entity's J-lens direction
+onto a different entity's direction, across a layer band, and check whether the
+model's answer flips accordingly — versus a matched-norm random control. If the
+<strong>workspace band</strong> flips (while the control and the early/late bands do not), the
+J-space is causally steering the computation.</p>
+<h2 id="the-scale-question">The scale question</h2>
+<p>The paper studies Claude. Our contribution is to ask, on open weights, <strong>when</strong>
+these properties appear: we run the identical pipeline on Qwen3 <strong>1.7B, 8B, and
+32B</strong> and compare the metrics above across model size — does the J-space exist
+already at 1.7B, or does it sharpen (lower variance fraction, cleaner
+workspace band, stronger causal flips) as models scale?</p>
 
 
 
@@ -789,7 +894,7 @@ to the output axis.</p>
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
-  Back to top
+  Volver al principio
 </button>
         
       </main>
@@ -821,10 +926,10 @@ to the output axis.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       

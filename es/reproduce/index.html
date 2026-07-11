@@ -10,29 +10,35 @@
       
       
       
+        <link rel="canonical" href="https://mpodeley.github.io/jspace-qwen/es/reproduce/">
       
+      
+        <link rel="prev" href="../robustness/">
+      
+      
+        <link rel="next" href="../method/">
       
       
         
-          <link rel="alternate" href="/jspace-qwen/setup/" hreflang="en">
+          <link rel="alternate" href="../../reproduce/" hreflang="en">
         
-          <link rel="alternate" href="/jspace-qwen/es/setup/" hreflang="es">
+          <link rel="alternate" href="./" hreflang="es">
         
       
       
-      <link rel="icon" href="/jspace-qwen/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Operator–Operand Factorization in LLMs</title>
+        <title>Cómo reproducir - Operator–Operand Factorization in LLMs</title>
       
     
     
-      <link rel="stylesheet" href="/jspace-qwen/assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="/jspace-qwen/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,9 +57,9 @@
       
     
     
-      <link rel="stylesheet" href="/jspace-qwen/stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("/jspace-qwen/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -77,6 +83,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#how-to-reproduce" class="md-skip">
+          Saltar a contenido
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -89,7 +100,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Cabecera">
-    <a href="/jspace-qwen/es/" title="Operator–Operand Factorization in LLMs" class="md-header__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
+    <a href="../" title="Operator–Operand Factorization in LLMs" class="md-header__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -109,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Cómo reproducir
             
           </span>
         </div>
@@ -156,13 +167,13 @@
       <ul class="md-select__list">
         
           <li class="md-select__item">
-            <a href="/jspace-qwen/setup/" hreflang="en" class="md-select__link">
+            <a href="../../reproduce/" hreflang="en" class="md-select__link">
               English
             </a>
           </li>
         
           <li class="md-select__item">
-            <a href="/jspace-qwen/es/setup/" hreflang="es" class="md-select__link">
+            <a href="./" hreflang="es" class="md-select__link">
               Español
             </a>
           </li>
@@ -241,7 +252,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/jspace-qwen/es/" title="Operator–Operand Factorization in LLMs" class="md-nav__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
+    <a href="../" title="Operator–Operand Factorization in LLMs" class="md-nav__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -259,7 +270,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/jspace-qwen/es/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -286,7 +297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/jspace-qwen/es/paper/" class="md-nav__link">
+      <a href="../paper/" class="md-nav__link">
         
   
   
@@ -313,7 +324,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/jspace-qwen/es/explorer/" class="md-nav__link">
+      <a href="../explorer/" class="md-nav__link">
         
   
   
@@ -340,7 +351,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/jspace-qwen/es/robustness/" class="md-nav__link">
+      <a href="../robustness/" class="md-nav__link">
         
   
   
@@ -364,10 +375,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/jspace-qwen/es/reproduce/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cómo reproducir
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -383,6 +421,92 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-fit-the-lenses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Fit the lenses
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-measure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Measure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-operatoroperand-experiments-geometry-dump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Operator/operand experiments + geometry dump
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-figures-and-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Figures and site
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-whole-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The whole batch
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -446,7 +570,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/jspace-qwen/es/method/" class="md-nav__link">
+      <a href="../method/" class="md-nav__link">
         
   
   
@@ -474,7 +598,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/jspace-qwen/es/results-scale/" class="md-nav__link">
+      <a href="../results-scale/" class="md-nav__link">
         
   
   
@@ -502,7 +626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/jspace-qwen/es/results-causal/" class="md-nav__link">
+      <a href="../results-causal/" class="md-nav__link">
         
   
   
@@ -530,7 +654,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/jspace-qwen/es/setup/" class="md-nav__link">
+      <a href="../setup/" class="md-nav__link">
         
   
   
@@ -565,7 +689,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/jspace-qwen/es/findings/" class="md-nav__link">
+      <a href="../findings/" class="md-nav__link">
         
   
   
@@ -598,8 +722,86 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+
+<h1 id="how-to-reproduce">How to reproduce</h1>
+<p>Everything runs on a single AMD Strix Halo (Radeon 8060S, gfx1151); no CUDA, no
+cloud. See <a href="../setup/">setup</a> for why the environment is a plain <code>uv</code> venv.</p>
+<h2 id="1-environment">1. Environment</h2>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/mpodeley/jspace-qwen.git<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>jspace-qwen
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/anthropics/jacobian-lens
+bash<span class="w"> </span>env/install.sh<span class="w">                     </span><span class="c1"># ROCm torch + jlens stack</span>
+.venv/bin/python<span class="w"> </span>scripts/00_smoke.py<span class="w">    </span><span class="c1"># forward+backward of Qwen3-1.7B on the iGPU</span>
+</code></pre></div>
+<h2 id="2-fit-the-lenses">2. Fit the lenses</h2>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">HF_HOME</span><span class="o">=</span><span class="nv">$PWD</span>/models
+<span class="c1"># bf16 models</span>
+.venv/bin/python<span class="w"> </span>scripts/fit_lens.py<span class="w"> </span><span class="m">1</span>.7b<span class="w"> </span>--n-prompts<span class="w"> </span><span class="m">64</span><span class="w"> </span>--compile
+.venv/bin/python<span class="w"> </span>scripts/fit_lens.py<span class="w"> </span>8b<span class="w">   </span>--n-prompts<span class="w"> </span><span class="m">64</span><span class="w"> </span>--compile
+<span class="c1"># int8 (fits the 48 GB VRAM wall); also used as the quantization control at 8B</span>
+.venv/bin/python<span class="w"> </span>scripts/fit_lens.py<span class="w"> </span>8b<span class="w">   </span>--int8<span class="w"> </span>--n-prompts<span class="w"> </span><span class="m">64</span>
+.venv/bin/python<span class="w"> </span>scripts/fit_lens.py<span class="w"> </span>32b<span class="w">  </span>--int8<span class="w"> </span>--n-prompts<span class="w"> </span><span class="m">48</span>
+</code></pre></div>
+<p>Fitting is dominated by the model backward pass (<code>ceil(d_model/dim_batch)</code>
+backward passes per prompt) and is resumable — a crash re-runs from the last
+checkpoint. Lenses land in <code>out/lenses/&lt;tag&gt;.pt</code>.</p>
+<h2 id="3-measure">3. Measure</h2>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span>m<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span>.7b<span class="w"> </span>8b<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>.venv/bin/python<span class="w"> </span>scripts/metrics.py<span class="w">     </span><span class="nv">$m</span><span class="w">          </span><span class="c1"># per-layer J-space metrics</span>
+<span class="w">  </span>.venv/bin/python<span class="w"> </span>scripts/lens_eval.py<span class="w">   </span><span class="nv">$m</span><span class="w">          </span><span class="c1"># pass@k vs logit-lens</span>
+<span class="w">  </span>.venv/bin/python<span class="w"> </span>scripts/causal_swap.py<span class="w"> </span><span class="nv">$m</span><span class="w">          </span><span class="c1"># causal band intervention</span>
+<span class="k">done</span>
+<span class="c1"># int8 variants add --int8 (targets the &lt;tag&gt;-int8 lens)</span>
+.venv/bin/python<span class="w"> </span>scripts/metrics.py<span class="w"> </span>8b<span class="w"> </span>--int8
+.venv/bin/python<span class="w"> </span>scripts/metrics.py<span class="w"> </span>32b<span class="w"> </span>--int8
+</code></pre></div>
+<p>Results are written to <code>results/metrics/</code> and <code>results/ablation/</code>.</p>
+<h2 id="4-operatoroperand-experiments-geometry-dump">4. Operator/operand experiments + geometry dump</h2>
+<p>The paper's figures and the interactive explorer draw on the operator/operand runs:</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span>m<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span>.7b<span class="w"> </span>8b<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>.venv/bin/python<span class="w"> </span>scripts/operator_paradigm.py<span class="w">  </span><span class="nv">$m</span><span class="w"> </span>--domain<span class="w"> </span>relations<span class="w">  </span><span class="c1"># all-pairs swap</span>
+<span class="w">  </span>.venv/bin/python<span class="w"> </span>scripts/operator_factorize.py<span class="w"> </span><span class="nv">$m</span><span class="w"> </span>--domain<span class="w"> </span>relations<span class="w">  </span><span class="c1"># ANOVA + held-out</span>
+<span class="w">  </span>.venv/bin/python<span class="w"> </span>scripts/op_geometry_dump.py<span class="w">   </span><span class="nv">$m</span><span class="w"> </span>--domain<span class="w"> </span>relations<span class="w">  </span><span class="c1"># geometry -&gt; results/geometry/</span>
+<span class="k">done</span>
+</code></pre></div>
+<p><code>op_geometry_dump.py</code> persists the factorization/PCA/cosine geometry (print-only in the
+other two) to <code>results/geometry/*.json|npz</code>, and writes the explorer's data bundle
+<code>docs/interactive/declension.data.js</code> (from the 1.7B relations run).</p>
+<p>Two further checks from the review pass:</p>
+<div class="highlight"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/operator_templates.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">   </span><span class="c1"># cross-frame transfer (3 paraphrase frames)</span>
+.venv/bin/python<span class="w"> </span>scripts/op_dose.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">              </span><span class="c1"># alpha dose-response + off-task KL</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Reproducibility box</p>
+<p>All experiments are seeded (<code>--seed 0</code> default; the RNG seeds only the matched-norm
+random controls — direction building is deterministic). Checkpoints: <code>Qwen/Qwen3-1.7B</code>,
+<code>Qwen/Qwen3-8B</code> (bf16), <code>google/gemma-2-9b</code> for the cross-architecture run. Per-operand
+long-form values are persisted as <code>results/ablation/*_long.parquet</code>; every figure
+regenerates from <code>scripts/plots.py</code>. License MIT; contact <code>mpodeley@gmail.com</code>.</p>
+</div>
+<h2 id="5-figures-and-site">5. Figures and site</h2>
+<div class="highlight"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/plots.py<span class="w">        </span><span class="c1"># -&gt; docs/figs/*.png (incl. op_geometry/op_swap/op_syncretism)</span>
+.venv/bin/python<span class="w"> </span>-m<span class="w"> </span>mkdocs<span class="w"> </span>serve<span class="w">         </span><span class="c1"># preview the site (incl. the interactive explorer)</span>
+</code></pre></div>
+<h2 id="the-whole-batch">The whole batch</h2>
+<p><code>scripts/run_batch.sh</code> chains the fits + analyses for the sweep and is resumable;
+<code>scripts/validate.sh &lt;tag&gt;</code> waits for a running fit and then runs the three
+measurements for one model.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -642,10 +844,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/jspace-qwen/", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.integrate"], "search": "/jspace-qwen/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
     
     
-      <script src="/jspace-qwen/assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       

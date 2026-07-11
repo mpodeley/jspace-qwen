@@ -1,0 +1,36 @@
+/* hero + stat tiles for the landing page (light & dark via Material vars) */
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--md-default-fg-color--light);
+  margin: 0.2rem 0 1.2rem;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.8rem;
+  margin: 1.2rem 0 1.4rem;
+}
+.stat {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.6rem;
+  padding: 0.9rem 1rem 0.8rem;
+  background: var(--md-code-bg-color);
+}
+.stat .n {
+  display: block;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--md-typeset-a-color);
+  font-variant-numeric: tabular-nums;
+}
+.stat .d {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--md-default-fg-color--light);
+  margin-top: 0.25rem;
+  line-height: 1.35;
+}
+.hero-buttons { margin: 0.6rem 0 1.4rem; }
+.hero-buttons .md-button { margin: 0 0.45rem 0.55rem 0; }
+.hero-gif img { width: 100%; border-radius: 0.6rem; }

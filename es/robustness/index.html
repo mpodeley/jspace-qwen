@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="es" class="no-js">
   <head>
     
       <meta charset="utf-8">
@@ -10,35 +10,35 @@
       
       
       
-        <link rel="canonical" href="https://mpodeley.github.io/jspace-qwen/setup/">
+        <link rel="canonical" href="https://mpodeley.github.io/jspace-qwen/es/robustness/">
       
       
-        <link rel="prev" href="../results-causal/">
+        <link rel="prev" href="../explorer/">
       
       
-        <link rel="next" href="../findings/">
+        <link rel="next" href="../reproduce/">
       
       
         
-          <link rel="alternate" href="./" hreflang="en">
+          <link rel="alternate" href="../../robustness/" hreflang="en">
         
-          <link rel="alternate" href="../es/setup/" hreflang="es">
+          <link rel="alternate" href="./" hreflang="es">
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Setup (AMD/ROCm) - Operator–Operand Factorization in LLMs</title>
+        <title>Evidencia y controles - Operator–Operand Factorization in LLMs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -57,9 +57,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -84,8 +84,8 @@
     <div data-md-component="skip">
       
         
-        <a href="#reproducible-setup-amd-strix-halo-radeon-8060s-gfx1151" class="md-skip">
-          Skip to content
+        <a href="#evidence-controls" class="md-skip">
+          Saltar a contenido
         </a>
       
     </div>
@@ -99,8 +99,8 @@
   
 
 <header class="md-header md-header--shadow" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Operator–Operand Factorization in LLMs" class="md-header__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../" title="Operator–Operand Factorization in LLMs" class="md-header__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -120,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Setup (AMD/ROCm)
+              Evidencia y controles
             
           </span>
         </div>
@@ -160,20 +160,20 @@
       <div class="md-header__option">
   <div class="md-select">
     
-    <button class="md-header__button md-icon" aria-label="Select language">
+    <button class="md-header__button md-icon" aria-label="Seleccionar idioma">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
     </button>
     <div class="md-select__inner">
       <ul class="md-select__list">
         
           <li class="md-select__item">
-            <a href="./" hreflang="en" class="md-select__link">
+            <a href="../../robustness/" hreflang="en" class="md-select__link">
               English
             </a>
           </li>
         
           <li class="md-select__item">
-            <a href="../es/setup/" hreflang="es" class="md-select__link">
+            <a href="./" hreflang="es" class="md-select__link">
               Español
             </a>
           </li>
@@ -194,16 +194,16 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
         
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
-      <nav class="md-search__options" aria-label="Search">
+      <nav class="md-search__options" aria-label="Buscar">
         
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
@@ -214,7 +214,7 @@
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
-            Initializing search
+            Inicializando búsqueda
           </div>
           <ol class="md-search-result__list" role="presentation"></ol>
         </div>
@@ -250,9 +250,9 @@
 
   
 
-<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Operator–Operand Factorization in LLMs" class="md-nav__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
+    <a href="../" title="Operator–Operand Factorization in LLMs" class="md-nav__button md-logo" aria-label="Operator–Operand Factorization in LLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -270,14 +270,14 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Main finding
+    Hallazgo principal
   
 
     
@@ -331,7 +331,7 @@
   <span class="md-ellipsis">
     
   
-    Interactive explorer
+    Explorador interactivo
   
 
     
@@ -348,17 +348,44 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../robustness/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evidencia y controles
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Evidence & controls
+    Evidencia y controles
   
 
     
@@ -367,6 +394,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#claim-experiment-control-artifact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Claim → experiment → control → artifact
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-distribution-behind-the-headline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The distribution behind the headline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#doseresponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dose–response
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-domain-gradient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-domain gradient
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -385,7 +476,7 @@
   <span class="md-ellipsis">
     
   
-    How to reproduce
+    Cómo reproducir
   
 
     
@@ -402,8 +493,6 @@
       
   
   
-    
-  
   
   
     
@@ -416,11 +505,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
@@ -430,7 +519,7 @@
   <span class="md-ellipsis">
     
   
-    J-space replication (archive)
+    Réplica J-space (archivo)
   
 
     
@@ -441,12 +530,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
-    J-space replication (archive)
+    Réplica J-space (archivo)
   
 
           </label>
@@ -466,7 +555,7 @@
   <span class="md-ellipsis">
     
   
-    Method (J-lens & J-space)
+    Método (J-lens y J-space)
   
 
     
@@ -494,7 +583,7 @@
   <span class="md-ellipsis">
     
   
-    Results — scale
+    Resultados — escala
   
 
     
@@ -522,7 +611,7 @@
   <span class="md-ellipsis">
     
   
-    Results — causal
+    Resultados — causal
   
 
     
@@ -540,37 +629,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Setup (AMD/ROCm)
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
         
   
   
@@ -586,65 +648,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#no-distrobox-no-system-rocm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        No distrobox, no system ROCm
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="No distrobox, no system ROCm">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gotchas-worth-knowing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Gotchas worth knowing
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-48-gb-memory-wall-and-how-32b-still-fits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The 48 GB memory wall (and how 32B still fits)
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -671,7 +674,7 @@
   <span class="md-ellipsis">
     
   
-    Working log (findings)
+    Bitácora (findings)
   
 
     
@@ -701,83 +704,152 @@
 
 
 
-<h1 id="reproducible-setup-amd-strix-halo-radeon-8060s-gfx1151">Reproducible setup — AMD Strix Halo (Radeon 8060S, gfx1151)</h1>
-<p>The J-lens needs <strong>autograd on the GPU</strong> (it is built from backward passes), so
-inference-only stacks like llama.cpp/Vulkan do not apply. This project runs on
-an AMD <strong>Ryzen AI Max+ "Strix Halo"</strong> APU (Radeon 8060S iGPU, <code>gfx1151</code>) under
-Fedora Aurora — no NVIDIA, no CUDA.</p>
-<h2 id="no-distrobox-no-system-rocm">No distrobox, no system ROCm</h2>
-<p>The host kernel already exposes the GPU compute nodes (<code>/dev/kfd</code> and
-<code>/dev/dri/renderD128</code> are world-accessible), and the ROCm userspace ships
-<em>inside</em> the PyTorch wheels from AMD's TheRock gfx1151 nightly index. So a plain
-<code>uv</code> virtualenv is enough — the full recipe is in <code>env/install.sh</code>.</p>
-<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>env/install.sh<span class="w">          </span><span class="c1"># creates .venv, installs ROCm torch + jlens stack</span>
-.venv/bin/python<span class="w"> </span>scripts/00_smoke.py<span class="w">   </span><span class="c1"># forward+backward of Qwen3-1.7B on the iGPU</span>
-</code></pre></div>
-<h3 id="gotchas-worth-knowing">Gotchas worth knowing</h3>
-<ul>
-<li><strong>Install torch from the gfx1151 index only.</strong> If you add PyPI as an equal
-  index, <code>uv</code> picks the higher <em>version number</em>, which is the CUDA build
-  (<code>torch 2.13.0</code> + <code>nvidia-*</code>) — useless on AMD.</li>
-<li>torch depends on <code>rocm[libraries]==&lt;same version&gt;</code> and a matching
-  <code>triton==...+rocm...</code>, both alpha builds, so you need
-  <code>--index-strategy unsafe-best-match --prerelease=allow</code> (PyPI ships a decoy
-  <code>rocm</code> package that trips uv's dependency-confusion guard).</li>
-<li><strong>Stay in bf16.</strong> <code>bitsandbytes</code> and <code>torchao</code> do not run on gfx1151.</li>
-<li>Verified stack: <code>torch 2.10.0+rocm7.13</code>, HIP 7.13, <code>gfx1151</code>, autograd OK.</li>
-</ul>
-<h2 id="the-48-gb-memory-wall-and-how-32b-still-fits">The 48 GB memory wall (and how 32B still fits)</h2>
-<p>The machine's 96 GB is BIOS-split into <strong>48 GB system RAM + 48 GB dedicated
-VRAM</strong>. Measured behaviour: PyTorch/HIP hits a hard <strong>48 GB</strong> ceiling — the
-~23 GB of GTT is not used automatically, so despite the "unified" firmware
-label there is no spill past the VRAM carveout without a reboot.</p>
-<p>Consequences for the three-model sweep:</p>
+<h1 id="evidence-controls">Evidence &amp; controls</h1>
+<p>Every claim in the <a href="../../assets/paper.pdf">paper</a>, its experiment, the control that could have
+killed it, and the artifact that reproduces it. Statistical treatment: cluster-bootstrap 95%
+CIs at two levels (operands within a pair; <strong>operators</strong> as top-level clusters — the 20
+ordered pairs share 5 directions and are <em>not</em> independent observations).</p>
+<h2 id="claim-experiment-control-artifact">Claim → experiment → control → artifact</h2>
 <table>
 <thead>
 <tr>
-<th>model</th>
-<th>bf16 weights</th>
-<th>fits 48 GB VRAM?</th>
-<th>how we run it</th>
+<th>#</th>
+<th>Claim</th>
+<th>Experiment</th>
+<th>Control / would-have-killed-it</th>
+<th>Artifact</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Qwen3-1.7B</td>
-<td>~3.4 GB</td>
-<td>yes</td>
-<td>bf16</td>
+<td>1</td>
+<td>The operator is a <strong>manipulable direction</strong></td>
+<td>all-pairs swap <code>v(to)−v(from)</code>, 20 ordered pairs</td>
+<td><strong>matched-norm random direction</strong> ≈ 0 (nonspecific shift +6, flat in dose)</td>
+<td><code>results/ablation/{model}_relations_operator_swap*.parquet</code></td>
 </tr>
 <tr>
-<td>Qwen3-8B</td>
-<td>~16 GB</td>
-<td>yes</td>
-<td>bf16</td>
+<td>2</td>
+<td>Effects are <strong>not noise</strong></td>
+<td>operand-bootstrap CIs per pair; dyadic operator bootstrap for the family</td>
+<td>no per-pair CI crosses zero; family flip fraction 1.00 [1.00, 1.00]</td>
+<td><code>*_long.parquet</code> + <code>op_core.bootstrap_*</code></td>
 </tr>
 <tr>
-<td>Qwen3-32B</td>
-<td>~64 GB</td>
-<td><strong>no</strong></td>
-<td><strong>custom int8</strong></td>
+<td>3</td>
+<td>The representation <strong>factorizes</strong> (operand ⊕ operator)</td>
+<td>two-way ANOVA of <code>H[operand, operator]</code></td>
+<td>reading-position control: operand-dominant at the entity token → operator-dominant at the query token (not template echo)</td>
+<td><code>results/geometry/{model}_relations.json</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>The operator <strong>generalizes</strong></td>
+<td>build <code>v(op)</code> on half the operands, swap the held-out half</td>
+<td>interpolation would fail here; random ≈ 0</td>
+<td><code>{model}_relations_heldout*.parquet</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>It is <strong>not the prompt frame</strong></td>
+<td>build on frame <em>i</em>, swap on frame <em>j</em> (3 paraphrase frames)</td>
+<td>clean baselines shift across frames; the contrast doesn't (1.7B 180/180, 8B 100/100)</td>
+<td><code>{model}_relations_templates*.parquet</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>It is <strong>not one architecture</strong></td>
+<td>identical pipeline on Gemma-2-9B</td>
+<td>different corpus/tokenizer/softcap — strongest effects of the three models</td>
+<td><code>gemma-2-9b_relations_*</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Operation ≠ realization</strong></td>
+<td>language vs demonym (both emit "Italian"); exponent-free desinence</td>
+<td>the shared output word cancels in the desinence, yet it still installs the relation (−3.0…−3.7 → +8.1…+12.5)</td>
+<td><code>results/geometry/*.json</code> (cosines, desinence)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Factorization is <strong>domain-specific</strong></td>
+<td>same pipeline on arithmetic (+ × −) and comparison logic</td>
+<td>held-out generalization <em>fails</em> (≤ random); 2–4× interaction — a negative that validates the method's discriminative power</td>
+<td><code>{model}_{arithmetic,logic}_*</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>The add-N literature <strong>reconciles</strong></td>
+<td>add-N (operator = addend) vs + × − (operator = function)</td>
+<td>add-N generalizes better <em>and</em> is the most collinear (76% one line) — a linear numeric family, not distinct operations</td>
+<td><code>*_arith_addN_*</code>, <code>operator_collinearity.py</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Intervention effects are <strong>dose-sane</strong></td>
+<td>α sweep 0.5–12</td>
+<td>specific effect saturates at default α=4; off-task KL reported honestly (18 nats — answer-surgical, not distribution-surgical)</td>
+<td><code>1.7b_relations_dose.parquet</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>No privileged <strong>readable subspace</strong></td>
+<td>4 readout comparisons (pass@k, form, number probe, concept plane)</td>
+<td>spectrum-matched <strong>random projection</strong> reads as well as the fitted J-lens; random-plane baseline kills the "channel"</td>
+<td><a href="../findings/">working log, Part 1</a></td>
 </tr>
 </tbody>
 </table>
-<p>For 32B we use a <strong>weight-only int8</strong> quantizer (<code>scripts/int8_model.py</code>).
-Because the J-lens only needs gradients <em>with respect to activations</em> (weights
-are frozen), a symmetric per-output-channel int8 weight with an on-the-fly bf16
-dequantization is fully differentiable in the way the lens requires. Two details
-make it work on this hardware:</p>
-<ol>
-<li><strong>A custom <code>autograd.Function</code></strong> re-dequantizes the weight inside <code>backward</code>
-   from the persistent int8 buffers, so the retained multi-pass Jacobian graph
-   stores int8 (~32 GB), not bf16 (~64 GB) — otherwise the saving is lost.</li>
-<li>Weights are <strong>stream-quantized straight from the safetensors shards</strong>, so the
-   full 64 GB bf16 model is never materialized (it would not fit in 48 GB of
-   system RAM). Embeddings, the LM head, and all norms stay bf16 for a faithful
-   readout.</li>
-</ol>
-<p>This keeps the flagship 32B in the study without a BIOS reboot, at the cost of a
-mild quantization confound (we measure the int8 model, not the exact bf16 one).</p>
+<h2 id="the-distribution-behind-the-headline">The distribution behind the headline</h2>
+<p><img alt="Per-pair distributions with operand-bootstrap CIs, random control and clean baseline" src="../../figs/op_swap_dist.png" /></p>
+<p>Orange = per-operand swap values (12/pair); gray × = matched-norm random; black bar =
+operand-bootstrap 95% CI; ○ = clean baseline. The weakest pairs are exactly the <strong>syncretic</strong>
+ones (demonym ↔ language) — where two operations share their surface form, as the declension
+reading predicts.</p>
+<h2 id="doseresponse">Dose–response</h2>
+<p><img alt="Dose-response and collateral cost" src="../../figs/op_dose.png" /></p>
+<p>The operator-specific effect (swap − random) saturates at the default dose; the matched-norm
+random control's +6 nonspecific shift is why every headline number is a <em>contrast</em>. The
+band-wide edit is <strong>not</strong> free off-task (right panel) — reported, not hidden.</p>
+<h2 id="cross-domain-gradient">Cross-domain gradient</h2>
+<table>
+<thead>
+<tr>
+<th>domain</th>
+<th style="text-align: right;">operator variance</th>
+<th style="text-align: right;">interaction</th>
+<th>held-out</th>
+<th>verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>relational</td>
+<td style="text-align: right;">82–86%</td>
+<td style="text-align: right;">7–13%</td>
+<td>20/20 flip</td>
+<td>clean operator</td>
+</tr>
+<tr>
+<td>arithmetic</td>
+<td style="text-align: right;">42–55%</td>
+<td style="text-align: right;">23–25%</td>
+<td>≤ random</td>
+<td>bag of heuristics</td>
+</tr>
+<tr>
+<td>comparison logic</td>
+<td style="text-align: right;">25–33%</td>
+<td style="text-align: right;">34–45%</td>
+<td>≤ random</td>
+<td>entangled</td>
+</tr>
+</tbody>
+</table>
+<p>Monotone at both Qwen3 scales; the held-out test is what separates a real operator from
+memorized interpolation.</p>
+<p><em>Full evidence trail, including the deliberate nulls: <a href="../findings/">working log</a>. Reproduce
+any cell: <a href="../reproduce/">How to reproduce</a>.</em></p>
 
 
 
@@ -801,7 +873,7 @@ mild quantization confound (we measure the int8 model, not the exact bf16 one).<
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
-  Back to top
+  Volver al principio
 </button>
         
       </main>
@@ -833,10 +905,10 @@ mild quantization confound (we measure the int8 model, not the exact bf16 one).<
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
