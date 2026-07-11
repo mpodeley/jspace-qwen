@@ -153,6 +153,19 @@ operand-bootstrap CIs never cross zero:
 
 ![Per-pair distributions: swap values per operand with operand-bootstrap 95% CIs, matched-norm random control, and clean baselines. No CI crosses zero; the weakest pairs are exactly the syncretic ones (demonym↔language and their neighbours).](figs/op_swap_dist.png)
 
+**Dose–response and collateral cost.** Sweeping the intervention strength α (1.7B) separates the effect
+into its parts: the **operator-specific** component (swap − random) rises and **saturates at ≈+23 by the
+default α = 4**, while the matched-norm random control contributes a **nonspecific** margin shift of
+≈+6 that is flat in α — any large perturbation degrades the clean answer's dominance somewhat, which is
+why all headline numbers are swap − random contrasts. The intervention is *answer*-surgical, not
+*distribution*-surgical: with the same hook active on unrelated WikiText, per-token KL(clean ‖
+intervened) grows from 7.9 nats (α = 0.5) to 21 nats (α = 12) — 18.4 at the default — so the band-wide
+edit substantially distorts off-task text. We report this as an honest cost of the band-wide,
+all-position intervention rather than tuning it away; targeted (single-position) variants are the
+natural mitigation and are left to future work.
+
+![Dose-response: the operator-specific effect saturates at the default dose α=4 while the nonspecific random shift stays flat; per-token KL on unrelated text grows monotonically — the edit is answer-surgical, not distribution-surgical.](figs/op_dose.png)
+
 *Every ordered swap, with uncertainty. Orange dots = per-operand swap values (12/pair); gray × =
 matched-norm random control; black bar = operand-bootstrap 95% CI; blue ○ = clean baseline mean. The
 weakest effects are precisely the syncretic pairs (`demonym ↔ language` and swaps into `demonym`) — where

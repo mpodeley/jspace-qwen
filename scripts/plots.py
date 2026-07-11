@@ -358,6 +358,49 @@ def fig_op_swap_dist():
     plt.close(fig)
 
 
+def fig_op_dose():
+    """Fig 2c -- dose-response and collateral cost of the intervention. (a) the
+    operator-specific effect (swap minus matched-norm random) saturates at the
+    default dose alpha=4; the random control's nonspecific shift is flat in alpha.
+    (b) the band-wide intervention is not free: per-token KL on unrelated WikiText
+    grows monotonically with dose. Honest cost accounting, one axis per panel."""
+    p = ABL / "1.7b_relations_dose.parquet"
+    if not p.exists():
+        return
+    df = pd.read_parquet(p).sort_values("alpha")
+    fig, axes = plt.subplots(1, 2, figsize=(9.2, 3.6), constrained_layout=True)
+
+    ax = axes[0]
+    spec = df["swap_shift"] - df["random_shift"]
+    ax.plot(df["alpha"], spec, color=OPERATOR_C, lw=2, marker="o", ms=4)
+    ax.plot(df["alpha"], df["random_shift"], color=MUTED, lw=2, marker="x", ms=5)
+    ax.annotate("operator-specific effect\n(swap − random)",
+                (df["alpha"].iloc[-1], spec.iloc[-1]), color=OPERATOR_C,
+                fontsize=9, xytext=(-8, -26), textcoords="offset points", ha="right")
+    ax.annotate("nonspecific shift\n(matched-norm random)",
+                (df["alpha"].iloc[-1], df["random_shift"].iloc[-1]), color=MUTED,
+                fontsize=9, xytext=(-8, 8), textcoords="offset points", ha="right")
+    ax.axvline(4.0, color=MUTED, lw=0.8, ls=":")
+    ax.text(4.15, ax.get_ylim()[0] + 1.5, "default α=4", color=MUTED, fontsize=8.5)
+    ax.set_xlabel("intervention strength α")
+    ax.set_ylabel("logit-margin shift")
+    ax.set_title("Efficacy saturates at the default dose", fontsize=10.5, loc="left")
+
+    ax2 = axes[1]
+    ax2.plot(df["alpha"], df["kl_nats"], color=OPERAND_C, lw=2, marker="o", ms=4)
+    ax2.axvline(4.0, color=MUTED, lw=0.8, ls=":")
+    ax2.set_xlabel("intervention strength α")
+    ax2.set_ylabel("KL(clean ‖ intervened), nats/token")
+    ax2.set_title("…but the band-wide edit is not free off-task",
+                  fontsize=10.5, loc="left")
+    fig.text(0.01, -0.03,
+             "Right: per-token KL on unrelated WikiText with the hook active at every "
+             "position of the workspace band — the intervention is answer-surgical, "
+             "not distribution-surgical.", color=MUTED, fontsize=8.5, va="top")
+    _savefig(fig, "op_dose")
+    plt.close(fig)
+
+
 def fig_op_syncretism():
     """Fig 4 -- operation ≠ realization. language & demonym both emit 'Italian' yet are
     distinct operator directions (their cosine is the least anti-aligned pair, but not
@@ -428,6 +471,7 @@ def main():
     fig_op_geometry()
     fig_op_swap()
     fig_op_swap_dist()
+    fig_op_dose()
     fig_op_syncretism()
     print("wrote:", sorted(p.name for p in FIGS.glob("*.png")))
 

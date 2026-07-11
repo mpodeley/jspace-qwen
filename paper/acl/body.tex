@@ -181,6 +181,28 @@ operand-bootstrap CIs never cross zero:
 \caption{Per-pair distributions: swap values per operand with operand-bootstrap 95\% CIs, matched-norm random control, and clean baselines. No CI crosses zero; the weakest pairs are exactly the syncretic ones (demonym\ensuremath{\leftrightarrow}language and their neighbours).}
 \end{figure*}
 
+\textbf{Dose--response and collateral cost.} Sweeping the intervention
+strength \ensuremath{\alpha} (1.7B) separates the effect into its parts: the
+\textbf{operator-specific} component (swap - random) rises and
+\textbf{saturates at \ensuremath{\approx}+23 by the default \ensuremath{\alpha} = 4}, while the matched-norm
+random control contributes a \textbf{nonspecific} margin shift of \ensuremath{\approx}+6
+that is flat in \ensuremath{\alpha} --- any large perturbation degrades the clean
+answer\textquotesingle s dominance somewhat, which is why all headline
+numbers are swap - random contrasts. The intervention is
+\emph{answer}-surgical, not \emph{distribution}-surgical: with the same
+hook active on unrelated WikiText, per-token KL(clean ‖ intervened)
+grows from 7.9 nats (\ensuremath{\alpha} = 0.5) to 21 nats (\ensuremath{\alpha} = 12) --- 18.4 at the
+default --- so the band-wide edit substantially distorts off-task text.
+We report this as an honest cost of the band-wide, all-position
+intervention rather than tuning it away; targeted (single-position)
+variants are the natural mitigation and are left to future work.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{op_dose}
+\caption{Dose-response: the operator-specific effect saturates at the default dose \ensuremath{\alpha}=4 while the nonspecific random shift stays flat; per-token KL on unrelated text grows monotonically --- the edit is answer-surgical, not distribution-surgical.}
+\end{figure*}
+
 \emph{Every ordered swap, with uncertainty. Orange dots = per-operand
 swap values (12/pair); gray \ensuremath{\times} = matched-norm random control; black bar =
 operand-bootstrap 95\% CI; blue $\circ$ = clean baseline mean. The weakest
@@ -395,10 +417,15 @@ contribution is the operator/operand \emph{causal} factorization.
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Scale.} 1.7B and 8B; no 32B lens yet. Relational linearity
-  holds for a subset of relations even in-domain (cf. LRE
-  \textasciitilde48\%); our five relations are hand-chosen and
-  English-only.
+  \textbf{Scale and family.} 1.7B and 8B, one model family (Qwen3); no
+  32B. Relational linearity holds for a subset of relations even
+  in-domain (cf. LRE \textasciitilde48\%).
+\item
+  \textbf{Relation coverage.} Five hand-chosen country relations,
+  English-only. Prompt variation covers three paraphrase \emph{frames}
+  (\S{}4.4) but all frames share the \texttt{\{op\}\ of\ \{a\}} phrasing
+  unit; phrase-level paraphrases, more relations, and other entity types
+  remain open.
 \item
   \textbf{Arithmetic coverage.} Qwen3 BPE splits multi-digit numbers, so
   we restrict to single-digit results; the arithmetic null is on that
