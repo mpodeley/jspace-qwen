@@ -328,10 +328,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#la-idea-en-60-segundos" class="md-nav__link">
+  <a href="#el-hallazgo-conceptualmente" class="md-nav__link">
     <span class="md-ellipsis">
       
-        La idea en 60 segundos
+        El hallazgo, conceptualmente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#los-numeros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Los números
       
     </span>
   </a>
@@ -670,17 +681,39 @@
 
 
 <h1 id="las-operaciones-relacionales-se-factorizan-de-sus-operandos-en-llms">Las operaciones relacionales se factorizan de sus operandos en LLMs</h1>
-<p class="hero-sub">Intervenciones causales revelan <b>direcciones de operador transferibles</b>
-para relaciones factuales — replicado en <b>Qwen3-1.7B/8B y Gemma-2-9B</b> — mientras que la
-aritmética y la lógica permanecen entrelazadas con sus operandos.</p>
+<p class="hero-sub">¿Cómo representa un modelo de lenguaje <i>"la capital de Italia"</i>?
+Encontramos que divide el pensamiento en dos: <b>la cosa</b> (Italia) y <b>la operación que se le
+aplica</b> (capital-de) — y la operación vive como su propia <b>dirección</b> en el espacio de
+activaciones: se la puede agarrar, mover y trasplantar.</p>
 
-<div class="stats">
-<div class="stat"><span class="n">20/20 × 3</span><span class="d">swaps de operador cambian la
-respuesta, en los tres modelos — controles aleatorios de norma igualada ≈ 0</span></div>
-<div class="stat"><span class="n">82–86%</span><span class="d">de la varianza del workspace en el
-token de consulta es el operador; ~7–13% interacción ("fusión")</span></div>
-<div class="stat"><span class="n">180/180</span><span class="d">swaps flipean con operandos
-held-out y paráfrasis nunca vistas — un operador real, no interpolación</span></div>
+<h2 id="el-hallazgo-conceptualmente">El hallazgo, conceptualmente</h2>
+<p>El latín marca el <em>rol</em> de un sustantivo con una desinencia — <code>ros-a / ros-am</code>, misma raíz,
+distinta función. A mitad de la red, un LLM hace algo estructuralmente similar con las
+relaciones factuales. Mientras <em>"The currency of Italy is"</em> fluye por el modelo, el estado
+interno de la oración se describe bien como una suma:</p>
+<div class="highlight"><pre><span></span><code>estado ≈ μ + operando(Italia) + operador(moneda-de) + interacción pequeña
+</code></pre></div>
+<p>Tres cosas hacen que esto sea más que un ajuste de curvas:</p>
+<ol>
+<li><strong>El operador es causal.</strong> Sumá la diferencia de direcciones <code>v(capital) − v(moneda)</code> al
+   residual stream y el modelo deja de decir <em>euro</em> y dice <em>Roma</em> — para <strong>todos</strong> los pares
+   ordenados de relaciones que probamos. Una dirección aleatoria del mismo tamaño no hace nada.</li>
+<li><strong>Transfiere.</strong> Construido con la mitad de los países, flipea la otra mitad. Construido con
+   una redacción, flipea paráfrasis que nunca vio. Construida la receta en Qwen, funciona igual
+   en Gemma.</li>
+<li><strong>La operación no es su palabra de salida.</strong> <em>Idioma-de</em> y <em>gentilicio-de</em> terminan ambas en
+   "Italian" — y sin embargo son direcciones distintas, y un marcador construido exactamente
+   donde las dos comparten la palabra sigue instalando la relación. El modelo separa el rol
+   gramatical de la forma superficial, como la declinación separa el caso de la desinencia
+   (<em>sincretismo</em>).</li>
+</ol>
+<p>Y el límite es igual de informativo: corré el mismo pipeline sobre <strong>aritmética</strong> (+, ×, −) o
+<strong>lógica de comparación</strong>, y el operador queda entrelazado con sus operandos y se niega a
+transferir — consistente con "la aritmética como bolsa de heurísticas", y evidencia de que la
+factorización limpia es una propiedad de la <em>recuperación relacional</em>, no del prompting en
+general.</p>
+<div class="hero-gif">
+<p><a href="explorer/"><img alt="La declinación: los mismos 60 estados del workspace, organizados por operando en el token del país, se reorganizan por operador en el token de consulta" src="../figs/declension.gif" /></a></p>
 </div>
 <div class="hero-buttons">
 <p><a class="md-button md-button--primary" href="explorer/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 16.5v-9l6 4.5M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> Resultado interactivo</a>
@@ -688,37 +721,25 @@ held-out y paráfrasis nunca vistas — un operador real, no interpolación</spa
 <a class="md-button" href="robustness/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 22a3 3 0 0 1-3-3c0-.6.18-1.16.5-1.63L9 7.81V6a1 1 0 0 1-1-1V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1v1.81l5.5 9.56c.32.47.5 1.03.5 1.63a3 3 0 0 1-3 3zm-1-3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1c0-.21-.07-.41-.18-.57l-2.29-3.96L14 17l-5.07-5.07-3.75 6.5c-.11.16-.18.36-.18.57m8-9a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1"/></svg></span> Evidencia y controles</a>
 <a class="md-button" href="https://github.com/mpodeley/jspace-qwen"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> Código</a></p>
 </div>
-<div class="hero-gif">
-<p><a href="explorer/"><img alt="La declinación: los mismos 60 estados del workspace, organizados por operando en el token del país, se reorganizan por operador en el token de consulta" src="../figs/declension.gif" /></a></p>
+<h2 id="los-numeros">Los números</h2>
+<div class="stats">
+<div class="stat"><span class="n">20/20 × 3</span><span class="d">swaps ordenados de operador
+cambian la respuesta en Qwen3-1.7B, Qwen3-8B y Gemma-2-9B; controles aleatorios ≈ 0</span></div>
+<div class="stat"><span class="n">82–86%</span><span class="d">de la varianza del workspace en el
+token de consulta es el operador; la interacción ("fusión") queda en un dígito</span></div>
+<div class="stat"><span class="n">180/180</span><span class="d">flips con operandos held-out y
+paráfrasis nunca vistas — un operador transferible, no interpolación</span></div>
 </div>
-<h2 id="la-idea-en-60-segundos">La idea en 60 segundos</h2>
-<p>El latín marca el <em>rol</em> de un sustantivo con una desinencia de caso: <code>ros-a / ros-am</code> — misma
-raíz, distinta función. Encontramos que los LLMs hacen algo estructuralmente similar con las
-relaciones factuales. Ante <em>"The currency of Italy is"</em>, a mitad de la red el estado de la
-oración se describe bien como</p>
-<div class="highlight"><pre><span></span><code>estado ≈ μ + operando(Italia) + operador(moneda-de) + interacción pequeña
-</code></pre></div>
-<p>La <strong>parte del operador es un objeto causal real</strong>: sumá <code>v(capital) − v(moneda)</code> al residual
-stream y el modelo responde <em>Roma</em> en vez de <em>euro</em> — para <strong>todos</strong> los pares ordenados de las
-cinco relaciones, en <strong>los tres modelos</strong>. La dirección <strong>transfiere</strong>: construida con la mitad
-de los países, flipea la otra mitad; construida con una redacción, flipea paráfrasis nuevas sin
-cambios. Y la operación <strong>no es su palabra de salida</strong>: <em>idioma-de</em> y <em>gentilicio-de</em> producen
-ambas "Italian", pero son direcciones distintas — el modelo separa el rol gramatical de la
-palabra que lo realiza, como la declinación separa el caso de la forma superficial
-(<em>sincretismo</em>).</p>
-<p>La factorización es <strong>específica de la recuperación relacional</strong>: el mismo pipeline sobre
-aritmética (+, ×, −) o lógica de comparación da un operador entrelazado con sus operandos
-(2–4× la interacción) que no generaliza — consistente con "la aritmética como bolsa de
-heurísticas". <a href="explorer/">Exploralo interactivo</a>, <a href="../assets/paper.pdf">leé el paper</a>, o
-<a href="robustness/">verificá cada claim contra su control</a>.</p>
+<p>Todos los efectos principales llevan IC bootstrap 95% a nivel de operador y ninguno cruza cero —
+ver <a href="robustness/">Evidencia y controles</a>: cada claim junto al control que podía matarlo.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota metodológica — el null honesto que originó esto</p>
-<p>Este proyecto empezó como una réplica del claim de legibilidad del J-space/global
-workspace. Bajo controles apareados (incluida una proyección aleatoria de espectro
-igualado), el <strong>readout del J-lens no superó al logit lens</strong> en ninguna de nuestras
-métricas. La estructura operador/operando de arriba es organización <em>causal</em>, no un
-subespacio privilegiadamente legible — y la mitad negativa está documentada con el mismo
-rigor en el <a href="method/">archivo</a> y la <a href="findings/">bitácora</a>.</p>
+<p>Este proyecto empezó como réplica del claim de legibilidad del J-space / global workspace
+(<a href="https://transformer-circuits.pub/2026/workspace/index.html">Gurnee, Sofroniew, Lindsey et al., 2026</a>).
+Bajo controles apareados (incluida una proyección aleatoria de espectro igualado), el
+<strong>readout del J-lens no superó al logit lens</strong> en ninguna métrica. La estructura de arriba es
+organización <em>causal</em>, no un subespacio privilegiadamente legible — la mitad negativa está
+documentada con el mismo rigor en el <a href="method/">archivo</a> y la <a href="findings/">bitácora</a>.</p>
 </div>
 <hr />
 <p><strong>Reproducibilidad.</strong> Todo corre en una sola APU AMD Strix Halo (sin CUDA). Semillas,

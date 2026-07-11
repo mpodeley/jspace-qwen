@@ -875,7 +875,8 @@ the interaction term is 2–4× larger and the operator <strong>fails to general
 consistent with arithmetic being computed by a "bag of heuristics" rather than a linear operator. A
 control that instead varies a <em>linear numeric parameter</em> (add-N) rather than the function generalizes
 better and is near-collinear, reconciling a contrary recent report (Christ et al. 2025). Finally,
-the structure is <strong>causal, not a readout advantage</strong>: the Jacobian-lens ("J-space") readout is not more
+the structure is <strong>causal, not a readout advantage</strong>: the Jacobian-lens ("J-space") readout (Gurnee,
+Sofroniew, Lindsey et al. 2026) is not more
 legible than the raw residual on any of our metrics under matched controls.</p>
 <h2 id="1-introduction">1. Introduction</h2>
 <p>A line of work shows that a <em>task</em> or <em>relation</em> can be captured by a single addable vector in an LLM's
@@ -906,6 +907,11 @@ the residual state</strong> with an explicit, measured <strong>interaction/fusio
 <strong>operator vs operand</strong>. The operand→operator shift along the sequence restates the subject-enrichment →
 attribute-extraction dynamics of Geva et al. (EMNLP 2023) in operator/operand terms — our least novel point,
 included as confirmation.</p>
+<p><strong>Global workspace and the Jacobian lens.</strong> Gurnee, Sofroniew, Lindsey et al. (2026) introduce the
+Jacobian lens and identify a mid-depth "global workspace" band of the residual stream. We adopt their
+depth band as the site of intervention and their lens as scaffolding; our contribution is orthogonal —
+the operator/operand structure of what that band <em>holds</em> — and we additionally report a controlled null
+on the lens's readout advantage for our task (§4.8).</p>
 <p><strong>Arithmetic and logic.</strong> Arithmetic in LLMs is reported as a "bag of heuristics" (Nikankin et al. 2025)
 and Fourier/helical procedures (Nanda et al. 2023; Zhong et al. 2023; Kantamneni &amp; Tegmark 2025), with the
 operand <em>value</em> cleanly linear (Gurnee &amp; Tegmark 2024). Truth is a steerable direction (Marks &amp; Tegmark
@@ -1226,7 +1232,9 @@ single-digit results, so the add-N grid is small (5 operands) and its generaliza
 terms — the <strong>ordering</strong> (relations ≫ add-N &gt; <code>+ × −</code>), not the magnitude, is the claim.</p>
 <h3 id="48-this-is-causal-structure-not-a-j-space-readout-advantage">4.8 This is causal structure, not a J-space readout advantage</h3>
 <p>On four readout comparisons (bridge-entity pass@k, a surface-form logit difference, a number probe, and a
-concept-plane trajectory), the J-lens readout shows <strong>no advantage</strong> over the logit-lens under matched
+concept-plane trajectory), the Jacobian-lens readout of Gurnee, Sofroniew, Lindsey et al. 2026 — whose
+global-workspace result motivated this project, and whose "workspace" band we intervene on throughout —
+shows <strong>no readout advantage</strong> over the logit-lens under matched
 controls; a spectrum-matched random projection reads number as well as the fitted J-lens, and the
 concept-plane "channel" does not survive a random-plane baseline (see <a href="../findings/">findings §Part 1</a>). The
 operator/operand structure lives in the <strong>causal</strong> organization of the residual, and is <strong>not</strong> more
@@ -1257,6 +1265,7 @@ entangled with their operands. The structure is causal; it is not a more-readabl
 <p>Christ et al. 2025, <em>The Structure of Relation Decoding Linear Operators in Large Language Models</em>, NeurIPS (Spotlight), arXiv:2510.26543 ·
 Chughtai et al. 2024, <em>Summing Up the Facts</em>, arXiv:2402.07321 ·
 Geva et al. 2023, <em>Dissecting Recall of Factual Associations</em>, EMNLP ·
+Gurnee, Sofroniew, Lindsey et al. 2026, <em>Verbalizable Representations Form a Global Workspace in Language Models</em>, Transformer Circuits Thread ·
 Gurnee &amp; Tegmark 2024, <em>Language Models Represent Space and Time</em>, ICLR ·
 Hendel et al. 2023, <em>In-Context Learning Creates Task Vectors</em>, EMNLP Findings, arXiv:2310.15916 ·
 Hernandez et al. 2024, <em>Linearity of Relation Decoding in Transformer LMs</em> (LRE), ICLR, arXiv:2308.09124 ·
