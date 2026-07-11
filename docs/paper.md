@@ -21,8 +21,8 @@ two-way analysis of variance factorizes the mid-network state as `H ≈ μ + ope
 interaction`, ~90% additive, with the operator component dominant at the query position. The direction
 is **causal**: adding `v(op_B) − v(op_A)` flips the target-vs-source logit margin for **all 20 ordered
 relation pairs in all three models**, while matched-norm random controls do nothing. It **generalizes**:
-directions built on half the operands flip the held-out half; directions built in one prompt
-formulation transfer to unseen ones; and the operation is separable from its **surface realization** —
+directions built on half the operands flip the held-out half; directions built in one wording of a
+relation transfer to re-framed and fully re-lexicalized prompts; and the operation is separable from its **surface realization** —
 *language-of* and *demonym-of* are distinct directions even though both emit "Italian". The
 factorization is **specific to relational retrieval**: under the identical pipeline, arithmetic and
 comparison-logic operators show 2–4× the interaction and fail held-out generalization. Relational
@@ -238,8 +238,18 @@ all three test frames. The clean baselines do shift across frames (−7.0 / −8
 frames are genuinely different prompts; the operator's causal effect does not. At 8B the pattern
 replicates — **100/100 flips over the tested combinations (80/80 cross-frame, mean contrast +28.7)**,
 with the declarative-built direction again frame-invariant (+26.0 / +26.0 / +26.0). The operator
-direction is invariant to the prompt **context** around the fixed `{op} of {a}` unit. (Whether it is
-also invariant to the *wording* of the relation itself is the stronger question — tested next.)
+direction is invariant to the prompt **context** around the fixed `{op} of {a}` unit.
+
+**Cross-lexicalization transfer.** The stronger question is whether the direction survives changing the
+*wording of the relation itself*. We re-lexicalize every relation — *currency of {a}* → *money used in
+{a}*, *capital of {a}* → *seat of government in {a}*, *language of {a}* → *language primarily spoken in
+{a}*, *demonym* → *name for someone from {a}*, *continent of {a}* → *world region containing {a}* — and
+test both transfer directions. Directions built on the of-phrasings flip the re-lexicalized prompts, and
+vice versa: **40/40 at 1.7B (mean contrast +21.7) and 40/40 at 8B (+26.8)**, with transfer contrasts
+indistinguishable from within-formulation ones (1.7B: +22.59 transferred vs. +22.62 within;
+operator-level 95% CIs overlap almost exactly). The clean baselines differ across formulations — the
+prompts are genuinely different — but the operator's causal effect does not. The direction is a property
+of the **relation**, not of its wording.
 
 ### 4.5 Cross-architecture replication (Gemma-2-9B)
 
@@ -335,9 +345,9 @@ use, it is not a case system.
 - **Scale and family.** 1.7–9B models from two families (Qwen3, Gemma 2) — both decoder-only
   transformers; no ≥30B model. Relational linearity holds for a subset of relations even in-domain
   (cf. LRE ~48%).
-- **Relation coverage.** Five hand-chosen country relations, English-only. Prompt variation covers three
-  paraphrase *frames* (§4.4) but all frames share the `{op} of {a}` phrasing unit; phrase-level
-  paraphrases, more relations, and other entity types remain open.
+- **Relation coverage.** Five hand-chosen country relations, English-only. Prompt variation covers
+  three context frames and a full re-lexicalization of every relation (§4.4); more relations, other
+  entity types, and other languages remain open.
 - **Arithmetic coverage.** Qwen3 BPE splits multi-digit numbers, so we restrict to single-digit results;
   the arithmetic null is on that regime and at 1.7B/8B, where arithmetic competence is itself limited.
 - **Reading-position result** restates known subject-enrichment→attribute-extraction dynamics.

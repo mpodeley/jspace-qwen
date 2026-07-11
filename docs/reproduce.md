@@ -62,8 +62,10 @@ other two) to `results/geometry/*.json|npz`, and writes the explorer's data bund
 Two further checks from the review pass:
 
 ```bash
-.venv/bin/python scripts/operator_templates.py 1.7b   # cross-frame transfer (3 paraphrase frames)
+.venv/bin/python scripts/operator_templates.py 1.7b   # cross-frame transfer (3 context frames)
+.venv/bin/python scripts/operator_lexical.py 1.7b     # cross-LEXICALIZATION transfer
 .venv/bin/python scripts/op_dose.py 1.7b              # alpha dose-response + off-task KL
+.venv/bin/python scripts/op_minimal.py 1.7b           # band sweep + activation patching + greedy exact match
 ```
 
 !!! note "Reproducibility box"

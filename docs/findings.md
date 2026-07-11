@@ -313,6 +313,17 @@ with the largest effect sizes of the three models:** all-pairs swap 20/20, opera
 −3.0 → **+8.5**. Zero per-pair CIs cross zero. The factorization is not a Qwen idiosyncrasy —
 paper claims upgraded to two-family evidence (title now "…residual stream of LLMs").
 
+### 2.9 Cross-lexicalization transfer (2026-07-11, reviewer round)
+
+The frame test (§2.7) held the `{op} of {a}` unit fixed — a reviewer rightly noted that proves
+*context* invariance, not *wording* invariance. New test (`operator_lexical.py`,
+`data/relations_lex.json`): re-lexicalize every relation (currency of → money used in; capital of →
+seat of government in; language of → language primarily spoken in; demonym → name for someone from;
+continent of → world region containing) and transfer directions both ways. **1.7B: 40/40 flips, transfer
+contrast +22.59 vs +22.62 within-formulation. 8B: 40/40, +26.0/+27.6.** Clean baselines differ across
+formulations; the causal effect does not. The direction is a property of the relation, not its wording —
+the lexical confound is closed.
+
 ---
 
 ## The open interpretive question (deliberately unresolved)
