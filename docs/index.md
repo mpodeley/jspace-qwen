@@ -1,16 +1,40 @@
 # Relational operations factorize from their operands in LLMs
 
-<p class="hero-sub">Causal interventions reveal <b>transferable operator directions</b> for factual
-relations — replicated on <b>Qwen3-1.7B/8B and Gemma-2-9B</b> — while arithmetic and logic remain
-entangled with their operands.</p>
+<p class="hero-sub">How does a language model represent <i>"the capital of Italy"</i>? We find it
+splits the thought in two: <b>the thing</b> (Italy) and <b>the operation applied to it</b>
+(capital-of) — and the operation lives as its own <b>direction</b> in activation space, one you can
+grab, move, and transplant.</p>
 
-<div class="stats" markdown>
-<div class="stat"><span class="n">20/20 × 3</span><span class="d">operator swaps flip the answer, in
-all three models — matched-norm random controls ≈ 0</span></div>
-<div class="stat"><span class="n">82–86%</span><span class="d">of workspace variance at the query
-token is the operator; ~7–13% interaction ("fusion")</span></div>
-<div class="stat"><span class="n">180/180</span><span class="d">swaps flip under held-out operands
-and unseen paraphrase frames — a real operator, not interpolation</span></div>
+## The finding, conceptually
+
+Latin marks a noun's *role* with a case ending — `ros-a / ros-am`, same stem, different job.
+Mid-network, an LLM does something structurally similar with factual relations. As
+*"The currency of Italy is"* flows through the model, the sentence's internal state is well
+described by a sum:
+
+```
+state ≈ μ + operand(Italy) + operator(currency-of) + small interaction
+```
+
+Three things make this more than a curve fit:
+
+1. **The operator is causal.** Add the direction difference `v(capital) − v(currency)` to the
+   residual stream and the model stops saying *euro* and says *Rome* — for **every** ordered
+   pair of relations we test. A random direction of the same size does nothing.
+2. **It transfers.** Built from half the countries, it flips the other half. Built from one
+   phrasing, it flips paraphrases it never saw. Built on Qwen, the same recipe works on Gemma.
+3. **The operation is not its output word.** *Language-of* and *demonym-of* both end in
+   "Italian" — yet they are distinct directions, and a marker built exactly where the two
+   share their word still installs the relation. The model separates the grammatical role from
+   the surface form, the way declension separates case from ending (*syncretism*).
+
+And the boundary is just as informative: run the identical pipeline on **arithmetic** (+, ×, −)
+or **comparison logic**, and the operator is entangled with its operands and refuses to
+transfer — consistent with "arithmetic as a bag of heuristics", and evidence that the clean
+factorization is a property of *relational retrieval*, not of prompting in general.
+
+<div class="hero-gif" markdown>
+[![The declension morph: the same 60 workspace states, organized by operand at the country token, reorganize by operator at the query token](figs/declension.gif)](explorer.md)
 </div>
 
 <div class="hero-buttons" markdown>
@@ -20,40 +44,28 @@ and unseen paraphrase frames — a real operator, not interpolation</span></div>
 [:material-github: Code](https://github.com/mpodeley/jspace-qwen){ .md-button }
 </div>
 
-<div class="hero-gif" markdown>
-[![The declension morph: the same 60 workspace states, organized by operand at the country token, reorganize by operator at the query token](figs/declension.gif)](explorer.md)
+## The numbers
+
+<div class="stats" markdown>
+<div class="stat"><span class="n">20/20 × 3</span><span class="d">ordered operator swaps flip the
+answer in Qwen3-1.7B, Qwen3-8B and Gemma-2-9B; matched-norm random controls ≈ 0</span></div>
+<div class="stat"><span class="n">82–86%</span><span class="d">of workspace variance at the query
+token is the operator; interaction ("fusion") stays single-digit for relations</span></div>
+<div class="stat"><span class="n">180/180</span><span class="d">flips under held-out operands and
+unseen paraphrase frames — a transferable operator, not interpolation</span></div>
 </div>
 
-## The idea in 60 seconds
-
-Latin marks a noun's *role* with a case ending: `ros-a / ros-am` — same stem, different job.
-We find LLMs do something structurally similar with factual relations. Ask *"The currency of
-Italy is"* and, mid-network, the state of the sentence is well described as
-
-```
-state ≈ μ + operand(Italy) + operator(currency-of) + small interaction
-```
-
-The **operator part is a real, causal object**: add `v(capital) − v(currency)` to the residual
-stream and the model answers *Rome* instead of *euro* — for **every** ordered pair of the five
-relations we test, in **all three models**. The direction **transfers**: built on half the
-countries it flips the other half; built on one phrasing it flips paraphrased prompts unchanged.
-And the operation is **not its output word**: *language-of* and *demonym-of* both produce
-"Italian", yet are distinct directions — the model separates the grammatical role from the word
-that realizes it, the way declension separates case from surface form (*syncretism*).
-
-The factorization is **specific to relational retrieval**: run the identical pipeline on
-arithmetic (+, ×, −) or comparison logic and the operator is entangled with its operands
-(2–4× the interaction) and fails to generalize — consistent with "arithmetic as a bag of
-heuristics". [Explore it interactively](explorer.md), [read the paper](assets/paper.pdf), or
-[check every claim against its control](robustness.md).
+All headline effects carry operator-level cluster-bootstrap 95% CIs and none crosses zero —
+see [Evidence & controls](robustness.md) for every claim next to the control that could have
+killed it.
 
 !!! note "Methodological note — the honest null that started this"
-    This project began as a replication of the J-space/global-workspace readout claim. Under
-    matched controls (including a spectrum-matched random projection), the **J-lens readout did
-    not outperform the logit lens** on any of our metrics. The operator/operand structure above
-    is *causal* organization, not a privileged readable subspace — and the negative half is
-    documented with the same rigor in the [archive](method.md) and [working log](findings.md).
+    This project began as a replication of the J-space / global-workspace readout claim
+    ([Gurnee, Sofroniew, Lindsey et al., 2026](https://transformer-circuits.pub/2026/workspace/index.html)).
+    Under matched controls (including a spectrum-matched random projection), the **J-lens readout
+    did not outperform the logit lens** on any of our metrics. The structure above is *causal*
+    organization, not a privileged readable subspace — the negative half is documented with the
+    same rigor in the [archive](method.md) and [working log](findings.md).
 
 ---
 

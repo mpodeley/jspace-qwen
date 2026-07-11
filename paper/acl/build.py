@@ -48,6 +48,8 @@ CITES = [
     (r"Christ et al\.\s*\(2025\)", r"\\citet{christ2025structure}"),
     (r"Christ et al\.\s*\(Oct\s+2025\)", r"\\citet{christ2025structure}"),
     (r"the J-space paper", r"\\citet{gurnee2026workspace}"),
+    (r"Gurnee,\s+Sofroniew,\s+Lindsey et al\.\s+\(2026\)", r"\\citet{gurnee2026workspace}"),
+    (r"Gurnee,\s+Sofroniew,\s+Lindsey et al\.\s+2026", r"\\citealp{gurnee2026workspace}"),
     (r"Hendel et al\.,?\s+(?:EMNLP\s+)?2023", r"\\citealp{hendel2023icl}"),
     (r"Todd et al\.,?\s+(?:ICLR\s+)?2024", r"\\citealp{todd2024function}"),
     (r"Liu et al\.,?\s+(?:ICML\s+)?2024", r"\\citealp{liu2024icv}"),
@@ -192,7 +194,11 @@ def main() -> None:
     figdir = ACL / "figs"
     figdir.mkdir(exist_ok=True)
     for stem in set(re.findall(r"figs/(op_[a-z_]+)\.png", tex)):
-        src = ROOT / "docs" / "figs" / f"{stem}.pdf"
+        # prefer the print-targeted variants (PAPER=1 scripts/plots.py): white
+        # surface, serif type, drawn near final physical size
+        src = ROOT / "docs" / "figs" / "paper" / f"{stem}.pdf"
+        if not src.exists():
+            src = ROOT / "docs" / "figs" / f"{stem}.pdf"
         if src.exists():
             (figdir / src.name).write_bytes(src.read_bytes())
     tex = re.sub(r"figs/(op_[a-z_]+)\.png", r"\1", tex)

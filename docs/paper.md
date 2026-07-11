@@ -36,7 +36,8 @@ the interaction term is 2–4× larger and the operator **fails to generalize to
 consistent with arithmetic being computed by a "bag of heuristics" rather than a linear operator. A
 control that instead varies a *linear numeric parameter* (add-N) rather than the function generalizes
 better and is near-collinear, reconciling a contrary recent report (Christ et al. 2025). Finally,
-the structure is **causal, not a readout advantage**: the Jacobian-lens ("J-space") readout is not more
+the structure is **causal, not a readout advantage**: the Jacobian-lens ("J-space") readout (Gurnee,
+Sofroniew, Lindsey et al. 2026) is not more
 legible than the raw residual on any of our metrics under matched controls.
 
 ## 1. Introduction
@@ -74,6 +75,12 @@ the residual state** with an explicit, measured **interaction/fusion term** — 
 **operator vs operand**. The operand→operator shift along the sequence restates the subject-enrichment →
 attribute-extraction dynamics of Geva et al. (EMNLP 2023) in operator/operand terms — our least novel point,
 included as confirmation.
+
+**Global workspace and the Jacobian lens.** Gurnee, Sofroniew, Lindsey et al. (2026) introduce the
+Jacobian lens and identify a mid-depth "global workspace" band of the residual stream. We adopt their
+depth band as the site of intervention and their lens as scaffolding; our contribution is orthogonal —
+the operator/operand structure of what that band *holds* — and we additionally report a controlled null
+on the lens's readout advantage for our task (§4.8).
 
 **Arithmetic and logic.** Arithmetic in LLMs is reported as a "bag of heuristics" (Nikankin et al. 2025)
 and Fourier/helical procedures (Nanda et al. 2023; Zhong et al. 2023; Kantamneni & Tegmark 2025), with the
@@ -303,7 +310,9 @@ terms — the **ordering** (relations ≫ add-N > `+ × −`), not the magnitude
 ### 4.8 This is causal structure, not a J-space readout advantage
 
 On four readout comparisons (bridge-entity pass@k, a surface-form logit difference, a number probe, and a
-concept-plane trajectory), the J-lens readout shows **no advantage** over the logit-lens under matched
+concept-plane trajectory), the Jacobian-lens readout of Gurnee, Sofroniew, Lindsey et al. 2026 — whose
+global-workspace result motivated this project, and whose "workspace" band we intervene on throughout —
+shows **no readout advantage** over the logit-lens under matched
 controls; a spectrum-matched random projection reads number as well as the fitted J-lens, and the
 concept-plane "channel" does not survive a random-plane baseline (see [findings §Part 1](findings.md)). The
 operator/operand structure lives in the **causal** organization of the residual, and is **not** more
@@ -338,6 +347,7 @@ entangled with their operands. The structure is causal; it is not a more-readabl
 Christ et al. 2025, *The Structure of Relation Decoding Linear Operators in Large Language Models*, NeurIPS (Spotlight), arXiv:2510.26543 ·
 Chughtai et al. 2024, *Summing Up the Facts*, arXiv:2402.07321 ·
 Geva et al. 2023, *Dissecting Recall of Factual Associations*, EMNLP ·
+Gurnee, Sofroniew, Lindsey et al. 2026, *Verbalizable Representations Form a Global Workspace in Language Models*, Transformer Circuits Thread ·
 Gurnee & Tegmark 2024, *Language Models Represent Space and Time*, ICLR ·
 Hendel et al. 2023, *In-Context Learning Creates Task Vectors*, EMNLP Findings, arXiv:2310.15916 ·
 Hernandez et al. 2024, *Linearity of Relation Decoding in Transformer LMs* (LRE), ICLR, arXiv:2308.09124 ·

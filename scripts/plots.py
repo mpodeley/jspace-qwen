@@ -38,6 +38,20 @@ OPERAND_C, OPERATOR_C, FUSION_C = "#2a78d6", "#e0632f", MUTED
 
 GEO = ROOT / "results" / "geometry"
 
+# PAPER=1: print-targeted variants for the LaTeX builds -- white surface, serif
+# text, figures drawn at (close to) their final physical size so type stays
+# readable at \textwidth (~6.5in) instead of being shrunk from web size.
+import os
+PAPER = bool(os.environ.get("PAPER"))
+if PAPER:
+    FIGS = ROOT / "docs" / "figs" / "paper"
+    SURF = "#ffffff"
+
+
+def fs(w: float, h: float) -> tuple:
+    """Figure size: web size, or ~62% for the print builds (fonts scale up)."""
+    return (w * 0.62, h * 0.62) if PAPER else (w, h)
+
 
 def load_geo(tag: str, domain: str = "relations"):
     p = GEO / f"{tag}_{domain}.json"
@@ -56,6 +70,13 @@ plt.rcParams.update({
     "font.size": 10, "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.8,
     "axes.spines.top": False, "axes.spines.right": False, "figure.dpi": 130,
 })
+if PAPER:  # match the paper's Times body; hairline grid on white
+    plt.rcParams.update({
+        "font.family": "serif",
+        "font.serif": ["Nimbus Roman", "Times New Roman", "DejaVu Serif"],
+        "mathtext.fontset": "stix", "font.size": 9,
+        "grid.color": "#e8e8e8", "figure.dpi": 200,
+    })
 
 METRICS = [
     ("jlens_top1", "J-lens next-token top-1 acc"),
@@ -195,7 +216,7 @@ def fig_op_geometry():
     ops = g["operators"]
     opcol = {k: OP5[i % len(OP5)] for i, k in enumerate(ops)}
 
-    fig = plt.figure(figsize=(11, 8.4), constrained_layout=True)
+    fig = plt.figure(figsize=fs(11, 8.4), constrained_layout=True)
     gs = fig.add_gridspec(2, 2, height_ratios=[1.5, 1])
     for col, (cloud, title, sub) in enumerate([
         (g["cloud_country"], "At the country token",
@@ -280,7 +301,7 @@ def fig_op_swap():
     flips = int(np.nansum(swap > 0))
     tot = int(np.sum(~np.isnan(swap)))
 
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.8), constrained_layout=True)
+    fig, axes = plt.subplots(1, 2, figsize=fs(11, 4.8), constrained_layout=True)
     for ax, M, title in ((axes[0], clean, "Clean — “from” wins (baseline)"),
                          (axes[1], swap, "Inject  v(to) − v(from)  — “to” wins")):
         im = ax.imshow(M, cmap="RdBu_r", vmin=-vmax, vmax=vmax)
@@ -323,7 +344,7 @@ def fig_op_swap_dist():
     fam = op_core.bootstrap_family_ci(ldf, seed=0)
     ci = ci.sort_values("swap_mean").reset_index(drop=True)  # ascending: best on top
 
-    fig, ax = plt.subplots(figsize=(8.2, 7.6), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=fs(8.2, 7.6), constrained_layout=True)
     rng = np.random.default_rng(0)
     for i, r in ci.iterrows():
         sub = ldf[(ldf["from"] == r["from"]) & (ldf["to"] == r["to"])]
@@ -369,7 +390,7 @@ def fig_op_dose():
     if not p.exists():
         return
     df = pd.read_parquet(p).sort_values("alpha")
-    fig, axes = plt.subplots(1, 2, figsize=(9.2, 3.6), constrained_layout=True)
+    fig, axes = plt.subplots(1, 2, figsize=fs(9.2, 3.6), constrained_layout=True)
 
     ax = axes[0]
     spec = df["swap_shift"] - df["random_shift"]
@@ -391,7 +412,7 @@ def fig_op_dose():
     ax2.plot(df["alpha"], df["kl_nats"], color=OPERAND_C, lw=2, marker="o", ms=4)
     ax2.axvline(4.0, color=MUTED, lw=0.8, ls=":")
     ax2.set_xlabel("intervention strength α")
-    ax2.set_ylabel("KL(clean ‖ intervened), nats/token")
+    ax2.set_ylabel(r"KL(clean $\Vert$ intervened), nats/token")
     ax2.set_title("…but the band-wide edit is not free off-task",
                   fontsize=10.5, loc="left")
     fig.text(0.01, -0.03,
@@ -417,7 +438,7 @@ def fig_op_syncretism():
     n = len(labels)
     des = g["desinence"]
 
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.6), constrained_layout=True,
+    fig, axes = plt.subplots(1, 2, figsize=fs(11, 4.6), constrained_layout=True,
                              gridspec_kw={"width_ratios": [1.25, 1]})
     ax = axes[0]
     Mm = M.copy()
