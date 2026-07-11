@@ -52,12 +52,10 @@ A line of work shows that a *task* or *relation* can be captured by a single add
 residual stream (task vectors, Hendel et al. 2023; function vectors, Todd et al. 2024) and that many
 relations are approximately linear operators (LRE, Hernandez et al. 2024; Merullo et al. 2024). What has
 not been characterized is the **joint structure of operator and operand**: whether the operation
-*factorizes* from its argument, whether that factorization *generalizes*, whether the operation is
-separable from the *word it produces*, whether the factorized parts suffice to *drive generation*, and
-whether any of this holds *beyond* relational facts. We answer these on Qwen3 and Gemma-2, across a
-geographic and an animal-taxonomy domain, with arithmetic and comparison logic as the contrast where
-the factorization does not emerge. A closing discussion (§5) offers a morphological reading —
-relational computation as **declension** — as an organizing metaphor for the asymmetries we observe.
+*factorizes* from its argument, *generalizes*, is separable from the *word it produces*, and suffices to
+*drive generation* — and whether any of this holds beyond relational facts. We answer these on Qwen3 and
+Gemma-2, across a geographic and an animal-taxonomy domain, with arithmetic and logic as the contrast.
+A closing discussion (§5) offers **declension** as the organizing metaphor for the asymmetries observed.
 
 ## 2. Related work and what is new here
 
@@ -96,20 +94,14 @@ and logical-operator heads exist (Hong et al. 2024). No prior work reports a **c
 operator/operand factorization**; we provide one and show where it does not emerge.
 
 **What is new here is the combination, not any single ingredient.** That relations admit addable
-vectors (task/function vectors) and linear decoders (LRE) is established; what has not been done is the
-joint, quantified analysis: (1) an operator ⊕ operand **factorization of the residual state itself**
-(two-way ANOVA with a measured interaction/fusion term), with the steering vector shown to *be* the
-ANOVA operator component; (2) an **exhaustive all-pairs causal swap** validated against a competitive
-null battery — matched-norm random, random *within the operator subspace*, and directions rebuilt under
-**permuted relation labels**; (3) **held-out-operand generalization** as the test separating a
-transferable direction from interpolation among build examples; (4) a **compositional sufficiency**
-test: patching a state assembled from the factorization's parts and asking whether the model *generates*
-the target answer — including a dose × position calibration showing where additive steering itself
-generates; (5) the **operation-vs-realization dissociation** (language ≠ demonym as directions despite
-identical output); and (6) a **cross-domain test** (a second retrieval domain where the factorization
-replicates; arithmetic and logic where it does not emerge). The declension/case reading is our
-*presentation* of these measurements — an organizing metaphor that anticipates the observed asymmetries
-(syncretism at the exponent, fusion in the interaction term) — not an additional empirical claim.
+vectors and linear decoders is established; what has not been done is the joint, quantified analysis:
+the operator ⊕ operand **factorization of the residual state itself**, with the steering vector shown
+to *be* the ANOVA operator component; the all-pairs swap validated against **permuted-label and
+within-subspace nulls**; **held-out-operand generalization**; the **compositional sufficiency** test
+(does a state assembled from the parts *generate*?) with its dose × position calibration; the
+**operation-vs-realization dissociation**; and the **cross-domain test** (each claim, its evidence, and
+its decisive control are tabulated at the head of §4). The declension reading is our *presentation* of
+these measurements, not an additional empirical claim.
 
 ## 3. Method
 
@@ -137,12 +129,11 @@ deviation 8.5×10⁻⁸ across the band). Everything the paper does — steering
 manipulates this one object; the differences between experiments are differences in *how it is
 applied*, never in what is extracted.
 
-**Factorization.** At a fixed layer and position,
-`h_{ℓ,t}(o, k) = μ_{ℓ,t} + a_{ℓ,t}(o) + b_{ℓ,t}(k) + e_{ℓ,t}(o, k)` — operand main effect, operator
-main effect, and interaction, exact by construction (the interaction is the cell residual); we report
-the variance share of each term (Appendix A). Table 1 uses the mid-workspace layer — **layer 17 of 28
-(63% depth) at 1.7B, 23 of 36 at 8B, 27 of 42 on Gemma-2-9B** — at `t = −1` and, as the control,
-`t = −2`.
+**Factorization.** At a fixed `(ℓ, t)`: `h = μ + a(o) + b(k) + e(o, k)` — operand main effect,
+operator main effect, and interaction, exact by construction (the interaction is the cell residual),
+every term carrying the `(ℓ, t)` indices; we report the variance share of each term (Appendix A).
+Table 1 uses the mid-workspace layer — **layer 17 of 28 (63% depth) at 1.7B, 23 of 36 at 8B, 27 of 42
+on Gemma-2-9B** — at `t = −1` and, as the control, `t = −2`.
 
 **Swap, positions, and controls.** Efficacy of `k_A → k_B` is the change in
 `logit(answer_B) − logit(answer_A)` at the query position when `α·(v(k_B) − v(k_A))` is added — over the
@@ -161,8 +152,14 @@ the syncretic demonym↔language pairs; all 12 elsewhere).
 are recombined and **replace** the residual at the query position (`μ+operator`, `μ+operand`,
 `μ+operand+operator`, `μ+interaction`, the full donor, a norm-matched magnitude control) — plus two
 loophole-closers: a **leave-one-cell-out** reconstruction whose components never saw the target cell,
-and a **wrong-operand** composition that should (and does) redirect the answer. Greedy generation over
-3 tokens is the readout, against the model's own clean accuracy as ceiling.
+and a **wrong-operand** composition that should (and does) redirect the answer. The generation readout
+("says X") is **containment, not literal exact match**: the greedy continuation contains the gold
+answer case-insensitively, so *the euro*, *euros*, and *Euro* all count for *euro*; the model's own
+clean accuracy under the same readout is the ceiling. A generation **audit** (Appendix A) extends this:
+longer decodes, a five-way classification of every raw generation (target / source / right-relation-
+wrong-entity / wrong-relation / degraded), and a **forced-choice** score — length-normalized full-
+sequence log-probability among the operand's gold answers under the same intervention — which is immune
+to article interception and multi-token surface variants.
 
 **Generalization and domains.** Build `v(op)` from half the operands; test the swap on the held-out
 half — a genuine operator vs. interpolation among build examples. Domains: five country relations
@@ -208,19 +205,19 @@ surface form; full per-pair distributions in Appendix A).
 **Where the vector has to land (1.7B, α = 4).** Injecting at the **query token alone** reproduces the
 all-position effect on the margin — at 60× lower off-task cost:
 
-| position × scope | Δmargin [95% CI] | rank(target) | exact match | sign correct | KL off-task |
-|---|---:|---:|---:|---:|---:|
-| all positions, band | +28.9 [+16.2, +39.9] | 570 → 431 | 0.4% | 98% | 18.4 |
-| **query token, band** | +28.7 [+16.1, +39.8] | 570 → 368 | 2.2% | 98% | **0.29** |
-| query token, one layer | +13.7 [+7.7, +18.3] | 570 → **69** | 9.8% | 91% | 0.04 |
-| operand token, band | +1.8 [+1.0, +2.5] | 570 → 3194 | 0.4% | 4% | 0.26 |
-| sentence-initial (wrong), band | +2.3 [−0.2, +4.8] | 570 → 194 | 3.6% | 16% | 1.56 |
+| position, scope | Δmargin [95% CI] | rank(tgt) | says target | KL off |
+|---|---:|---:|---:|---:|
+| all, band | +28.9 [+16.2, +39.9] | 431 | 0.4% | 18.4 |
+| **query, band** | +28.7 [+16.1, +39.8] | 368 | 2.2% | **0.29** |
+| query, one layer | +13.7 [+7.7, +18.3] | **69** | 9.8% | 0.04 |
+| operand, band | +1.8 [+1.0, +2.5] | 3194 | 0.4% | 0.26 |
+| wrong (t = 0), band | +2.3 [−0.2, +4.8] | 194 | 3.6% | 1.56 |
 
 The margin effect is a **localized edit of the queried relation** — position-specific (the operand
-token and a structurally irrelevant token do essentially nothing) and nearly free off-task when
-restricted to the query position — not a global perturbation of processing. (Ranks are medians; n per
-condition is 224 (pair, operand) cells = 20 pairs × up to 12 operands; the bootstrap unit is stated
-in §3.)
+token and a structurally irrelevant token do essentially nothing; sign-correct 98/98/91% for the three
+effective rows vs. 4–16% for the controls) and nearly free off-task when restricted to the query
+position — not a global perturbation of processing. (Ranks are medians, clean baseline 570; n per
+condition is 224 (pair, operand) cells; the bootstrap unit is stated in §3.)
 
 **The label is everything.** Directions rebuilt from the *same* residuals with **permuted relation
 labels** — preserving every statistical property of the extraction while destroying its semantics —
@@ -234,15 +231,13 @@ specifically Rome) — operand specificity lives in generation, which §4.2 meas
 correct direction at the **wrong (early) layer** retains +9.8 because residual-stream additions
 *persist* downstream — per-layer locality is measured properly in §4.6. (Forest plot in Appendix A.)
 
-**Dose–response, both signs.** The effect is a **signed causal axis**: the operator-specific margin
-shift is monotone in α through zero and *reverses* when the direction is inverted — +22.6 at α = +4
-versus **−21.0 at α = −4** (an almost exact mirror), saturating at both ends — while the random
-control's nonspecific shift (≈ +6) is flat in |α|, which is why every headline number is a
-swap − random contrast. The positive branch saturates higher (+29 vs. −15 raw shift) for an
-interpretable reason: the clean margin already favors the source relation, so pushing further toward
-it hits a floor. Off-task cost grows with dose and with breadth (7.9 → 21 nats/token on unrelated
-WikiText across the positive sweep for the band-wide, all-position hook — versus 0.29 at the query
-token, above). What dose does to *generation* is the subject of §4.2. (Dose curves in Appendix A.)
+**Dose–response, both signs.** The effect is a **signed causal axis**: the operator-specific shift is
+monotone in α through zero and *reverses* with the direction — +22.6 at α = +4 vs. **−21.0 at α = −4**,
+an almost exact mirror, saturating at both ends (the positive branch higher, +29 vs. −15 raw, because
+the clean margin already favors the source: a floor) — while the random control's shift (≈ +6) is flat
+in |α|, which is why every headline number is a swap − random contrast. Off-task cost grows with dose
+and breadth (7.9 → 21 nats/token band-wide vs. 0.29 at the query token). What dose does to *generation*
+is the subject of §4.2. (Curves in Appendix A.)
 
 ### 4.2 A state composed from the factorization's parts generates the answer
 
@@ -286,16 +281,22 @@ everything else is a control.*
 adding `α·(v(B) − v(A))` at the query position of one layer lands, at α = 1, on
 `μ + operand + operator(B) + interaction(A)` — the composed state up to a wrong interaction term. The
 dose sweep confirms it behaviorally: generation follows an **inverted-U peaked exactly at the
-on-manifold dose** — 38.4% exact match at α = 1 for a single layer, **51.3% at α ≈ 0.1 for the 13-layer
-band** (band additions accumulate, so the band's on-manifold dose is ≈ 1/13 per layer) — while past the
-peak the margin keeps climbing (+28.9 at α = 4) as generation collapses (0.4%) and the on-task
-distribution degrades (KL 29 nats). The earlier "steering moves margins but cannot generate" result was
-an **overdose artifact**, not an information deficit. The factorized representation is thus
-**compositionally sufficient** — by replacement and by calibrated addition — and the gap between moving
-a preference and producing an answer is a property of *how* the direction is applied, not of *what* it
-contains. (At a single layer, `μ + operator` alone already generates at 44.6% ≈ the donor's 40.6%
-there: unpatched layers and positions still carry the operand — the operator injection point is local,
-operand identity distributed; consistently, the wrong-operand redirect disappears there, 1.3%.)
+on-manifold dose** — 38.4% at α = 1 for a single layer, **51.3% at α ≈ 0.1 for the 13-layer band**
+(band additions accumulate, so the band's on-manifold dose is ≈ 1/13 per layer) — while past the peak
+the margin keeps climbing (+28.9 at α = 4) as generation collapses. The earlier "steering moves margins
+but cannot generate" result was an **overdose artifact**, not an information deficit: the factorized
+representation is **compositionally sufficient**, by replacement and by calibrated addition. (At a
+single layer, `μ + operator` alone already generates at 44.6% — unpatched layers still carry the
+operand, so the injection point is local and operand identity distributed.)
+
+**The generation audit** (Appendix A) closes the metric loopholes directly. Classifying every raw
+k = 8 generation: the calibrated dose produces the *fluent, correct* answer (59.4% target vs. 0.9%
+source; composed patch 57.6% — both at the clean prompt's own 58.5%), while at the overdose **94.6% of
+generations are degraded token loops** by manual inspection — category-correct, fluency-destroyed, not
+surface variants the metric missed. A **forced-choice** readout (full-sequence log-prob among the
+operand's gold answers, under the intervention) then dissociates information from fluency: the target
+wins at **80.4% even at the overdose** (87.5% calibrated, 84.4% donor patch, 2.7% clean). Overdosing
+destroys the generation manifold, not the encoded preference.
 
 ### 4.3 The representation factorizes into operator ⊕ operand
 
@@ -308,15 +309,14 @@ per reading position:
 | query token | 5% / 6% | **86% / 82%** | 9% / 13% |
 | entity token | **59% / 55%** | 31% / 34% | 9% / 11% |
 
-~90% additive; operand and operator components occupy distinct subspaces (principal angles 41–85° at the
-query token, all three models — though near-orthogonality is the high-dimensional default, so the load-
-bearing evidence is the variance decomposition and the causal results, not the angles). This table and
-the interventions of §4.1–4.2 describe **one object seen three ways**: the steering vector is
-numerically identical to this ANOVA's operator main effect (§3), so the direction that flips margins,
-the component that composes into a generating state, and the term that dominates this variance split
-are the same vector. The operator-dominant representation **emerges along the sequence**: the entity
-enters operand-dominant and is re-marked by its queried role at the query position (the
-reading-position control rules out template echo; the causal results are the stronger control).
+~90% additive; operand and operator components occupy distinct subspaces (principal angles 41–85° at
+the query token — though near-orthogonality is the high-dimensional default, so the load-bearing
+evidence is the variance split and the causal results). Since the steering vector is numerically this
+ANOVA's operator main effect (§3), the direction that flips margins (§4.1), the component that composes
+into a generating state (§4.2), and the term that dominates this split are **one vector seen three
+ways**. The operator-dominant representation **emerges along the sequence**: the entity enters
+operand-dominant and is re-marked by its queried role at the query position (the reading-position
+control rules out template echo).
 
 (A PCA of the 60 workspace states, showing the operand-organized cloud at the entity token reorganizing
 into operator clusters at the query token, is in Appendix A.)
@@ -338,17 +338,13 @@ the operator representation is not an output-word representation (§5 reads this
 on the held-out contrast: **+20.0 [+10.8, +29.5]** at 1.7B, **+22.8 [+14.0, +31.0]** at 8B; flip
 fraction **1.00 [1.00, 1.00]** at both.
 
-**Frames and wordings.** To rule out template echo we render every relation in three paraphrase frames
-(declarative, question–answer, discourse-prefixed) and test every build→test combination: on 1.7B **all
-9 combinations flip 20/20** (180/180), with the contrast *frame-invariant to two decimals* (+22.6 on
-all three test frames from declarative-built directions); at 8B 100/100 with the same invariance
-(+26.0 / +26.0 / +26.0). The stronger question is whether the direction survives changing the *wording
-of the relation itself*: we re-lexicalize every relation (*currency of* → *money used in*, *capital of*
-→ *seat of government in*, …) and test both transfer directions — **40/40 at 1.7B and 40/40 at 8B**,
-with transfer contrasts indistinguishable from within-formulation ones (+22.59 transferred vs. +22.62
-within at 1.7B). Clean baselines shift across frames and wordings — the prompts are genuinely
-different — but the operator's causal effect does not: it is a property of the **relation**, not of its
-wording.
+**Frames and wordings.** Rendering every relation in three paraphrase frames and testing every
+build→test combination: on 1.7B **all 9 combinations flip 20/20** (180/180), *frame-invariant to two
+decimals* (+22.6 on all three test frames); at 8B 100/100 with the same invariance. Stronger: the
+direction survives changing the *wording of the relation itself* — re-lexicalizing every relation
+(*currency of* → *money used in*, …) and transferring both ways gives **40/40 at both scales**, with
+transfer ≈ within-formulation (+22.59 vs. +22.62 at 1.7B). Clean baselines shift across frames and
+wordings; the operator's causal effect does not: it is a property of the **relation**, not its wording.
 
 **A second, non-geographic domain.** Every signature replicates on an independently curated
 animal-taxonomy domain (class / habitat / diet / covering × 12 animals; 1.7B): **12/12** ordered swaps
@@ -393,12 +389,12 @@ If the factorization were an artifact of prompting, it should appear wherever th
 shape. It does not. Extending the identical pipeline to arithmetic (+, ×, −) and comparison-logic
 operators, on 1.7B, with the animal domain (§4.5) as the second retrieval column:
 
-| domain | operator variance | interaction (fusion) | held-out generalization | swap vs random |
+| domain | op var | fusion | held-out | swap/rand |
 |---|---:|---:|---|---|
-| **relational (countries)** | 86% | 9% | **20/20** flip | +21 vs ~0 |
-| **relational (animals)** | 62% | 22% | **12/12** flip | +19 vs +0.7 |
-| **arithmetic** | 55% | 23% | 2/6 (≤ random) | +0.4 vs +0.3 |
-| **logic (compare)** | 33% | 34% | 2/6 (≤ random) | +1.2 vs +0.2 |
+| **countries** | 86% | 9% | **20/20** | +21 / ~0 |
+| **animals** | 62% | 22% | **12/12** | +19 / +0.7 |
+| arithmetic | 55% | 23% | 2/6 (≤rand) | +0.4 / +0.3 |
+| logic | 33% | 34% | 2/6 (≤rand) | +1.2 / +0.2 |
 
 The gradient replicates and sharpens at **8B** (arithmetic held-out 1/6; logic interaction 45%,
 held-out **0/6**): relational ≫ arithmetic > logic at both scales. The animals row adds the decisive
@@ -431,37 +427,36 @@ four comparisons (Appendix B): the structure here is causal organization, not a 
 
 **Modes of intervention, and what a margin measures.** What looked like a gap between influencing a
 preference and executing an operation was a gap between *ways of applying the same vector*: a large
-added multiple moves margins monotonically while pushing the state off-manifold (generation dies); a
-calibrated multiple, or replacement with the composed `μ + operand + operator`, generates at the
-model's ceiling (§4.2). The null battery likewise decomposes the margin itself — half uninstalling the
-source relation, half installing the target *category*, with operand specificity visible only in
-generation (§4.1). Both points travel: steering studies that report margin shifts at one fixed dose are
-measuring category-level preference under a possibly off-manifold intervention, and their negative
-generation results do not, by themselves, show the information is absent. The three-level discipline —
-representation, influence, sufficiency, with sufficiency tested by *composition* — is the transferable
-method here.
+added multiple moves margins while pushing the state off-manifold; a calibrated multiple, or
+replacement with the composed state, generates at ceiling (§4.2). The null battery likewise decomposes
+the margin — half uninstalling the source, half installing the target *category*, operand specificity
+visible only in generation (§4.1). Both points travel: margin shifts at one fixed dose measure
+category-level preference under a possibly off-manifold intervention, and negative generation results
+do not, by themselves, show the information is absent. The three-level discipline — representation,
+influence, sufficiency, with sufficiency tested by *composition* — is the transferable method here.
 
 **Relational computation as declension.** The measurements invite a morphological reading, offered as
 an organizing metaphor rather than a claim. In a declining language a noun's role is marked by a case
-ending on a stem: the same stem takes different endings (one country, five directions), the same ending
-applies across stems (held-out transfer, §4.5), two cases can share a surface form without being the
-same case (**syncretism** — *language-of* and *demonym-of* both emit "Italian" yet are distinct
-directions, §4.4: a case marker stripped of its exponent remains causally functional), and stem and
-ending compose with a small residue of **fusion** (the ~10% interaction, §4.3 — behaviorally inert,
-§4.2). The metaphor marks its own limits: arithmetic and logic operators do not decline (§4.8).
+ending on a stem: the same stem takes different endings, the same ending applies across stems (§4.5),
+two cases can share a surface form without being the same case (**syncretism** — *language-of* and
+*demonym-of*, §4.4), stem and ending compose with a small residue of **fusion** (§4.3, behaviorally
+inert), and the composed stem-plus-ending is itself a usable form (§4.2). The limits: unlike
+morphological case, the marking is continuous, graded, and **layer-dependent** — a trajectory, not a
+static affix (§4.6) — and arithmetic and logic do not decline (§4.8). The honest formulation is that
+entities acquire **transient relational configurations partially comparable to grammatical case**, not
+that the model implements a case grammar.
 
 ## 6. Conclusion
 
 An LLM represents a relational operation at three verifiable levels. The operator **exists** as a
 stable direction — identically the factorization's operator component. It **causally controls** the
-answer margin: every ordered swap flips, localized at the query token, vanishing under permuted labels.
-And the factorization is **behaviorally sufficient**: a state composed from its additive parts — no
-interaction term — makes the model produce the target answer at its own competence ceiling, by
+answer margin — every swap flips, localized at the query token, vanishing under permuted labels. And
+the factorization is **behaviorally sufficient**: a state composed from its additive parts, with no
+interaction term, makes the model produce the target answer at its own competence ceiling, by
 replacement or by calibrated addition. The structure generalizes to unseen operands, rewordings, a
-second retrieval domain, and a second architecture; it separates the operation from the word that
-realizes it; it does not emerge for arithmetic or logic under our setup. The gap between shifting a
-preference and executing an operation, where it appeared, was a property of the intervention, not of
-the representation.
+second domain, and a second architecture; it separates the operation from the word that realizes it;
+it does not emerge for arithmetic or logic under our setup. The gap between shifting a preference and
+executing an operation, where it appeared, was a property of the intervention, not the representation.
 
 ## Limitations
 
@@ -514,6 +509,23 @@ salmon, penguin, deer. Relations: class, habitat, diet, covering; every cell has
 operand (single-token coverage 0.62 — multi-token answers like *carnivore* depress the greedy ceiling
 but not the first-token margin metric); three paraphrase frames mirror the country domain; grid in
 `data/animals.json`, authoring gate in `build_op_datasets.py`.
+
+**The generation audit (full table, §4.2).** 1.7B relations, 224 cells/condition, k = 8 greedy, raw
+texts persisted in the artifact; forced choice = length-normalized sequence log-prob among the
+operand's gold answers under the same intervention:
+
+| condition | target | source | other | degraded | forced choice |
+|---|---:|---:|---:|---:|---:|
+| clean | 3.6% | 58.5% | 1.3% | 36.6% | 2.7% |
+| patch composed (μ+operand+operator) | 57.6% | 11.6% | 0.9% | 29.9% | 76.3% |
+| patch donor | 57.6% | 9.8% | 0.8% | 31.7% | 84.4% |
+| add band α=4 (overdose) | 0.4% | 0.0% | 4.9% | 94.6% | 80.4% |
+| add band α=0.1 (calibrated) | 59.4% | 0.9% | 1.3% | 38.4% | 87.5% |
+| add one layer, query, α=1 | 40.6% | 21.9% | 2.2% | 35.3% | 76.3% |
+
+Containment classification can also over-count (2–5% of cells contain both target and source — "the
+Swedish krona" contains demonym-"Swedish" as a modifier); worst-case reclassification moves target
+rates by ≤ 5 points.
 
 **Cross-architecture replication (full table, §4.7).**
 

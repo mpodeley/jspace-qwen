@@ -126,15 +126,15 @@ def longtable_to_table(tex: str) -> str:
          "does; the interaction term is not needed. \"Held-out cell\" rebuilds the "
          "components without ever seeing the target cell; \"wrong operand\" "
          "redirects the answer to the swapped operand."),
-        (r"permuted labels", "The null battery (1.7B, $\\alpha=4$). Semantic nulls "
-         "-- permuted relation labels and random directions inside the operator "
-         "subspace -- abolish the effect; structural probes remain nonzero for "
-         "mechanistically explained reasons (\\S4.1)."),
-        (r"sentence-initial \(wrong\)", "Where the vector must land (1.7B, "
+        (r"permuted labels \(per-operand\)", "The null battery (1.7B, $\\alpha=4$). "
+         "Semantic nulls -- permuted relation labels and random directions inside "
+         "the operator subspace -- abolish the effect; structural probes remain "
+         "nonzero for mechanistically explained reasons (\\S4.1)."),
+        (r"wrong \(t = 0\)", "Where the vector must land (1.7B, "
          "$\\alpha=4$): position $\\times$ layer scope, with the metrics flips "
-         "hide. Ranks are medians over 224 cells."),
-        (r"suffice to generate", "The paper's claims, each with its main evidence, "
-         "the control that could kill it, and its scope."),
+         "hide. Ranks are medians over 224 cells; clean-baseline rank 570."),
+        (r"reading-position control", "The paper's claims, each with its main "
+         "evidence, the control that could kill it, and its scope."),
     ]
 
     def repl(m):
@@ -155,12 +155,16 @@ def longtable_to_table(tex: str) -> str:
             cap = next((c for pat, c in CAPTIONS if re.search(pat, body)), "")
             captex = f"\\caption{{{cap}}}\n" if cap else ""
             return ("\\begin{table*}[t]\n\\centering\\small\n"
+                    "\\setlength{\\tabcolsep}{4pt}\n"
+                    "\\resizebox{\\textwidth}{!}{%\n"
                     f"\\begin{{tabular}}{{{colspec}}}\n{body.strip()}\n"
-                    f"\\end{{tabular}}\n{captex}\\end{{table*}}")
-        # narrow: keep inline exactly where the prose introduces it
+                    f"\\end{{tabular}}}}\n{captex}\\end{{table*}}")
+        # narrow: keep inline exactly where the prose introduces it, scaled to
+        # the column so a 5-column row can never overflow
         return ("\\begin{table}[H]\n\\centering\\small\n"
+                "\\resizebox{\\columnwidth}{!}{%\n"
                 f"\\begin{{tabular}}{{{colspec}}}\n{body.strip()}\n"
-                "\\end{tabular}\n\\end{table}")
+                "\\end{tabular}}\n\\end{table}")
     return re.sub(
         r"\\begin\{longtable\}\[\]\{@\{\}(\w+)@\{\}\}(.*?)\\end\{longtable\}",
         repl, tex, flags=re.S)

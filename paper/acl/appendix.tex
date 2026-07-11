@@ -54,11 +54,45 @@ but not the first-token margin metric); three paraphrase frames mirror
 the country domain; grid in \texttt{data/animals.json}, authoring gate
 in \texttt{build\_op\_datasets.py}.
 
+\textbf{The generation audit (full table, \S{}4.2).} 1.7B relations, 224
+cells/condition, k = 8 greedy, raw texts persisted in the artifact;
+forced choice = length-normalized sequence log-prob among the
+operand\textquotesingle s gold answers under the same intervention:
+
+{
+\begin{table*}[t]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+condition & target & source & other & degraded & forced choice \\
+\midrule
+clean & 3.6\% & 58.5\% & 1.3\% & 36.6\% & 2.7\% \\
+patch composed (\ensuremath{\mu}+operand+operator) & 57.6\% & 11.6\% & 0.9\% & 29.9\% &
+76.3\% \\
+patch donor & 57.6\% & 9.8\% & 0.8\% & 31.7\% & 84.4\% \\
+add band \ensuremath{\alpha}=4 (overdose) & 0.4\% & 0.0\% & 4.9\% & 94.6\% & 80.4\% \\
+add band \ensuremath{\alpha}=0.1 (calibrated) & 59.4\% & 0.9\% & 1.3\% & 38.4\% &
+87.5\% \\
+add one layer, query, \ensuremath{\alpha}=1 & 40.6\% & 21.9\% & 2.2\% & 35.3\% & 76.3\% \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+}
+
+Containment classification can also over-count (2--5\% of cells contain
+both target and source --- "the Swedish krona" contains
+demonym-"Swedish" as a modifier); worst-case reclassification moves
+target rates by \ensuremath{\leq} 5 points.
+
 \textbf{Cross-architecture replication (full table, \S{}4.7).}
 
 {
 \begin{table*}[t]
 \centering\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
 measure & Qwen3-1.7B & Qwen3-8B & \textbf{Gemma-2-9B} \\
@@ -73,7 +107,7 @@ interaction (fusion) & 9\% & 13\% & \textbf{6.8\%} \\
 exponent-free marker (clean \ensuremath{\to} +v) & -3.6 \ensuremath{\to} +12.5 & -2.9 \ensuremath{\to} +8.1 &
 \textbf{-3.0 \ensuremath{\to} +8.5} \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \caption{Cross-architecture replication: every signature reproduces on Gemma-2-9B (logit units are not comparable across architectures; compare flip rates and variance shares).}
 \end{table*}
 }
@@ -93,6 +127,8 @@ Contrast vs. matched-norm random with operator-level cluster-bootstrap
 {
 \begin{table*}[t]
 \centering\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrr}
 \toprule
 condition & contrast {[}95\% CI{]} & flip fraction \\
@@ -105,7 +141,7 @@ wrong layer (early band) & +9.77 {[}+5.2, +13.3{]} & 1.00 \\
 other-relation direction & +11.09 {[}+6.7, +17.1{]} & 0.80 \\
 shuffled answers & +21.12 {[}+11.2, +32.2{]} & 1.00 \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \caption{The null battery (1.7B, $\alpha=4$). Semantic nulls -- permuted relation labels and random directions inside the operator subspace -- abolish the effect; structural probes remain nonzero for mechanistically explained reasons (\S4.1).}
 \end{table*}
 }
@@ -146,6 +182,8 @@ and operator-set collinearity for the three operator families:
 {
 \begin{table*}[t]
 \centering\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{llr}
 \toprule
 cut & held-out generalization (1.7B / 8B) & operator-set collinearity
@@ -157,7 +195,7 @@ add-N (operator = addend) & 5/12 \textperiodcentered{} 6/12 (+0.10 / +0.05) & 0.
 \texttt{+\ \ensuremath{\times}\ -} (operator = function) & 2/6 \textperiodcentered{} 1/6 (-0.43 / -0.55) &
 0.64 \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \caption{Reconciliation with the add-N cut: the linear-parameter family sits between relations and true two-operand arithmetic.}
 \end{table*}
 }

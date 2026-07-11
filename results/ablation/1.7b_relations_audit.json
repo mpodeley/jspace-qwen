@@ -1,0 +1,78 @@
+{
+  "clean": {
+    "target": 0.03571428571428571,
+    "source": 0.5848214285714286,
+    "other_operand": 0.0,
+    "other_relation": 0.013392857142857142,
+    "degraded": 0.36607142857142855,
+    "forced_choice_target": 0.026785714285714284,
+    "n": 224
+  },
+  "patch composed": {
+    "target": 0.5758928571428571,
+    "source": 0.11607142857142858,
+    "other_operand": 0.0,
+    "other_relation": 0.008928571428571428,
+    "degraded": 0.29910714285714285,
+    "forced_choice_target": 0.7633928571428571,
+    "n": 224
+  },
+  "patch donor": {
+    "target": 0.5758928571428571,
+    "source": 0.09821428571428571,
+    "other_operand": 0.004464285714285714,
+    "other_relation": 0.004464285714285714,
+    "degraded": 0.3169642857142857,
+    "forced_choice_target": 0.84375,
+    "n": 224
+  },
+  "add band a=4": {
+    "target": 0.004464285714285714,
+    "source": 0.0,
+    "other_operand": 0.049107142857142856,
+    "other_relation": 0.0,
+    "degraded": 0.9464285714285714,
+    "forced_choice_target": 0.8035714285714286,
+    "n": 224
+  },
+  "add band a=0.1": {
+    "target": 0.59375,
+    "source": 0.008928571428571428,
+    "other_operand": 0.008928571428571428,
+    "other_relation": 0.004464285714285714,
+    "degraded": 0.38392857142857145,
+    "forced_choice_target": 0.875,
+    "n": 224
+  },
+  "add 1L query a=1": {
+    "target": 0.40625,
+    "source": 0.21875,
+    "other_operand": 0.0,
+    "other_relation": 0.022321428571428572,
+    "degraded": 0.35267857142857145,
+    "forced_choice_target": 0.7633928571428571,
+    "n": 224
+  },
+  "_meta": {
+    "tag": "1.7b",
+    "domain": "relations",
+    "k": 8,
+    "ws": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "mid_layer": 17,
+    "note": "class = substring taxonomy on k-token greedy text (raw texts persisted); forced choice = length-normalized full-sequence log-prob among the operand's gold answers, under the intervention"
+  }
+}

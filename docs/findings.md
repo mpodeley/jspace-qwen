@@ -486,6 +486,34 @@ animals, tokenizer-screened by `build_op_datasets.py --only animals`, 3 paraphra
 
 Artifacts: `1.7b_animals_{operator_swap,heldout,templates,nulls,minimal,patch_decomp,positions,dose}*`.
 
+### 2.16 The generation audit: classify what it SAYS, and force the choice (2026-07-11, reader round)
+
+A reader pushed on the generation metrics: containment-at-k=3 and a two-token margin could miss
+syntactically adapted answers, and nobody had classified the raw generations. `op_audit.py` (1.7B
+relations, 224 cells/condition): k=8 greedy with **raw texts persisted**, a 5-way classification
+(target / source / other-operand / other-relation / degraded), and **forced choice** = length-normalized
+full-sequence log-prob among the operand's gold answers *under the same intervention*:
+
+| condition | target | source | degraded | **forced choice** |
+|---|---:|---:|---:|---:|
+| clean | 3.6% | 58.5% | 36.6% | 2.7% |
+| patch composed (μ+stem+case) | **57.6%** | 11.6% | 29.9% | 76.3% |
+| patch donor | 57.6% | 9.8% | 31.7% | 84.4% |
+| add band α=4 (old default) | 0.4% | 0.0% | **94.6%** | **80.4%** |
+| add band α=0.1 (calibrated) | **59.4%** | 0.9% | 38.4% | **87.5%** |
+| add 1 layer, query, α=1 | 40.6% | 21.9% | 35.3% | 76.3% |
+
+**Three findings.** (1) The overdose reading is *confirmed by inspection*, not assumed: at α=4 the
+generations are token loops ("dollar dollar dollar…", "出处出处…") — category often correct, fluency
+destroyed — NOT surface variants the metric missed. (2) At the calibrated dose, additive steering's
+free generation (59.4% fluent target) matches the composed patch (57.6%) and the clean prompt's own
+source-rate (58.5%): full behavioral sufficiency under the strictest reading. (3) **Forced choice
+dissociates information from fluency**: the target wins among the gold answers at 80.4% *even at the
+overdose* — overdosing destroys the generation manifold, not the encoded preference. Caveat, both
+ways: containment can also over-count (2–5% of cells contain target AND source — "the Swedish krona"
+contains demonym-"Swedish" as a modifier); worst-case reclassification moves target rates by ≤5 points
+and changes nothing. Artifacts: `1.7b_relations_audit.parquet` (with raw texts) + `.json`.
+
 ---
 
 ## The open interpretive question (deliberately unresolved)
