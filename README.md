@@ -37,4 +37,4 @@ causal structure, reported with its controls.
 }
 ```
 
-MIT license. Contact: mpodeley@gmail.com
+MIT license. Author: Matias Podeley, independent researcher — mpodeley@gmail.com
