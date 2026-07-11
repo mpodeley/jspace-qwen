@@ -1,11 +1,11 @@
-# jspace-qwen — Causal operator–operand factorization in Qwen3
+# jspace-qwen — Causal operator–operand factorization in the residual stream of LLMs
 
-Relational operations (*currency-of*, *capital-of*, …) are represented in Qwen3's residual
-stream as **causally manipulable operator directions** that factorize from the operand,
-transfer to held-out entities and unseen prompt frames, and are distinct from the word that
-realizes them. Arithmetic and comparison-logic operators do **not** factorize — the
-structure is specific to relational retrieval. All experiments run on a single AMD Strix
-Halo APU (no CUDA, no cloud).
+Relational operations (*currency-of*, *capital-of*, …) are represented in the residual
+stream of Qwen3-1.7B/8B and Gemma-2-9B as **causally manipulable operator directions** that
+factorize from the operand, transfer to held-out entities, unseen prompt frames, and fully
+re-lexicalized wordings, and are distinct from the word that realizes them. Arithmetic and
+comparison-logic operators do **not** factorize — the structure is specific to relational
+retrieval. All experiments run on a single AMD Strix Halo APU (no CUDA, no cloud).
 
 - **New to all this?** [The paper, explained simply](https://mpodeley.github.io/jspace-qwen/explained/)
   ([español](https://mpodeley.github.io/jspace-qwen/es/explained/)) — for any curious reader.
@@ -13,7 +13,8 @@ Halo APU (no CUDA, no cloud).
 - **Interactive explorer** (3Blue1Brown-style, real model data):
   https://mpodeley.github.io/jspace-qwen/explorer/
 - **Reproduce:** [docs/reproduce.md](docs/reproduce.md) — env, seeds, exact checkpoint ids
-  (`Qwen/Qwen3-1.7B`, `Qwen/Qwen3-8B`), every figure regenerable from `scripts/`.
+  (`Qwen/Qwen3-1.7B`, `Qwen/Qwen3-8B`, `google/gemma-2-9b`), every figure regenerable from
+  `scripts/`.
 - **Preprint builds:** `paper/` (single-column) and `paper/acl/` (ACL two-column).
 
 Headline numbers (operator-level cluster-bootstrap 95% CIs): all-pairs swap contrast
@@ -28,7 +29,7 @@ causal structure, reported with its controls.
 
 ```bibtex
 @misc{podeley2026operator,
-  title  = {Causal Operator--Operand Factorization in the Residual Stream of Qwen3},
+  title  = {Causal Operator--Operand Factorization in the Residual Stream of LLMs},
   author = {Podeley, Matias},
   year   = {2026},
   url    = {https://mpodeley.github.io/jspace-qwen/},

@@ -219,7 +219,7 @@ Three things, replicating 1.7B→8B:
 - **A pure desinence is isolable.** `v = mean_country[h(language) − h(demonym)]`,
   built where the two cases emit the SAME word (Italian), cancels the exponent and
   leaves a bare case marker. Added to a currency prompt it installs the relation
-  (logit(language) − logit(currency): 1.7B −3.7 → +12.5; 8B −2.9 → +8.1) — the
+  (logit(language) − logit(currency): 1.7B −3.6 → +12.5; 8B −2.9 → +8.1) — the
   ending, stripped of its form, is still causally functional.
 
 ### 2.5 Cross-domain: the factorization is specific to relations (`op_core.py`)
@@ -331,8 +331,8 @@ the lexical confound is closed.
 ### 2.10 Minimal band, activation patching, and margins vs. generation (2026-07-11)
 
 `op_minimal.py` (1.7B): a **single mid-workspace layer** flips 20/20 margins (+6.8 [+3.0, +8.9]) at
-4.5× lower off-task KL (4.6 vs 20.6 nats); half band +12.8 at 10.9 nats. Greedy honesty check: the
-additive injection at ANY width does **not** make the model emit answer_B in 3 greedy tokens (0%),
+4.4× lower off-task KL (4.6 vs 20.6 nats); half band +12.8 at 10.9 nats. Greedy honesty check: the
+additive injection at ANY width essentially never makes the model emit answer_B in 3 greedy tokens (≤0.5%),
 while a **query-position activation patch** (real donor state, one position) does — **51% vs the
 model's own 53% clean accuracy** (ceiling). Random control 0%. Reading: the averaged difference
 direction rotates relative preference; the state-level patch reroutes the actual answer. Artifacts:
