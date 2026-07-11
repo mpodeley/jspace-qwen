@@ -91,7 +91,10 @@ the interaction term) — not an additional empirical claim.
 ## 3. Method
 
 **Setup.** Qwen3-1.7B and 8B, run on a single AMD Strix Halo APU (see [setup](setup.md); an int8 path
-keeps larger models in range). A relation is rendered into a uniform template `"The {op} of {a} is"`.
+keeps larger models in range). A relation is rendered into a template; the canonical frame is
+`"The {op} of {a} is"`, and §4.4 additionally uses two paraphrase frames (question–answer and
+discourse-prefixed) that hold the `{op} of {a}` unit fixed while varying the surrounding frame, all
+ending in *is* so answer scoring is comparable.
 Reading position is the query token unless stated; the depth "workspace" band (38–92% of layers) is where
 the J-space paper locates the global workspace and where we build operator directions.
 
@@ -190,12 +193,22 @@ in Latin declension.
 which emit the identical word "Italian". A desinence built precisely where the two **share** their output
 word (so the word cancels) still installs the relation: the case is separable from the word that realizes it.*
 
-### 4.4 Operators generalize to held-out operands
+### 4.4 Operators generalize to held-out operands and across prompt frames
 
-`v(op)` built on 6 operands and applied to the 6 held-out operands still flips **20/20** swaps — a
-genuine, transferable operator, not interpolation. Operator-level cluster bootstrap on the held-out
-contrast: **+20.0 [+10.8, +29.5]** at 1.7B, **+22.8 [+14.0, +31.0]** at 8B; flip fraction **1.00
-[1.00, 1.00]** at both.
+**Held-out operands.** `v(op)` built on 6 operands and applied to the 6 held-out operands still flips
+**20/20** swaps — a genuine, transferable operator, not interpolation. Operator-level cluster bootstrap
+on the held-out contrast: **+20.0 [+10.8, +29.5]** at 1.7B, **+22.8 [+14.0, +31.0]** at 8B; flip
+fraction **1.00 [1.00, 1.00]** at both.
+
+**Cross-frame transfer (paraphrase robustness).** To rule out template echo we render every relation in
+three paraphrase frames — declarative (`The {op} of {a} is`), question–answer (`Q: What is the {op} of
+{a}? A: It is`), and discourse-prefixed (`It is well known that the {op} of {a} is`) — and test every
+build→test frame combination: `v(op)` built on frame *i*, all-pairs swap run on frame *j*. On 1.7B, **all
+9 combinations flip 20/20** (180/180; off-diagonal transfer 120/120, mean contrast **+24.2**), and the
+contrast is *frame-invariant to two decimals*: directions built on the declarative frame produce +22.6 on
+all three test frames. The clean baselines do shift across frames (−7.0 / −8.1 / −7.9), confirming the
+frames are genuinely different prompts; the operator's causal effect does not. The operator direction is
+a property of the **relation**, not of the prompt that elicits it.
 
 ### 4.5 The factorization is domain-specific (arithmetic and logic do not)
 

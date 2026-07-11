@@ -91,7 +91,8 @@ def load_domain(name: str) -> Domain:
     return Domain(name=m.get("domain", name), template=m["template"],
                   operators=m["operators"], operand_slots=m.get("operand_slots", ["a"]),
                   items=d["items"], desinence_pair=m.get("desinence_pair"),
-                  answer_leading_space=m.get("answer_leading_space", True))
+                  answer_leading_space=m.get("answer_leading_space", True),
+                  templates=m.get("templates"))
 
 
 def guard_tokenization(dom: Domain, tok) -> dict:
@@ -164,33 +165,44 @@ def _cos(a, b):
 
 # --- operator directions -----------------------------------------------------
 
-def op_dirs(model, ws, dom: Domain, operands=None):
-    """v(op)[layer] = mean over operands of (op's residual - operand's mean over ops).
-    The function-vector construction, generalized. `operands` restricts the build
-    set (for held-out generalization)."""
+def op_dirs(model, ws, dom: Domain, operands=None, templates=None):
+    """v(op)[layer] = mean over (operand, template) cells of (op's residual - the
+    cell's mean over ops). The function-vector construction, generalized. `operands`
+    restricts the build set (held-out generalization); `templates` (list of indices
+    into dom.templates, default [0]) restricts the paraphrase frames used to build."""
     ops = dom.op_keys
     operands = operands or dom.operand_keys
-    R = {(o, k): resid(model, ws, dom.render(o, k)) for o in operands for k in ops}
+    tpls = templates or [0]
+    R = {(o, k, t): resid(model, ws, dom.render(o, k, t))
+         for o in operands for k in ops for t in tpls}
     dev = next(iter(R.values()))[ws[0]].device
     v = {k: {l: torch.zeros(model.d_model, device=dev) for l in ws} for k in ops}
+    cells = len(operands) * len(tpls)
     for o in operands:
-        for l in ws:
-            mean_l = sum(R[(o, k)][l] for k in ops) / len(ops)
-            for k in ops:
-                v[k][l] += (R[(o, k)][l] - mean_l) / len(operands)
+        for t in tpls:
+            for l in ws:
+                mean_l = sum(R[(o, k, t)][l] for k in ops) / len(ops)
+                for k in ops:
+                    v[k][l] += (R[(o, k, t)][l] - mean_l) / cells
     return v
 
 
 def measure_swaps_long(model, ws, dom: Domain, tok, seed=0, alpha=4.0, operands=None,
-                       build_operands=None):
-    """All-pairs operator swap, one row PER (pair, operand): add alpha*(v[to]-v[frm])
-    to a `frm` prompt and read the logit shift toward the `to` answer, vs a
-    matched-norm random control. Long form is the substrate for distributions and
-    cluster-bootstrap CIs; `measure_swaps` aggregates it to per-pair means. If
-    build_operands is set, v(op) is built from those and tested on `operands`
-    (held-out generalization)."""
+                       build_operands=None, templates=None, build_templates=None,
+                       dirs=None):
+    """All-pairs operator swap, one row PER (pair, operand, template): add
+    alpha*(v[to]-v[frm]) to a `frm` prompt and read the logit shift toward the `to`
+    answer, vs a matched-norm random control. Long form is the substrate for
+    distributions and cluster-bootstrap CIs; `measure_swaps` aggregates it to
+    per-pair means. If build_operands is set, v(op) is built from those and tested
+    on `operands` (held-out-operand generalization). If build_templates differs from
+    `templates`, v(op) is built on one paraphrase frame and tested on another
+    (cross-template transfer). Pass precomputed `dirs` (from op_dirs) to reuse the
+    same operator directions across several test conditions."""
     import pandas as pd
-    v = op_dirs(model, ws, dom, build_operands)
+    tpls = templates or [0]
+    v = dirs if dirs is not None else op_dirs(
+        model, ws, dom, build_operands, build_templates or tpls)
     ops = dom.op_keys
     test = operands or dom.operand_keys
     g = torch.Generator().manual_seed(seed)
@@ -206,14 +218,16 @@ def measure_swaps_long(model, ws, dom: Domain, tok, seed=0, alpha=4.0, operands=
             af, at = dom.answer_tok(tok, o, frm), dom.answer_tok(tok, o, to)
             if af == at:
                 continue  # this operand can't distinguish from/to (e.g. AND=OR on TT)
-            p = dom.render(o, frm)
-            L0, Ls, Lr = (final_logits(model, p), final_logits(model, p, dv),
-                          final_logits(model, p, rv))
-            rows.append({"from": frm, "to": to, "operand": o,
-                         "clean": float(L0[at] - L0[af]),
-                         "swap": float(Ls[at] - Ls[af]),
-                         "random": float(Lr[at] - Lr[af])})
-    return pd.DataFrame(rows, columns=["from", "to", "operand", "clean", "swap", "random"])
+            for t in tpls:
+                p = dom.render(o, frm, t)
+                L0, Ls, Lr = (final_logits(model, p), final_logits(model, p, dv),
+                              final_logits(model, p, rv))
+                rows.append({"from": frm, "to": to, "operand": o, "template": t,
+                             "clean": float(L0[at] - L0[af]),
+                             "swap": float(Ls[at] - Ls[af]),
+                             "random": float(Lr[at] - Lr[af])})
+    return pd.DataFrame(rows, columns=["from", "to", "operand", "template",
+                                       "clean", "swap", "random"])
 
 
 def measure_swaps(model, ws, dom: Domain, tok, seed=0, alpha=4.0, operands=None,
