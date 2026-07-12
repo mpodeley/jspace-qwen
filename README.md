@@ -11,6 +11,8 @@ old "steering can't generate" result was an overdose artifact — at the calibra
 generates at ceiling too. Arithmetic and comparison-logic operators do **not** factorize
 under this setup. All experiments run on a single AMD Strix Halo APU (no CUDA, no cloud).
 
+- **Showcase site (plain-language, EN/ES): https://mpodeley.github.io/assembled-thought/** —
+  this repo remains the code & reproducibility home.
 - **New to all this?** [The paper, explained simply](https://mpodeley.github.io/jspace-qwen/explained/)
   ([español](https://mpodeley.github.io/jspace-qwen/es/explained/)) — for any curious reader.
 - **Site / paper / evidence log:** https://mpodeley.github.io/jspace-qwen/
