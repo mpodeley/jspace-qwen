@@ -19,7 +19,7 @@ disparó la **desinencia pura** y un marcador con la palabra cancelada instala l
         style="width:100%;height:1180px;border:1px solid #ddd;border-radius:12px"
         loading="lazy"></iframe>
 
-> Página completa: [abrir el explorador directo](../../interactive/declension.html). Enlaces
-> directos: [declinación](../../interactive/declension.html#0) ·
-> [inyección](../../interactive/declension.html#1) ·
-> [sincretismo](../../interactive/declension.html#2).
+> Página completa: [abrir el explorador directo](interactive/declension.html). Enlaces
+> directos: [declinación](interactive/declension.html#0) ·
+> [inyección](interactive/declension.html#1) ·
+> [sincretismo](interactive/declension.html#2).
