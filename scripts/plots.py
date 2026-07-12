@@ -536,7 +536,7 @@ def fig_op_patch(tag: str = "1.7b"):
         ax.text(v + 0.012, i, f"{v:.0%}", va="center", fontsize=9.5, color=INK)
     ax.set_yticks(y, order, fontsize=9.5)
     ax.set_xlim(0, max(max(em), meta["clean_exact_from"]) * 1.28)
-    ax.set_xlabel("greedy exact match (says the target answer)")
+    ax.set_xlabel("target contained in 3-token greedy continuation")
     ax.set_title("Behavioral sufficiency: does the model SAY it?",
                  fontsize=10.5, loc="left")
     ax.grid(axis="y", visible=False)

@@ -133,8 +133,12 @@ the operator--operand grid through one template gives, at each
 \textbf{Operator direction \ensuremath{\equiv} factorization component.} For operator
 \texttt{k},
 \texttt{v\_\ensuremath{\ell}(k)\ =\ mean\_o{[}\ h\_\{\ensuremath{\ell},-1\}(o,\ k)\ -\ mean\_\{k\textquotesingle{}\}\ h\_\{\ensuremath{\ell},-1\}(o,\ k\textquotesingle{})\ {]}}
---- one direction \textbf{per layer} of the workspace band (13 layers
-per model), the function-vector construction. This is
+--- one direction \textbf{per layer}, built from the \textbf{canonical
+frame only} (the cross-frame experiment of \S{}4.5 builds a separate
+direction per frame). Layers: \textasciitilde25 evenly spaced source
+layers span each model\textquotesingle s depth; the 38--92\% "workspace"
+band --- where interventions act --- retains \textbf{13 of them in every
+model} (exact indices in Appendix A). This construction is
 \emph{algebraically identical} to the operator main effect of the
 two-way factorization below
 (\texttt{b\_\ensuremath{\ell}(k)\ =\ mean\_o\ h\_\{\ensuremath{\ell},-1\}(\textperiodcentered{},k)\ -\ \ensuremath{\mu}\_\ensuremath{\ell}}), and we verify
@@ -367,31 +371,33 @@ full donor (\ensuremath{\mu} + both + inter) & 50.9\% & 12.5\% & 1.8\% & \textbf
 \bottomrule
 \end{tabular}
 \end{adjustbox}
-\caption{Decomposing the donor activation (1.7B, 224 cells; clean greedy ceiling 53\%): a state composed from the factorization's additive parts makes the model emit the target answer as well as the real donor does; the interaction term is not needed. "Held-out cell" rebuilds the components without ever seeing the target cell; "wrong operand" redirects the answer to the swapped operand.}
+\caption{Decomposing the donor activation (1.7B, 224 cells; clean ceiling 53\%). Two results: the in-grid additive reconstruction shows no detectable difference from the real donor, and the leave-one-cell-out composition (components never saw the target cell) retains substantial generative sufficiency; interaction-only remains near the magnitude control, and the wrong-operand composition redirects the answer to the swapped operand.}
 \end{table*}
 }
 
-\textbf{The donor carries nothing detectable that the additive parts
-don\textquotesingle t.} The paired per-cell difference composed - donor
-is \textbf{+0.9 pp, 95\% CI {[}-6.9, +8.3{]}} at 1.7B (51.8\% vs.
-50.9\%; clean ceiling 53\%) and -3.1 pp {[}-12.5, +5.2{]} at 8B (62.1\%
-vs. 65.2\%; ceiling 68\%); adding the interaction term changes nothing
-detectable (-0.9 pp {[}-8.3, +6.9{]}; interaction \emph{alone}: 7.1\%,
-near the 4.5\% magnitude control). Honest limit: with five operator
-clusters a formal \ensuremath{\pm}5 pp equivalence test is underpowered --- the claim
-is "no detectable gap," not certified equivalence. Two controls close
-the loopholes. A \textbf{leave-one-cell-out} reconstruction, built
-\emph{without ever seeing the target cell}, still generates at 35.7\%
-(8B: 50.4\%) --- composition, not leakage --- though genuinely below the
-donor (paired -15 pp, CI excluding zero at 8B). And a \textbf{wrong
-operand\textquotesingle s} component redirects the answer to \emph{that}
-operand (34.4\% says-other vs. 1.8\% baseline; 8B: 48.2\%): the operator
-selects the relation, the operand selects whose answer.
+\textbf{Two results, stated separately.} \emph{In-grid reconstruction:}
+the paired per-cell difference composed - donor is \textbf{+0.9 pp, 95\%
+CI {[}-6.9, +8.3{]}} at 1.7B (51.8\% vs. 50.9\%; clean ceiling 53\%) and
+-3.1 pp {[}-12.5, +5.2{]} at 8B (62.1\% vs. 65.2\%; ceiling 68\%) --- no
+detectable difference from the donor --- and adding the interaction term
+changes nothing detectable (-0.9 pp {[}-8.3, +6.9{]}; interaction
+\emph{alone}: 7.1\%, near the 4.5\% magnitude control). Its components,
+however, partially saw the target cell. \emph{Leave-one-cell-out
+composition} --- components built \emph{without ever seeing the target
+cell} --- is the fully generalizable result: it retains substantial
+generative sufficiency, 35.7\% (8B: 50.4\%), though genuinely below the
+donor (paired -15 pp, CI excluding zero at 8B). Honest limit: with five
+operator clusters a formal \ensuremath{\pm}5 pp equivalence test is underpowered ---
+"no detectable gap," not certified equivalence. Specificity: a
+\textbf{wrong operand\textquotesingle s} component redirects the answer
+to \emph{that} operand (34.4\% says-other vs. 1.8\% baseline; 8B:
+48.2\%) --- the operator selects the relation, the operand selects whose
+answer.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{op_patch}
-\caption{Decomposition ladder: short-decode containment and margin change for each partial reconstruction of the donor activation. The additive composition matches the full donor at the model\textquotesingle s clean ceiling; interaction-only and magnitude controls do nothing; the held-out-cell reconstruction and the wrong-operand redirect close the leakage and specificity loopholes.}
+\caption{Decomposition ladder: short-decode containment and margin change for each partial reconstruction of the donor activation. Two results: the in-grid additive composition shows no detectable difference from the real donor, and the leave-one-cell-out composition retains substantial generative sufficiency; interaction-only remains near the magnitude control, and the wrong-operand composition redirects the answer.}
 \end{figure*}
 
 \textbf{Sufficiency by steering, at the calibrated dose.} Since

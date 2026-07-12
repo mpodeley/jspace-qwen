@@ -24,13 +24,19 @@ Whole-word single-token coverage: 0.92 (Qwen3 BPE), 0.95 (Gemma
 SentencePiece).
 
 \textbf{Directions, interventions, and controls.}
-\texttt{v(op){[}layer{]}} is the mean over (operand, frame) cells of the
-op\textquotesingle s residual minus that cell\textquotesingle s mean
-over ops, computed at \textasciitilde25 evenly spaced source layers
-restricted to the 38--92\% depth band. Interventions add
-\texttt{\ensuremath{\alpha}\ \textperiodcentered{}\ (v(to)\ -\ v(from))} at every position of the band (\ensuremath{\alpha} = 4
-unless swept). The matched-norm control draws one Gaussian vector per
-layer and rescales the band-concatenated stack to exactly the injected
+\texttt{v(op){[}layer{]}} is the mean over operand cells --- canonical
+frame only; the cross-frame experiment (\S{}4.5) builds one direction per
+frame --- of the op\textquotesingle s residual minus that
+cell\textquotesingle s mean over ops. Layer selection: 25 evenly spaced
+source layers per model, restricted to the 38--92\% workspace band,
+which retains 13 layers in each model. Exact band indices ---
+\textbf{Qwen3-1.7B (28 layers):} 11--18, 20--24; \textbf{Qwen3-8B (36):}
+14, 16, 17, 18, 20, 21, 23, 24, 26, 27, 28, 30, 31; \textbf{Gemma-2-9B
+(42):} 17, 18, 20, 22, 23, 25, 27, 28, 30, 32, 33, 35, 37. Interventions
+add \texttt{\ensuremath{\alpha}\ \textperiodcentered{}\ (v(to)\ -\ v(from))} at every position of the band (\ensuremath{\alpha}
+= 4 unless swept; position-restricted variants in \S{}4.1). The
+matched-norm control draws one Gaussian vector per layer and rescales
+the band-concatenated stack to exactly the injected
 difference\textquotesingle s norm. Clean mean margins
 \texttt{logit(to)\ -\ logit(from)} are \ensuremath{\approx} -7 to -8 across models and
 frames; per-operand values for every experiment are released as

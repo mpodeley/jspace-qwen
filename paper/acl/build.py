@@ -124,11 +124,12 @@ def longtable_to_table(tex: str) -> str:
         (r"read position", "Two-way ANOVA of the workspace state: variance shares "
          "by read position (1.7B / 8B)."),
         (r"full donor", "Decomposing the donor activation (1.7B, 224 cells; clean "
-         "greedy ceiling 53\\%): a state composed from the factorization's additive "
-         "parts makes the model emit the target answer as well as the real donor "
-         "does; the interaction term is not needed. \"Held-out cell\" rebuilds the "
-         "components without ever seeing the target cell; \"wrong operand\" "
-         "redirects the answer to the swapped operand."),
+         "ceiling 53\\%). Two results: the in-grid additive reconstruction shows "
+         "no detectable difference from the real donor, and the leave-one-cell-out "
+         "composition (components never saw the target cell) retains substantial "
+         "generative sufficiency; interaction-only remains near the magnitude "
+         "control, and the wrong-operand composition redirects the answer to the "
+         "swapped operand."),
         (r"permuted labels \(per-operand\)", "The null battery (1.7B, $\\alpha=4$). "
          "Semantic nulls -- permuted relation labels and random directions inside "
          "the operator subspace -- abolish the effect; structural probes remain "

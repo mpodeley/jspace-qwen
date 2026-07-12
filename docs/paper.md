@@ -125,9 +125,12 @@ attention's Q). Rendering the operator–operand grid through one template gives
 family of states `h_{ℓ,t}(o, k)`.
 
 **Operator direction ≡ factorization component.** For operator `k`,
-`v_ℓ(k) = mean_o[ h_{ℓ,−1}(o, k) − mean_{k'} h_{ℓ,−1}(o, k') ]` — one direction **per layer** of the
-workspace band (13 layers per model), the function-vector construction. This is *algebraically
-identical* to the operator main effect of the two-way factorization below
+`v_ℓ(k) = mean_o[ h_{ℓ,−1}(o, k) − mean_{k'} h_{ℓ,−1}(o, k') ]` — one direction **per layer**, built
+from the **canonical frame only** (the cross-frame experiment of §4.5 builds a separate direction per
+frame). Layers: ~25 evenly spaced source layers span each model's depth; the 38–92% "workspace" band —
+where interventions act — retains **13 of them in every model** (exact indices in Appendix A). This
+construction is *algebraically identical* to the operator main effect of the two-way factorization
+below
 (`b_ℓ(k) = mean_o h_{ℓ,−1}(·,k) − μ_ℓ`), and we verify the identity numerically (max relative
 deviation 8.5×10⁻⁸ across the band). Everything the paper does — steering, composing, decoding —
 manipulates this one object; the differences between experiments are differences in *how it is
@@ -265,18 +268,20 @@ full-magnitude residual). 1.7B, 224 (pair, operand) cells:
 | operator + **wrong** operand | 20.1% | 11.6% | **34.4%** | 206 | 0% |
 | full donor (μ + both + inter) | 50.9% | 12.5% | 1.8% | **2** | 31.2% |
 
-**The donor carries nothing detectable that the additive parts don't.** The paired per-cell difference
+**Two results, stated separately.** *In-grid reconstruction:* the paired per-cell difference
 composed − donor is **+0.9 pp, 95% CI [−6.9, +8.3]** at 1.7B (51.8% vs. 50.9%; clean ceiling 53%) and
-−3.1 pp [−12.5, +5.2] at 8B (62.1% vs. 65.2%; ceiling 68%); adding the interaction term changes nothing
-detectable (−0.9 pp [−8.3, +6.9]; interaction *alone*: 7.1%, near the 4.5% magnitude control). Honest
-limit: with five operator clusters a formal ±5 pp equivalence test is underpowered — the claim is "no
-detectable gap," not certified equivalence. Two controls close the loopholes. A **leave-one-cell-out**
-reconstruction, built *without ever seeing the target cell*, still generates at 35.7% (8B: 50.4%) —
-composition, not leakage — though genuinely below the donor (paired −15 pp, CI excluding zero at 8B).
-And a **wrong operand's** component redirects the answer to *that* operand (34.4% says-other vs. 1.8%
-baseline; 8B: 48.2%): the operator selects the relation, the operand selects whose answer.
+−3.1 pp [−12.5, +5.2] at 8B (62.1% vs. 65.2%; ceiling 68%) — no detectable difference from the donor —
+and adding the interaction term changes nothing detectable (−0.9 pp [−8.3, +6.9]; interaction *alone*:
+7.1%, near the 4.5% magnitude control). Its components, however, partially saw the target cell.
+*Leave-one-cell-out composition* — components built *without ever seeing the target cell* — is the
+fully generalizable result: it retains substantial generative sufficiency, 35.7% (8B: 50.4%), though
+genuinely below the donor (paired −15 pp, CI excluding zero at 8B). Honest limit: with five operator
+clusters a formal ±5 pp equivalence test is underpowered — "no detectable gap," not certified
+equivalence. Specificity: a **wrong operand's** component redirects the answer to *that* operand
+(34.4% says-other vs. 1.8% baseline; 8B: 48.2%) — the operator selects the relation, the operand
+selects whose answer.
 
-![Decomposition ladder: short-decode containment and margin change for each partial reconstruction of the donor activation. The additive composition matches the full donor at the model's clean ceiling; interaction-only and magnitude controls do nothing; the held-out-cell reconstruction and the wrong-operand redirect close the leakage and specificity loopholes.](figs/op_patch.png)
+![Decomposition ladder: short-decode containment and margin change for each partial reconstruction of the donor activation. Two results: the in-grid additive composition shows no detectable difference from the real donor, and the leave-one-cell-out composition retains substantial generative sufficiency; interaction-only remains near the magnitude control, and the wrong-operand composition redirects the answer.](figs/op_patch.png)
 
 *What the donor patch carries. Left: does the model SAY the target answer (behavioral sufficiency)?
 Right: does it prefer it (margin)? The additive composition (blue) matches the real donor (orange);
@@ -490,10 +495,14 @@ ordered operator pair, operands whose two answers collide at that token are drop
 the syncretic demonym↔language pairs; all 12 elsewhere). Whole-word single-token coverage: 0.92 (Qwen3
 BPE), 0.95 (Gemma SentencePiece).
 
-**Directions, interventions, and controls.** `v(op)[layer]` is the mean over (operand, frame) cells of
-the op's residual minus that cell's mean over ops, computed at ~25 evenly spaced source layers restricted
-to the 38–92% depth band. Interventions add `α · (v(to) − v(from))` at every position of the band
-(α = 4 unless swept). The matched-norm control draws one Gaussian vector per layer and rescales the
+**Directions, interventions, and controls.** `v(op)[layer]` is the mean over operand cells — canonical
+frame only; the cross-frame experiment (§4.5) builds one direction per frame — of the op's residual
+minus that cell's mean over ops. Layer selection: 25 evenly spaced source layers per model, restricted
+to the 38–92% workspace band, which retains 13 layers in each model. Exact band indices —
+**Qwen3-1.7B (28 layers):** 11–18, 20–24; **Qwen3-8B (36):** 14, 16, 17, 18, 20, 21, 23, 24, 26, 27,
+28, 30, 31; **Gemma-2-9B (42):** 17, 18, 20, 22, 23, 25, 27, 28, 30, 32, 33, 35, 37. Interventions add
+`α · (v(to) − v(from))` at every position of the band (α = 4 unless swept; position-restricted variants
+in §4.1). The matched-norm control draws one Gaussian vector per layer and rescales the
 band-concatenated stack to exactly the injected difference's norm. Clean mean margins
 `logit(to) − logit(from)` are ≈ −7 to −8 across models and frames; per-operand values for every
 experiment are released as long-form artifacts (`results/ablation/*_long.parquet`).
