@@ -1,0 +1,39 @@
+{
+  "tag": "8b",
+  "domain": "relations",
+  "alpha": 4.0,
+  "n_layers": 36,
+  "chance_decodability": 0.2,
+  "workspace": [
+    14,
+    16,
+    17,
+    18,
+    20,
+    21,
+    23,
+    24,
+    26,
+    27,
+    28,
+    30,
+    31
+  ],
+  "peak_decodability": {
+    "layer": 0,
+    "depth": 0.0,
+    "value": 1.0
+  },
+  "peak_case_share": {
+    "layer": 8,
+    "depth": 22.9,
+    "value": 0.8471360970632765
+  },
+  "peak_causal": {
+    "layer": 31,
+    "depth": 88.6,
+    "value": 23.088396344866073
+  },
+  "depth_gap": 88.6,
+  "bootstrap_unit": "operator (dyadic node), operands nested"
+}

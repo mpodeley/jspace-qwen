@@ -414,6 +414,10 @@ Single layer + query position: target rank 570 → 69, off-task KL 0.04. The mar
 **localized edit of the queried relation**, not a global perturbation — the reviewer's objection is
 answered directly. Artifacts: `1.7b_relations_positions.parquet` + `.json`, `_posdose.parquet`.
 
+**8B replication (evening):** query-only +32.7 ≈ all +33.2 at 63× lower off-task KL (0.35 vs 21.9);
+operand/wrong ≈ 0; single/query rank 748 → 67. The dose inverted-U reproduces at the SAME peak doses:
+band α=0.1 → 56.2%, single-layer α=1 → 45.1%. Artifacts: `8b_relations_positions*`, `8b_*_posdose`.
+
 ### 2.13 The competitive null battery: semantics is everything; the margin has parts (2026-07-11)
 
 `op_nulls.py` (1.7B relations, α=4; 20 redraws per stochastic null; the script proves its swap loop
@@ -434,6 +438,10 @@ operator-level cluster bootstrap:
 property of the extraction (same residuals, same averaging, same norms) and kills the effect entirely;
 even a random direction *inside the operator subspace* does nothing. The contrast is carried by the
 specific, correctly-labeled content.
+
+**8B replication (night):** semantic nulls even tighter at zero — per-operand +0.15 [−1.8, +3.1],
+global +0.09, subspace +0.43, vs real +26.0. The other-relation probe retains ≈half at all three data
+points: 49% (1.7B countries), 47% (1.7B animals), 52% (8B). Artifacts: `8b_relations_nulls*`.
 
 **Group B (structural probes) stay nonzero for mechanistically informative reasons**, not as confounds:
 (1) the margin decomposes like the representation does — injecting `case(other) − case(source)` keeps
@@ -464,6 +472,10 @@ mid-workspace layer" (L17, +6.8) was far below the late-band optimum — the min
 intervention is one LATE layer at the query position. Artifacts:
 `1.7b_relations_layersweep.parquet` + `.json`.
 
+**8B replication:** the same profile almost to the point — case share peaks at L8 (22.9% depth,
+84.7%), causal at L31 (88.6% depth, +23.1); decodability 100% everywhere. Artifact:
+`8b_relations_layersweep*`.
+
 ### 2.15 The animals domain: everything replicates, one floor caveat (2026-07-11)
 
 An independently curated non-geographic domain (`data/animals.json`: class/habitat/diet/covering × 12
@@ -485,6 +497,13 @@ animals, tokenizer-screened by `build_op_datasets.py --only animals`, 3 paraphra
   Sufficiency in animals is attested by margins/rank, not exact match.
 
 Artifacts: `1.7b_animals_{operator_swap,heldout,templates,nulls,minimal,patch_decomp,positions,dose}*`.
+
+**8B animals (night):** swap 12/12, contrast +25.8 [+9.8, +34.8] (sharpens over 1.7B's +18.1); the
+generation floor persists at scale (clean ceiling 8%; composed 7.6% ≈ donor 8.3% — the
+composed=donor=ceiling identity holds even at the floor, and rank still discriminates: 62 composed vs
+1670 magnitude control). Nulls replicate: per-operand −0.69 [−4.3, +3.2], subspace −1.79, global +2.47
+(CI spans 0); other-relation retains ≈half (52%) — the fourth consistent data point for the margin
+decomposition. Artifacts: `8b_animals_*`.
 
 ### 2.16 The generation audit: classify what it SAYS, and force the choice (2026-07-11, reader round)
 

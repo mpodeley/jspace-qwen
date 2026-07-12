@@ -186,21 +186,19 @@ Each experiment below tests one claim against the control that could kill it:
 |---|---|---|---|
 | a stable operator direction exists | ANOVA ~90% additive; `v(op)` ≡ main effect (§4.3) | reading-position control | 9 relations, 3 models |
 | it causally controls the margin | all-pairs swaps flip, 3 models (§4.1) | **permuted labels → 0**; subspace-random → 0 | relative preference |
-| the effect is localized | query token ≈ all positions, 60× lower KL (§4.1) | operand / sentence-initial positions ≈ 0 | 1.7B battery |
+| the effect is localized | query token ≈ all positions, 60× lower KL (§4.1) | operand / sentence-initial positions ≈ 0 | both Qwen3 scales |
 | the operator generalizes | held-out operands; re-framed, re-worded prompts (§4.5) | random ≈ 0; transfer ≈ within | relations + animals |
 | the parts **suffice to generate** | composed patch ≈ donor ≈ ceiling; calibrated steering (§4.2) | leave-one-out; wrong-operand; magnitude; interaction | greedy, this setup |
 | the factorization is domain-scoped | animals replicates; arithmetic/logic do not (§4.8) | held-out fails off-relation | our setup (§4.8) |
 
 ### 4.1 Relational operators are causally manipulable — and the effect is localized and label-specific
 
-All 20 ordered operator swaps flip the **target-vs-source logit margin** (the sign of
-`logit(answer_B) − logit(answer_A)` at the distinguishing token) while the matched-norm random control
-is ≈ 0. Under the operator-level cluster bootstrap (§3, the level that respects that pairs share
-directions), the swap−random contrast is **+22.6, 95% CI [+14.0, +32.1]** at 1.7B, **+26.0
-[+17.9, +32.8]** at 8B, and **+30.4 [+23.8, +34.8]** on Gemma-2-9B; the flip fraction is **1.00
-[1.00, 1.00]** in all three — every replicate flips every pair. Per-pair operand-bootstrap CIs never
-cross zero, and the weakest pairs are exactly the syncretic ones (demonym ↔ language, which share their
-surface form; full per-pair distributions in Appendix A).
+All 20 ordered operator swaps flip the **target-vs-source logit margin** while the matched-norm random
+control is ≈ 0. Under the operator-level cluster bootstrap (§3), the swap−random contrast is **+22.6,
+95% CI [+14.0, +32.1]** at 1.7B, **+26.0 [+17.9, +32.8]** at 8B, and **+30.4 [+23.8, +34.8]** on
+Gemma-2-9B; the flip fraction is **1.00 [1.00, 1.00]** in all three. Per-pair operand-bootstrap CIs
+never cross zero, and the weakest pairs are exactly the syncretic ones (demonym ↔ language, which share
+their surface form; per-pair distributions in Appendix A).
 
 **Where the vector has to land (1.7B, α = 4).** Injecting at the **query token alone** reproduces the
 all-position effect on the margin — at 60× lower off-task cost:
@@ -216,13 +214,15 @@ all-position effect on the margin — at 60× lower off-task cost:
 The margin effect is a **localized edit of the queried relation** — position-specific (the operand
 token and a structurally irrelevant token do essentially nothing; sign-correct 98/98/91% for the three
 effective rows vs. 4–16% for the controls) and nearly free off-task when restricted to the query
-position — not a global perturbation of processing. (Ranks are medians, clean baseline 570; n per
-condition is 224 (pair, operand) cells; the bootstrap unit is stated in §3.)
+position — not a global perturbation of processing. The battery replicates at 8B (query-only +32.7 vs.
+all-positions +33.2, at 63× lower off-task cost). (Ranks are medians, clean baseline 570; n per
+condition is 224 cells; bootstrap unit in §3.)
 
 **The label is everything.** Directions rebuilt from the *same* residuals with **permuted relation
 labels** — preserving every statistical property of the extraction while destroying its semantics —
-abolish the effect: **+0.7 [−0.8, +3.9]** per-operand, +0.6 global (20 redraws each). A random direction
-**inside the operator subspace** (right subspace, wrong content) also does nothing: +0.75 [−2.2, +3.5].
+abolish the effect: **+0.7 [−0.8, +3.9]** per-operand, +0.6 global (20 redraws each; at 8B +0.15 and
++0.09 against a real contrast of +26.0). A random direction **inside the operator subspace** (right
+subspace, wrong content) also does nothing: +0.75 [−2.2, +3.5] (8B: +0.43).
 Three further probes stay nonzero for *mechanistically informative* reasons, and decompose what the
 margin measures: an **other-relation** direction retains the shared `−v(source)` component and yields ≈
 half the effect (+11.1 — uninstalling the source is half the margin); **shuffled-answer scoring** still
@@ -233,7 +233,7 @@ correct direction at the **wrong (early) layer** retains +9.8 because residual-s
 
 **Dose–response, both signs.** The effect is a **signed causal axis**: the operator-specific shift is
 monotone in α through zero and *reverses* with the direction — +22.6 at α = +4 vs. **−21.0 at α = −4**,
-an almost exact mirror, saturating at both ends (the positive branch higher, +29 vs. −15 raw, because
+an almost exact mirror (8B: +26.0 vs. −24.5), saturating at both ends (the positive branch higher, +29 vs. −15 raw, because
 the clean margin already favors the source: a floor) — while the random control's shift (≈ +6) is flat
 in |α|, which is why every headline number is a swap − random contrast. Off-task cost grows with dose
 and breadth (7.9 → 21 nats/token band-wide vs. 0.29 at the query token). What dose does to *generation*
@@ -282,8 +282,9 @@ adding `α·(v(B) − v(A))` at the query position of one layer lands, at α = 1
 `μ + operand + operator(B) + interaction(A)` — the composed state up to a wrong interaction term. The
 dose sweep confirms it behaviorally: generation follows an **inverted-U peaked exactly at the
 on-manifold dose** — 38.4% at α = 1 for a single layer, **51.3% at α ≈ 0.1 for the 13-layer band**
-(band additions accumulate, so the band's on-manifold dose is ≈ 1/13 per layer) — while past the peak
-the margin keeps climbing (+28.9 at α = 4) as generation collapses. The earlier "steering moves margins
+(band additions accumulate, so the band's on-manifold dose is ≈ 1/13 per layer; the same peak doses
+reproduce at 8B: 45.1% and 56.2%) — while past the peak the margin keeps climbing (+28.9 at α = 4) as
+generation collapses. The earlier "steering moves margins
 but cannot generate" result was an **overdose artifact**, not an information deficit: the factorized
 representation is **compositionally sufficient**, by replacement and by calibrated addition. (At a
 single layer, `μ + operator` alone already generates at 44.6% — unpatched layers still carry the
@@ -333,10 +334,9 @@ the operator representation is not an output-word representation (§5 reads this
 
 ### 4.5 Operators generalize: held-out operands, prompt frames, wordings — and a second domain
 
-**Held-out operands.** `v(op)` built on 6 operands and applied to the 6 held-out operands still flips
-**20/20** swaps — a genuine, transferable operator, not interpolation. Operator-level cluster bootstrap
-on the held-out contrast: **+20.0 [+10.8, +29.5]** at 1.7B, **+22.8 [+14.0, +31.0]** at 8B; flip
-fraction **1.00 [1.00, 1.00]** at both.
+**Held-out operands.** `v(op)` built on 6 operands and applied to the 6 held-out still flips **20/20**
+swaps — a transferable operator, not interpolation: contrast **+20.0 [+10.8, +29.5]** at 1.7B, **+22.8
+[+14.0, +31.0]** at 8B, flip fraction 1.00 at both.
 
 **Frames and wordings.** Rendering every relation in three paraphrase frames and testing every
 build→test combination: on 1.7B **all 9 combinations flip 20/20** (180/180), *frame-invariant to two
@@ -366,8 +366,8 @@ the band framing conflates. *Trivial readability:* a held-out-operand classifier
 locates nothing. *Representation:* the ANOVA operator share peaks **early** (92% at 19% depth), decaying
 to 57%. *Causal leverage:* the single-layer swap contrast is ≈ 0 early and peaks **late** (+21.3
 [+13.8, +28.2] at 89% depth — one layer there reproduces the full band's +22.6). The two informative
-curves peak **70 depth-points apart**: where the operator is most cleanly factorized is not where
-injecting it most moves the output. This explains the wrong-layer probe of §4.1 (early additions act by
+curves peak **70 depth-points apart** (8B: 23% vs. 89% — the same profile): where the operator is most
+cleanly factorized is not where injecting it most moves the output. This explains the wrong-layer probe of §4.1 (early additions act by
 persisting into later layers) and diagnoses the mid-band layer of §4.1–4.2 as far from optimal (L17:
 +6.8 vs. L24: +21.3): being *readable*, being *the representation*, and being *causally potent* are
 three different layer profiles of one direction. (Figure in Appendix A.)

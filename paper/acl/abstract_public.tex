@@ -1,24 +1,30 @@
 How do language models represent a relational operation ---
 \emph{currency-of}, \emph{capital-of} --- as distinct from the entity it
-applies to? Across Qwen3-1.7B/8B and Gemma-2-9B, we find the operation
-is carried by a \textbf{manipulable operator direction} in the residual
-stream, largely \textbf{separable from the operand}: a two-way analysis
-of variance factorizes the mid-network state as
-\texttt{H\ \ensuremath{\approx}\ \ensuremath{\mu}\ +\ operand\ +\ operator\ +\ interaction},
-\textasciitilde90\% additive, with the operator component dominant at
-the query position. The direction is \textbf{causal}: adding
-\texttt{v(op\_B)\ -\ v(op\_A)} flips the target-vs-source logit margin
-for \textbf{all 20 ordered relation pairs in all three models} (at 1.7B
-a single mid-workspace layer suffices), while matched-norm random
-controls do nothing --- and a query-position activation patch reroutes
-the greedy answer itself at the model\textquotesingle s competence
-ceiling. It \textbf{generalizes}: directions built on half the operands
-flip the held-out half; directions built in one wording of a relation
-transfer to re-framed and fully re-lexicalized prompts; and the
-operation is separable from its \textbf{surface realization} ---
-\emph{language-of} and \emph{demonym-of} are distinct directions even
-though both emit "Italian". The factorization is \textbf{specific to
-relational retrieval}: under the identical pipeline, arithmetic and
-comparison-logic operators show 2--4\ensuremath{\times} the interaction and fail held-out
-generalization. Relational computation in these models is, to a first
-approximation, an operand plus a transplantable operator.
+applies to? We separate three levels of evidence.
+\textbf{Representation:} a two-way ANOVA factorizes the mid-network
+state as \texttt{H\ \ensuremath{\approx}\ \ensuremath{\mu}\ +\ operand\ +\ operator\ +\ interaction},
+\textasciitilde90\% additive across Qwen3-1.7B/8B and Gemma-2-9B --- and
+the steering vector is \emph{identically} the ANOVA operator component.
+\textbf{Causal influence:} adding \texttt{v(op\_B)\ -\ v(op\_A)} flips
+the target-vs-source logit margin for all ordered relation pairs in all
+three models; the query token alone matches the full-prompt effect at
+60\ensuremath{\times} lower off-task cost, and the decisive nulls --- directions rebuilt
+under \textbf{permuted relation labels}, and random directions
+\textbf{inside the operator subspace} --- abolish the effect.
+\textbf{Behavioral sufficiency:} a state \emph{composed} from the
+factorization\textquotesingle s parts,
+\texttt{\ensuremath{\mu}\ +\ operand\ +\ operator}, patched at one position, makes the
+model \emph{produce} the target answer at its own competence ceiling
+(52\% vs. 53\% clean; leave-one-out components reach 36\%, and swapping
+the operand component redirects the answer). The interaction term is
+unnecessary --- and the earlier failure of additive steering to generate
+is a \textbf{dose artifact}: at the calibrated dose the same direction
+generates at ceiling, while overdosing keeps inflating the margin as it
+pushes the state off-manifold. The structure generalizes (held-out
+operands, re-framed and re-lexicalized prompts, an independent
+animal-taxonomy domain), separates the operation from its surface
+realization (\emph{language-of} \ensuremath{\neq} \emph{demonym-of} despite both
+emitting "Italian"), and does not emerge for arithmetic or logic under
+the identical pipeline. Relational computation here is an operand plus a
+transplantable operator --- sufficient, not merely influential, where
+the answer is decided.

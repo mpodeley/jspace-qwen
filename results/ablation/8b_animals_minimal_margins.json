@@ -1,0 +1,44 @@
+{
+  "model": "8b",
+  "domain": "animals",
+  "alpha": 4.0,
+  "bands": {
+    "full band": {
+      "layers": 13,
+      "flips": "12/12",
+      "contrast": 25.79,
+      "lo": 9.8,
+      "hi": 34.76,
+      "kl_offtask": 19.227
+    },
+    "half band": {
+      "layers": 6,
+      "flips": "12/12",
+      "contrast": 15.41,
+      "lo": 9.39,
+      "hi": 20.93,
+      "kl_offtask": 17.461
+    },
+    "single layer": {
+      "layers": 1,
+      "flips": "12/12",
+      "contrast": 9.89,
+      "lo": 3.95,
+      "hi": 14.74,
+      "kl_offtask": 7.273
+    }
+  },
+  "activation_patch": {
+    "positions": 1,
+    "greedy_answerB": 0.083,
+    "clean_greedy_answerA": 0.083
+  },
+  "random_control": {
+    "greedy_answerB": 0.0
+  },
+  "greedy_by_band": {
+    "full band": 0.021,
+    "half band": 0.0,
+    "single layer": 0.021
+  }
+}

@@ -1,0 +1,327 @@
+{
+  "band/all": {
+    "n": 224,
+    "delta_margin": 33.200308663504465,
+    "delta_margin_lo": 23.59658777146112,
+    "delta_margin_hi": 41.5197265625,
+    "norm_margin": 4.3555750652456355,
+    "rank_to_clean": 748.5,
+    "rank_to": 372.0,
+    "top1": 0.017857142857142856,
+    "exact_match": 0.017857142857142856,
+    "sign_correct": 0.9910714285714286,
+    "flip_frac": 1.0,
+    "kl_ontask": 30.539491363934108,
+    "kl_offtask": 21.9375
+  },
+  "band/query": {
+    "n": 224,
+    "delta_margin": 32.67036655970982,
+    "delta_margin_lo": 23.381307547433035,
+    "delta_margin_hi": 40.877734375,
+    "norm_margin": 4.250048875429902,
+    "rank_to_clean": 748.5,
+    "rank_to": 270.0,
+    "top1": 0.03125,
+    "exact_match": 0.03125,
+    "sign_correct": 0.9910714285714286,
+    "flip_frac": 1.0,
+    "kl_ontask": 29.75958092723574,
+    "kl_offtask": 0.3532307942708333
+  },
+  "band/operand": {
+    "n": 224,
+    "delta_margin": 2.136021205357143,
+    "delta_margin_lo": 0.7953776041666666,
+    "delta_margin_hi": 3.542716471354167,
+    "norm_margin": 0.17956155346895913,
+    "rank_to_clean": 748.5,
+    "rank_to": 3281.0,
+    "top1": 0.0,
+    "exact_match": 0.0,
+    "sign_correct": 0.04017857142857143,
+    "flip_frac": 0.0,
+    "kl_ontask": 1.410701064625755,
+    "kl_offtask": 0.3360188802083333
+  },
+  "band/wrong": {
+    "n": 224,
+    "delta_margin": 1.1686662946428572,
+    "delta_margin_lo": -0.6472005208333332,
+    "delta_margin_hi": 2.5745930989583323,
+    "norm_margin": 0.15838635559188863,
+    "rank_to_clean": 748.5,
+    "rank_to": 175.5,
+    "top1": 0.0,
+    "exact_match": 0.022321428571428572,
+    "sign_correct": 0.14732142857142858,
+    "flip_frac": 0.15,
+    "kl_ontask": 1.4183545937412418,
+    "kl_offtask": 1.3714192708333335
+  },
+  "single/all": {
+    "n": 224,
+    "delta_margin": 15.364188058035714,
+    "delta_margin_lo": 9.651814778645834,
+    "delta_margin_hi": 18.061669921875,
+    "norm_margin": 1.7622798432469573,
+    "rank_to_clean": 748.5,
+    "rank_to": 665.5,
+    "top1": 0.013392857142857142,
+    "exact_match": 0.017857142857142856,
+    "sign_correct": 0.9508928571428571,
+    "flip_frac": 1.0,
+    "kl_ontask": 11.756215519138745,
+    "kl_offtask": 7.075520833333332
+  },
+  "single/query": {
+    "n": 224,
+    "delta_margin": 16.090680803571427,
+    "delta_margin_lo": 11.694742838541668,
+    "delta_margin_hi": 18.383133370535717,
+    "norm_margin": 1.7895272346650073,
+    "rank_to_clean": 748.5,
+    "rank_to": 67.0,
+    "top1": 0.0625,
+    "exact_match": 0.10714285714285714,
+    "sign_correct": 0.9553571428571429,
+    "flip_frac": 1.0,
+    "kl_ontask": 9.811282935951438,
+    "kl_offtask": 0.04931640625
+  },
+  "single/operand": {
+    "n": 224,
+    "delta_margin": 1.6828962053571428,
+    "delta_margin_lo": 0.7529134114583333,
+    "delta_margin_hi": 2.466994512648809,
+    "norm_margin": 0.15094936706572543,
+    "rank_to_clean": 748.5,
+    "rank_to": 1203.5,
+    "top1": 0.0,
+    "exact_match": 0.022321428571428572,
+    "sign_correct": 0.04017857142857143,
+    "flip_frac": 0.0,
+    "kl_ontask": 0.6561667906727442,
+    "kl_offtask": 0.06295522054036459
+  },
+  "single/wrong": {
+    "n": 224,
+    "delta_margin": 0.5258091517857143,
+    "delta_margin_lo": 0.08984375,
+    "delta_margin_hi": 0.7421875,
+    "norm_margin": 0.059562518470173034,
+    "rank_to_clean": 748.5,
+    "rank_to": 574.5,
+    "top1": 0.0,
+    "exact_match": 0.026785714285714284,
+    "sign_correct": 0.044642857142857144,
+    "flip_frac": 0.0,
+    "kl_ontask": 0.013954973926697025,
+    "kl_offtask": 0.012597401936848959
+  },
+  "_dose": [
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 0.1,
+      "exact_match": 0.5625,
+      "delta_margin": 16.972237723214285,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 0.25,
+      "exact_match": 0.10267857142857142,
+      "delta_margin": 20.070870535714285,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 0.5,
+      "exact_match": 0.0,
+      "delta_margin": 23.2655029296875,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 1.0,
+      "exact_match": 0.008928571428571428,
+      "delta_margin": 28.285435267857142,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 2.0,
+      "exact_match": 0.017857142857142856,
+      "delta_margin": 31.412510463169642,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 4.0,
+      "exact_match": 0.017857142857142856,
+      "delta_margin": 33.200308663504465,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "all",
+      "alpha": 8.0,
+      "exact_match": 0.008928571428571428,
+      "delta_margin": 34.123081752232146,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 0.1,
+      "exact_match": 0.41964285714285715,
+      "delta_margin": 13.266043526785714,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 0.25,
+      "exact_match": 0.32142857142857145,
+      "delta_margin": 20.058175223214285,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 0.5,
+      "exact_match": 0.14285714285714285,
+      "delta_margin": 23.001813616071427,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 1.0,
+      "exact_match": 0.05803571428571429,
+      "delta_margin": 27.734235491071427,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 2.0,
+      "exact_match": 0.04017857142857143,
+      "delta_margin": 30.536795479910715,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 4.0,
+      "exact_match": 0.03125,
+      "delta_margin": 32.67036655970982,
+      "n": 224
+    },
+    {
+      "scope": "band",
+      "position": "query",
+      "alpha": 8.0,
+      "exact_match": 0.013392857142857142,
+      "delta_margin": 33.845145089285715,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 0.1,
+      "exact_match": 0.03125,
+      "delta_margin": 0.26492745535714285,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 0.25,
+      "exact_match": 0.03125,
+      "delta_margin": 0.9482421875,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 0.5,
+      "exact_match": 0.03571428571428571,
+      "delta_margin": 4.305943080357143,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 1.0,
+      "exact_match": 0.45089285714285715,
+      "delta_margin": 13.163643973214286,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 2.0,
+      "exact_match": 0.28125,
+      "delta_margin": 16.200613839285715,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 4.0,
+      "exact_match": 0.10714285714285714,
+      "delta_margin": 16.090680803571427,
+      "n": 224
+    },
+    {
+      "scope": "single",
+      "position": "query",
+      "alpha": 8.0,
+      "exact_match": 0.013392857142857142,
+      "delta_margin": 15.689871651785714,
+      "n": 224
+    }
+  ],
+  "_meta": {
+    "tag": "8b",
+    "domain": "relations",
+    "alpha": 4.0,
+    "ws": [
+      14,
+      16,
+      17,
+      18,
+      20,
+      21,
+      23,
+      24,
+      26,
+      27,
+      28,
+      30,
+      31
+    ],
+    "single_layer": 23,
+    "positions": {
+      "all": "all",
+      "query": [
+        -1
+      ],
+      "operand": [
+        -2
+      ],
+      "wrong": [
+        0
+      ]
+    },
+    "bootstrap_unit": "operator (dyadic node), operands nested",
+    "note": "rank columns are medians; \u0394margin CIs are 95% cluster bootstrap"
+  }
+}

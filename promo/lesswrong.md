@@ -1,12 +1,12 @@
 # LessWrong / AI Alignment Forum — draft crosspost
 
-*Personalize before posting. Numbers current as of 2026-07-11 (Gemma-2-9B replication,
-re-lexicalization control, minimal-intervention results included). The AF/LW audience rewards
-the controlled nulls and the calibration — lead with what replicates and what doesn't. Embed
-the GIFs and link the interactive explorer.*
+*Personalize before posting. Numbers current as of 2026-07-12 (reviewer round 2: composition
+ladder, dose × position, competitive nulls, layer sweep, animals domain, generation audit —
+all replicated at 8B). The AF/LW audience rewards the controlled nulls and the calibration —
+lead with what replicates, what doesn't, and what we got wrong ourselves (the overdose).*
 
-**Title:** The workspace declines concepts by role: operator/operand factorization in
-open-weights LLMs
+**Title:** A thought assembled from averaged parts makes the model speak: operator/operand
+factorization and compositional sufficiency in open-weights LLMs
 
 ---
 
@@ -17,16 +17,23 @@ margin for all 20 ordered relation pairs in all three models (matched-norm rando
 the direction generalizes to held-out operands, unseen prompt frames, and **fully re-lexicalized
 wordings** ("currency of" → "money used in": 40/40, transfer ≈ within); and the operation is
 separable from the *word it produces* (language ≠ demonym as directions despite both emitting
-"Italian"). I frame this as **declension** — the model marks a concept by its grammatical role,
-with syncretism and fusion as in a Latin case paradigm. Three things to flag for this audience
-specifically: (1) the factorization is **specific to relational retrieval** under our setup —
-arithmetic and logic operators fail the same tests, consistent with the "bag of heuristics"
-picture; (2) the additive direction rotates *preference* (margins flip; ≤0.5% greedy
-exact-match) while a one-position **activation patch** reroutes the *generated answer* (51% vs
-the model's 53% clean ceiling) — I report both rather than blur them; (3) the effect is
-**causal, not a readout advantage** — a Jacobian-lens "J-space" readout is *not* more legible
-than the raw residual under matched controls, including a spectrum-matched random projection.
-I expected the opposite and report the null.
+"Italian"). The headline: the factorization is **behaviorally sufficient** — a state *composed*
+from its averaged additive parts (`μ + operand + operator`), patched into one position, makes
+the model *produce* the answer at its own competence ceiling (52% vs 53% clean at 1.7B; 62% vs
+68% at 8B; components that never saw the target cell still reach 36–50%; swapping the operand
+part redirects the answer to that operand). Four things to flag for this audience specifically:
+(1) we falsified our *own* earlier claim — "additive steering can't generate (≤0.5%)" was an
+**overdose artifact**: the steering vector is identically the ANOVA operator component, and at
+the calibrated dose it generates at ceiling (51.3%), with generation an inverted-U peaked
+exactly where the algebra says the state is on-manifold; (2) a **generation audit** (raw texts
+classified 5 ways + a forced-choice sequence-log-prob readout) shows overdosing destroys
+*fluency*, not *information* — the target still wins a forced choice at 80% under 94.6% token
+loops; (3) the factorization is **specific to relational retrieval** under our setup — a
+curated animals domain replicates everything while arithmetic and logic fail the same tests;
+the decisive null (directions rebuilt under **permuted relation labels**) abolishes the effect
+at both scales; (4) the effect is **causal, not a readout advantage** — a Jacobian-lens
+"J-space" readout is *not* more legible than the raw residual under matched controls. I
+expected the opposite and report the null.
 
 **Why post here.** This started as a J-space legibility study and the headline readout claim
 turned out to be a controlled null. The positive result is the causal operator/operand
@@ -64,15 +71,22 @@ prompts re-lexicalized as "The money used in X is" (every relation re-worded) �
 ways at both Qwen3 scales, with the transfer contrast (+22.59) matching the within-wording
 contrast (+22.62). The direction encodes the relation, not its surface form.
 
-## How much machinery? One layer — and an honest split
+## The composition ladder — and the overdose we caught ourselves in
 
-The same directions applied at a **single mid-workspace layer** still flip 20/20 margins at
-4.4× lower off-task cost (KL 4.6 vs 20.6 nats/token). But a greedy-decoding honesty check
-shows the additive injection almost never makes the model *emit* the target answer (≤0.5%
-exact-match): it rotates relative preference. Patching the **real donor activation at one
-position** does reroute the generated answer — 51% vs the model's own 53% clean ceiling
-(random control 0%). Averaged difference directions rotate preference; state-level patches
-reroute behavior. Both are causal; they are not the same claim.
+Decompose the donor activation by the exact factorization and patch partial reconstructions
+back in: `μ + operand + operator` generates at the donor's own level (51.8% vs 50.9%, clean
+ceiling 53%; 8B: 62.1% vs 65.2%, ceiling 68%) while the interaction term alone does nothing
+(7.1%) and a norm-matched magnitude control does less (4.5%). Leave-one-cell-out components
+(never saw the target cell) still generate at 35.7% / 50.4%; swapping the operand component
+redirects the answer to *that* operand (34.4% / 48.2% vs ~2% baseline). And the honest
+reversal: our earlier "additive steering flips margins but can't generate (≤0.5%)" was an
+**overdose** — the steering vector IS the operator component, and generation follows an
+inverted-U peaked exactly at the on-manifold dose (51.3% at α≈0.1 band-wide; 38.4% at α=1
+single-layer; same peak doses at 8B: 56.2% / 45.1%). Past the peak the margin keeps climbing
+while generations collapse into token loops (94.6% degraded by manual classification) — yet
+the target still wins a forced-choice among the operand's answers at 80.4%. **Overdosing
+destroys fluency, not information.** Also: query-token-only injection matches all-position
+injection at 60× lower off-task KL — a localized edit, not a global perturbation.
 
 ## Operation ≠ realization
 

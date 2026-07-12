@@ -49,11 +49,12 @@ factorization is a property of *relational retrieval*, not of prompting in gener
 
 <div class="stats" markdown>
 <div class="stat"><span class="n">20/20 × 3</span><span class="d">ordered operator swaps flip the
-answer in Qwen3-1.7B, Qwen3-8B and Gemma-2-9B; matched-norm random controls ≈ 0</span></div>
-<div class="stat"><span class="n">82–86%</span><span class="d">of workspace variance at the query
-token is the operator; interaction ("fusion") stays single-digit for relations</span></div>
-<div class="stat"><span class="n">180/180</span><span class="d">flips under held-out operands and
-unseen paraphrase frames — a transferable operator, not interpolation</span></div>
+answer margin in Qwen3-1.7B, Qwen3-8B and Gemma-2-9B; permuted-label nulls ≈ 0</span></div>
+<div class="stat"><span class="n">52% ≈ 53%</span><span class="d">a state <em>assembled</em> from
+μ + operand + operator makes the model produce the answer at its own ceiling (8B: 62% vs 68%)</span></div>
+<div class="stat"><span class="n">80%</span><span class="d">even at a 4× overdose — where fluent
+generation collapses — the target still wins a forced choice: dose destroys fluency, not
+information</span></div>
 </div>
 
 All headline effects carry operator-level cluster-bootstrap 95% CIs and none crosses zero —
