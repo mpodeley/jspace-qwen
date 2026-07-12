@@ -752,11 +752,14 @@ general.</p>
 <h2 id="los-numeros">Los números</h2>
 <div class="stats">
 <div class="stat"><span class="n">20/20 × 3</span><span class="d">swaps ordenados de operador
-cambian la respuesta en Qwen3-1.7B, Qwen3-8B y Gemma-2-9B; controles aleatorios ≈ 0</span></div>
-<div class="stat"><span class="n">82–86%</span><span class="d">de la varianza del workspace en el
-token de consulta es el operador; la interacción ("fusión") queda en un dígito</span></div>
-<div class="stat"><span class="n">180/180</span><span class="d">flips con operandos held-out y
-paráfrasis nunca vistas — un operador transferible, no interpolación</span></div>
+cambian el margen de respuesta en Qwen3-1.7B, Qwen3-8B y Gemma-2-9B; nulos de etiquetas
+permutadas ≈ 0</span></div>
+<div class="stat"><span class="n">52% ≈ 53%</span><span class="d">un estado <em>ensamblado</em> de
+μ + operando + operador hace que el modelo produzca la respuesta a su propio techo (8B: 62% vs
+68%)</span></div>
+<div class="stat"><span class="n">80%</span><span class="d">incluso con sobredosis 4× — donde la
+generación fluida colapsa — el target gana la elección forzada: la dosis destruye fluidez, no
+información</span></div>
 </div>
 <p>Todos los efectos principales llevan IC bootstrap 95% a nivel de operador y ninguno cruza cero —
 ver <a href="robustness/">Evidencia y controles</a>: cada claim junto al control que podía matarlo.</p>

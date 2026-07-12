@@ -813,6 +813,13 @@ arrows can be handled:</p>
   thinks <em>"the capital of Italy"</em> and transplant it into the same model while it thinks <em>"the
   currency of Italy"</em>. The model <strong>answers "Rome"</strong>: its actual answer changes, not just its
   preference.</li>
+<li><strong>The assembly (the new headline):</strong> best of all — we don't even need to copy that state. We
+  <strong>build it from three averaged ingredients</strong> — a generic base, an "Italy" part, and a
+  "capital-of" part — write the assembled thought into a single spot, and the model answers
+  <strong>"Rome" as often as it normally answers anything</strong> (52%, when its own accuracy is 53%). Swap
+  in the "France" part instead and it answers <em>Paris</em>. The thought really is made of parts, and
+  the parts are enough. (Our earlier failure to make it <em>speak</em> by nudging arrows turned out to
+  be an overdose: push gently — with the right strength — and the nudge makes it speak too.)</li>
 </ul>
 <h2 id="the-arrows-are-real-not-a-quirk-of-our-examples">The arrows are real, not a quirk of our examples</h2>
 <p>Three controls for the skeptic:</p>

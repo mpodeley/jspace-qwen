@@ -854,6 +854,83 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#211-decomposing-the-donor-a-composed-state-generates-2026-07-11-reviewer-round-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.11 Decomposing the donor: a COMPOSED state generates (2026-07-11, reviewer round 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-dose-position-steering-does-generate-at-the-calibrated-dose-2026-07-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.12 Dose × position: steering DOES generate at the calibrated dose (2026-07-11)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#213-the-competitive-null-battery-semantics-is-everything-the-margin-has-parts-2026-07-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.13 The competitive null battery: semantics is everything; the margin has parts (2026-07-11)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#214-layer-sweep-represented-early-causal-late-readable-everywhere-2026-07-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.14 Layer sweep: represented early, causal late, readable everywhere (2026-07-11)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#215-the-animals-domain-everything-replicates-one-floor-caveat-2026-07-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.15 The animals domain: everything replicates, one floor caveat (2026-07-11)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#216-the-generation-audit-classify-what-it-says-and-force-the-choice-2026-07-11-reader-round" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.16 The generation audit: classify what it SAYS, and force the choice (2026-07-11, reader round)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#217-round-3-user-review-equivalence-robustness-partitions-loo-operator-wang-xu-2026-07-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.17 Round 3 (user review): equivalence, robustness partitions, LOO-operator, Wang &amp; Xu (2026-07-12)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1442,6 +1519,414 @@ while a <strong>query-position activation patch</strong> (real donor state, one 
 model's own 53% clean accuracy</strong> (ceiling). Random control 0%. Reading: the averaged difference
 direction rotates relative preference; the state-level patch reroutes the actual answer. Artifacts:
 <code>1.7b_relations_minimal.parquet</code> + <code>_minimal_margins.json</code>.</p>
+<h3 id="211-decomposing-the-donor-a-composed-state-generates-2026-07-11-reviewer-round-2">2.11 Decomposing the donor: a COMPOSED state generates (2026-07-11, reviewer round 2)</h3>
+<p>The §2.10 gap ("the patch has more information than the direction") demanded an answer to <em>which</em>
+information. <code>op_patch_decomp.py</code> decomposes the donor at the query position by the exact two-way
+factorization <code>H = μ + stem(operand) + case(operator) + inter</code> and patches partial reconstructions
+(μ included in every variant — the hook replaces the state, so a variant must be a plausible
+full-magnitude residual). 1.7B relations, 224 (pair, operand) cells, clean greedy ceiling 53%:</p>
+<table>
+<thead>
+<tr>
+<th>patched state</th>
+<th style="text-align: right;">says target</th>
+<th style="text-align: right;">says source</th>
+<th style="text-align: right;">says other</th>
+<th style="text-align: right;">Δmargin</th>
+<th style="text-align: right;">rank(to)</th>
+<th style="text-align: right;">top-1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>magnitude control (μ + random, norm-matched)</td>
+<td style="text-align: right;">4.5%</td>
+<td style="text-align: right;">33.5%</td>
+<td style="text-align: right;">0.0%</td>
+<td style="text-align: right;">+6.6</td>
+<td style="text-align: right;">2889</td>
+<td style="text-align: right;">0%</td>
+</tr>
+<tr>
+<td>interaction only (μ + inter)</td>
+<td style="text-align: right;">7.1%</td>
+<td style="text-align: right;">35.3%</td>
+<td style="text-align: right;">0.0%</td>
+<td style="text-align: right;">+8.5</td>
+<td style="text-align: right;">906</td>
+<td style="text-align: right;">0%</td>
+</tr>
+<tr>
+<td>operand only (μ + stem)</td>
+<td style="text-align: right;">7.6%</td>
+<td style="text-align: right;">37.5%</td>
+<td style="text-align: right;">0.0%</td>
+<td style="text-align: right;">+6.9</td>
+<td style="text-align: right;">275</td>
+<td style="text-align: right;">0%</td>
+</tr>
+<tr>
+<td>operator only (μ + case)</td>
+<td style="text-align: right;">20.1%</td>
+<td style="text-align: right;">14.7%</td>
+<td style="text-align: right;">1.8%</td>
+<td style="text-align: right;">+12.8</td>
+<td style="text-align: right;">174</td>
+<td style="text-align: right;">0%</td>
+</tr>
+<tr>
+<td><strong>operator + operand (μ + stem + case)</strong></td>
+<td style="text-align: right;"><strong>51.8%</strong></td>
+<td style="text-align: right;">13.4%</td>
+<td style="text-align: right;">1.8%</td>
+<td style="text-align: right;">+12.9</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">31.7%</td>
+</tr>
+<tr>
+<td>operator + operand, <strong>held-out cell</strong></td>
+<td style="text-align: right;"><strong>35.7%</strong></td>
+<td style="text-align: right;">18.8%</td>
+<td style="text-align: right;">1.8%</td>
+<td style="text-align: right;">+11.5</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">17.9%</td>
+</tr>
+<tr>
+<td>operator + <strong>wrong</strong> operand (μ + stem′ + case)</td>
+<td style="text-align: right;">20.1%</td>
+<td style="text-align: right;">11.6%</td>
+<td style="text-align: right;"><strong>34.4%</strong></td>
+<td style="text-align: right;">+12.4</td>
+<td style="text-align: right;">670</td>
+<td style="text-align: right;">0%</td>
+</tr>
+<tr>
+<td>full donor (μ + stem + case + inter)</td>
+<td style="text-align: right;">50.9%</td>
+<td style="text-align: right;">12.5%</td>
+<td style="text-align: right;">1.8%</td>
+<td style="text-align: right;">+13.8</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: right;">31.2%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The reviewer's hypothesis inverts.</strong> The expected result was that generation needs the non-additive
+interaction term the averaged direction lacks. It does not: the purely additive composition
+<code>μ + stem + case</code> generates <strong>at the donor's own level</strong> (51.8% vs 50.9%), i.e. at the model's clean
+ceiling; the interaction term alone does nothing (7.1%). The two controls close the loopholes:
+<strong>leave-one-cell-out</strong> (stem and case rebuilt without ever seeing cell (o,to)) still generates at
+35.7% — composition, not leakage — and <strong>swapping the stem redirects the answer to the swapped
+operand</strong> (34.4% says-other vs 1.8% baseline): the state is compositional in exactly the way the
+factorization claims.</p>
+<p><strong>And the direction IS the component.</strong> <code>v(k)</code> from <code>op_dirs</code> equals the ANOVA main effect <code>case[k]</code>
+<strong>identically</strong> (max relative deviation 8.5e-08 across the band — same algebra, verified numerically).
+So steering and patching apply the <em>same object</em> in two different ways: steering <strong>adds</strong>
+<code>α·(case[to] − case[frm])</code> on top of a state that already contains <code>case[frm]</code> (at α=4 over a 13-layer
+band: a far off-manifold overshoot), while the composition <strong>replaces</strong> the state with
+<code>μ + stem + case[to]</code>. The §2.10 dissociation is therefore a fact about the <em>mode and dose</em> of
+intervention, not about missing information — the additive factorization is behaviorally sufficient.
+(The dose × position sweep in <code>op_positions.py</code> tests the α-artifact reading directly.)
+Artifacts: <code>1.7b_relations_patch_decomp.parquet</code> + <code>.json</code> (band), <code>_patch_decomp_single.*</code> (one layer).</p>
+<p><strong>Single-layer variant.</strong> Replacing the query state at ONE mid-workspace layer: <code>μ + case[to]</code> <em>alone</em>
+generates at 44.6% ≈ full donor 40.6% — the operand is re-read from the unpatched layers and positions
+(consistently, the stem-swap no longer redirects there: 1.3% vs 34.4% at the band). The operator
+injection point is local; the operand identity is distributed and recoverable.</p>
+<p><strong>8B replication (2026-07-11 evening): every number sharpens.</strong> Clean ceiling 68%; composed
+<code>μ+stem+case</code> <strong>62.1%</strong> ≈ donor 65.2%; <strong>leave-one-cell-out 50.4%</strong> (1.7B: 35.7%); <strong>stem-swap
+redirect 48.2%</strong> (1.7B: 34.4%); interaction-only 3.6%; magnitude control 2.2%. Artifact:
+<code>8b_relations_patch_decomp.parquet</code> + <code>.json</code>.</p>
+<h3 id="212-dose-position-steering-does-generate-at-the-calibrated-dose-2026-07-11">2.12 Dose × position: steering DOES generate at the calibrated dose (2026-07-11)</h3>
+<p><code>op_positions.py</code> (1.7B relations, 224 cells/condition). The α-artifact reading of §2.11 is confirmed
+quantitatively — the peak generation dose lands exactly where the algebra predicts (on-manifold at
+<code>α ≈ 1</code> for one layer; <code>α ≈ 1/n_layers ≈ 0.1</code> for the 13-layer band, since band additions accumulate):</p>
+<table>
+<thead>
+<tr>
+<th>condition</th>
+<th style="text-align: right;">α</th>
+<th style="text-align: right;">greedy exact match</th>
+<th style="text-align: right;">Δmargin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>band, all positions</td>
+<td style="text-align: right;"><strong>0.1</strong></td>
+<td style="text-align: right;"><strong>51.3%</strong></td>
+<td style="text-align: right;">+16.7</td>
+</tr>
+<tr>
+<td>band, all positions</td>
+<td style="text-align: right;">4.0 (old default)</td>
+<td style="text-align: right;">0.4%</td>
+<td style="text-align: right;">+28.9</td>
+</tr>
+<tr>
+<td>band, query only</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">39.3%</td>
+<td style="text-align: right;">+13.4</td>
+</tr>
+<tr>
+<td>single layer, query only</td>
+<td style="text-align: right;"><strong>1.0</strong></td>
+<td style="text-align: right;"><strong>38.4%</strong></td>
+<td style="text-align: right;">+12.1</td>
+</tr>
+<tr>
+<td>single layer, query only</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">3.1%</td>
+<td style="text-align: right;">+0.3</td>
+</tr>
+<tr>
+<td>single layer, query only</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">9.8%</td>
+<td style="text-align: right;">+13.7</td>
+</tr>
+</tbody>
+</table>
+<p>An inverted-U in generation centered at the predicted dose, while the margin keeps climbing
+monotonically past it: <strong>overdosing keeps shifting preference but pushes the state off-manifold and
+kills generation</strong> (on-task KL at band/α=4: 29 nats). The old "≤0.5% exact match" was an overdose
+artifact. At the calibrated dose, additive steering generates at the model's ceiling — level (iii)
+is reached by <em>addition</em>, not only by replacement.</p>
+<p><strong>Position specificity (α=4 battery).</strong> Query-token-only injection ≈ all-positions on the margin
+(+28.7 vs +28.9, sign-correct 98%) at <strong>60× lower off-task cost</strong> (KL 0.29 vs 18.4 nats/token);
+operand-token and sentence-initial ("wrong") controls do ~nothing (+1.8 / +2.3, sign+ 4% / 16%).
+Single layer + query position: target rank 570 → 69, off-task KL 0.04. The margin effect is a
+<strong>localized edit of the queried relation</strong>, not a global perturbation — the reviewer's objection is
+answered directly. Artifacts: <code>1.7b_relations_positions.parquet</code> + <code>.json</code>, <code>_posdose.parquet</code>.</p>
+<p><strong>8B replication (evening):</strong> query-only +32.7 ≈ all +33.2 at 63× lower off-task KL (0.35 vs 21.9);
+operand/wrong ≈ 0; single/query rank 748 → 67. The dose inverted-U reproduces at the SAME peak doses:
+band α=0.1 → 56.2%, single-layer α=1 → 45.1%. Artifacts: <code>8b_relations_positions*</code>, <code>8b_*_posdose</code>.</p>
+<h3 id="213-the-competitive-null-battery-semantics-is-everything-the-margin-has-parts-2026-07-11">2.13 The competitive null battery: semantics is everything; the margin has parts (2026-07-11)</h3>
+<p><code>op_nulls.py</code> (1.7B relations, α=4; 20 redraws per stochastic null; the script proves its swap loop
+identical to <code>op_core.measure_swaps_long</code> before running, max Δ 0.0). Contrast vs matched-norm random,
+operator-level cluster bootstrap:</p>
+<table>
+<thead>
+<tr>
+<th>null</th>
+<th style="text-align: right;">contrast [95% CI]</th>
+<th style="text-align: right;">flips</th>
+<th>reading</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>real swap</strong></td>
+<td style="text-align: right;"><strong>+22.62 [+14.0, +32.1]</strong></td>
+<td style="text-align: right;">1.00</td>
+<td></td>
+</tr>
+<tr>
+<td>permuted labels (per-operand)</td>
+<td style="text-align: right;">+0.68 [−0.8, +3.9]</td>
+<td style="text-align: right;">0.45</td>
+<td><strong>the decisive null: → 0</strong></td>
+</tr>
+<tr>
+<td>permuted labels (global)</td>
+<td style="text-align: right;">+0.57 [−2.1, +3.0]</td>
+<td style="text-align: right;">0.35</td>
+<td>→ 0</td>
+</tr>
+<tr>
+<td>random in operator <strong>subspace</strong></td>
+<td style="text-align: right;">+0.75 [−2.2, +3.5]</td>
+<td style="text-align: right;">0.45</td>
+<td>right home, wrong content: → 0</td>
+</tr>
+<tr>
+<td>wrong layer (early band)</td>
+<td style="text-align: right;">+9.77 [+5.2, +13.3]</td>
+<td style="text-align: right;">1.00</td>
+<td>additions <strong>persist</strong> downstream</td>
+</tr>
+<tr>
+<td>other-relation direction</td>
+<td style="text-align: right;">+11.09 [+6.7, +17.1]</td>
+<td style="text-align: right;">0.80</td>
+<td>−case(source) alone ≈ half the margin</td>
+</tr>
+<tr>
+<td>shuffled answers</td>
+<td style="text-align: right;">+21.12 [+11.2, +32.2]</td>
+<td style="text-align: right;">1.00</td>
+<td>+case(target) boosts the whole <strong>category</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Group A (semantic nulls) all go to zero</strong> — permuting the operator labels preserves every statistical
+property of the extraction (same residuals, same averaging, same norms) and kills the effect entirely;
+even a random direction <em>inside the operator subspace</em> does nothing. The contrast is carried by the
+specific, correctly-labeled content.</p>
+<p><strong>8B replication (night):</strong> semantic nulls even tighter at zero — per-operand +0.15 [−1.8, +3.1],
+global +0.09, subspace +0.43, vs real +26.0. The other-relation probe retains ≈half at all three data
+points: 49% (1.7B countries), 47% (1.7B animals), 52% (8B). Artifacts: <code>8b_relations_nulls*</code>.</p>
+<p><strong>Group B (structural probes) stay nonzero for mechanistically informative reasons</strong>, not as confounds:
+(1) the margin decomposes like the representation does — injecting <code>case(other) − case(source)</code> keeps
+the <em>uninstall-source</em> half and yields ≈ half the effect (+11 of +22.6); (2) <code>+case(target)</code> raises the
+whole answer <strong>category</strong> (any capital city), which is why the margin toward a <em>shuffled</em> operand's
+answer also moves — <strong>operand specificity lives in generation, not in the margin</strong> (the composed-state
+patch says the <em>correct</em> operand's answer at 51.8% and the stem-swap redirects it, §2.11); (3) a vector
+added at an early layer <strong>persists</strong> in the residual stream into the workspace, so "wrong layer" is not
+actually absent from the right layer — per-layer locality is measured properly by the layer sweep
+(§2.14), where building and injection co-vary. Artifacts: <code>1.7b_relations_nulls.parquet</code> + <code>.json</code>.</p>
+<h3 id="214-layer-sweep-represented-early-causal-late-readable-everywhere-2026-07-11">2.14 Layer sweep: represented early, causal late, readable everywhere (2026-07-11)</h3>
+<p><code>op_layer_sweep.py</code> (1.7B relations; the direction is built AND injected at each single source layer).
+Three per-layer profiles of the same object:</p>
+<ul>
+<li><strong>Trivial readability:</strong> leave-one-operand-out operator classification is <strong>100% at every layer,
+  including layer 0</strong> — attention mixes the operator token into the query position immediately, so
+  decodability-style evidence locates nothing.</li>
+<li><strong>Representation:</strong> the ANOVA operator share peaks <strong>early</strong> — 92.4% at L5 (18.5% depth) — and decays
+  monotonically to 56.5% at the end of the stream.</li>
+<li><strong>Causal leverage:</strong> the single-layer swap contrast is ≈0 early, rises through the band, and peaks
+  <strong>late</strong> — +21.28 [+13.8, +28.2] at L24 (88.9% depth), essentially the full band's +22.6 from ONE
+  layer.</li>
+</ul>
+<p>The two informative curves peak ~70 depth-points apart. Bonus diagnosis: op_minimal's "single
+mid-workspace layer" (L17, +6.8) was far below the late-band optimum — the minimal high-effect
+intervention is one LATE layer at the query position. Artifacts:
+<code>1.7b_relations_layersweep.parquet</code> + <code>.json</code>.</p>
+<p><strong>8B replication:</strong> the same profile almost to the point — case share peaks at L8 (22.9% depth,
+84.7%), causal at L31 (88.6% depth, +23.1); decodability 100% everywhere. Artifact:
+<code>8b_relations_layersweep*</code>.</p>
+<h3 id="215-the-animals-domain-everything-replicates-one-floor-caveat-2026-07-11">2.15 The animals domain: everything replicates, one floor caveat (2026-07-11)</h3>
+<p>An independently curated non-geographic domain (<code>data/animals.json</code>: class/habitat/diet/covering × 12
+animals, tokenizer-screened by <code>build_op_datasets.py --only animals</code>, 3 paraphrase frames). 1.7B:</p>
+<ul>
+<li><strong>Swap:</strong> 12/12 ordered pairs flip; contrast <strong>+18.08 [+13.53, +22.81]</strong>, flip fraction 1.00.</li>
+<li><strong>Held-out operands:</strong> 12/12, <strong>+18.04 [+13.59, +22.74]</strong> — transfer ≡ within.</li>
+<li><strong>Cross-frame:</strong> 72/72 flips, mean +17.26, frame-invariant to two decimals (+17.50 / +17.50).</li>
+<li><strong>Nulls:</strong> permuted per-operand <strong>−0.53 [−5.1, +3.0]</strong>, global +1.10, subspace +0.17 — all at zero.
+  Structural probes replicate quantitatively: other-relation retains ≈half (+8.5 of +18.1 = 47%; the
+  countries figure is 49%), shuffled answers ≈ full (+18.1, category-level boost), wrong layer +10.7.</li>
+<li><strong>Factorization:</strong> query position operand 16.3% / operator 61.7% / <strong>interaction 22.0%</strong>; entity
+  token operand-dominant 79.4%. More fusion than countries (9%) — yet transfer is perfect, while
+  arithmetic (23% interaction) fails held-out: the domain discriminator is TRANSFER, not fusion share.</li>
+<li><strong>Minimal band:</strong> single layer 12/12 (+6.88), full band +18.08; off-task KL 6.3 vs 19.5 nats.</li>
+<li><strong>Floor caveat:</strong> clean greedy accuracy is only <strong>6%</strong> (multi-token answers; single-token coverage
+  0.62), so the generation-level readout is uninformative here — composed patch 2.1% = full donor 2.1%
+  (consistent, at floor), Δmargin discriminates as usual (+6.8/+7.3 vs +3.5 magnitude control).
+  Sufficiency in animals is attested by margins/rank, not exact match.</li>
+</ul>
+<p>Artifacts: <code>1.7b_animals_{operator_swap,heldout,templates,nulls,minimal,patch_decomp,positions,dose}*</code>.</p>
+<p><strong>8B animals (night):</strong> swap 12/12, contrast +25.8 [+9.8, +34.8] (sharpens over 1.7B's +18.1); the
+generation floor persists at scale (clean ceiling 8%; composed 7.6% ≈ donor 8.3% — the
+composed=donor=ceiling identity holds even at the floor, and rank still discriminates: 62 composed vs
+1670 magnitude control). Nulls replicate: per-operand −0.69 [−4.3, +3.2], subspace −1.79, global +2.47
+(CI spans 0); other-relation retains ≈half (52%) — the fourth consistent data point for the margin
+decomposition. Artifacts: <code>8b_animals_*</code>.</p>
+<h3 id="216-the-generation-audit-classify-what-it-says-and-force-the-choice-2026-07-11-reader-round">2.16 The generation audit: classify what it SAYS, and force the choice (2026-07-11, reader round)</h3>
+<p>A reader pushed on the generation metrics: containment-at-k=3 and a two-token margin could miss
+syntactically adapted answers, and nobody had classified the raw generations. <code>op_audit.py</code> (1.7B
+relations, 224 cells/condition): k=8 greedy with <strong>raw texts persisted</strong>, a 5-way classification
+(target / source / other-operand / other-relation / degraded), and <strong>forced choice</strong> = length-normalized
+full-sequence log-prob among the operand's gold answers <em>under the same intervention</em>:</p>
+<table>
+<thead>
+<tr>
+<th>condition</th>
+<th style="text-align: right;">target</th>
+<th style="text-align: right;">source</th>
+<th style="text-align: right;">degraded</th>
+<th style="text-align: right;"><strong>forced choice</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clean</td>
+<td style="text-align: right;">3.6%</td>
+<td style="text-align: right;">58.5%</td>
+<td style="text-align: right;">36.6%</td>
+<td style="text-align: right;">2.7%</td>
+</tr>
+<tr>
+<td>patch composed (μ+stem+case)</td>
+<td style="text-align: right;"><strong>57.6%</strong></td>
+<td style="text-align: right;">11.6%</td>
+<td style="text-align: right;">29.9%</td>
+<td style="text-align: right;">76.3%</td>
+</tr>
+<tr>
+<td>patch donor</td>
+<td style="text-align: right;">57.6%</td>
+<td style="text-align: right;">9.8%</td>
+<td style="text-align: right;">31.7%</td>
+<td style="text-align: right;">84.4%</td>
+</tr>
+<tr>
+<td>add band α=4 (old default)</td>
+<td style="text-align: right;">0.4%</td>
+<td style="text-align: right;">0.0%</td>
+<td style="text-align: right;"><strong>94.6%</strong></td>
+<td style="text-align: right;"><strong>80.4%</strong></td>
+</tr>
+<tr>
+<td>add band α=0.1 (calibrated)</td>
+<td style="text-align: right;"><strong>59.4%</strong></td>
+<td style="text-align: right;">0.9%</td>
+<td style="text-align: right;">38.4%</td>
+<td style="text-align: right;"><strong>87.5%</strong></td>
+</tr>
+<tr>
+<td>add 1 layer, query, α=1</td>
+<td style="text-align: right;">40.6%</td>
+<td style="text-align: right;">21.9%</td>
+<td style="text-align: right;">35.3%</td>
+<td style="text-align: right;">76.3%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Three findings.</strong> (1) The overdose reading is <em>confirmed by inspection</em>, not assumed: at α=4 the
+generations are token loops ("dollar dollar dollar…", "出处出处…") — category often correct, fluency
+destroyed — NOT surface variants the metric missed. (2) At the calibrated dose, additive steering's
+free generation (59.4% fluent target) matches the composed patch (57.6%) and the clean prompt's own
+source-rate (58.5%): full behavioral sufficiency under the strictest reading. (3) <strong>Forced choice
+dissociates information from fluency</strong>: the target wins among the gold answers at 80.4% <em>even at the
+overdose</em> — overdosing destroys the generation manifold, not the encoded preference. Caveat, both
+ways: containment can also over-count (2–5% of cells contain target AND source — "the Swedish krona"
+contains demonym-"Swedish" as a modifier); worst-case reclassification moves target rates by ≤5 points
+and changes nothing. Artifacts: <code>1.7b_relations_audit.parquet</code> (with raw texts) + <code>.json</code>.</p>
+<h3 id="217-round-3-user-review-equivalence-robustness-partitions-loo-operator-wang-xu-2026-07-12">2.17 Round 3 (user review): equivalence, robustness partitions, LOO-operator, Wang &amp; Xu (2026-07-12)</h3>
+<ul>
+<li><strong>Missing prior integrated:</strong> Wang &amp; Xu 2025 (arXiv:2504.14496), "Functional Abstraction of
+  Knowledge Recall" — subject=input argument, relation=function body, object=return value, verified by
+  component patching. Same group as Wang et al. 2024. New Related-Work paragraph states the delta:
+  they exchange components across positions; we quantify the joint decomposition of ONE prediction
+  state, show steering vector ≡ operator main effect, competitive nulls, generative sufficiency.</li>
+<li><strong>Paired equivalence (<code>op_equivalence.py</code>, recompute):</strong> composed−donor +0.9pp [−6.9,+8.3] (1.7B),
+  −3.1pp [−12.5,+5.2] (8B); interaction adds −0.9pp [−8.3,+6.9]. TOST at ±5pp does NOT certify
+  (5 operator clusters = underpowered) — paper now says "no detectable gap", not "matches".
+  Held-out-cell composed − donor = −15pp with CI excluding zero at 8B: quantified honestly.</li>
+<li><strong>Held-out beyond one split (<code>op_heldout_parts.py</code>):</strong> 5 shuffled partitions — every pair flips in
+  every partition, contrast range [+20.0, +22.9]; LOO-country 220/224 flips, range [+11.5, +28.1]
+  (weakest: Turkey 16/18, Brazil 18/20).</li>
+<li><strong>Leave-one-operator-out (recompute):</strong> dropping any operator keeps flips at 1.00; contrast range
+  [+18.8, +25.8] (1.7B), [+23.3, +28.9] (8B). No single operator carries the paradigm.</li>
+<li><strong>Editorial:</strong> three named generation readouts (short-decode containment / long-decode
+  classification / forced-choice sequence probability), formal SS shares + "two-way effects
+  decomposition" (not inferential ANOVA), "fusion"→"interaction (cell residual)" outside §5,
+  "a state"→"per-layer factorized residual trajectory", "relation-conditioned retrieval operator",
+  abstract −25%, §4.9 → 2-sentence provenance note, exponent glossed.</li>
+<li><strong>Format:</strong> real title in main*.tex (was stale!), claims table → wrapped p{} columns, adjustbox
+  shrink-only (resizebox was ENLARGING narrow tables), appendix → \onecolumn with non-floating
+  tables/figures pinned to their prose, print figures redesigned at ~7in with 9pt+ type and no
+  web footers. Discovered: tectonic writes no main.log — the "4 overfulls" tracked all day were a
+  stale log from Jul 10; real count is 0.</li>
+<li><strong>Out-of-sample dose (<code>op_dose_oos.py</code>):</strong> the strongest possible outcome — α<em> identical in ALL
+  five calibration/evaluation partitions (0.1 band, 1.0 single-layer); frozen-α</em> generation on the
+  disjoint half 60.8% [56.2, 67.3] (band) / 42.2% [38.6, 48.2] (single layer); the evaluation-optimal
+  dose coincides with the calibrated one in 10/10 splits. The on-manifold dose is a transferable
+  property, not a post-hoc pick. 8B held-out partitions also replicate (all flip, [+22.8, +25.6];
+  LOO 222/224). Artifacts: <code>1.7b_relations_dose_oos.*</code>, <code>8b_relations_heldout_parts.*</code>.</li>
+</ul>
 <hr />
 <h2 id="the-open-interpretive-question-deliberately-unresolved">The open interpretive question (deliberately unresolved)</h2>
 <p>The evidence splits cleanly into a negative half and a positive half:</p>

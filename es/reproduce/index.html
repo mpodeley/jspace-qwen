@@ -509,6 +509,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#4b-the-reviewer-round-composition-positions-nulls-layers-a-second-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4b. The reviewer round: composition, positions, nulls, layers, a second domain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#5-figures-and-site" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -801,6 +812,34 @@ other two) to <code>results/geometry/*.json|npz</code>, and writes the explorer'
 .venv/bin/python<span class="w"> </span>scripts/operator_lexical.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">     </span><span class="c1"># cross-LEXICALIZATION transfer</span>
 .venv/bin/python<span class="w"> </span>scripts/op_dose.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">              </span><span class="c1"># alpha dose-response + off-task KL</span>
 .venv/bin/python<span class="w"> </span>scripts/op_minimal.py<span class="w"> </span><span class="m">1</span>.7b<span class="w">           </span><span class="c1"># band sweep + activation patching + greedy exact match</span>
+</code></pre></div>
+<h2 id="4b-the-reviewer-round-composition-positions-nulls-layers-a-second-domain">4b. The reviewer round: composition, positions, nulls, layers, a second domain</h2>
+<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>scripts/run_revision.sh<span class="w"> </span><span class="m">1</span>.7b<span class="w">     </span><span class="c1"># the whole battery below, sequentially</span>
+bash<span class="w"> </span>scripts/run_revision.sh<span class="w"> </span>8b
+</code></pre></div>
+<p>Individually:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Does a state COMPOSED from the factorization&#39;s parts generate the answer?</span>
+<span class="c1"># (the decomposition ladder, incl. the leave-one-cell-out reconstruction)</span>
+.venv/bin/python<span class="w"> </span>scripts/op_patch_decomp.py<span class="w"> </span><span class="m">1</span>.7b<span class="w"> </span>--domain<span class="w"> </span>relations
+
+<span class="c1"># WHERE must the vector land, and what do flips hide? (positions x layer scope,</span>
+<span class="c1"># with target rank / top-1 / exact match / on- and off-task KL; plus the</span>
+<span class="c1"># dose x position sweep on generation)</span>
+.venv/bin/python<span class="w"> </span>scripts/op_positions.py<span class="w"> </span><span class="m">1</span>.7b<span class="w"> </span>--domain<span class="w"> </span>relations
+
+<span class="c1"># The competitive null battery (permuted operator labels, operator-subspace random,</span>
+<span class="c1"># wrong layer, other-relation direction, shuffled answers)</span>
+.venv/bin/python<span class="w"> </span>scripts/op_nulls.py<span class="w"> </span><span class="m">1</span>.7b<span class="w"> </span>--domain<span class="w"> </span>relations<span class="w"> </span>--seeds<span class="w"> </span><span class="m">20</span>
+
+<span class="c1"># Where is the operator most READABLE vs most CAUSAL?</span>
+.venv/bin/python<span class="w"> </span>scripts/op_layer_sweep.py<span class="w"> </span><span class="m">1</span>.7b<span class="w"> </span>--domain<span class="w"> </span>relations
+
+<span class="c1"># Is the direction a signed axis? (negative alphas)</span>
+.venv/bin/python<span class="w"> </span>scripts/op_dose.py<span class="w"> </span><span class="m">1</span>.7b<span class="w"> </span>--alphas<span class="w"> </span>-12<span class="w"> </span>-8<span class="w"> </span>-4<span class="w"> </span>-2<span class="w"> </span>-1<span class="w"> </span>-0.5<span class="w"> </span><span class="m">0</span>.5<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">6</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="m">12</span>
+
+<span class="c1"># The non-geographic domain (animals -&gt; class/habitat/diet/covering)</span>
+.venv/bin/python<span class="w"> </span>scripts/build_op_datasets.py<span class="w"> </span>--only<span class="w"> </span>animals<span class="w">   </span><span class="c1"># tokenizer-screening gate</span>
+.venv/bin/python<span class="w"> </span>scripts/operator_paradigm.py<span class="w"> </span><span class="m">1</span>.7b<span class="w"> </span>--domain<span class="w"> </span>animals
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Reproducibility box</p>

@@ -815,6 +815,13 @@ independent observations). Full details in the <a href="../assets/paper.pdf">pap
 <td><code>{model}_{arithmetic,logic}_*</code></td>
 </tr>
 <tr>
+<td>8b</td>
+<td>It is <strong>not one domain</strong> either</td>
+<td>full pipeline on a curated animal-taxonomy domain (class/habitat/diet/covering × 12)</td>
+<td>12/12 swaps (+18.1), held-out 12/12 (+18.0 ≡ within), frames 72/72, permuted-label null → 0 (−0.5); interaction 22% ≈ arithmetic's 23% yet transfer perfect → the domain discriminator is transfer, not fusion share</td>
+<td><code>{model}_animals_*</code></td>
+</tr>
+<tr>
 <td>9</td>
 <td>The add-N literature <strong>reconciles</strong></td>
 <td>add-N (operator = addend) vs + × − (operator = function)</td>
@@ -832,8 +839,64 @@ independent observations). Full details in the <a href="../assets/paper.pdf">pap
 <td>10b</td>
 <td>The band is <strong>not doing the work</strong></td>
 <td>same directions at a single layer; real-activation patch at one position; greedy exact-match</td>
-<td>single layer: 20/20 margins at 4.4× lower KL; patch reroutes the <em>generated</em> answer at 51% vs 53% ceiling (additive: margins only)</td>
+<td>single layer: 20/20 margins at 4.4× lower KL; patch reroutes the <em>generated</em> answer at 51% vs 53% ceiling (additive at the default α=4: margins only — resolved as an overdose artifact in row 10d)</td>
 <td><code>1.7b_relations_minimal*.{parquet,json}</code></td>
+</tr>
+<tr>
+<td>10c</td>
+<td>The factorization is <strong>behaviorally sufficient</strong> — a state <em>composed</em> from its parts generates</td>
+<td>patch <code>μ+stem+case</code> (donor decomposition ladder, 8 variants) at the query position</td>
+<td>composed state says the target at 51.8% ≈ real donor 50.9% ≈ clean ceiling 53%; <strong>leave-one-cell-out</strong> parts still 35.7%; <strong>stem-swap redirects the answer to the swapped operand</strong> (34.4% vs 1.8%); interaction term alone 7.1%; magnitude control 4.5%</td>
+<td><code>{model}_relations_patch_decomp*.{parquet,json}</code></td>
+</tr>
+<tr>
+<td>10d</td>
+<td>Steering <strong>generates at the calibrated dose</strong> — the old ≤0.5% exact match was an overdose</td>
+<td>dose × position sweep on generation + <strong>out-of-sample calibration</strong> (α* frozen on half the operands, evaluated on the rest, 5 partitions)</td>
+<td>inverted-U at the predicted on-manifold dose (band α≈0.1 → <strong>51.3%</strong>, single layer α≈1 → 38.4%); α<em> identical in all 5 partitions and eval-optimal in 10/10 — a transferable dose, not a post-hoc pick (frozen-α</em> eval 60.8% / 42.2%)</td>
+<td><code>{model}_relations_posdose.parquet</code>, <code>1.7b_relations_dose_oos.*</code></td>
+</tr>
+<tr>
+<td>10e</td>
+<td>The effect is a <strong>localized edit</strong>, not a global perturbation</td>
+<td>additive injection restricted by position (all / query / operand / sentence-initial) × layer scope</td>
+<td>query-token-only ≈ all-positions on the margin (+28.7 vs +28.9) at <strong>60× lower off-task KL</strong> (0.29 vs 18.4 nats); operand/wrong positions ≈ 0</td>
+<td><code>{model}_relations_positions*.{parquet,json}</code></td>
+</tr>
+<tr>
+<td>10f</td>
+<td>The margin effect is <strong>label-specific</strong></td>
+<td>permuted-relation-label directions (per-operand + global, 20 redraws); random inside the operator subspace</td>
+<td>all three semantic nulls → 0 (+0.7 / +0.6 / +0.75, CIs span zero) vs real +22.6; structural probes (wrong layer, other relation, shuffled answers) stay nonzero for mechanistically explained reasons</td>
+<td><code>{model}_relations_nulls*.{parquet,json}</code></td>
+</tr>
+<tr>
+<td>10g</td>
+<td>Represented early, <strong>causal late</strong></td>
+<td>per-layer sweep: ANOVA share + single-layer swap, direction built and injected at each layer</td>
+<td>decodability at ceiling everywhere (locates nothing); operator share peaks at 19% depth, causal contrast at 89% — a 70-point dissociation</td>
+<td><code>{model}_relations_layersweep*.{parquet,json}</code></td>
+</tr>
+<tr>
+<td>10h</td>
+<td>The metrics <strong>survive their own audit</strong></td>
+<td>k=8 generations classified 5 ways (raw texts persisted); forced choice by sequence log-prob among gold answers</td>
+<td>overdose = 94.6% token loops by inspection (not missed variants); calibrated dose = fluent target at the clean rate (59.4% vs 58.5%); <strong>target wins forced choice at 80% even at the overdose</strong> — fluency dies, information doesn't; containment over-count bounded ≤5 points</td>
+<td><code>1.7b_relations_audit.{parquet,json}</code></td>
+</tr>
+<tr>
+<td>10i</td>
+<td>Composition claims are <strong>paired, not eyeballed</strong></td>
+<td>per-cell paired differences under the hierarchical bootstrap; TOST at pre-specified ±5pp</td>
+<td>composed−donor +0.9pp [−6.9,+8.3] (8B −3.1 [−12.5,+5.2]); interaction adds −0.9pp [−8.3,+6.9]; formal equivalence underpowered with 5 operator clusters — stated, not hidden; held-out-cell −15pp below donor (CI excludes 0 at 8B) reported as a real gap</td>
+<td><code>{model}_relations_equivalence.json</code></td>
+</tr>
+<tr>
+<td>10j</td>
+<td>Not one lucky <strong>split or operator</strong></td>
+<td>5 shuffled held-out partitions + LOO-country + LOO-operator</td>
+<td>every pair flips in every partition ([+20.0,+22.9]); LOO-country 220/224 ([+11.5,+28.1]); dropping any operator keeps flips 1.00 ([+18.8,+25.8] / [+23.3,+28.9])</td>
+<td><code>{model}_relations_heldout_parts*</code>, <code>*_equivalence.json</code></td>
 </tr>
 <tr>
 <td>11</td>
