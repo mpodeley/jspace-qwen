@@ -1,0 +1,46 @@
+{
+  "band/all": {
+    "alpha_stars": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ],
+    "alpha_star_mode": 0.1,
+    "eval_at_star_mean": 0.6078047391205286,
+    "eval_at_star_min": 0.5625,
+    "eval_at_star_max": 0.6727272727272727,
+    "n_partitions": 5
+  },
+  "single/query": {
+    "alpha_stars": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "alpha_star_mode": 1.0,
+    "eval_at_star_mean": 0.4215436318067897,
+    "eval_at_star_min": 0.38596491228070173,
+    "eval_at_star_max": 0.4818181818181818,
+    "n_partitions": 5
+  },
+  "_meta": {
+    "tag": "1.7b",
+    "domain": "relations",
+    "alphas": [
+      0.05,
+      0.1,
+      0.2,
+      0.5,
+      1.0,
+      2.0,
+      4.0,
+      8.0
+    ],
+    "k": 8,
+    "protocol": "calibrate alpha* on half the operands (argmax long-decode containment), freeze, evaluate on the disjoint half; directions built on all operands (the dose, not the direction, is what is validated here)"
+  }
+}

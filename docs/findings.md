@@ -533,6 +533,40 @@ ways: containment can also over-count (2–5% of cells contain target AND source
 contains demonym-"Swedish" as a modifier); worst-case reclassification moves target rates by ≤5 points
 and changes nothing. Artifacts: `1.7b_relations_audit.parquet` (with raw texts) + `.json`.
 
+### 2.17 Round 3 (user review): equivalence, robustness partitions, LOO-operator, Wang & Xu (2026-07-12)
+
+- **Missing prior integrated:** Wang & Xu 2025 (arXiv:2504.14496), "Functional Abstraction of
+  Knowledge Recall" — subject=input argument, relation=function body, object=return value, verified by
+  component patching. Same group as Wang et al. 2024. New Related-Work paragraph states the delta:
+  they exchange components across positions; we quantify the joint decomposition of ONE prediction
+  state, show steering vector ≡ operator main effect, competitive nulls, generative sufficiency.
+- **Paired equivalence (`op_equivalence.py`, recompute):** composed−donor +0.9pp [−6.9,+8.3] (1.7B),
+  −3.1pp [−12.5,+5.2] (8B); interaction adds −0.9pp [−8.3,+6.9]. TOST at ±5pp does NOT certify
+  (5 operator clusters = underpowered) — paper now says "no detectable gap", not "matches".
+  Held-out-cell composed − donor = −15pp with CI excluding zero at 8B: quantified honestly.
+- **Held-out beyond one split (`op_heldout_parts.py`):** 5 shuffled partitions — every pair flips in
+  every partition, contrast range [+20.0, +22.9]; LOO-country 220/224 flips, range [+11.5, +28.1]
+  (weakest: Turkey 16/18, Brazil 18/20).
+- **Leave-one-operator-out (recompute):** dropping any operator keeps flips at 1.00; contrast range
+  [+18.8, +25.8] (1.7B), [+23.3, +28.9] (8B). No single operator carries the paradigm.
+- **Editorial:** three named generation readouts (short-decode containment / long-decode
+  classification / forced-choice sequence probability), formal SS shares + "two-way effects
+  decomposition" (not inferential ANOVA), "fusion"→"interaction (cell residual)" outside §5,
+  "a state"→"per-layer factorized residual trajectory", "relation-conditioned retrieval operator",
+  abstract −25%, §4.9 → 2-sentence provenance note, exponent glossed.
+- **Format:** real title in main*.tex (was stale!), claims table → wrapped p{} columns, adjustbox
+  shrink-only (resizebox was ENLARGING narrow tables), appendix → \onecolumn with non-floating
+  tables/figures pinned to their prose, print figures redesigned at ~7in with 9pt+ type and no
+  web footers. Discovered: tectonic writes no main.log — the "4 overfulls" tracked all day were a
+  stale log from Jul 10; real count is 0.
+- **Out-of-sample dose (`op_dose_oos.py`):** the strongest possible outcome — α* identical in ALL
+  five calibration/evaluation partitions (0.1 band, 1.0 single-layer); frozen-α* generation on the
+  disjoint half 60.8% [56.2, 67.3] (band) / 42.2% [38.6, 48.2] (single layer); the evaluation-optimal
+  dose coincides with the calibrated one in 10/10 splits. The on-manifold dose is a transferable
+  property, not a post-hoc pick. 8B held-out partitions also replicate (all flip, [+22.8, +25.6];
+  LOO 222/224). Artifacts: `1.7b_relations_dose_oos.*`, `8b_relations_heldout_parts.*`.
+
+
 ---
 
 ## The open interpretive question (deliberately unresolved)

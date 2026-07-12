@@ -11,6 +11,8 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{float}
+\usepackage{array}
+\usepackage{adjustbox}
 \graphicspath{{figs/}}
 
 \renewcommand{\topfraction}{0.92}
@@ -27,7 +29,7 @@
 \providecommand{\passthrough}[1]{#1}
 \providecommand{\real}[1]{#1}
 
-\title{Causal Operator--Operand Factorization in the Residual Stream of LLMs}
+\title{Operator--Operand Factorization in LLM Residual Streams:\\Causal Influence and Compositional Sufficiency}
 
 \author{Matias Podeley \\
   Independent researcher \\
@@ -44,6 +46,7 @@
 
 \bibliography{custom}
 
+\onecolumn  % appendix: single column, non-floating tables/figures
 \appendix
 \input{appendix_public}
 

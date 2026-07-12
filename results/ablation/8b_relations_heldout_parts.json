@@ -1,0 +1,22 @@
+{
+  "partitions": {
+    "n": 6,
+    "contrast_mean": 24.407085764688617,
+    "contrast_min": 22.795612203663794,
+    "contrast_max": 25.62927911931818,
+    "all_flip_all": true
+  },
+  "loo": {
+    "n": 12,
+    "contrast_mean": 25.658187753182872,
+    "contrast_min": 13.85244140625,
+    "contrast_max": 30.631944444444443,
+    "total_flips": 222,
+    "total_pairs": 224
+  },
+  "_meta": {
+    "tag": "8b",
+    "domain": "relations",
+    "note": "partitions = shuffled 6/6 splits (seeds 200+p); LOO = build on 11 operands, test the swap on the single held-out operand"
+  }
+}

@@ -38,11 +38,11 @@ long-form artifacts (\texttt{results/ablation/*\_long.parquet}).
 
 \textbf{Method schematic.}
 
-\begin{figure*}[t]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{op_method}
+\includegraphics[width=0.95\textwidth]{op_method}
 \caption{Method in one schematic: the model\textquotesingle s state is a token-by-layer grid of residual vectors; the entity token and the query token are the two reading positions; averaging query-token states over operands yields one operator direction per layer --- identically the ANOVA operator main effect --- which is then applied by addition (steering), by replacement (composition), or read out (ANOVA).}
-\end{figure*}
+\end{figure}
 
 \textbf{The animal-taxonomy domain.} Operands (12): shark, eagle, frog,
 snake, bee, whale, owl, lizard, cow, salmon, penguin, deer. Relations:
@@ -60,10 +60,10 @@ forced choice = length-normalized sequence log-prob among the
 operand\textquotesingle s gold answers under the same intervention:
 
 {
-\begin{table*}[t]
+\begin{table}[H]
 \centering\small
 \setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{%
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lrrrrr}
 \toprule
 condition & target & source & other & degraded & forced choice \\
@@ -77,8 +77,9 @@ add band \ensuremath{\alpha}=0.1 (calibrated) & 59.4\% & 0.9\% & 1.3\% & 38.4\% 
 87.5\% \\
 add one layer, query, \ensuremath{\alpha}=1 & 40.6\% & 21.9\% & 2.2\% & 35.3\% & 76.3\% \\
 \bottomrule
-\end{tabular}}
-\end{table*}
+\end{tabular}
+\end{adjustbox}
+\end{table}
 }
 
 Containment classification can also over-count (2--5\% of cells contain
@@ -89,10 +90,10 @@ target rates by \ensuremath{\leq} 5 points.
 \textbf{Cross-architecture replication (full table, \S{}4.7).}
 
 {
-\begin{table*}[t]
+\begin{table}[H]
 \centering\small
 \setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{%
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lrrr}
 \toprule
 measure & Qwen3-1.7B & Qwen3-8B & \textbf{Gemma-2-9B} \\
@@ -103,32 +104,60 @@ flips (swap \textgreater{} 0) & 20/20 & 20/20 & \textbf{20/20} \\
 held-out-operand contrast & +20.0 {[}+10.8, +29.5{]} & +22.8 {[}+14.0,
 +31.0{]} & \textbf{+26.6 {[}+20.6, +33.2{]}} \\
 operator variance @ query & 86\% & 82\% & \textbf{84.8\%} \\
-interaction (fusion) & 9\% & 13\% & \textbf{6.8\%} \\
+interaction (cell residual) & 9\% & 13\% & \textbf{6.8\%} \\
 exponent-free marker (clean \ensuremath{\to} +v) & -3.6 \ensuremath{\to} +12.5 & -2.9 \ensuremath{\to} +8.1 &
 \textbf{-3.0 \ensuremath{\to} +8.5} \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
+\end{adjustbox}
 \caption{Cross-architecture replication: every signature reproduces on Gemma-2-9B (logit units are not comparable across architectures; compare flip rates and variance shares).}
-\end{table*}
+\end{table}
 }
 
 \textbf{Per-pair distributions.}
 
-\begin{figure*}[t]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{op_swap_dist}
+\includegraphics[width=0.95\textwidth]{op_swap_dist}
 \caption{Per-pair distributions: swap values per operand with operand-bootstrap 95\% CIs, matched-norm random control, and clean baselines. No CI crosses zero; the weakest pairs are exactly the syncretic ones (demonym\ensuremath{\leftrightarrow}language and their neighbours).}
-\end{figure*}
+\end{figure}
+
+\textbf{The position \ensuremath{\times} scope battery (\S{}4.1; 1.7B, \ensuremath{\alpha} = 4).} Ranks are
+medians, clean baseline 570; n = 224 (pair, operand) cells per
+condition:
+
+{
+\begin{table}[H]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lrrrrr}
+\toprule
+position, scope & \ensuremath{\Delta}margin {[}95\% CI{]} & rank(tgt) & says target &
+sign+ & KL off \\
+\midrule
+all, band & +28.9 {[}+16.2, +39.9{]} & 431 & 0.4\% & 98\% & 18.4 \\
+query, band & +28.7 {[}+16.1, +39.8{]} & 368 & 2.2\% & 98\% & 0.29 \\
+query, one layer & +13.7 {[}+7.7, +18.3{]} & 69 & 9.8\% & 91\% & 0.04 \\
+operand, band & +1.8 {[}+1.0, +2.5{]} & 3194 & 0.4\% & 4\% & 0.26 \\
+wrong (t = 0), band & +2.3 {[}-0.2, +4.8{]} & 194 & 3.6\% & 16\% &
+1.56 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Where the vector must land (1.7B, $\alpha=4$): position $\times$ layer scope, with the metrics flips hide. Ranks are medians over 224 cells; clean-baseline rank 570.}
+\end{table}
+}
 
 \textbf{The null battery (full results, 1.7B relations, \ensuremath{\alpha} = 4).}
 Contrast vs. matched-norm random with operator-level cluster-bootstrap
 95\% CIs; stochastic nulls pool 20 redraws:
 
 {
-\begin{table*}[t]
+\begin{table}[H]
 \centering\small
 \setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{%
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lrr}
 \toprule
 condition & contrast {[}95\% CI{]} & flip fraction \\
@@ -141,49 +170,50 @@ wrong layer (early band) & +9.77 {[}+5.2, +13.3{]} & 1.00 \\
 other-relation direction & +11.09 {[}+6.7, +17.1{]} & 0.80 \\
 shuffled answers & +21.12 {[}+11.2, +32.2{]} & 1.00 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
+\end{adjustbox}
 \caption{The null battery (1.7B, $\alpha=4$). Semantic nulls -- permuted relation labels and random directions inside the operator subspace -- abolish the effect; structural probes remain nonzero for mechanistically explained reasons (\S4.1).}
-\end{table*}
+\end{table}
 }
 
-\begin{figure*}[t]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{op_nulls}
+\includegraphics[width=0.95\textwidth]{op_nulls}
 \caption{Forest plot of the null battery: semantic nulls (permuted labels, subspace-random) collapse to zero; structural probes remain nonzero for mechanistically explained reasons (source-uninstall component, category-level boost, additive persistence across layers).}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[t]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{op_dose}
+\includegraphics[width=0.95\textwidth]{op_dose}
 \caption{Dose-response with both signs: the operator-specific effect is monotone through zero and reverses with the direction\textquotesingle s sign, saturating at both ends, while the matched-norm random control is flat; per-token KL on unrelated text grows with dose.}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[t]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{op_geometry}
+\includegraphics[width=0.95\textwidth]{op_geometry}
 \caption{PCA of the 60 workspace vectors H{[}operand, operator{]}, colored by operator. At the country token the operators intermix (operand-organized, operand 59\%); at the query token they separate into clean operator clusters (operator-organized, operator 86\%). The faint web links each country\textquotesingle s five operator-forms --- short at the country token, splayed at the query token. Bottom: the variance split, 1.7B and 8B.}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[t]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{op_syncretism}
+\includegraphics[width=0.95\textwidth]{op_syncretism}
 \caption{Left: operator-direction cosines --- all five operators are distinct directions (no off-diagonal near \ensuremath{\pm}1); language and demonym, boxed, both emit "Italian" yet differ (cos -0.26). Right: the exponent-free marker, built where the two share an output word, still installs the relation causally (-3.6 \ensuremath{\to} +12.5).}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[t]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{op_layer_sweep}
+\includegraphics[width=0.95\textwidth]{op_layer_sweep}
 \caption{Layer sweep: the ANOVA operator share peaks early (92\% at 19\% depth) while the single-layer causal contrast peaks late (+21.3 at 89\% depth); held-out-operand decodability is at ceiling at every layer.}
-\end{figure*}
+\end{figure}
 
 \textbf{The add-N comparison (moved from \S{}4.8).} Held-out generalization
 and operator-set collinearity for the three operator families:
 
 {
-\begin{table*}[t]
+\begin{table}[H]
 \centering\small
 \setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{%
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{llr}
 \toprule
 cut & held-out generalization (1.7B / 8B) & operator-set collinearity
@@ -195,9 +225,10 @@ add-N (operator = addend) & 5/12 \textperiodcentered{} 6/12 (+0.10 / +0.05) & 0.
 \texttt{+\ \ensuremath{\times}\ -} (operator = function) & 2/6 \textperiodcentered{} 1/6 (-0.43 / -0.55) &
 0.64 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
+\end{adjustbox}
 \caption{Reconciliation with the add-N cut: the linear-parameter family sits between relations and true two-operand arithmetic.}
-\end{table*}
+\end{table}
 }
 
 Qwen3 BPE restricts add-N to single-digit results (5 operands), so its

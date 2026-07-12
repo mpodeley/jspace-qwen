@@ -12,6 +12,8 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{float}   % [H] for inline (non-floating) narrow tables
+\usepackage{array}     % >{\raggedright} column specs (claims table)
+\usepackage{adjustbox} % shrink-only table fitting (max width)
 
 % many two-column floats in few pages: pack them instead of dumping at the end
 \renewcommand{\topfraction}{0.92}
@@ -30,7 +32,7 @@
 \providecommand{\passthrough}[1]{#1}
 \providecommand{\real}[1]{#1}
 
-\title{Causal Operator--Operand Factorization in the Residual Stream of LLMs}
+\title{Operator--Operand Factorization in LLM Residual Streams:\\Causal Influence and Compositional Sufficiency}
 
 % review mode suppresses authors; kept for camera-ready:
 \author{Anonymous \\ \texttt{anonymous@example.org}}
@@ -46,6 +48,7 @@
 
 \bibliography{custom}   % acl.sty already sets \bibliographystyle{acl_natbib}
 
+\onecolumn  % appendix: single column, non-floating tables/figures
 \appendix
 \input{appendix}
 

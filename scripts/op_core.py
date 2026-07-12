@@ -531,12 +531,22 @@ def factorize_components(model, ws, dom: Domain, pos=-1):
     return {"mu": mu, "stem": stem, "case": case, "inter": inter}
 
 
-def held_out_generalization(model, ws, dom: Domain, tok, seed=0, alpha=4.0):
+def held_out_generalization(model, ws, dom: Domain, tok, seed=0, alpha=4.0,
+                            split_seed=None, build=None, test=None):
     """Build v(op) from half the operands, test the swap on the held-out half. If it
-    generalizes, the operator is a real ending, not interpolation among examples."""
+    generalizes, the operator is a real ending, not interpolation among examples.
+
+    The default split is the paper's original (insertion order). `split_seed` draws
+    a shuffled half/half partition instead (multi-partition robustness); `build`/
+    `test` override both (e.g. leave-one-operand-out)."""
     ops = dom.operand_keys
-    half = len(ops) // 2
-    build, test = ops[:half], ops[half:]
+    if build is None or test is None:
+        pool = ops[:]
+        if split_seed is not None:
+            import random as _random
+            _random.Random(split_seed).shuffle(pool)
+        half = len(pool) // 2
+        build, test = pool[:half], pool[half:]
     ldf = measure_swaps_long(model, ws, dom, tok, seed=seed, alpha=alpha,
                              operands=test, build_operands=build)
     df = measure_swaps(model, ws, dom, tok, long_df=ldf)

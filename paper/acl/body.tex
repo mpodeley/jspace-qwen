@@ -10,52 +10,60 @@ answer at \textbf{three separate levels of evidence}:
 (does intervening on it systematically move the model\textquotesingle s
 \emph{relative preference} between answers?), and \textbf{behavioral
 sufficiency} (can the factorized parts make the model actually
-\emph{produce} the target answer?). Distinguishing the levels matters
-because interventions that move a logit margin are routinely read as if
-they controlled behavior, and the gap between the two is where
-interpretability claims quietly overreach. Here that gap becomes the
-object of study --- and resolves: we show it is a property of \emph{how}
-the direction is applied (mode and dose), not of \emph{what} it
-contains.
+\emph{produce} the target answer?). The levels matter because
+margin-moving interventions are routinely read as if they controlled
+behavior. Here that gap becomes the object of study --- and resolves: it
+is a property of \emph{how} the direction is applied (mode and dose),
+not of \emph{what} it contains.
 
 A line of work shows that a \emph{task} or \emph{relation} can be
 captured by a single addable vector in an LLM\textquotesingle s residual
-stream (task vectors, \citealp{hendel2023icl}; function vectors, \citealp{todd2024function}) and that many relations are approximately linear operators (LRE,
-\citealp{hernandez2024lre}; \citealp{merullo2024vector}). What has not been
-characterized is the \textbf{joint structure of operator and operand}:
-whether the operation \emph{factorizes} from its argument,
-\emph{generalizes}, is separable from the \emph{word it produces}, and
-suffices to \emph{drive generation} --- and whether any of this holds
-beyond relational facts. We answer these on Qwen3 and Gemma-2, across a
-geographic and an animal-taxonomy domain, with arithmetic and logic as
-the contrast. A closing discussion (\S{}5) offers \textbf{declension} as
-the organizing metaphor for the asymmetries observed.
+stream (task vectors, \citealp{hendel2023icl}; function vectors, \citealp{todd2024function}), that many relations are approximately linear operators (LRE,
+\citealp{hernandez2024lre}; \citealp{merullo2024vector}), and that recall can be read
+as function execution over components at different positions (\citealp{wang2025functional}). What has not been quantified is the \textbf{joint structure of
+operator and operand within one prediction state}: whether the operation
+\emph{factorizes} from its argument there, \emph{generalizes}, is
+separable from the \emph{word it produces}, and suffices to \emph{drive
+generation} --- and whether any of this holds beyond relational facts.
+We answer these on Qwen3 and Gemma-2, across a geographic and an
+animal-taxonomy domain, with arithmetic and logic as the contrast. A
+closing discussion (\S{}5) offers \textbf{declension} as the organizing
+metaphor for the asymmetries observed.
 
 \section{Related work and what is new
 here}
 
-\textbf{Extracting relational concepts.} The closest prior work is \citet{wang2024locating}, who locate hidden states that express a relation
-separately from its subject, transplant these relational representations
-between subjects, and rewrite relations across 22 relation types and
-several models. We instead characterize the \textbf{joint geometry} of
-relation and entity: we quantify its additive and interaction components
-(the two-way ANOVA with a measured fusion term), run exhaustive
-all-pairs swaps against matched-norm nulls, and test whether relation
-directions generalize causally across held-out entities, prompt
-contexts, architectures, and task domains --- including the domains
-where the factorization fails.
+\textbf{Extracting relational concepts, and knowledge recall as function
+execution.} The closest prior line is \citet{wang2024locating}, who locate
+hidden states expressing a relation separately from its subject and
+transplant them between subjects --- and its successor \textbf{\citet{wang2025functional}}, which abstracts recall into a functional structure (subject
+activations as \emph{input argument}, relation activations as
+\emph{function body}, object activations as \emph{return value}),
+verified by patching and counter-knowledge swaps of each component. Our
+object of study differs in four ways: they localize and exchange
+components read at \emph{different token positions}, while we quantify
+the \textbf{joint operator \ensuremath{\times} operand decomposition of a single
+prediction state}; we show the steering vector \emph{is} that
+decomposition\textquotesingle s operator main effect, numerically; we
+validate against \textbf{competitive semantic nulls} (permuted labels,
+within-subspace random); and we establish \textbf{generative sufficiency
+by additive reconstruction}, including components built without the
+target cell and an out-of-sample dose calibration. Their framing is
+function \emph{execution across positions}; ours is state
+\emph{composition at one position} --- complementary readings of the
+same recall machinery.
 
 \textbf{Operation as an addable vector; relation as a linear operator.}
 Task Vectors (\citealp{hendel2023icl}) and Function Vectors (Todd et
-al., ICLR 2024) extract one vector per ICL task and add/patch it to
-trigger the task (similarly In-Context Vectors, \citealp{liu2024icv};
-ActAdd, \citealp{turner2023actadd}) --- but bundle operator \emph{and} operand
-into one unfactored "task" direction, without competitive nulls. LRE
-(\citealp{hernandez2024lre}) fits a full affine map per relation --- a
-\emph{monolithic} operator. Summing Up the Facts (\citealp{chughtai2024summing})
-decomposes factual recall into additive \emph{circuits}; ours is a
-two-way ANOVA of the \textbf{residual state itself}, with a measured
-interaction term and a sufficiency test on the components.
+al., ICLR 2024) extract one vector per ICL task and add/patch it
+(similarly \citealp{liu2024icv}; \citealp{turner2023actadd}) --- but bundle
+operator \emph{and} operand into one unfactored direction, without
+competitive nulls. LRE (\citealp{hernandez2024lre}) fits a
+\emph{monolithic} affine map per relation. Summing Up the Facts
+(\citealp{chughtai2024summing}) decomposes recall into additive \emph{circuits};
+ours is a two-way effects decomposition of the \textbf{residual state
+itself}, with a measured interaction term and a sufficiency test on the
+components.
 
 \textbf{Attribute subspaces / reading position.} RAVEL (\citealp{huang2024ravel}) disentangles multiple \emph{attributes of one entity} into
 subspaces (operators sharing an operand); we measure the orthogonal
@@ -81,14 +89,16 @@ operator/operand factorization}; we provide one and show where it does
 not emerge.
 
 \textbf{What is new here is the combination, not any single ingredient.}
-That relations admit addable vectors and linear decoders is established;
-what has not been done is the joint, quantified analysis: the operator \ensuremath{\oplus}
-operand \textbf{factorization of the residual state itself}, with the
-steering vector shown to \emph{be} the ANOVA operator component; the
-all-pairs swap validated against \textbf{permuted-label and
-within-subspace nulls}; \textbf{held-out-operand generalization}; the
-\textbf{compositional sufficiency} test (does a state assembled from the
-parts \emph{generate}?) with its dose \ensuremath{\times} position calibration; the
+That relations admit addable vectors and linear decoders, and that
+recall components can be located and swapped across positions, is
+established; what has not been done is the joint, quantified analysis at
+one position: the operator \ensuremath{\oplus} operand \textbf{factorization of the
+residual state itself}, with the steering vector shown to \emph{be} the
+ANOVA operator component; the all-pairs swap validated against
+\textbf{permuted-label and within-subspace nulls};
+\textbf{held-out-operand generalization}; the \textbf{compositional
+sufficiency} test (does a state assembled from the parts
+\emph{generate}?) with its dose \ensuremath{\times} position calibration; the
 \textbf{operation-vs-realization dissociation}; and the
 \textbf{cross-domain test} (each claim, its evidence, and its decisive
 control are tabulated at the head of \S{}4). The declension reading is our
@@ -131,16 +141,25 @@ two-way factorization below
 the identity numerically (max relative deviation 8.5\ensuremath{\times}\ensuremath{10^{-8}} across the
 band). Everything the paper does --- steering, composing, decoding ---
 manipulates this one object; the differences between experiments are
-differences in \emph{how it is applied}, never in what is extracted.
+differences in \emph{how it is applied}, never in what is extracted. We
+characterize it as a \textbf{relation-conditioned retrieval operator}
+--- it conditions retrieval on the queried relation; we make no claim
+about the attention/MLP circuitry that implements the binding.
 
-\textbf{Factorization.} At a fixed \texttt{(\ensuremath{\ell},\ t)}:
+\textbf{Two-way effects decomposition.} At a fixed \texttt{(\ensuremath{\ell},\ t)}:
 \texttt{h\ =\ \ensuremath{\mu}\ +\ a(o)\ +\ b(k)\ +\ e(o,\ k)} --- operand main effect,
-operator main effect, and interaction, exact by construction (the
-interaction is the cell residual), every term carrying the
-\texttt{(\ensuremath{\ell},\ t)} indices; we report the variance share of each term
-(Appendix A). Table 1 uses the mid-workspace layer --- \textbf{layer 17
-of 28 (63\% depth) at 1.7B, 23 of 36 at 8B, 27 of 42 on Gemma-2-9B} ---
-at \texttt{t\ =\ -1} and, as the control, \texttt{t\ =\ -2}.
+operator main effect, and \textbf{interaction (cell residual)}, every
+term carrying the \texttt{(\ensuremath{\ell},\ t)} indices. The identity is exact
+because the design is balanced and \texttt{e} is defined as the
+residual; this is a descriptive decomposition, not an inferential ANOVA,
+and with one observation per cell \texttt{e} also absorbs any
+cell-specific idiosyncrasy. Variance shares are
+\texttt{SS\_a\ =\ K\textperiodcentered{}\ensuremath{\Sigma}\_o\ensuremath{\,\Vert\,}a(o)\ensuremath{\,\Vert\,}\ensuremath{^{2}},\ SS\_b\ =\ O\textperiodcentered{}\ensuremath{\Sigma}\_k\ensuremath{\,\Vert\,}b(k)\ensuremath{\,\Vert\,}\ensuremath{^{2}},\ SS\_e\ =\ \ensuremath{\Sigma}\_\{o,k\}\ensuremath{\,\Vert\,}e(o,k)\ensuremath{\,\Vert\,}\ensuremath{^{2}}},
+each reported as its fraction of \texttt{SS\_a\ +\ SS\_b\ +\ SS\_e} (O
+operands, K operators). Table 1 uses the mid-workspace layer ---
+\textbf{layer 17 of 28 (63\% depth) at 1.7B, 23 of 36 at 8B, 27 of 42 on
+Gemma-2-9B} --- at \texttt{t\ =\ -1} and, as the control,
+\texttt{t\ =\ -2}.
 
 \textbf{Swap, positions, and controls.} Efficacy of
 \texttt{k\_A\ \ensuremath{\to}\ k\_B} is the change in
@@ -155,12 +174,12 @@ statistics, no semantics: the decisive null), random directions
 \textbf{wrong layer} and \textbf{wrong position}, an
 \textbf{other-relation} direction of matched norm, and
 \textbf{shuffled-answer} scoring. Every intervention reports margin
-change, normalized margin, target rank before/after, top-1, greedy exact
-match (3 tokens), on-task KL, and off-task KL on unrelated WikiText ---
-not flips alone. Answers are scored at their distinguishing first token
-(bare digit for arithmetic); a tokenization guard drops, per operator
-pair, operands whose answers collide there (4 of 12 survive on the
-syncretic demonym\ensuremath{\leftrightarrow}language pairs; all 12 elsewhere).
+change, normalized margin, target rank before/after, top-1, short-decode
+containment (\S{}below), on-task KL, and off-task KL on unrelated WikiText
+--- not flips alone. Answers are scored at their distinguishing first
+token (bare digit for arithmetic); a tokenization guard drops, per
+operator pair, operands whose answers collide there (4 of 12 survive on
+the syncretic demonym\ensuremath{\leftrightarrow}language pairs; all 12 elsewhere).
 
 \textbf{Composition (behavioral sufficiency).} The
 factorization\textquotesingle s component vectors, computed per layer,
@@ -170,18 +189,16 @@ are recombined and \textbf{replace} the residual at the query position
 control) --- plus two loophole-closers: a \textbf{leave-one-cell-out}
 reconstruction whose components never saw the target cell, and a
 \textbf{wrong-operand} composition that should (and does) redirect the
-answer. The generation readout ("says X") is \textbf{containment, not
-literal exact match}: the greedy continuation contains the gold answer
-case-insensitively, so \emph{the euro}, \emph{euros}, and \emph{Euro}
-all count for \emph{euro}; the model\textquotesingle s own clean
-accuracy under the same readout is the ceiling. A generation
-\textbf{audit} (Appendix A) extends this: longer decodes, a five-way
-classification of every raw generation (target / source /
-right-relation- wrong-entity / wrong-relation / degraded), and a
-\textbf{forced-choice} score --- length-normalized full- sequence
-log-probability among the operand\textquotesingle s gold answers under
-the same intervention --- which is immune to article interception and
-multi-token surface variants.
+answer. Three named generation readouts, used consistently and never
+cross-compared: \textbf{short-decode containment} (3-token greedy
+continuation contains the gold answer, case-insensitive --- \emph{the
+euro}, \emph{euros}, \emph{Euro} all count; the model\textquotesingle s
+clean accuracy under the same readout is the ceiling);
+\textbf{long-decode classification} (k = 8, each raw generation labeled
+target / source / wrong-entity / wrong-relation / degraded); and
+\textbf{forced-choice sequence probability} (length-normalized
+log-probability of each gold answer under the same intervention ---
+immune to article interception and multi-token variants).
 
 \textbf{Generalization and domains.} Build \texttt{v(op)} from half the
 operands; test the swap on the held-out half --- a genuine operator vs.
@@ -199,8 +216,13 @@ two levels: within a pair the \textbf{operand} is the resampling unit;
 across the paradigm the \textbf{operator} is the top-level cluster (a
 dyadic node bootstrap --- resample operators with replacement, weight
 each pair by its endpoints\textquotesingle{} multiplicities, resample
-operands within surviving pairs). Per-operand values are released as
-long-form artifacts (Appendix A).
+operands within surviving pairs). Because only five operator clusters
+exist, we additionally report \textbf{leave-one-operator-out}: dropping
+any operator leaves the contrast in {[}+18.8, +25.8{]} at 1.7B and
+{[}+23.3, +28.9{]} at 8B with flip fraction 1.00 throughout --- no
+single operator carries the paradigm. Composition claims (\S{}4.2) use
+paired per-cell differences under the same hierarchical bootstrap.
+Per-operand values are released as long-form artifacts (Appendix A).
 
 \textbf{J-space controls.} We repeat readout-geometry in the J-lens
 readout \texttt{unembed(J\textperiodcentered{}h)} vs the logit-lens readout
@@ -215,10 +237,9 @@ kill it:
 
 {
 \begin{table*}[t]
-\centering\small
+\centering\footnotesize
 \setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llll}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.185\textwidth}>{\raggedright\arraybackslash}p{0.315\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.14\textwidth}@{}}
 \toprule
 claim & main evidence & decisive control & scope \\
 \midrule
@@ -239,7 +260,7 @@ the factorization is domain-scoped & animals replicates;
 arithmetic/logic do not (\S{}4.8) & held-out fails off-relation & our setup
 (\S{}4.8) \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
 \caption{The paper's claims, each with its main evidence, the control that could kill it, and its scope.}
 \end{table*}
 }
@@ -260,59 +281,34 @@ their surface form; per-pair distributions in Appendix A).
 
 \textbf{Where the vector has to land (1.7B, \ensuremath{\alpha} = 4).} Injecting at the
 \textbf{query token alone} reproduces the all-position effect on the
-margin --- at 60\ensuremath{\times} lower off-task cost:
-
-{
-\begin{table*}[t]
-\centering\small
-\setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lrrrr}
-\toprule
-position, scope & \ensuremath{\Delta}margin {[}95\% CI{]} & rank(tgt) & says target & KL
-off \\
-\midrule
-all, band & +28.9 {[}+16.2, +39.9{]} & 431 & 0.4\% & 18.4 \\
-\textbf{query, band} & +28.7 {[}+16.1, +39.8{]} & 368 & 2.2\% &
-\textbf{0.29} \\
-query, one layer & +13.7 {[}+7.7, +18.3{]} & \textbf{69} & 9.8\% &
-0.04 \\
-operand, band & +1.8 {[}+1.0, +2.5{]} & 3194 & 0.4\% & 0.26 \\
-wrong (t = 0), band & +2.3 {[}-0.2, +4.8{]} & 194 & 3.6\% & 1.56 \\
-\bottomrule
-\end{tabular}}
-\caption{Where the vector must land (1.7B, $\alpha=4$): position $\times$ layer scope, with the metrics flips hide. Ranks are medians over 224 cells; clean-baseline rank 570.}
-\end{table*}
-}
+margin (+28.7 {[}+16.1, +39.8{]} vs. +28.9 {[}+16.2, +39.9{]}) at
+\textbf{60\ensuremath{\times} lower off-task cost} (KL 0.29 vs. 18.4 nats/token), and one
+late layer at the query token brings the target to median rank 69 at
+near-zero cost (0.04); the operand token and a structurally irrelevant
+token do essentially nothing (+1.8 / +2.3). Full position \ensuremath{\times} scope
+battery in Appendix A.
 
 The margin effect is a \textbf{localized edit of the queried relation}
---- position-specific (the operand token and a structurally irrelevant
-token do essentially nothing; sign-correct 98/98/91\% for the three
-effective rows vs. 4--16\% for the controls) and nearly free off-task
-when restricted to the query position --- not a global perturbation of
-processing. The battery replicates at 8B (query-only +32.7 vs.
-all-positions +33.2, at 63\ensuremath{\times} lower off-task cost). (Ranks are medians,
-clean baseline 570; n per condition is 224 cells; bootstrap unit in \S{}3.)
+--- position-specific (sign-correct 98/98/91\% for the effective
+conditions vs. 4--16\% for the controls) --- not a global perturbation;
+it replicates at 8B (query-only +32.7 vs. all +33.2, at 63\ensuremath{\times} lower
+off-task cost).
 
 \textbf{The label is everything.} Directions rebuilt from the
-\emph{same} residuals with \textbf{permuted relation labels} ---
-preserving every statistical property of the extraction while destroying
-its semantics --- abolish the effect: \textbf{+0.7 {[}-0.8, +3.9{]}}
-per-operand, +0.6 global (20 redraws each; at 8B +0.15 and +0.09 against
-a real contrast of +26.0). A random direction \textbf{inside the
-operator subspace} (right subspace, wrong content) also does nothing:
-+0.75 {[}-2.2, +3.5{]} (8B: +0.43). Three further probes stay nonzero
-for \emph{mechanistically informative} reasons, and decompose what the
-margin measures: an \textbf{other-relation} direction retains the shared
-\texttt{-v(source)} component and yields \ensuremath{\approx} half the effect (+11.1 ---
-uninstalling the source is half the margin); \textbf{shuffled-answer
-scoring} still moves (+21.1) because \texttt{+v(target)} boosts the
-whole answer \emph{category} (any capital city, not specifically Rome)
---- operand specificity lives in generation, which \S{}4.2 measures
-directly; and the correct direction at the \textbf{wrong (early) layer}
-retains +9.8 because residual-stream additions \emph{persist} downstream
---- per-layer locality is measured properly in \S{}4.6. (Forest plot in
-Appendix A.)
+\emph{same} residuals with \textbf{permuted relation labels} --- same
+statistics, no semantics --- abolish the effect: \textbf{+0.7 {[}-0.8,
++3.9{]}} per-operand, +0.6 global (20 redraws; 8B +0.15 / +0.09 vs. real
++26.0). A random direction \textbf{inside the operator subspace} also
+does nothing: +0.75 {[}-2.2, +3.5{]} (8B +0.43). Three probes stay
+nonzero for \emph{mechanistically informative} reasons and decompose the
+margin: an \textbf{other-relation} direction keeps the shared
+\texttt{-v(source)} and yields \ensuremath{\approx} half the effect (+11.1 --- uninstalling
+the source is half the margin); \textbf{shuffled-answer scoring} still
+moves (+21.1) because \texttt{+v(target)} boosts the whole answer
+\emph{category} --- operand specificity lives in generation, which \S{}4.2
+measures; and the \textbf{wrong (early) layer} retains +9.8 because
+residual additions \emph{persist} downstream (locality measured properly
+in \S{}4.6; forest plot in Appendix A).
 
 \textbf{Dose--response, both signs.} The effect is a \textbf{signed
 causal axis}: the operator-specific shift is monotone in \ensuremath{\alpha} through zero
@@ -326,27 +322,30 @@ random contrast. Off-task cost grows with dose and breadth (7.9 \ensuremath{\to}
 nats/token band-wide vs. 0.29 at the query token). What dose does to
 \emph{generation} is the subject of \S{}4.2. (Curves in Appendix A.)
 
-\subsection{A state composed from the
-factorization\textquotesingle s parts generates the
+\subsection{A composed residual trajectory generates the
 answer}
 
 At the default dose, additive steering flips every \emph{margin} but
-rarely makes the model \emph{say} the target answer (0.4--2.2\% exact
-match), whereas replacing the query-position residual with a
-\textbf{real donor activation} (same operand, target relation) does ---
-51\%, at the model\textquotesingle s clean accuracy of 53\%. Is the
-donor carrying something the direction lacks --- operand binding, a
+rarely makes the model \emph{say} the target answer (0.4--2.2\%
+short-decode containment), whereas replacing the query-position residual
+with a \textbf{real donor activation} (same operand, target relation)
+does --- 51\%, at the model\textquotesingle s clean accuracy of 53\%. Is
+the donor carrying something the direction lacks --- operand binding, a
 non-additive interaction, lexical or execution signals? We decompose the
-donor by the exact factorization and patch partial reconstructions at
-the query position (every variant includes \ensuremath{\mu}: the hook \emph{replaces}
-the state, so a variant must be a plausible full-magnitude residual).
-1.7B, 224 (pair, operand) cells:
+donor by the exact factorization and patch partial reconstructions back
+in. To be precise about the object: what is patched is a
+\textbf{per-layer factorized residual trajectory} --- one reconstructed
+vector per workspace-band layer, all at the query position --- not a
+single-layer vector (the single-layer variant is reported at the end of
+this section; every variant includes \ensuremath{\mu}, since the hook \emph{replaces}
+the state and a replacement must be a plausible full-magnitude
+residual). 1.7B, 224 (pair, operand) cells:
 
 {
 \begin{table*}[t]
 \centering\small
 \setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{%
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lrrrrr}
 \toprule
 patched state & says target & says source & says other & rank(target),
@@ -366,34 +365,33 @@ operator + \textbf{wrong} operand & 20.1\% & 11.6\% & \textbf{34.4\%} &
 full donor (\ensuremath{\mu} + both + inter) & 50.9\% & 12.5\% & 1.8\% & \textbf{2} &
 31.2\% \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
+\end{adjustbox}
 \caption{Decomposing the donor activation (1.7B, 224 cells; clean greedy ceiling 53\%): a state composed from the factorization's additive parts makes the model emit the target answer as well as the real donor does; the interaction term is not needed. "Held-out cell" rebuilds the components without ever seeing the target cell; "wrong operand" redirects the answer to the swapped operand.}
 \end{table*}
 }
 
-\textbf{The donor carries nothing the additive parts
-don\textquotesingle t.} The purely additive composition
-\texttt{\ensuremath{\mu}\ +\ operand\ +\ operator} generates at the
-donor\textquotesingle s own level (51.8\% vs. 50.9\%) --- the
-model\textquotesingle s competence ceiling --- while the interaction
-term alone does nothing (7.1\%, vs. 4.5\% for the magnitude control).
-Two controls close the loopholes. A \textbf{leave-one-cell-out}
-reconstruction, whose operand and operator components were built
+\textbf{The donor carries nothing detectable that the additive parts
+don\textquotesingle t.} The paired per-cell difference composed - donor
+is \textbf{+0.9 pp, 95\% CI {[}-6.9, +8.3{]}} at 1.7B (51.8\% vs.
+50.9\%; clean ceiling 53\%) and -3.1 pp {[}-12.5, +5.2{]} at 8B (62.1\%
+vs. 65.2\%; ceiling 68\%); adding the interaction term changes nothing
+detectable (-0.9 pp {[}-8.3, +6.9{]}; interaction \emph{alone}: 7.1\%,
+near the 4.5\% magnitude control). Honest limit: with five operator
+clusters a formal \ensuremath{\pm}5 pp equivalence test is underpowered --- the claim
+is "no detectable gap," not certified equivalence. Two controls close
+the loopholes. A \textbf{leave-one-cell-out} reconstruction, built
 \emph{without ever seeing the target cell}, still generates at 35.7\%
---- composition, not leakage. And swapping in a \textbf{wrong
+(8B: 50.4\%) --- composition, not leakage --- though genuinely below the
+donor (paired -15 pp, CI excluding zero at 8B). And a \textbf{wrong
 operand\textquotesingle s} component redirects the answer to \emph{that}
-operand (34.4\% says-other vs. 1.8\% baseline): the state is
-compositional in exactly the way the factorization claims --- the
-operator component selects the relation, the operand component selects
-whose answer. At \textbf{8B every number sharpens}: composed 62.1\% vs.
-donor 65.2\% (clean ceiling 68\%), leave-one-out \textbf{50.4\%},
-wrong-operand redirect \textbf{48.2\%}, interaction-only 3.6\%,
-magnitude control 2.2\%.
+operand (34.4\% says-other vs. 1.8\% baseline; 8B: 48.2\%): the operator
+selects the relation, the operand selects whose answer.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{op_patch}
-\caption{Decomposition ladder: greedy exact match and margin change for each partial reconstruction of the donor activation. The additive composition matches the full donor at the model\textquotesingle s clean ceiling; interaction-only and magnitude controls do nothing; the held-out-cell reconstruction and the wrong-operand redirect close the leakage and specificity loopholes.}
+\caption{Decomposition ladder: short-decode containment and margin change for each partial reconstruction of the donor activation. The additive composition matches the full donor at the model\textquotesingle s clean ceiling; interaction-only and magnitude controls do nothing; the held-out-cell reconstruction and the wrong-operand redirect close the leakage and specificity loopholes.}
 \end{figure*}
 
 \textbf{Sufficiency by steering, at the calibrated dose.} Since
@@ -407,13 +405,17 @@ layer, \textbf{51.3\% at \ensuremath{\alpha} \ensuremath{\approx} 0.1 for the 13
 accumulate, so the band\textquotesingle s on-manifold dose is \ensuremath{\approx} 1/13 per
 layer; the same peak doses reproduce at 8B: 45.1\% and 56.2\%) --- while
 past the peak the margin keeps climbing (+28.9 at \ensuremath{\alpha} = 4) as generation
-collapses. The earlier "steering moves margins but cannot generate"
-result was an \textbf{overdose artifact}, not an information deficit:
-the factorized representation is \textbf{compositionally sufficient}, by
-replacement and by calibrated addition. (At a single layer,
-\texttt{\ensuremath{\mu}\ +\ operator} alone already generates at 44.6\% --- unpatched
-layers still carry the operand, so the injection point is local and
-operand identity distributed.)
+collapses. The dose is not tuned post hoc: \textbf{calibrating \ensuremath{\alpha} on half
+the operands and evaluating frozen on the disjoint half}, \ensuremath{\alpha}* is
+identical in all five partitions (0.1 band, 1.0 single layer), held-out
+generation at frozen \ensuremath{\alpha}* is 60.8\% {[}56.2, 67.3{]} (single layer
+42.2\%), and the evaluation-optimal dose coincides with the calibrated
+one in 10/10 splits. The earlier "steering moves margins but cannot
+generate" result was an \textbf{overdose artifact}, not an information
+deficit: the factorized representation is \textbf{compositionally
+sufficient}, by replacement and by calibrated addition. (Single layer:
+\texttt{\ensuremath{\mu}\ +\ operator} alone generates at 44.6\% --- unpatched layers
+still carry the operand.)
 
 \textbf{The generation audit} (Appendix A) closes the metric loopholes
 directly. Classifying every raw k = 8 generation: the calibrated dose
@@ -441,30 +443,30 @@ decomposition per reading position:
 \begin{table*}[t]
 \centering\small
 \setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{%
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lrrr}
 \toprule
-read position & operand & operator & interaction (fusion) \\
+read position & operand & operator & interaction (cell residual) \\
 \midrule
 query token & 5\% / 6\% & \textbf{86\% / 82\%} & 9\% / 13\% \\
 entity token & \textbf{59\% / 55\%} & 31\% / 34\% & 9\% / 11\% \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
+\end{adjustbox}
 \caption{Two-way ANOVA of the workspace state: variance shares by read position (1.7B / 8B).}
 \end{table*}
 }
 
 \textasciitilde90\% additive; operand and operator components occupy
 distinct subspaces (principal angles 41--85\textdegree{} at the query token ---
-though near-orthogonality is the high-dimensional default, so the
-load-bearing evidence is the variance split and the causal results).
-Since the steering vector is numerically this ANOVA\textquotesingle s
+near-orthogonality is the high-dimensional default, so the load-bearing
+evidence is the variance split and the causal results). Since the
+steering vector is numerically this decomposition\textquotesingle s
 operator main effect (\S{}3), the direction that flips margins (\S{}4.1), the
 component that composes into a generating state (\S{}4.2), and the term
 that dominates this split are \textbf{one vector seen three ways}. The
-operator-dominant representation \textbf{emerges along the sequence}:
-the entity enters operand-dominant and is re-marked by its queried role
-at the query position (the reading-position control rules out template
+entity enters operand-dominant and is re-marked by its queried role at
+the query position (the reading-position control rules out template
 echo).
 
 (A PCA of the 60 workspace states, showing the operand-organized cloud
@@ -477,8 +479,10 @@ token, is in Appendix A.)
 \emph{language-of} and \emph{demonym-of} emit the \textbf{same word}
 (Italian) yet are \textbf{distinct operator directions}; the swap
 between them is weak precisely because they share their output word. An
-\textbf{exponent-free operator marker} built from the shared-output
-pairs (\texttt{mean{[}h(language)\ -\ h(demonym){]}}, the output word
+\textbf{exponent-free operator marker} --- "exponent" in the
+morphological sense: the surface form that realizes a feature, here the
+shared answer token --- built from the shared-output pairs
+(\texttt{mean{[}h(language)\ -\ h(demonym){]}}, the output word
 cancelled by construction) still installs the relation causally (1.7B:
 -3.6 \ensuremath{\to} +12.5): the operator representation is not an output-word
 representation (\S{}5 reads this as syncretism).
@@ -494,19 +498,19 @@ domain}
 applied to the 6 held-out still flips \textbf{20/20} swaps --- a
 transferable operator, not interpolation: contrast \textbf{+20.0
 {[}+10.8, +29.5{]}} at 1.7B, \textbf{+22.8 {[}+14.0, +31.0{]}} at 8B,
-flip fraction 1.00 at both.
+flip fraction 1.00 at both. This is not one lucky split: over five
+shuffled partitions every pair flips in every partition (contrast range
+{[}+20.0, +22.9{]}; 8B {[}+22.8, +25.6{]}), and full
+leave-one-country-out gives 220/224 flips at 1.7B and 222/224 at 8B.
 
-\textbf{Frames and wordings.} Rendering every relation in three
-paraphrase frames and testing every build\ensuremath{\to}test combination: on 1.7B
-\textbf{all 9 combinations flip 20/20} (180/180), \emph{frame-invariant
-to two decimals} (+22.6 on all three test frames); at 8B 100/100 with
-the same invariance. Stronger: the direction survives changing the
-\emph{wording of the relation itself} --- re-lexicalizing every relation
-(\emph{currency of} \ensuremath{\to} \emph{money used in}, \ldots) and transferring
-both ways gives \textbf{40/40 at both scales}, with transfer \ensuremath{\approx}
-within-formulation (+22.59 vs. +22.62 at 1.7B). Clean baselines shift
-across frames and wordings; the operator\textquotesingle s causal effect
-does not: it is a property of the \textbf{relation}, not its wording.
+\textbf{Frames and wordings.} Across three paraphrase frames, every
+build\ensuremath{\to}test combination flips --- 1.7B \textbf{180/180},
+\emph{frame-invariant to two decimals} (+22.6 on all test frames); 8B
+100/100. Stronger: the direction survives re-lexicalizing the
+\emph{relation itself} (\emph{currency of} \ensuremath{\to} \emph{money used in},
+\ldots) both ways, \textbf{40/40 at both scales}, transfer \ensuremath{\approx} within
+(+22.59 vs. +22.62). Clean baselines shift; the causal effect does not:
+it is a property of the \textbf{relation}, not its wording.
 
 \textbf{A second, non-geographic domain.} Every signature replicates on
 an independently curated animal-taxonomy domain (class / habitat / diet
@@ -531,39 +535,31 @@ acts}
 A per-layer sweep (1.7B; direction built \textbf{and} injected at each
 single layer) separates three notions the band framing conflates.
 \emph{Trivial readability:} a held-out-operand classifier decodes the
-operator at \textbf{100\% from every layer, including layer 0} --- the
-operator\textquotesingle s token is in the prompt, so decodability
-locates nothing. \emph{Representation:} the ANOVA operator share peaks
-\textbf{early} (92\% at 19\% depth), decaying to 57\%. \emph{Causal
-leverage:} the single-layer swap contrast is \ensuremath{\approx} 0 early and peaks
-\textbf{late} (+21.3 {[}+13.8, +28.2{]} at 89\% depth --- one layer
-there reproduces the full band\textquotesingle s +22.6). The two
-informative curves peak \textbf{70 depth-points apart} (8B: 23\% vs.
-89\% --- the same profile): where the operator is most cleanly
-factorized is not where injecting it most moves the output. This
-explains the wrong-layer probe of \S{}4.1 (early additions act by
-persisting into later layers) and diagnoses the mid-band layer of
-\S{}4.1--4.2 as far from optimal (L17: +6.8 vs. L24: +21.3): being
-\emph{readable}, being \emph{the representation}, and being
-\emph{causally potent} are three different layer profiles of one
-direction. (Figure in Appendix A.)
+operator at \textbf{100\% from every layer including layer 0} --- the
+operator\textquotesingle s token is in the prompt; decodability locates
+nothing. \emph{Representation:} the operator share peaks \textbf{early}
+(92\% at 19\% depth), decaying to 57\%. \emph{Causal leverage:} \ensuremath{\approx} 0
+early, peaking \textbf{late} (+21.3 at 89\% depth \ensuremath{\approx} the full
+band\textquotesingle s +22.6). The informative curves peak \textbf{70
+depth-points apart} (8B: 23\% vs. 89\%): where the operator is most
+cleanly factorized is not where injecting it most moves the output ---
+being \emph{readable}, \emph{the representation}, and \emph{causally
+potent} are three different layer profiles of one direction (explains
+the wrong-layer probe of \S{}4.1; figure in Appendix A).
 
 \subsection{Cross-architecture replication
 (Gemma-2-9B)}
 
-The entire pipeline transfers unchanged to \textbf{Gemma-2-9B} --- a
-different pretraining corpus, tokenizer (SentencePiece; answer
-single-token coverage 0.95), and architecture family (soft-capped
-logits, GQA). Every qualitative signature replicates, with the strongest
-effects of the three models: all-pairs contrast \textbf{+30.4 {[}+23.8,
-+34.8{]}} (20/20 flips), held-out \textbf{+26.6 {[}+20.6, +33.2{]}},
-operator variance 84.8\% with \textbf{6.8\%} interaction, and the
-exponent-free marker -3.0 \ensuremath{\to} +8.5 (full three-model table in Appendix A).
-Raw logit units are not directly comparable across architectures
-(Gemma-2 soft-caps its final logits), so cross-model comparison should
-lean on flip rates and variance shares, which match or exceed
+The entire pipeline transfers unchanged to \textbf{Gemma-2-9B} ---
+different corpus, tokenizer, and architecture family. Every qualitative
+signature replicates, with the strongest effects of the three models:
+all-pairs \textbf{+30.4 {[}+23.8, +34.8{]}} (20/20), held-out
+\textbf{+26.6 {[}+20.6, +33.2{]}}, operator variance 84.8\% with 6.8\%
+interaction (full table in Appendix A). Raw logit units are not
+comparable across architectures (Gemma-2 soft-caps logits) --- compare
+flip rates and variance shares, which match or exceed
 Qwen3\textquotesingle s: the factorization is not an idiosyncrasy of one
-model family.
+family.
 
 \subsection{Domain scope: a second retrieval domain replicates;
 arithmetic and logic do not
@@ -578,10 +574,10 @@ retrieval column:
 {
 \begin{table}[H]
 \centering\small
-\resizebox{\columnwidth}{!}{%
+\begin{adjustbox}{max width=\columnwidth}
 \begin{tabular}{lrrll}
 \toprule
-domain & op var & fusion & held-out & swap/rand \\
+domain & op var & interaction & held-out & swap/rand \\
 \midrule
 \textbf{countries} & 86\% & 9\% & \textbf{20/20} & +21 /
 \textasciitilde0 \\
@@ -589,7 +585,8 @@ domain & op var & fusion & held-out & swap/rand \\
 arithmetic & 55\% & 23\% & 2/6 (\ensuremath{\leq}rand) & +0.4 / +0.3 \\
 logic & 33\% & 34\% & 2/6 (\ensuremath{\leq}rand) & +1.2 / +0.2 \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
+\end{adjustbox}
 \end{table}
 }
 
@@ -600,14 +597,13 @@ decisive nuance: its interaction share (22\%) is essentially
 arithmetic\textquotesingle s (23\%), yet its held-out transfer is
 perfect and arithmetic\textquotesingle s is at chance --- \textbf{what
 separates domains is whether the operator direction transfers, not how
-much fusion the state carries}. This is a \textbf{domain contrast,
-strictly scoped}: the factorization observed in relational retrieval
-does not emerge for arithmetic \textbf{under our models, tokenization
-choices, prompts, and intervention procedure} --- a regime where 1.7B/8B
-arithmetic competence is itself limited, digit tokenization restricts
-the grid, and the operation may be computed distributively or
-iteratively rather than retrieved. We claim the contrast, not a theorem
-about algorithmic computation.
+much interaction the state carries}. This is a \textbf{domain contrast,
+strictly scoped}: the factorization does not emerge for arithmetic
+\textbf{under our models, tokenization, prompts, and intervention
+procedure} --- a regime where 1.7B/8B arithmetic competence is itself
+limited and the operation may be computed distributively or iteratively
+rather than retrieved. We claim the contrast, not a theorem about
+algorithmic computation.
 
 \textbf{Reconciling a contrary report.} \citet{christ2025structure} find that
 \textbf{add-N} operators (a fixed addend \texttt{N} over one number)
@@ -621,15 +617,12 @@ the operator-set variance on one line --- a number line, not a set of
 operations). Their positive and our negative coexist without
 contradiction; the full table is in Appendix A.
 
-\subsection{This is causal structure, not a J-space readout
-advantage}
+\subsection{Provenance note}
 
 This project began as a replication of the J-space readout claim of
 \citealp{gurnee2026workspace}, whose "workspace" band we
-intervene on throughout. Under matched controls --- including a
-spectrum-matched random projection --- that readout showed \textbf{no
-advantage} over the logit lens on any of four comparisons (Appendix B):
-the structure here is causal organization, not a readable subspace.
+intervene on throughout; under matched controls that readout showed no
+advantage for our task (Appendix B). Nothing above depends on J-space.
 
 \section{Discussion}
 
@@ -650,53 +643,50 @@ influence, sufficiency, with sufficiency tested by \emph{composition}
 
 \textbf{Relational computation as declension.} The measurements invite a
 morphological reading, offered as an organizing metaphor rather than a
-claim. In a declining language a noun\textquotesingle s role is marked
-by a case ending on a stem: the same stem takes different endings, the
-same ending applies across stems (\S{}4.5), two cases can share a surface
-form without being the same case (\textbf{syncretism} ---
-\emph{language-of} and \emph{demonym-of}, \S{}4.4), stem and ending compose
-with a small residue of \textbf{fusion} (\S{}4.3, behaviorally inert), and
-the composed stem-plus-ending is itself a usable form (\S{}4.2). The
-limits: unlike morphological case, the marking is continuous, graded,
-and \textbf{layer-dependent} --- a trajectory, not a static affix (\S{}4.6)
---- and arithmetic and logic do not decline (\S{}4.8). The honest
-formulation is that entities acquire \textbf{transient relational
-configurations partially comparable to grammatical case}, not that the
-model implements a case grammar.
+claim: the same stem takes different endings, the same ending applies
+across stems (\S{}4.5), two cases share a surface form without being the
+same case (\textbf{syncretism}, \S{}4.4), stem and ending compose with a
+small, behaviorally inert residue of \textbf{fusion} (\S{}4.3), and the
+composed stem-plus-ending is a usable form (\S{}4.2). The limits: unlike
+morphological case, the marking is continuous, graded, and
+\textbf{layer-dependent} --- a trajectory, not a static affix (\S{}4.6) ---
+and arithmetic and logic do not decline (\S{}4.8). The honest formulation
+is that entities acquire \textbf{transient relational configurations
+partially comparable to grammatical case}, not that the model implements
+a case grammar.
 
 \section{Conclusion}
 
-An LLM represents a relational operation at three verifiable levels. The
+An LLM represents a relational operation at three verifiable levels: the
 operator \textbf{exists} as a stable direction --- identically the
-factorization\textquotesingle s operator component. It \textbf{causally
+factorization\textquotesingle s operator component; it \textbf{causally
 controls} the answer margin --- every swap flips, localized at the query
-token, vanishing under permuted labels. And the factorization is
-\textbf{behaviorally sufficient}: a state composed from its additive
-parts, with no interaction term, makes the model produce the target
-answer at its own competence ceiling, by replacement or by calibrated
-addition. The structure generalizes to unseen operands, rewordings, a
-second domain, and a second architecture; it separates the operation
-from the word that realizes it; it does not emerge for arithmetic or
-logic under our setup. The gap between shifting a preference and
-executing an operation, where it appeared, was a property of the
-intervention, not the representation.
+token, vanishing under permuted labels; and the factorization is
+\textbf{behaviorally sufficient} --- a trajectory composed from its
+additive parts, no interaction term, makes the model produce the answer
+at its own accuracy level, by replacement or by calibrated addition. It
+generalizes to unseen operands, rewordings, a second domain, and a
+second architecture; it does not emerge for arithmetic or logic under
+our setup. The gap between shifting a preference and executing an
+operation, where it appeared, was a property of the intervention, not
+the representation.
 
 \section{Limitations}
 
 \textbf{Scale and family:} 1.7--9B models from two decoder-only
 families; no \ensuremath{\geq}30B model; relational linearity holds for a subset of
 relations even in-domain (cf. LRE \textasciitilde48\%).
-\textbf{Sufficiency is scoped:} "generates" means greedy exact match
-over three tokens against the model\textquotesingle s own clean accuracy
-as ceiling, on short single-query prompts; composition and dose \ensuremath{\times}
-position are at 1.7B (8B replication in the artifacts); the
-leave-one-out composition reaches 36\%, not the full-grid 52\% --- some
-of the composed state\textquotesingle s precision does come from seeing
-the cell. \textbf{Coverage:} five country + four animal relations,
-English-only; three context frames and a full re-lexicalization (\S{}4.5);
-other entity types and languages open. \textbf{Arithmetic:} single-digit
-regime (BPE), at scales where arithmetic competence is itself limited
-(\S{}4.8). \textbf{Reading-position result} restates known
-subject-enrichment \ensuremath{\to} attribute-extraction dynamics. \textbf{No J-space
-claim} (\S{}4.9, Appendix B).
+\textbf{Sufficiency is scoped:} "generates" means short-decode
+containment (3 tokens) against the model\textquotesingle s own clean
+accuracy as ceiling, on short single-query prompts; composition and dose
+\ensuremath{\times} position replicate at 8B (\S{}4.2); the leave-one-out composition reaches
+36\%, not the full-grid 52\% --- some of the composed
+state\textquotesingle s precision does come from seeing the cell.
+\textbf{Coverage:} five country + four animal relations, English-only;
+three context frames and a full re-lexicalization (\S{}4.5); other entity
+types and languages open. \textbf{Arithmetic:} single-digit regime
+(BPE), at scales where arithmetic competence is itself limited (\S{}4.8).
+\textbf{Reading-position result} restates known subject-enrichment \ensuremath{\to}
+attribute-extraction dynamics. \textbf{No J-space claim} (\S{}4.9, Appendix
+B).
 

@@ -28,6 +28,7 @@ MD = ROOT / "docs" / "paper.md"
 UNI = {
     # multi-char sequences first (dict order is application order)
     "10⁻⁸": r"\ensuremath{10^{-8}}",
+    "²": r"\ensuremath{^{2}}", "Σ": r"\ensuremath{\Sigma}",
     "−": "-", "–": "--", "—": "---", "×": r"\ensuremath{\times}",
     "Δ": r"\ensuremath{\Delta}", "∈": r"\ensuremath{\in}",
     "≡": r"\ensuremath{\equiv}",
@@ -49,6 +50,8 @@ UNI = {
 # lines) and match the LaTeX-escaped text (& -> \&). Order: \citet forms first.
 CITES = [
     (r"Geva et al\.\s*\(EMNLP\s+2023\)", r"\\citet{geva2023dissecting}"),
+    (r"Wang\s+\\&\s+Xu\s*\(2025\)", r"\\citet{wang2025functional}"),
+    (r"Wang\s+\\&\s+Xu\s+2025", r"\\citealp{wang2025functional}"),
     (r"Wang\s+et al\.\s*\(2024\)", r"\\citet{wang2024locating}"),
     (r"Wang\s+et al\.\s+2024", r"\\citealp{wang2024locating}"),
     (r"Christ et al\.\s*\(2025\)", r"\\citet{christ2025structure}"),
@@ -137,6 +140,13 @@ def longtable_to_table(tex: str) -> str:
          "evidence, the control that could kill it, and its scope."),
     ]
 
+    # the claims table has long prose cells: no uniform scaling can make it both
+    # fit and stay legible — give it wrapping p{} columns at \footnotesize instead.
+    CLAIMS_COLSPEC = (r"@{}>{\raggedright\arraybackslash}p{0.185\textwidth}"
+                      r">{\raggedright\arraybackslash}p{0.315\textwidth}"
+                      r">{\raggedright\arraybackslash}p{0.27\textwidth}"
+                      r">{\raggedright\arraybackslash}p{0.14\textwidth}@{}")
+
     def repl(m):
         colspec = m.group(1)
         body = m.group(2)
@@ -151,20 +161,28 @@ def longtable_to_table(tex: str) -> str:
         body = body.replace(r"\noalign{}", "")
         plain = re.sub(r"\\[a-zA-Z]+\{?|[{}]", "", body)
         widest = max((len(r) for r in plain.splitlines() if "&" in r), default=0)
+        if re.search(r"reading-position control", body):
+            # the claims table: wrapping p{} columns, never scaled
+            cap = next((c for pat, c in CAPTIONS if re.search(pat, body)), "")
+            captex = f"\\caption{{{cap}}}\n" if cap else ""
+            return ("\\begin{table*}[t]\n\\centering\\footnotesize\n"
+                    "\\setlength{\\tabcolsep}{4pt}\n"
+                    f"\\begin{{tabular}}{{{CLAIMS_COLSPEC}}}\n{body.strip()}\n"
+                    f"\\end{{tabular}}\n{captex}\\end{{table*}}")
         if widest > 55:  # wide: span both columns, floats to a page top -> caption it
             cap = next((c for pat, c in CAPTIONS if re.search(pat, body)), "")
             captex = f"\\caption{{{cap}}}\n" if cap else ""
             return ("\\begin{table*}[t]\n\\centering\\small\n"
                     "\\setlength{\\tabcolsep}{4pt}\n"
-                    "\\resizebox{\\textwidth}{!}{%\n"
+                    "\\begin{adjustbox}{max width=\\textwidth}\n"
                     f"\\begin{{tabular}}{{{colspec}}}\n{body.strip()}\n"
-                    f"\\end{{tabular}}}}\n{captex}\\end{{table*}}")
-        # narrow: keep inline exactly where the prose introduces it, scaled to
-        # the column so a 5-column row can never overflow
+                    f"\\end{{tabular}}\n\\end{{adjustbox}}\n{captex}\\end{{table*}}")
+        # narrow: keep inline exactly where the prose introduces it; shrink-only
+        # (a 5-column row can overflow the column, but must never be blown up)
         return ("\\begin{table}[H]\n\\centering\\small\n"
-                "\\resizebox{\\columnwidth}{!}{%\n"
+                "\\begin{adjustbox}{max width=\\columnwidth}\n"
                 f"\\begin{{tabular}}{{{colspec}}}\n{body.strip()}\n"
-                "\\end{tabular}}\n\\end{table}")
+                "\\end{tabular}\n\\end{adjustbox}\n\\end{table}")
     return re.sub(
         r"\\begin\{longtable\}\[\]\{@\{\}(\w+)@\{\}\}(.*?)\\end\{longtable\}",
         repl, tex, flags=re.S)
@@ -271,6 +289,18 @@ def main() -> None:
     if ai >= 0:
         appendix = re.sub(r"\\section\{Appendix [A-Z]: ", r"\\section{", tex[ai:])
         tex = tex[:ai]
+        # the appendix is set \onecolumn (main.tex): floats become [H] blocks
+        # pinned exactly where their prose introduces them — no more headers
+        # divorced from their tables and half-empty float pages
+        appendix = (appendix
+                    .replace("\\begin{table*}[t]", "\\begin{table}[H]")
+                    .replace("\\end{table*}", "\\end{table}")
+                    .replace("\\begin{figure*}[t]", "\\begin{figure}[H]")
+                    .replace("\\end{figure*}", "\\end{figure}")
+                    .replace("\\begin{adjustbox}{max width=\\columnwidth}",
+                             "\\begin{adjustbox}{max width=\\textwidth}")
+                    .replace("\\includegraphics[width=\\textwidth]",
+                             "\\includegraphics[width=0.95\\textwidth]"))
 
     suffix = "_public" if public else ""
     (ACL / f"abstract{suffix}.tex").write_text(abstract + "\n")

@@ -1,30 +1,25 @@
 How do language models represent a relational operation ---
 \emph{currency-of}, \emph{capital-of} --- as distinct from the entity it
 applies to? We separate three levels of evidence.
-\textbf{Representation:} a two-way ANOVA factorizes the mid-network
-state as \texttt{H\ \ensuremath{\approx}\ \ensuremath{\mu}\ +\ operand\ +\ operator\ +\ interaction},
-\textasciitilde90\% additive across Qwen3-1.7B/8B and Gemma-2-9B --- and
-the steering vector is \emph{identically} the ANOVA operator component.
-\textbf{Causal influence:} adding \texttt{v(op\_B)\ -\ v(op\_A)} flips
-the target-vs-source logit margin for all ordered relation pairs in all
-three models; the query token alone matches the full-prompt effect at
-60\ensuremath{\times} lower off-task cost, and the decisive nulls --- directions rebuilt
-under \textbf{permuted relation labels}, and random directions
-\textbf{inside the operator subspace} --- abolish the effect.
-\textbf{Behavioral sufficiency:} a state \emph{composed} from the
-factorization\textquotesingle s parts,
-\texttt{\ensuremath{\mu}\ +\ operand\ +\ operator}, patched at one position, makes the
-model \emph{produce} the target answer at its own competence ceiling
-(52\% vs. 53\% clean; leave-one-out components reach 36\%, and swapping
-the operand component redirects the answer). The interaction term is
-unnecessary --- and the earlier failure of additive steering to generate
-is a \textbf{dose artifact}: at the calibrated dose the same direction
-generates at ceiling, while overdosing keeps inflating the margin as it
-pushes the state off-manifold. The structure generalizes (held-out
-operands, re-framed and re-lexicalized prompts, an independent
-animal-taxonomy domain), separates the operation from its surface
-realization (\emph{language-of} \ensuremath{\neq} \emph{demonym-of} despite both
-emitting "Italian"), and does not emerge for arithmetic or logic under
-the identical pipeline. Relational computation here is an operand plus a
-transplantable operator --- sufficient, not merely influential, where
-the answer is decided.
+\textbf{Representation:} a two-way effects decomposition of the
+query-position state is \textasciitilde90\% additive in operand and
+operator across Qwen3-1.7B/8B and Gemma-2-9B, and the steering vector is
+\emph{identically} the decomposition\textquotesingle s operator main
+effect. \textbf{Causal influence:} adding the operator difference flips
+the target-vs-source answer margin for every ordered relation pair in
+all three models; the decisive nulls --- directions rebuilt under
+\textbf{permuted relation labels}, and random directions \textbf{inside
+the operator subspace} --- abolish the effect. \textbf{Behavioral
+sufficiency:} a per-layer residual trajectory \emph{composed} from the
+decomposition\textquotesingle s parts,
+\texttt{\ensuremath{\mu}\ +\ operand\ +\ operator}, patched at the query position,
+makes the model \emph{produce} the target answer at its own accuracy
+level; components built without the target cell still generate, and
+swapping the operand component redirects the answer. The interaction
+term adds nothing detectable --- and the earlier failure of additive
+steering to generate was a \textbf{dose artifact}: an
+out-of-sample-calibrated dose generates at the same level, while
+overdosing inflates the margin as it pushes the state off-manifold. The
+structure generalizes (held-out operands, re-worded prompts, a second
+domain), separates the operation from its surface word, and does not
+emerge for arithmetic or logic under the identical pipeline.

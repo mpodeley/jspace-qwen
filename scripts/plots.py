@@ -49,8 +49,17 @@ if PAPER:
 
 
 def fs(w: float, h: float) -> tuple:
-    """Figure size: web size, or ~62% for the print builds (fonts scale up)."""
-    return (w * 0.62, h * 0.62) if PAPER else (w, h)
+    """Figure size: web size, or normalized to ~7in width for print so type set at
+    9-10.5pt renders near its nominal size once the PDF is included at
+    \\textwidth (6.5in) — a 0.93 shrink, not the old 0.62."""
+    return (7.0, h * 7.0 / w) if PAPER else (w, h)
+
+
+def foot(fig, text: str, y: float = -0.04):
+    """Figure footnote — web only. In print the LaTeX caption carries this text,
+    and the tiny fig.text used to collide with the axes."""
+    if not PAPER:
+        fig.text(0.01, y, text, color=MUTED, fontsize=8.5, va="top")
 
 
 def load_geo(tag: str, domain: str = "relations"):
@@ -256,10 +265,10 @@ def fig_op_geometry():
             groups.append(f"{tag}\n{pos} token")
             stems.append(v["stem"]); cases.append(v["case"]); inter.append(v["interaction"])
     x = np.arange(len(groups))
-    axb.bar(x, stems, 0.6, color=OPERAND_C, label="operand (stem)")
-    axb.bar(x, cases, 0.6, bottom=stems, color=OPERATOR_C, label="operator (case)")
+    axb.bar(x, stems, 0.6, color=OPERAND_C, label="operand")
+    axb.bar(x, cases, 0.6, bottom=stems, color=OPERATOR_C, label="operator")
     axb.bar(x, inter, 0.6, bottom=[s + c for s, c in zip(stems, cases)],
-            color=FUSION_C, label="interaction (fusion)")
+            color=FUSION_C, label="interaction (cell residual)")
     for i in range(len(groups)):
         axb.text(i, stems[i] / 2, f"{stems[i]:.0%}", ha="center", va="center",
                  color=SURF, fontsize=9, fontweight="bold")
@@ -268,12 +277,13 @@ def fig_op_geometry():
     axb.set_xticks(x, groups, fontsize=9.5)
     axb.set_ylim(0, 1)
     axb.set_ylabel("variance share")
-    axb.set_title("The concept is declined along the sequence: operand-dominant → "
-                  "operator-dominant  (fusion ~9–13%, subspaces 41–82° apart)",
+    axb.set_title("Re-marked along the sequence: operand-dominant → operator-dominant  "
+                  "(interaction ~9–13%, subspaces 41–82° apart)",
                   fontsize=10.5, loc="left")
     axb.legend(frameon=False, fontsize=9, ncol=3, loc="upper center")
     axb.grid(axis="x")
-    fig.suptitle("Where operand and operator live", fontsize=14, x=0.01, ha="left")
+    if not PAPER:
+        fig.suptitle("Where operand and operator live", fontsize=14, x=0.01, ha="left")
     _savefig(fig, "op_geometry")
     plt.close(fig)
 
@@ -369,13 +379,13 @@ def fig_op_swap_dist():
         f"{fam['flip_frac']:.0%} [{fam['flip_lo']:.0%}, {fam['flip_hi']:.0%}]",
         fontsize=10, loc="left")
     n_per = int(ldf.groupby(["from", "to"]).size().median())
-    fig.text(0.01, -0.015,
+    foot(fig,
              f"dots = swap per operand (orange, median {n_per}/pair; 4 on the syncretic "
              f"demonym–language pairs) · gray × = matched-norm random · "
              f"bar = operand-bootstrap 95% CI · ○ = clean baseline mean\n"
              f"20 ordered pairs share 5 operator directions — pairs are not independent; "
              f"operands are the unit within a pair, operators across the paradigm.",
-             color=MUTED, fontsize=8.5, va="top")
+             y=-0.015)
     _savefig(fig, "op_swap_dist")
     plt.close(fig)
 
@@ -395,14 +405,11 @@ def fig_op_dose():
 
     ax = axes[0]
     spec = df["swap_shift"] - df["random_shift"]
-    ax.plot(df["alpha"], spec, color=OPERATOR_C, lw=2, marker="o", ms=4)
-    ax.plot(df["alpha"], df["random_shift"], color=MUTED, lw=2, marker="x", ms=5)
-    ax.annotate("operator-specific effect\n(swap − random)",
-                (df["alpha"].iloc[-1], spec.iloc[-1]), color=OPERATOR_C,
-                fontsize=9, xytext=(-8, -26), textcoords="offset points", ha="right")
-    ax.annotate("nonspecific shift\n(matched-norm random)",
-                (df["alpha"].iloc[-1], df["random_shift"].iloc[-1]), color=MUTED,
-                fontsize=9, xytext=(-8, 8), textcoords="offset points", ha="right")
+    ax.plot(df["alpha"], spec, color=OPERATOR_C, lw=2, marker="o", ms=4,
+            label="operator-specific (swap − random)")
+    ax.plot(df["alpha"], df["random_shift"], color=MUTED, lw=2, marker="x", ms=5,
+            label="nonspecific (matched-norm random)")
+    ax.legend(frameon=False, fontsize=8.5, loc="upper left")
     ax.axvline(4.0, color=MUTED, lw=0.8, ls=":")
     ax.text(4.15, ax.get_ylim()[0] + 1.5, "default α=4", color=MUTED, fontsize=8.5)
     ax.set_xlabel("intervention strength α")
@@ -410,7 +417,7 @@ def fig_op_dose():
     if signed:
         ax.axhline(0, color=MUTED, lw=1)
         ax.axvline(0, color=MUTED, lw=1)
-        ax.set_title("The effect is a signed axis: reversing α reverses the preference",
+        ax.set_title("A signed axis: reversing α\nreverses the preference",
                      fontsize=10.5, loc="left")
     else:
         ax.set_title("Efficacy saturates at the default dose", fontsize=10.5, loc="left")
@@ -420,12 +427,12 @@ def fig_op_dose():
     ax2.axvline(4.0, color=MUTED, lw=0.8, ls=":")
     ax2.set_xlabel("intervention strength α")
     ax2.set_ylabel(r"KL(clean $\Vert$ intervened), nats/token")
-    ax2.set_title("…but the band-wide edit is not free off-task",
+    ax2.set_title("…but the band-wide edit is\nnot free off-task",
                   fontsize=10.5, loc="left")
-    fig.text(0.01, -0.03,
-             "Right: per-token KL on unrelated WikiText with the hook active at every "
-             "position of the workspace band — the intervention is answer-surgical, "
-             "not distribution-surgical.", color=MUTED, fontsize=8.5, va="top")
+    foot(fig,
+         "Right: per-token KL on unrelated WikiText with the hook active at every "
+         "position of the workspace band — the intervention is answer-surgical, "
+         "not distribution-surgical.", y=-0.03)
     _savefig(fig, "op_dose")
     plt.close(fig)
 
@@ -465,26 +472,26 @@ def fig_op_syncretism():
             ax.add_patch(Rectangle((c - 0.5, r - 0.5), 1, 1, fill=False,
                                    edgecolor=OPERATOR_C, lw=2.5))
     ax.grid(False)
-    ax.set_title("All five operators are distinct directions — even language &\ndemonym "
-                 "(boxed), which both emit “Italian”, differ (cos −0.26, not +1)",
-                 fontsize=10, loc="left")
+    ax.set_title("Five distinct directions — language & demonym\n(boxed) share "
+                 "“Italian” yet differ (cos −0.26)", fontsize=10, loc="left")
 
     ax2 = axes[1]
     if des:
         vals = [des["clean"], des["desinence"]]
         bars = ax2.bar([0, 1], vals, 0.55, color=[MUTED, OPERATOR_C])
         ax2.axhline(0, color=MUTED, lw=1)
-        ax2.set_xticks([0, 1], ["clean\n(currency prompt)", "+ pure\ndesinence"], fontsize=9.5)
+        ax2.set_xticks([0, 1], ["clean\n(currency prompt)", "+ exponent-free\nmarker"], fontsize=9.5)
         ax2.set_ylabel(f"logit({des['pair'][0]}) − logit({des['other']})")
         ax2.set_ylim(min(vals) - 2, max(vals) + 3)
         for bx, v in zip(bars, vals):
             ax2.text(bx.get_x() + bx.get_width() / 2, v + (0.5 if v >= 0 else -0.5),
                      f"{v:+.1f}", ha="center", va="bottom" if v >= 0 else "top",
                      fontsize=10.5, fontweight="bold", color=INK)
-    ax2.set_title("The desinence built from the shared word\nstill installs the relation",
+    ax2.set_title("The exponent-free marker still\ninstalls the relation",
                   fontsize=10, loc="left")
-    fig.suptitle("Operation ≠ realization: the case is separable from the word",
-                 fontsize=12.5, x=0.01, ha="left")
+    if not PAPER:
+        fig.suptitle("Operation ≠ realization: the case is separable from the word",
+                     fontsize=12.5, x=0.01, ha="left")
     _savefig(fig, "op_syncretism")
     plt.close(fig)
 
@@ -544,18 +551,19 @@ def fig_op_patch(tag: str = "1.7b"):
     ax2.set_title("Causal influence: does it PREFER it?", fontsize=10.5, loc="left")
     ax2.grid(axis="y", visible=False)
 
-    fig.suptitle("A state composed from the factorization's parts generates the answer — "
-                 "the fusion term is not needed",
-                 fontsize=12.5, x=0.01, ha="left")
-    fig.text(0.01, -0.035,
-             f"Query-position patch at the workspace band, {tag}, "
-             f"{meta['n_cells']} (pair, operand) cells. Every variant includes μ (the hook "
-             f"REPLACES the residual, so a variant must be a plausible state).\n"
-             f"“full (donor)” = μ + operand + operator + interaction is the real donor "
-             f"activation by construction. “held-out cell” rebuilds the operand and "
-             f"operator components WITHOUT ever seeing the target cell.\n"
-             f"CIs: operator-level cluster bootstrap.",
-             color=MUTED, fontsize=8.5, va="top")
+    if not PAPER:  # in print the LaTeX caption carries the headline
+        fig.suptitle("A state composed from the factorization's parts generates the "
+                     "answer — the interaction term is not needed",
+                     fontsize=12.5, x=0.01, ha="left")
+    foot(fig,
+         f"Query-position patch at the workspace band, {tag}, "
+         f"{meta['n_cells']} (pair, operand) cells. Every variant includes μ (the hook "
+         f"REPLACES the residual, so a variant must be a plausible state).\n"
+         f"“full (donor)” = μ + operand + operator + interaction is the real donor "
+         f"activation by construction. “held-out cell” rebuilds the operand and "
+         f"operator components WITHOUT ever seeing the target cell.\n"
+         f"CIs: operator-level cluster bootstrap.",
+         y=-0.035)
     _savefig(fig, "op_patch")
     plt.close(fig)
 
@@ -603,13 +611,13 @@ def fig_op_positions(tag: str = "1.7b"):
                       title_fontsize=9)
     fig.suptitle("Where the operator vector has to land — and what it does not buy",
                  fontsize=12.5, x=0.01, ha="left")
-    fig.text(0.01, -0.05,
+    foot(fig,
              f"{tag}, α={meta['alpha']}. “query” = the last prompt token (where the "
              f"direction is read); “operand” = the entity token; “wrong” = the "
              f"sentence-initial token (structurally irrelevant, but still upstream of "
              f"the answer). Bars are means over all ordered pairs × operands; CIs are "
              f"operator-level cluster bootstraps.",
-             color=MUTED, fontsize=8.5, va="top")
+             y=-0.05)
     _savefig(fig, "op_positions")
     plt.close(fig)
 
@@ -650,19 +658,19 @@ def fig_op_nulls(tag: str = "1.7b"):
                 solid_capstyle="round")
         ax.plot(r["contrast"], i, "o", color=c, ms=6.5, mec=SURF, mew=0.8, zorder=3)
         ax.text(max(r["contrast_hi"], 0) + 0.7, i, f"{r['contrast']:+.1f}",
-                va="center", fontsize=9,
+                va="center", fontsize=9.5,
                 color=c, fontweight="bold" if grp == "real" else "normal")
     ax.axvline(0, color=MUTED, lw=1)
-    ax.set_yticks(range(len(layout)), ylabels, fontsize=9.5)
+    ax.set_yticks(range(len(layout)), ylabels, fontsize=10.5)
     ax.set_xlabel("contrast vs matched-norm random (logit units), 95% CI")
     ax.grid(axis="y", visible=False)
     ax.text(5.0, 7.0, "semantic nulls → 0: the content of the direction is everything",
-            fontsize=9, color=INK, style="italic", va="center")
+            fontsize=9.5, color=INK, style="italic", va="center")
     ax.text(5.0, 3.0, "structural probes: what the margin metric itself is made of",
-            fontsize=9, color=MUTED, style="italic", va="center")
+            fontsize=9.5, color=MUTED, style="italic", va="center")
     ax.set_title("Same statistics, destroyed semantics → no effect",
                  fontsize=12, loc="left")
-    fig.text(0.01, -0.05,
+    foot(fig,
              f"{tag}, α={meta['alpha']}, {meta['n_seeds']} redraws per stochastic null. "
              f"Permuted labels rebuild directions from the SAME residuals with operator "
              f"labels shuffled; the subspace null draws inside the span of the real "
@@ -672,7 +680,7 @@ def fig_op_nulls(tag: str = "1.7b"):
              f"specificity lives in generation, §composition); and additions to the "
              f"residual stream persist downstream, so an early-layer injection is not "
              f"actually absent from the workspace.",
-             color=MUTED, fontsize=8.5, va="top")
+             y=-0.05)
     _savefig(fig, "op_nulls")
     plt.close(fig)
 
@@ -716,14 +724,14 @@ def fig_op_layer_sweep(tag: str = "1.7b"):
     ax.set_title("Where the operator is represented is not where it acts",
                  fontsize=12, loc="left")
     dec = df["decodability"]
-    fig.text(0.01, -0.04,
+    foot(fig,
              f"{tag}. Blue: operator variance share of the two-way ANOVA at that layer "
              f"(query position). Orange: all-pairs swap contrast when the direction is "
              f"built AND injected at that single layer (shaded = 95% CI).\n"
              f"Held-out-operand decodability is {dec.min():.0%}–{dec.max():.0%} at "
              f"every layer — the operator token is present in the prompt, so mere "
              f"readability locates nothing; these two curves do.",
-             color=MUTED, fontsize=8.5, va="top")
+             y=-0.04)
     _savefig(fig, "op_layer_sweep")
     plt.close(fig)
 
@@ -743,7 +751,7 @@ def fig_method():
     # --- left: the grid ------------------------------------------------------
     ax = axes[0]
     ax.set_xlim(-0.7, len(tokens) - 0.3)
-    ax.set_ylim(-1.45, n_l + 0.2)
+    ax.set_ylim(-3.1, n_l + 0.9)
     ax.axis("off")
     for t in range(len(tokens)):
         col = OPERAND_C if t == 3 else OPERATOR_C if t == 4 else MUTED
@@ -752,24 +760,25 @@ def fig_method():
         for l in range(n_l):
             ax.plot(t, l, "o", color=col, ms=7 if t >= 3 else 5,
                     alpha=1.0 if t >= 3 else 0.55, zorder=3)
-        ax.text(t, -0.75, tokens[t], ha="center", fontsize=10,
+        ax.text(t, -0.75, tokens[t], ha="center", fontsize=10.5,
                 color=col, fontweight="bold" if t >= 3 else "normal")
-    ax.text(3, -1.25, "entity token\n(operand read here)", ha="center", fontsize=8,
+    ax.text(3, -1.7, "entity token\n(operand read here)", ha="center", fontsize=9,
             color=OPERAND_C)
-    ax.text(4.35, -1.25, "query token\n(answer read here)", ha="center", fontsize=8,
+    ax.text(4.3, -2.5, "query token\n(answer read here)", ha="center", fontsize=9,
             color=OPERATOR_C)
     for l in range(n_l):
         ax.text(-0.55, l, f"$\\ell={l}$" if l < n_l - 1 else "…", va="center",
-                fontsize=8, color=MUTED)
+                fontsize=9, color=MUTED)
     # band shading
     ax.axhspan(2, 4.5, xmin=0.04, xmax=0.99, color=GRID, alpha=0.5, lw=0)
-    ax.text(-0.15, 4.62, "workspace band: directions built here", fontsize=8,
+    ax.text(0.35, 2.18, "workspace band: directions built here", fontsize=9,
             color=MUTED)
     ax.plot(4, 3, "o", ms=13, mfc="none", mec=INK, mew=1.6, zorder=4)
-    ax.annotate("$h_{\\ell,t}$ — one vector per\nlayer per position",
-                (4, 3), xytext=(-118, 26), textcoords="offset points",
-                fontsize=9, color=INK,
-                arrowprops=dict(arrowstyle="->", color=INK, lw=1))
+    ax.annotate("$h_{\\ell,t}$ — one vector per layer per position",
+                xy=(4, 3), xytext=(1.6, 5.55), textcoords="data",
+                fontsize=9, color=INK, ha="center",
+                arrowprops=dict(arrowstyle="->", color=INK, lw=1,
+                                connectionstyle="arc3,rad=-0.18"))
     ax.set_title("The state is a grid: layers × positions", fontsize=11, loc="left")
 
     # --- right: averaging and the three applications -------------------------
@@ -779,7 +788,7 @@ def fig_method():
     ax.axis("off")
     ax.set_title("One object, applied three ways", fontsize=11, loc="left")
     ax.text(0.2, 9.3, "at each band layer $\\ell$, average the query-token states:",
-            fontsize=9, color=INK)
+            fontsize=9.5, color=INK)
     ax.text(0.6, 8.15, r"$v_\ell(\mathrm{op}) = \mathrm{mean}_o\,[\,h_{\ell,-1}(o,"
                        r"\mathrm{op}) - \mathrm{mean}_k\, h_{\ell,-1}(o,k)\,]$",
             fontsize=10.5, color=INK)
@@ -796,12 +805,12 @@ def fig_method():
     ]):
         yy = 5.4 - y * 1.7
         ax.text(0.4, yy, name, fontsize=10, fontweight="bold", color=c)
-        ax.text(2.2, yy, desc, fontsize=8.6, color=INK, va="center", wrap=True)
-    fig.text(0.01, -0.03,
+        ax.text(2.6, yy, desc, fontsize=9.2, color=INK, va="center", wrap=True)
+    foot(fig,
              "Prompt → token × layer grid of residual states → per-layer operator "
              "direction by averaging at the query token → applied by addition "
              "(steering), by replacement (composition), or read out (ANOVA).",
-             color=MUTED, fontsize=8.5, va="top")
+             y=-0.03)
     _savefig(fig, "op_method")
     plt.close(fig)
 
