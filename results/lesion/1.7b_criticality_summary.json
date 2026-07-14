@@ -1,0 +1,24 @@
+{
+  "baseline_ppl": 42.183319091796875,
+  "n_heads": 448,
+  "critical_heads": [
+    {
+      "layer": 1,
+      "head": 5,
+      "ppl_ratio": 19.726628000604805
+    },
+    {
+      "layer": 0,
+      "head": 3,
+      "ppl_ratio": 4.398555123012046
+    }
+  ],
+  "frac_critical": 0.004464285714285714,
+  "median_ppl_ratio": 1.0027778722283676,
+  "_meta": {
+    "tag": "1.7b",
+    "mode": "mean",
+    "n_prompts": 6,
+    "note": "single-head mean-ablation, WikiText ppl. critical = ppl_ratio > 2. The existence of a few catastrophic heads is why control lesions must be DEPTH-MATCHED."
+  }
+}
