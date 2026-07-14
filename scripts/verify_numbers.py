@@ -177,6 +177,68 @@ def rows():
         for c in cols:
             out.append((f"1.7b MINIMAL {c}", f"exact match {df[c].mean():.1%}",
                         f"n={len(df)}"))
+
+    # --- vocab semantics: portrait (P1) --------------------------------------
+    for tag in ("1.7b", "8b", "gemma-2-9b"):
+        p = ABL / f"{tag}_relations_vocab_portrait_summary.json"
+        if not p.exists():
+            continue
+        s = json.loads(p.read_text())
+        ws = s["_meta"]["ws"]
+        lever = str(ws[-1])
+        first = str(ws[0])
+        for lname in s["e2_diag_contrast"]:
+            c = s["e2_diag_contrast"][lname]
+            out.append((f"{tag} VOCAB E2 diag contrast [{lname}]",
+                        f"L{first} {c[first]['diag_contrast']:+.2f} → "
+                        f"L{lever} {c[lever]['diag_contrast']:+.2f}",
+                        f"null max @L{lever}: perm {c[lever]['perm_max']:+.2f}, "
+                        f"rand_sub {c[lever]['rand_sub_max']:+.2f}"))
+        m = s["e5_marker"][lever]
+        out.append((f"{tag} VOCAB E5g marker energy @L{lever}",
+                    f"{m['energy_in_pair_span']:.2%} of ||m||²",
+                    f"random expectation {m['rand_energy_mean']:.2%}, "
+                    f"built on {m['n_syncretic_build']} syncretic operands"))
+
+    # --- vocab semantics: causal split (P2) -----------------------------------
+    for tag in ("1.7b", "8b", "gemma-2-9b"):
+        p = ABL / f"{tag}_relations_vocab_causal_summary.json"
+        if not p.exists():
+            continue
+        s = json.loads(p.read_text())
+        for key in sorted(k for k in s if "/" in k):
+            v = s[key]
+            dm = v["delta_margin"]
+            fc = v.get("forced_choice_target")
+            out.append((f"{tag} VOCAB SPLIT {key}",
+                        f"Δmargin {dm['mean']:+.1f} [{dm['lo']:+.1f}, {dm['hi']:+.1f}]",
+                        f"flips {v['flip_frac']:.0%}, exact {v['exact_match']:.1%}, "
+                        f"says-target {v['class_target']:.1%}"
+                        + (f", forced-choice {fc:.1%}" if fc is not None else "")))
+        add = s.get("_additivity_band")
+        if add:
+            out.append((f"{tag} VOCAB SPLIT additivity (band)",
+                        f"|Δans+Δrest−Δfull| = {add['mean_abs_residual']:.2f}",
+                        f"vs mean Δfull {add['mean_full']:+.1f}"))
+        shares = s.get("_ans_energy_share_band", {})
+        if shares:
+            vals = list(shares.values())
+            out.append((f"{tag} VOCAB SPLIT c_ans energy share",
+                        f"mean {sum(vals)/len(vals):.1%}",
+                        f"range {min(vals):.1%}–{max(vals):.1%} over {len(vals)} pairs"))
+        pm = ABL / f"{tag}_relations_marker_causal_summary.json"
+        if pm.exists():
+            ms = json.loads(pm.read_text())
+            meta = ms["_meta"]
+            for key in ("alpha=4.0/sign=+", "alpha=4.0/sign=-"):
+                if key in ms:
+                    mv = ms[key]
+                    out.append((f"{tag} MARKER {key}",
+                                f"Δ(lang margin) {mv['delta_lang_mean']:+.2f} "
+                                f"[{mv['lo']:+.2f}, {mv['hi']:+.2f}]",
+                                f"sign-correct {mv['sign_correct_frac']:.0%}, "
+                                f"span energy {meta['energy_in_pair_span']:.2%}, "
+                                f"n={len(meta['tested_on'])} operands"))
     return out
 
 

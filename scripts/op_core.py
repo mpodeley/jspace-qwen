@@ -506,7 +506,7 @@ def factorize(model, lens, layer, pos, dom: Domain, use_j):
 
 
 @torch.no_grad()
-def factorize_components(model, ws, dom: Domain, pos=-1):
+def factorize_components(model, ws, dom: Domain, pos=-1, H=None):
     """Per-layer component VECTORS of the two-way factorization at `pos` -- the
     same math as `factorize` (which reports variance shares) but retaining the
     parts, so partial reconstructions can be patched back into the model
@@ -515,10 +515,13 @@ def factorize_components(model, ws, dom: Domain, pos=-1):
         H[(o,k)][l] == mu[l] + stem[l][o] + case[l][k] + inter[l][(o,k)]   exactly,
 
     because inter is defined as the cell residual. One forward per (operand, op)
-    cell; all ws layers are recorded in that single pass."""
+    cell; all ws layers are recorded in that single pass. Pass a precomputed
+    grid `H` ({(operand, op): {layer: vec}}, e.g. derived from `op_resids`) to
+    skip the forwards and share one grid with `dirs_from_resids` callers."""
     ops, operands = dom.op_keys, dom.operand_keys
-    H = {(o, k): resid(model, ws, dom.render(o, k), pos)
-         for o in operands for k in ops}
+    if H is None:
+        H = {(o, k): resid(model, ws, dom.render(o, k), pos)
+             for o in operands for k in ops}
     mu, stem, case, inter = {}, {}, {}, {}
     for l in ws:
         mu[l] = torch.stack([H[(o, k)][l] for o in operands for k in ops]).mean(0)
