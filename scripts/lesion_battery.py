@@ -152,6 +152,8 @@ def main() -> None:
     ap.add_argument("--domain", default="relations")
     ap.add_argument("--stage", default="dissoc",
                     choices=["screen", "anchor", "dissoc", "both"])
+    ap.add_argument("--networks", nargs="+", default=None,
+                    help="restrict the dissoc stage to these networks")
     ap.add_argument("--mode", default="mean", choices=["mean", "zero", "resample"])
     ap.add_argument("--neuron-sizes", type=int, nargs="+",
                     default=[32, 128, 512, 2048])
@@ -286,7 +288,8 @@ def main() -> None:
         print("\n=== P2 DOUBLE DISSOCIATION: operator vs operand networks ===")
         for kind, sizes in (("neuron", args.neuron_sizes), ("head", args.head_sizes)):
             for k in sizes:
-                for network in ("operator", "operand"):
+                nets = args.networks or ("operator", "operand", "operand_entity")
+                for network in nets:
                     for cmode in CONTROLS:
                         units, _ = pick(df, kind, network, k, mode=cmode,
                                         seed=args.seed)

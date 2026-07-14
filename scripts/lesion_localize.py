@@ -269,9 +269,18 @@ def main() -> None:
           f"{dims.n_neuron_units} neurons")
 
     # ---- factorial localizer (operator vs operand) ----
+    # TWO read positions. The query token is where the operator is *constructed*;
+    # the entity token is where the operand *lives*. A lesion at the query
+    # position cannot remove the entity, because attention re-imports it from the
+    # entity token on every forward pass -- the operand is redundantly coded, and
+    # that redundancy is exactly why the query-position operand network turned out
+    # to be unlesionable. So we localize the operand where it is not redundant.
     print("factorial localizer (12x5 grid, query position)...")
-    grid = grid_activations(model, dom, dims)
+    grid = grid_activations(model, dom, dims, pos=-1)
     fac = factorial_selectivity(grid, dom.operand_keys, dom.op_keys)
+    print("factorial localizer (12x5 grid, ENTITY token)...")
+    grid_e = grid_activations(model, dom, dims, pos=-2)
+    fac_e = factorial_selectivity(grid_e, dom.operand_keys, dom.op_keys)
 
     import random as _random
     nulls = {"head": [], "neuron": []}
@@ -311,6 +320,8 @@ def main() -> None:
     rows = []
     for kind, width in (("head", dims.n_heads), ("neuron", dims.d_mlp)):
         f, i, t = fac[kind], ind[kind], ts[kind]
+        fe = fac_e[kind]
+        e_op_minus_od = fe["ss_operator"] - fe["ss_operand"]
         null = torch.stack(nulls[kind])                       # [seeds, L, W]
         op_minus_od = f["ss_operator"] - f["ss_operand"]
         for l in range(dims.n_layers):
@@ -320,6 +331,10 @@ def main() -> None:
                     "index": u, "depth": depth_percent(l, dims.n_layers),
                     "operator": float(op_minus_od[l, u]),
                     "operand": float(-op_minus_od[l, u]),
+                    "operand_entity": float(-e_op_minus_od[l, u]),
+                    "operator_entity": float(e_op_minus_od[l, u]),
+                    "ss_operand_entity": float(fe["ss_operand"][l, u]),
+                    "ss_total": float(f["ss_total"][l, u]),
                     "ss_operator": float(f["ss_operator"][l, u]),
                     "ss_operand": float(f["ss_operand"][l, u]),
                     "share_operator": float(f["share_operator"][l, u]),
@@ -336,7 +351,8 @@ def main() -> None:
     df.to_parquet(out)
 
     # ---- region geometry: areas or networks? ----
-    NETS = ["operator", "operand", "induction", "text_symbolic", "symbolic_text"]
+    NETS = ["operator", "operand", "operand_entity", "induction", "text_symbolic",
+            "symbolic_text"]
     summary = {"induction_baseline": base_ind, "regions": {}, "segregation": {}}
     for kind in ("head", "neuron"):
         sub = df[df.kind == kind].reset_index(drop=True)

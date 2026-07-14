@@ -97,7 +97,10 @@ class Readout:
     def __init__(self, model, lens=None):
         self.m = model
         self.lens = lens
-        self.gamma = model._final_norm.weight.detach().float()
+        # effective RMSNorm scale: Gemma stores (1 + w), Qwen stores w directly
+        w = model._final_norm.weight.detach().float()
+        mt = getattr(model._hf_model.config, "model_type", "")
+        self.gamma = (w + 1.0) if mt.startswith("gemma") else w
         self.W = model._lm_head.weight.detach()  # [vocab, d], bf16
 
     def _z(self, X, layer):
