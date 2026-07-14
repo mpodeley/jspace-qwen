@@ -13,6 +13,8 @@ under this setup. All experiments run on a single AMD Strix Halo APU (no CUDA, n
 
 - **Showcase site (plain-language, EN/ES): https://mpodeley.github.io/assembled-thought/** —
   this repo remains the code & reproducibility home.
+- **Learn the field (in Spanish):** [Interpretabilidad Mecanicista](https://mpodeley.github.io/interpretabilidad-mecanicista/) —
+  a plain-language mech-interp course, curated resources, and research blog.
 - **New to all this?** [The paper, explained simply](https://mpodeley.github.io/jspace-qwen/explained/)
   ([español](https://mpodeley.github.io/jspace-qwen/es/explained/)) — for any curious reader.
 - **Site / paper / evidence log:** https://mpodeley.github.io/jspace-qwen/
