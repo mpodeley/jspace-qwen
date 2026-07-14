@@ -1,0 +1,94 @@
+{
+  "_meta": {
+    "built_on": [
+      "Italy",
+      "Japan",
+      "Russia",
+      "China",
+      "France",
+      "Germany",
+      "Sweden",
+      "Turkey"
+    ],
+    "tested_on": [
+      "Brazil",
+      "Egypt",
+      "India",
+      "Mexico"
+    ],
+    "energy_in_pair_span": 0.0190060682762487,
+    "note": "m = mean_syncretic(H[lang]-H[dem]); +m on a demonym prompt must raise the language-answer margin, -m lower it (and mirrored on language prompts). n=4 operands: small-n, operand bootstrap."
+  },
+  "alpha=1.0/sign=-": {
+    "delta_lang_mean": -11.2421875,
+    "lo": -14.3671875,
+    "hi": -9.046875,
+    "per_operand": {
+      "Brazil": -8.46875,
+      "Egypt": -9.84375,
+      "India": -15.875,
+      "Mexico": -10.78125
+    },
+    "sign_correct_frac": 1.0
+  },
+  "alpha=1.0/sign=+": {
+    "delta_lang_mean": 13.0546875,
+    "lo": 11.3515625,
+    "hi": 14.640625,
+    "per_operand": {
+      "Brazil": 10.375,
+      "Egypt": 14.28125,
+      "India": 15.0,
+      "Mexico": 12.5625
+    },
+    "sign_correct_frac": 1.0
+  },
+  "alpha=2.0/sign=-": {
+    "delta_lang_mean": -12.6328125,
+    "lo": -16.1953125,
+    "hi": -9.75,
+    "per_operand": {
+      "Brazil": -8.8125,
+      "Egypt": -12.5625,
+      "India": -17.8125,
+      "Mexico": -11.34375
+    },
+    "sign_correct_frac": 1.0
+  },
+  "alpha=2.0/sign=+": {
+    "delta_lang_mean": 14.640625,
+    "lo": 12.015625,
+    "hi": 17.265625,
+    "per_operand": {
+      "Brazil": 10.6875,
+      "Egypt": 16.09375,
+      "India": 18.4375,
+      "Mexico": 13.34375
+    },
+    "sign_correct_frac": 1.0
+  },
+  "alpha=4.0/sign=-": {
+    "delta_lang_mean": -13.265625,
+    "lo": -16.5625,
+    "hi": -10.46875,
+    "per_operand": {
+      "Brazil": -9.40625,
+      "Egypt": -13.65625,
+      "India": -18.125,
+      "Mexico": -11.875
+    },
+    "sign_correct_frac": 1.0
+  },
+  "alpha=4.0/sign=+": {
+    "delta_lang_mean": 15.5625,
+    "lo": 12.359375,
+    "hi": 18.765625,
+    "per_operand": {
+      "Brazil": 10.8125,
+      "Egypt": 17.21875,
+      "India": 20.3125,
+      "Mexico": 13.90625
+    },
+    "sign_correct_frac": 1.0
+  }
+}
