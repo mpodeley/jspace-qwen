@@ -1,0 +1,2120 @@
+{
+  "e2_diag_contrast": {
+    "vanilla": {
+      "17": {
+        "diag_contrast": 5.073148480942472,
+        "perm_mean": -0.06007649456965738,
+        "rand_sub_mean": 1.4254668188933284,
+        "perm_max": 0.6466033093631267,
+        "rand_sub_max": 3.13587906351313
+      },
+      "18": {
+        "diag_contrast": 4.604263739287854,
+        "perm_mean": -0.0716237424546853,
+        "rand_sub_mean": 0.7436382439546286,
+        "perm_max": 0.6519192699342966,
+        "rand_sub_max": 1.977359702438116
+      },
+      "20": {
+        "diag_contrast": 4.062109615281225,
+        "perm_mean": -0.06596352736465631,
+        "rand_sub_mean": 1.2345160026522355,
+        "perm_max": 0.5824687100946904,
+        "rand_sub_max": 2.094885226711631
+      },
+      "22": {
+        "diag_contrast": 4.2253232726128775,
+        "perm_mean": -0.06986492759548128,
+        "rand_sub_mean": 0.8353875433374196,
+        "perm_max": 0.7054923083633184,
+        "rand_sub_max": 3.313761256635189
+      },
+      "23": {
+        "diag_contrast": 3.580989710614085,
+        "perm_mean": -0.06238265290623529,
+        "rand_sub_mean": 0.5508977509243415,
+        "perm_max": 0.5714777473360301,
+        "rand_sub_max": 1.9108507711440326
+      },
+      "25": {
+        "diag_contrast": 3.362316355109215,
+        "perm_mean": -0.080515296041267,
+        "rand_sub_mean": 0.4293238089466468,
+        "perm_max": 0.5592107962816953,
+        "rand_sub_max": 1.522025229036808
+      },
+      "27": {
+        "diag_contrast": 4.226963147521019,
+        "perm_mean": -0.0996750551322475,
+        "rand_sub_mean": 0.7259880800219253,
+        "perm_max": 0.6358941838610918,
+        "rand_sub_max": 2.081111555546522
+      },
+      "28": {
+        "diag_contrast": 5.277247069776058,
+        "perm_mean": -0.14100914390408434,
+        "rand_sub_mean": 0.3353944505378604,
+        "perm_max": 0.7989065254107117,
+        "rand_sub_max": 2.3735737681388853
+      },
+      "30": {
+        "diag_contrast": 8.170661514997484,
+        "perm_mean": -0.18234743291977792,
+        "rand_sub_mean": 0.26183746842667455,
+        "perm_max": 0.9840031075756998,
+        "rand_sub_max": 3.79308066368103
+      },
+      "32": {
+        "diag_contrast": 11.242962856590747,
+        "perm_mean": -0.26533685584552585,
+        "rand_sub_mean": 1.7410029814462178,
+        "perm_max": 1.5849116259254514,
+        "rand_sub_max": 4.502461552619934
+      },
+      "33": {
+        "diag_contrast": 11.92631105184555,
+        "perm_mean": -0.3103696741140448,
+        "rand_sub_mean": 0.343802644237876,
+        "perm_max": 1.6798123385757207,
+        "rand_sub_max": 4.031431552767754
+      },
+      "35": {
+        "diag_contrast": 12.554012006521226,
+        "perm_mean": -0.2545041669625789,
+        "rand_sub_mean": 1.740800371421501,
+        "perm_max": 1.753092352114618,
+        "rand_sub_max": 7.5537119358778
+      },
+      "37": {
+        "diag_contrast": 12.005287398211658,
+        "perm_mean": -0.21007803106680512,
+        "rand_sub_mean": 0.30271049782633785,
+        "perm_max": 1.6447072841227053,
+        "rand_sub_max": 5.523222541809082
+      }
+    }
+  },
+  "e2_matrices": {
+    "vanilla": {
+      "17": {
+        "currency": {
+          "currency": 4.649739742279053,
+          "capital": -0.7938269376754761,
+          "language": -0.8756027221679688,
+          "demonym": -0.20014698803424835,
+          "continent": -4.6112775802612305
+        },
+        "capital": {
+          "currency": 1.0006511211395264,
+          "capital": 6.0772385597229,
+          "language": -2.9204745292663574,
+          "demonym": -2.5434536933898926,
+          "continent": -0.7980550527572632
+        },
+        "language": {
+          "currency": -0.09544271230697632,
+          "capital": 1.8768125772476196,
+          "language": 4.2015061378479,
+          "demonym": 2.7790069580078125,
+          "continent": -2.1022543907165527
+        },
+        "demonym": {
+          "currency": 1.6825522184371948,
+          "capital": 0.14432039856910706,
+          "language": 4.391284465789795,
+          "demonym": 3.4668307304382324,
+          "continent": -2.2688701152801514
+        },
+        "continent": {
+          "currency": 3.7485923767089844,
+          "capital": -0.6504963040351868,
+          "language": -0.9775034785270691,
+          "demonym": 0.013749864883720875,
+          "continent": 6.170318603515625
+        }
+      },
+      "18": {
+        "currency": {
+          "currency": 3.2361981868743896,
+          "capital": -1.157740831375122,
+          "language": -2.0273165702819824,
+          "demonym": -1.3019477128982544,
+          "continent": -4.4439802169799805
+        },
+        "capital": {
+          "currency": 0.6725708246231079,
+          "capital": 5.805819511413574,
+          "language": -2.7002902030944824,
+          "demonym": -2.4280734062194824,
+          "continent": -0.5000101923942566
+        },
+        "language": {
+          "currency": 0.5894206166267395,
+          "capital": 1.71010160446167,
+          "language": 5.052953243255615,
+          "demonym": 3.5792508125305176,
+          "continent": -1.9510498046875
+        },
+        "demonym": {
+          "currency": 0.4407552182674408,
+          "capital": -2.290287971496582,
+          "language": 2.425859212875366,
+          "demonym": 1.542980670928955,
+          "continent": -3.3487143516540527
+        },
+        "continent": {
+          "currency": 5.040674209594727,
+          "capital": 1.2789547443389893,
+          "language": 0.3872646689414978,
+          "demonym": 1.2568800449371338,
+          "continent": 6.1914472579956055
+        }
+      },
+      "20": {
+        "currency": {
+          "currency": 1.8151886463165283,
+          "capital": -2.44580078125,
+          "language": 0.11797205358743668,
+          "demonym": 0.6155802607536316,
+          "continent": -5.19097900390625
+        },
+        "capital": {
+          "currency": -0.5089681148529053,
+          "capital": 4.544335842132568,
+          "language": -3.4767112731933594,
+          "demonym": -3.039041757583618,
+          "continent": -0.958984375
+        },
+        "language": {
+          "currency": -0.3408142328262329,
+          "capital": 0.12558723986148834,
+          "language": 2.7013914585113525,
+          "demonym": 1.3572322130203247,
+          "continent": -1.7145183086395264
+        },
+        "demonym": {
+          "currency": 1.8773194551467896,
+          "capital": 0.8363296389579773,
+          "language": 4.256508827209473,
+          "demonym": 3.6043412685394287,
+          "continent": -1.9990234375
+        },
+        "continent": {
+          "currency": 3.5355918407440186,
+          "capital": 0.3717835247516632,
+          "language": -2.927091360092163,
+          "demonym": -1.8631749153137207,
+          "continent": 4.802490234375
+        }
+      },
+      "22": {
+        "currency": {
+          "currency": 2.407682418823242,
+          "capital": -3.57484769821167,
+          "language": -1.1922571659088135,
+          "demonym": -0.607254683971405,
+          "continent": -6.2634077072143555
+        },
+        "capital": {
+          "currency": -0.005013021174818277,
+          "capital": 5.386501789093018,
+          "language": -1.3980178833007812,
+          "demonym": -0.9135916233062744,
+          "continent": 0.4716796875
+        },
+        "language": {
+          "currency": -1.400893211364746,
+          "capital": -0.3459930419921875,
+          "language": 2.8943397998809814,
+          "demonym": 1.86407470703125,
+          "continent": -2.0696616172790527
+        },
+        "demonym": {
+          "currency": -0.1373697966337204,
+          "capital": -1.529781460762024,
+          "language": 2.8185365200042725,
+          "demonym": 2.0675370693206787,
+          "continent": -1.3056640625
+        },
+        "continent": {
+          "currency": 3.214794635772705,
+          "capital": 2.018524646759033,
+          "language": -2.651323080062866,
+          "demonym": -2.04897403717041,
+          "continent": 4.6064453125
+        }
+      },
+      "23": {
+        "currency": {
+          "currency": 2.107520580291748,
+          "capital": -2.3072140216827393,
+          "language": -0.9734804630279541,
+          "demonym": -0.5789652466773987,
+          "continent": -4.3214521408081055
+        },
+        "capital": {
+          "currency": -0.12360026687383652,
+          "capital": 5.117356777191162,
+          "language": -1.4458749294281006,
+          "demonym": -1.2578531503677368,
+          "continent": -0.458984375
+        },
+        "language": {
+          "currency": -1.1419434547424316,
+          "capital": -0.9198753237724304,
+          "language": 1.9985508918762207,
+          "demonym": 1.1308708190917969,
+          "continent": -1.6077474355697632
+        },
+        "demonym": {
+          "currency": -1.0458984375,
+          "capital": -2.9033334255218506,
+          "language": 1.0959993600845337,
+          "demonym": 0.568467915058136,
+          "continent": -1.8046875
+        },
+        "continent": {
+          "currency": 2.7718141078948975,
+          "capital": 1.8727047443389893,
+          "language": -1.3343641757965088,
+          "demonym": -0.6451992392539978,
+          "continent": 4.11328125
+        }
+      },
+      "25": {
+        "currency": {
+          "currency": 1.3412353992462158,
+          "capital": -2.5371737480163574,
+          "language": -1.9223607778549194,
+          "demonym": -1.3209813833236694,
+          "continent": -4.5777997970581055
+        },
+        "capital": {
+          "currency": 0.9394226670265198,
+          "capital": 4.417261123657227,
+          "language": -1.3310595750808716,
+          "demonym": -1.3201557397842407,
+          "continent": -1.2669271230697632
+        },
+        "language": {
+          "currency": -1.0877116918563843,
+          "capital": -1.8416112661361694,
+          "language": 1.729939341545105,
+          "demonym": 0.8176261186599731,
+          "continent": -1.4140625
+        },
+        "demonym": {
+          "currency": -2.051302194595337,
+          "capital": -1.6947160959243774,
+          "language": 2.59954571723938,
+          "demonym": 2.1512749195098877,
+          "continent": -0.8665364980697632
+        },
+        "continent": {
+          "currency": 3.5341107845306396,
+          "capital": 1.9507224559783936,
+          "language": -1.9650726318359375,
+          "demonym": -1.28196120262146,
+          "continent": 3.0123698711395264
+        }
+      },
+      "27": {
+        "currency": {
+          "currency": 2.4247031211853027,
+          "capital": -2.7266149520874023,
+          "language": -1.2455850839614868,
+          "demonym": -0.8289150595664978,
+          "continent": -4.783203125
+        },
+        "capital": {
+          "currency": 0.6338216662406921,
+          "capital": 5.076244354248047,
+          "language": -2.032872438430786,
+          "demonym": -2.204828977584839,
+          "continent": -1.10546875
+        },
+        "language": {
+          "currency": -1.9777629375457764,
+          "capital": -1.5454765558242798,
+          "language": 1.5740933418273926,
+          "demonym": 0.4141879677772522,
+          "continent": -1.52734375
+        },
+        "demonym": {
+          "currency": -0.8309865593910217,
+          "capital": -2.4874842166900635,
+          "language": 2.3279080390930176,
+          "demonym": 2.692681312561035,
+          "continent": -2.7649741172790527
+        },
+        "continent": {
+          "currency": 1.586556077003479,
+          "capital": 0.7698847651481628,
+          "language": -3.486018657684326,
+          "demonym": -3.0802807807922363,
+          "continent": 2.6432292461395264
+        }
+      },
+      "28": {
+        "currency": {
+          "currency": 4.102503776550293,
+          "capital": -1.7522695064544678,
+          "language": -0.3580661416053772,
+          "demonym": 0.6443142294883728,
+          "continent": -3.9342448711395264
+        },
+        "capital": {
+          "currency": 0.21086223423480988,
+          "capital": 4.535459518432617,
+          "language": -3.4333224296569824,
+          "demonym": -3.582502603530884,
+          "continent": -2.05078125
+        },
+        "language": {
+          "currency": -2.3387370109558105,
+          "capital": -1.698360562324524,
+          "language": 3.755018472671509,
+          "demonym": 1.9720594882965088,
+          "continent": -1.2395833730697632
+        },
+        "demonym": {
+          "currency": -0.8112630844116211,
+          "capital": -2.0515480041503906,
+          "language": 1.9905201196670532,
+          "demonym": 2.6946749687194824,
+          "continent": -2.8893229961395264
+        },
+        "continent": {
+          "currency": 0.5913900136947632,
+          "capital": -0.07353465259075165,
+          "language": -5.459856033325195,
+          "demonym": -5.237359046936035,
+          "continent": 3.4231772422790527
+        }
+      },
+      "30": {
+        "currency": {
+          "currency": 5.921854019165039,
+          "capital": -4.172028541564941,
+          "language": -1.5954660177230835,
+          "demonym": -0.6251356601715088,
+          "continent": -5.86328125
+        },
+        "capital": {
+          "currency": 0.36221620440483093,
+          "capital": 9.004734992980957,
+          "language": -4.144083023071289,
+          "demonym": -4.214029788970947,
+          "continent": -1.9557292461395264
+        },
+        "language": {
+          "currency": -2.0619630813598633,
+          "capital": -2.041534900665283,
+          "language": 5.096367835998535,
+          "demonym": 2.7454833984375,
+          "continent": -1.9869792461395264
+        },
+        "demonym": {
+          "currency": -2.577075242996216,
+          "capital": -3.051140069961548,
+          "language": 3.1993019580841064,
+          "demonym": 4.76866340637207,
+          "continent": -2.4798178672790527
+        },
+        "continent": {
+          "currency": -0.31490179896354675,
+          "capital": -1.6468770503997803,
+          "language": -5.77755069732666,
+          "demonym": -5.793551921844482,
+          "continent": 5.0631513595581055
+        }
+      },
+      "32": {
+        "currency": {
+          "currency": 10.299288749694824,
+          "capital": -4.314512252807617,
+          "language": -4.065437316894531,
+          "demonym": -2.259558916091919,
+          "continent": -6.238606929779053
+        },
+        "capital": {
+          "currency": -1.1725568771362305,
+          "capital": 12.081942558288574,
+          "language": -4.678243160247803,
+          "demonym": -4.31390380859375,
+          "continent": 0.4270833432674408
+        },
+        "language": {
+          "currency": -2.7340333461761475,
+          "capital": -3.84407377243042,
+          "language": 9.01512336730957,
+          "demonym": 5.024861812591553,
+          "continent": -3.9635417461395264
+        },
+        "demonym": {
+          "currency": -4.238568305969238,
+          "capital": -3.9993860721588135,
+          "language": 2.393120765686035,
+          "demonym": 4.22569465637207,
+          "continent": -3.3671061992645264
+        },
+        "continent": {
+          "currency": -0.9111837148666382,
+          "capital": -1.8008633852005005,
+          "language": -6.7742767333984375,
+          "demonym": -6.516835689544678,
+          "continent": 6.255859375
+        }
+      },
+      "33": {
+        "currency": {
+          "currency": 9.684015274047852,
+          "capital": -4.9837646484375,
+          "language": -5.626773357391357,
+          "demonym": -3.800605058670044,
+          "continent": -7.3312177658081055
+        },
+        "capital": {
+          "currency": -0.47557783126831055,
+          "capital": 13.655701637268066,
+          "language": -5.03990364074707,
+          "demonym": -4.720770835876465,
+          "continent": 1.5065104961395264
+        },
+        "language": {
+          "currency": -2.8362793922424316,
+          "capital": -4.102184772491455,
+          "language": 9.91574478149414,
+          "demonym": 5.913058757781982,
+          "continent": -3.630859375
+        },
+        "demonym": {
+          "currency": -4.724236488342285,
+          "capital": -5.32366418838501,
+          "language": 2.9287109375,
+          "demonym": 4.763943195343018,
+          "continent": -4.333251953125
+        },
+        "continent": {
+          "currency": -0.6337565183639526,
+          "capital": -1.3262680768966675,
+          "language": -6.4750657081604,
+          "demonym": -6.20613956451416,
+          "continent": 6.306640625
+        }
+      },
+      "35": {
+        "currency": {
+          "currency": 13.269780158996582,
+          "capital": -4.49425745010376,
+          "language": -4.20401668548584,
+          "demonym": -2.1795654296875,
+          "continent": -6.2295331954956055
+        },
+        "capital": {
+          "currency": -1.3164358139038086,
+          "capital": 13.311161041259766,
+          "language": -4.649251461029053,
+          "demonym": -4.560940265655518,
+          "continent": 2.609375
+        },
+        "language": {
+          "currency": -3.3989830017089844,
+          "capital": -3.50018048286438,
+          "language": 8.94554328918457,
+          "demonym": 5.207234859466553,
+          "continent": -5.071370601654053
+        },
+        "demonym": {
+          "currency": -5.612224578857422,
+          "capital": -5.748837947845459,
+          "language": 1.7691582441329956,
+          "demonym": 3.7172224521636963,
+          "continent": -5.6917724609375
+        },
+        "continent": {
+          "currency": -1.957258701324463,
+          "capital": -1.171875,
+          "language": -6.473265171051025,
+          "demonym": -6.43401575088501,
+          "continent": 7.749349117279053
+        }
+      },
+      "37": {
+        "currency": {
+          "currency": 11.829934120178223,
+          "capital": -4.224483966827393,
+          "language": -2.2624661922454834,
+          "demonym": -0.0559556744992733,
+          "continent": -6.1413116455078125
+        },
+        "capital": {
+          "currency": -0.6104329824447632,
+          "capital": 14.196158409118652,
+          "language": -4.855862140655518,
+          "demonym": -5.207485675811768,
+          "continent": 3.8821616172790527
+        },
+        "language": {
+          "currency": -2.6174845695495605,
+          "capital": -3.198427200317383,
+          "language": 6.385250568389893,
+          "demonym": 3.233184814453125,
+          "continent": -5.400909423828125
+        },
+        "demonym": {
+          "currency": -4.618471622467041,
+          "capital": -6.215920448303223,
+          "language": 3.030632972717285,
+          "demonym": 5.176093101501465,
+          "continent": -6.0072431564331055
+        },
+        "continent": {
+          "currency": -2.2693920135498047,
+          "capital": -1.8471707105636597,
+          "language": -6.056981563568115,
+          "demonym": -6.599743366241455,
+          "continent": 7.928060054779053
+        }
+      }
+    }
+  },
+  "e3_alignment": [
+    {
+      "layer": 17,
+      "relation": "currency",
+      "cos_answer_centroid": 0.014138087630271912,
+      "z_answer_centroid": 1.7812385448467145,
+      "rand_mean": -0.013844305649399757,
+      "rand_sd": 0.015709513798356056,
+      "cos_relation_word": 0.09893566370010376,
+      "z_relation_word": 7.179086738013419
+    },
+    {
+      "layer": 17,
+      "relation": "capital",
+      "cos_answer_centroid": 0.04121027886867523,
+      "z_answer_centroid": 2.84042743159524,
+      "rand_mean": 0.000613170734141022,
+      "rand_sd": 0.01429260428994894,
+      "cos_relation_word": 0.08283800631761551,
+      "z_relation_word": 5.752963432167113
+    },
+    {
+      "layer": 17,
+      "relation": "language",
+      "cos_answer_centroid": 0.031010594218969345,
+      "z_answer_centroid": 2.300363872185362,
+      "rand_mean": -0.005079008173197508,
+      "rand_sd": 0.01568864844739437,
+      "cos_relation_word": 0.137758269906044,
+      "z_relation_word": 9.10449803586914
+    },
+    {
+      "layer": 17,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.02191937528550625,
+      "z_answer_centroid": 0.8790414648902465,
+      "rand_mean": 0.008422920480370522,
+      "rand_sd": 0.015353603288531303
+    },
+    {
+      "layer": 17,
+      "relation": "continent",
+      "cos_answer_centroid": 0.04640058055520058,
+      "z_answer_centroid": 2.5644181980983856,
+      "rand_mean": 0.007404521107673645,
+      "rand_sd": 0.015206590294837952,
+      "cos_relation_word": 0.08154326677322388,
+      "z_relation_word": 4.875434883997801
+    },
+    {
+      "layer": 18,
+      "relation": "currency",
+      "cos_answer_centroid": 0.002333095297217369,
+      "z_answer_centroid": 1.55504581282265,
+      "rand_mean": -0.021531524136662483,
+      "rand_sd": 0.015346569009125233,
+      "cos_relation_word": 0.09105612337589264,
+      "z_relation_word": 7.336339484693278
+    },
+    {
+      "layer": 18,
+      "relation": "capital",
+      "cos_answer_centroid": 0.04365180432796478,
+      "z_answer_centroid": 3.0231041089132917,
+      "rand_mean": 5.979508387099486e-06,
+      "rand_sd": 0.0144374193623662,
+      "cos_relation_word": 0.08180582523345947,
+      "z_relation_word": 5.665821432913235
+    },
+    {
+      "layer": 18,
+      "relation": "language",
+      "cos_answer_centroid": 0.042985230684280396,
+      "z_answer_centroid": 2.8072447483590253,
+      "rand_mean": 0.0004163541889283806,
+      "rand_sd": 0.015163933858275414,
+      "cos_relation_word": 0.13511043787002563,
+      "z_relation_word": 8.882528508594236
+    },
+    {
+      "layer": 18,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.00839091744273901,
+      "z_answer_centroid": 0.17257392870919588,
+      "rand_mean": 0.005881671793758869,
+      "rand_sd": 0.014540119096636772
+    },
+    {
+      "layer": 18,
+      "relation": "continent",
+      "cos_answer_centroid": 0.05108471214771271,
+      "z_answer_centroid": 2.507714950057146,
+      "rand_mean": 0.01307746209204197,
+      "rand_sd": 0.015156127512454987,
+      "cos_relation_word": 0.0754513144493103,
+      "z_relation_word": 4.115421184638994
+    },
+    {
+      "layer": 20,
+      "relation": "currency",
+      "cos_answer_centroid": -0.0037920717149972916,
+      "z_answer_centroid": 1.0402964184988706,
+      "rand_mean": -0.02031591907143593,
+      "rand_sd": 0.015883786603808403,
+      "cos_relation_word": 0.08437837660312653,
+      "z_relation_word": 6.591267667760821
+    },
+    {
+      "layer": 20,
+      "relation": "capital",
+      "cos_answer_centroid": 0.03783024474978447,
+      "z_answer_centroid": 2.3655275067307837,
+      "rand_mean": 0.0039315796457231045,
+      "rand_sd": 0.014330276288092136,
+      "cos_relation_word": 0.07977188378572464,
+      "z_relation_word": 5.292312396705797
+    },
+    {
+      "layer": 20,
+      "relation": "language",
+      "cos_answer_centroid": 0.027150847017765045,
+      "z_answer_centroid": 1.9263141540789857,
+      "rand_mean": -0.0009761893306858838,
+      "rand_sd": 0.014601478353142738,
+      "cos_relation_word": 0.1493782103061676,
+      "z_relation_word": 10.297203180614167
+    },
+    {
+      "layer": 20,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.026673074811697006,
+      "z_answer_centroid": 1.4242637054576113,
+      "rand_mean": 0.006278964690864086,
+      "rand_sd": 0.01431905385106802
+    },
+    {
+      "layer": 20,
+      "relation": "continent",
+      "cos_answer_centroid": 0.04513385891914368,
+      "z_answer_centroid": 2.406605245367812,
+      "rand_mean": 0.009254764765501022,
+      "rand_sd": 0.014908590354025364,
+      "cos_relation_word": 0.06863677501678467,
+      "z_relation_word": 3.983073171782278
+    },
+    {
+      "layer": 22,
+      "relation": "currency",
+      "cos_answer_centroid": 0.014451097697019577,
+      "z_answer_centroid": 2.676588988653282,
+      "rand_mean": -0.028995264321565628,
+      "rand_sd": 0.01623198762536049,
+      "cos_relation_word": 0.0925130620598793,
+      "z_relation_word": 7.4857325978902605
+    },
+    {
+      "layer": 22,
+      "relation": "capital",
+      "cos_answer_centroid": 0.05090063810348511,
+      "z_answer_centroid": 2.6301123208344186,
+      "rand_mean": 0.011360797099769115,
+      "rand_sd": 0.01503351703286171,
+      "cos_relation_word": 0.08674550801515579,
+      "z_relation_word": 5.014442444583066
+    },
+    {
+      "layer": 22,
+      "relation": "language",
+      "cos_answer_centroid": 0.0340559259057045,
+      "z_answer_centroid": 2.827736892450391,
+      "rand_mean": -0.007563471794128418,
+      "rand_sd": 0.014718269929289818,
+      "cos_relation_word": 0.13864435255527496,
+      "z_relation_word": 9.933763622902555
+    },
+    {
+      "layer": 22,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.016464659944176674,
+      "z_answer_centroid": 0.9698645756663999,
+      "rand_mean": 0.0023543655406683683,
+      "rand_sd": 0.014548725448548794
+    },
+    {
+      "layer": 22,
+      "relation": "continent",
+      "cos_answer_centroid": 0.05018595606088638,
+      "z_answer_centroid": 2.1316076414498806,
+      "rand_mean": 0.0178744588047266,
+      "rand_sd": 0.01515827514231205,
+      "cos_relation_word": 0.07302112877368927,
+      "z_relation_word": 3.6380568246166876
+    },
+    {
+      "layer": 23,
+      "relation": "currency",
+      "cos_answer_centroid": 0.016915172338485718,
+      "z_answer_centroid": 2.364170199607289,
+      "rand_mean": -0.02078651450574398,
+      "rand_sd": 0.015947110950946808,
+      "cos_relation_word": 0.0991232693195343,
+      "z_relation_word": 7.519216281551158
+    },
+    {
+      "layer": 23,
+      "relation": "capital",
+      "cos_answer_centroid": 0.05473872646689415,
+      "z_answer_centroid": 3.1518961887247388,
+      "rand_mean": 0.008342434652149677,
+      "rand_sd": 0.014720119535923004,
+      "cos_relation_word": 0.0953984260559082,
+      "z_relation_word": 5.9140814228597485
+    },
+    {
+      "layer": 23,
+      "relation": "language",
+      "cos_answer_centroid": 0.029312584549188614,
+      "z_answer_centroid": 2.7819122341916684,
+      "rand_mean": -0.011265459470450878,
+      "rand_sd": 0.014586384408175945,
+      "cos_relation_word": 0.12319904565811157,
+      "z_relation_word": 9.21849391509925
+    },
+    {
+      "layer": 23,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.006109472364187241,
+      "z_answer_centroid": 0.6571128917286921,
+      "rand_mean": -0.0038979188539087772,
+      "rand_sd": 0.015229332260787487
+    },
+    {
+      "layer": 23,
+      "relation": "continent",
+      "cos_answer_centroid": 0.04557120054960251,
+      "z_answer_centroid": 1.4184780630613862,
+      "rand_mean": 0.0224778912961483,
+      "rand_sd": 0.016280341893434525,
+      "cos_relation_word": 0.07468205690383911,
+      "z_relation_word": 3.2065765413788374
+    },
+    {
+      "layer": 25,
+      "relation": "currency",
+      "cos_answer_centroid": 0.012577802874147892,
+      "z_answer_centroid": 2.5666013077807066,
+      "rand_mean": -0.02738938294351101,
+      "rand_sd": 0.015572026371955872,
+      "cos_relation_word": 0.08669547736644745,
+      "z_relation_word": 7.326268929851568
+    },
+    {
+      "layer": 25,
+      "relation": "capital",
+      "cos_answer_centroid": 0.048071861267089844,
+      "z_answer_centroid": 2.516763239946422,
+      "rand_mean": 0.0119507797062397,
+      "rand_sd": 0.014352195896208286,
+      "cos_relation_word": 0.07989565283060074,
+      "z_relation_word": 4.734109601179693
+    },
+    {
+      "layer": 25,
+      "relation": "language",
+      "cos_answer_centroid": 0.027812782675027847,
+      "z_answer_centroid": 2.660214332520615,
+      "rand_mean": -0.012360651977360249,
+      "rand_sd": 0.015101577155292034,
+      "cos_relation_word": 0.13280639052391052,
+      "z_relation_word": 9.61270676537869
+    },
+    {
+      "layer": 25,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.017631953582167625,
+      "z_answer_centroid": 1.5009107200410245,
+      "rand_mean": -0.0062173716723918915,
+      "rand_sd": 0.015889901667833328
+    },
+    {
+      "layer": 25,
+      "relation": "continent",
+      "cos_answer_centroid": 0.04610893130302429,
+      "z_answer_centroid": 1.0932346551288095,
+      "rand_mean": 0.027556749060750008,
+      "rand_sd": 0.016969989985227585,
+      "cos_relation_word": 0.08795583248138428,
+      "z_relation_word": 3.5591700356948808
+    },
+    {
+      "layer": 27,
+      "relation": "currency",
+      "cos_answer_centroid": 0.0252707339823246,
+      "z_answer_centroid": 2.897254454354923,
+      "rand_mean": -0.017605002969503403,
+      "rand_sd": 0.014798746444284916,
+      "cos_relation_word": 0.09810912609100342,
+      "z_relation_word": 7.819183988114759
+    },
+    {
+      "layer": 27,
+      "relation": "capital",
+      "cos_answer_centroid": 0.05393287166953087,
+      "z_answer_centroid": 2.7888215863226455,
+      "rand_mean": 0.012908831238746643,
+      "rand_sd": 0.014710169285535812,
+      "cos_relation_word": 0.08749406039714813,
+      "z_relation_word": 5.070317182646044
+    },
+    {
+      "layer": 27,
+      "relation": "language",
+      "cos_answer_centroid": 0.03054128959774971,
+      "z_answer_centroid": 2.6974074116832822,
+      "rand_mean": -0.00991879589855671,
+      "rand_sd": 0.014999618753790855,
+      "cos_relation_word": 0.13745495676994324,
+      "z_relation_word": 9.82516591003943
+    },
+    {
+      "layer": 27,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.01977817714214325,
+      "z_answer_centroid": 1.8273036327214152,
+      "rand_mean": -0.011191479861736298,
+      "rand_sd": 0.016948280856013298
+    },
+    {
+      "layer": 27,
+      "relation": "continent",
+      "cos_answer_centroid": 0.04862355440855026,
+      "z_answer_centroid": 1.5095021231183638,
+      "rand_mean": 0.02299141138792038,
+      "rand_sd": 0.016980526968836784,
+      "cos_relation_word": 0.0879167765378952,
+      "z_relation_word": 3.823518636707172
+    },
+    {
+      "layer": 28,
+      "relation": "currency",
+      "cos_answer_centroid": 0.04543708637356758,
+      "z_answer_centroid": 4.032388180894251,
+      "rand_mean": -0.016675248742103577,
+      "rand_sd": 0.015403361059725285,
+      "cos_relation_word": 0.11160453408956528,
+      "z_relation_word": 8.328037887720514
+    },
+    {
+      "layer": 28,
+      "relation": "capital",
+      "cos_answer_centroid": 0.050331175327301025,
+      "z_answer_centroid": 2.518334749076496,
+      "rand_mean": 0.014021476730704308,
+      "rand_sd": 0.01441813725978136,
+      "cos_relation_word": 0.09611615538597107,
+      "z_relation_word": 5.693847373087381
+    },
+    {
+      "layer": 28,
+      "relation": "language",
+      "cos_answer_centroid": 0.05596934258937836,
+      "z_answer_centroid": 4.342613189005531,
+      "rand_mean": -0.010127565823495388,
+      "rand_sd": 0.015220536850392818,
+      "cos_relation_word": 0.14578428864479065,
+      "z_relation_word": 10.243518067547278
+    },
+    {
+      "layer": 28,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.023355405777692795,
+      "z_answer_centroid": 2.223630123591173,
+      "rand_mean": -0.013908269815146923,
+      "rand_sd": 0.016758035868406296
+    },
+    {
+      "layer": 28,
+      "relation": "continent",
+      "cos_answer_centroid": 0.05197545140981674,
+      "z_answer_centroid": 1.4970633973870857,
+      "rand_mean": 0.024661371484398842,
+      "rand_sd": 0.01824510470032692,
+      "cos_relation_word": 0.09484252333641052,
+      "z_relation_word": 3.846574144580273
+    },
+    {
+      "layer": 30,
+      "relation": "currency",
+      "cos_answer_centroid": 0.062117405235767365,
+      "z_answer_centroid": 5.421191207691468,
+      "rand_mean": -0.021455224603414536,
+      "rand_sd": 0.015415915288031101,
+      "cos_relation_word": 0.13401569426059723,
+      "z_relation_word": 10.085091016271228
+    },
+    {
+      "layer": 30,
+      "relation": "capital",
+      "cos_answer_centroid": 0.10228650271892548,
+      "z_answer_centroid": 5.754381584897176,
+      "rand_mean": 0.016547830775380135,
+      "rand_sd": 0.014899718575179577,
+      "cos_relation_word": 0.11935235559940338,
+      "z_relation_word": 6.8997623952116705
+    },
+    {
+      "layer": 30,
+      "relation": "language",
+      "cos_answer_centroid": 0.07199543714523315,
+      "z_answer_centroid": 5.075605173335677,
+      "rand_mean": -0.0027615714352577925,
+      "rand_sd": 0.014728687703609467,
+      "cos_relation_word": 0.19327625632286072,
+      "z_relation_word": 13.309930822971143
+    },
+    {
+      "layer": 30,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.03277952969074249,
+      "z_answer_centroid": 2.789948311316377,
+      "rand_mean": -0.018064400181174278,
+      "rand_sd": 0.018223967403173447
+    },
+    {
+      "layer": 30,
+      "relation": "continent",
+      "cos_answer_centroid": 0.07612358778715134,
+      "z_answer_centroid": 2.6181775136559144,
+      "rand_mean": 0.02560904063284397,
+      "rand_sd": 0.019293781369924545,
+      "cos_relation_word": 0.10174300521612167,
+      "z_relation_word": 3.9460362475092774
+    },
+    {
+      "layer": 32,
+      "relation": "currency",
+      "cos_answer_centroid": 0.10051330924034119,
+      "z_answer_centroid": 7.721149528985641,
+      "rand_mean": -0.015861239284276962,
+      "rand_sd": 0.015072178095579147,
+      "cos_relation_word": 0.12677139043807983,
+      "z_relation_word": 9.463305127802832
+    },
+    {
+      "layer": 32,
+      "relation": "capital",
+      "cos_answer_centroid": 0.1353691816329956,
+      "z_answer_centroid": 7.622394583484768,
+      "rand_mean": 0.01909801736474037,
+      "rand_sd": 0.015253888443112373,
+      "cos_relation_word": 0.1595926582813263,
+      "z_relation_word": 9.210414264541809
+    },
+    {
+      "layer": 32,
+      "relation": "language",
+      "cos_answer_centroid": 0.11317431926727295,
+      "z_answer_centroid": 7.988721280870111,
+      "rand_mean": -0.005390687845647335,
+      "rand_sd": 0.014841549098491669,
+      "cos_relation_word": 0.19379398226737976,
+      "z_relation_word": 13.420745730142436
+    },
+    {
+      "layer": 32,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.029403677210211754,
+      "z_answer_centroid": 2.7021790534559758,
+      "rand_mean": -0.02101937308907509,
+      "rand_sd": 0.01866014301776886
+    },
+    {
+      "layer": 32,
+      "relation": "continent",
+      "cos_answer_centroid": 0.08664164692163467,
+      "z_answer_centroid": 3.364435955575824,
+      "rand_mean": 0.025209592655301094,
+      "rand_sd": 0.018259242177009583,
+      "cos_relation_word": 0.10566981136798859,
+      "z_relation_word": 4.406547299506688
+    },
+    {
+      "layer": 33,
+      "relation": "currency",
+      "cos_answer_centroid": 0.09398208558559418,
+      "z_answer_centroid": 7.448546406176958,
+      "rand_mean": -0.016426004469394684,
+      "rand_sd": 0.014822768978774548,
+      "cos_relation_word": 0.11714503169059753,
+      "z_relation_word": 9.011206161281539
+    },
+    {
+      "layer": 33,
+      "relation": "capital",
+      "cos_answer_centroid": 0.1496995985507965,
+      "z_answer_centroid": 8.155152157100577,
+      "rand_mean": 0.02244001440703869,
+      "rand_sd": 0.015604807063937187,
+      "cos_relation_word": 0.13805626332759857,
+      "z_relation_word": 7.409014481104051
+    },
+    {
+      "layer": 33,
+      "relation": "language",
+      "cos_answer_centroid": 0.11872022598981857,
+      "z_answer_centroid": 8.444842193331503,
+      "rand_mean": -0.005233880132436752,
+      "rand_sd": 0.01467808336019516,
+      "cos_relation_word": 0.1881999969482422,
+      "z_relation_word": 13.178414317146427
+    },
+    {
+      "layer": 33,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.035819508135318756,
+      "z_answer_centroid": 3.0782677711354527,
+      "rand_mean": -0.021562067791819572,
+      "rand_sd": 0.01864086464047432
+    },
+    {
+      "layer": 33,
+      "relation": "continent",
+      "cos_answer_centroid": 0.08773387968540192,
+      "z_answer_centroid": 3.681303268426235,
+      "rand_mean": 0.022571202367544174,
+      "rand_sd": 0.017700979486107826,
+      "cos_relation_word": 0.09434282034635544,
+      "z_relation_word": 4.054669063961708
+    },
+    {
+      "layer": 35,
+      "relation": "currency",
+      "cos_answer_centroid": 0.12746292352676392,
+      "z_answer_centroid": 9.186076499935549,
+      "rand_mean": -0.007800904102623463,
+      "rand_sd": 0.014724873937666416,
+      "cos_relation_word": 0.12986651062965393,
+      "z_relation_word": 9.349309608064814
+    },
+    {
+      "layer": 35,
+      "relation": "capital",
+      "cos_answer_centroid": 0.1476120948791504,
+      "z_answer_centroid": 8.370859808378663,
+      "rand_mean": 0.019911451265215874,
+      "rand_sd": 0.015255378559231758,
+      "cos_relation_word": 0.13040122389793396,
+      "z_relation_word": 7.242676080507971
+    },
+    {
+      "layer": 35,
+      "relation": "language",
+      "cos_answer_centroid": 0.11441639065742493,
+      "z_answer_centroid": 8.086558537089545,
+      "rand_mean": -0.0033278262708336115,
+      "rand_sd": 0.014560484327375889,
+      "cos_relation_word": 0.15818393230438232,
+      "z_relation_word": 11.09247081699603
+    },
+    {
+      "layer": 35,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.02918662130832672,
+      "z_answer_centroid": 2.7825910145632577,
+      "rand_mean": -0.02137770690023899,
+      "rand_sd": 0.01817166991531849
+    },
+    {
+      "layer": 35,
+      "relation": "continent",
+      "cos_answer_centroid": 0.09509924799203873,
+      "z_answer_centroid": 4.558967143831996,
+      "rand_mean": 0.015766259282827377,
+      "rand_sd": 0.017401525750756264,
+      "cos_relation_word": 0.08576222509145737,
+      "z_relation_word": 4.022403712685038
+    },
+    {
+      "layer": 37,
+      "relation": "currency",
+      "cos_answer_centroid": 0.11864393949508667,
+      "z_answer_centroid": 8.151523470383978,
+      "rand_mean": -0.0033224031794816256,
+      "rand_sd": 0.014962397515773773,
+      "cos_relation_word": 0.1039639338850975,
+      "z_relation_word": 7.170396975556755
+    },
+    {
+      "layer": 37,
+      "relation": "capital",
+      "cos_answer_centroid": 0.15862822532653809,
+      "z_answer_centroid": 9.056463091579886,
+      "rand_mean": 0.018666204065084457,
+      "rand_sd": 0.01545437891036272,
+      "cos_relation_word": 0.13101208209991455,
+      "z_relation_word": 7.269517035717371
+    },
+    {
+      "layer": 37,
+      "relation": "language",
+      "cos_answer_centroid": 0.08526833355426788,
+      "z_answer_centroid": 5.807640382155091,
+      "rand_mean": 0.0005301446653902531,
+      "rand_sd": 0.014590810984373093,
+      "cos_relation_word": 0.09721513092517853,
+      "z_relation_word": 6.626429451859079
+    },
+    {
+      "layer": 37,
+      "relation": "demonym",
+      "cos_answer_centroid": 0.03914009407162666,
+      "z_answer_centroid": 3.2639495942028507,
+      "rand_mean": -0.019780704751610756,
+      "rand_sd": 0.01805199310183525
+    },
+    {
+      "layer": 37,
+      "relation": "continent",
+      "cos_answer_centroid": 0.09476760029792786,
+      "z_answer_centroid": 4.818160317848121,
+      "rand_mean": 0.00767228240147233,
+      "rand_sd": 0.018076466396450996,
+      "cos_relation_word": 0.06421580165624619,
+      "z_relation_word": 3.128018213662433
+    }
+  ],
+  "e5_marker": {
+    "17": {
+      "energy_in_pair_span": 0.0015651992289349437,
+      "rand_energy_mean": 0.0043415377289056775,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " ju\u017f",
+          "score": 33.75,
+          "class": "other"
+        },
+        {
+          "token": " tran\u017f",
+          "score": 33.0,
+          "class": "other"
+        },
+        {
+          "token": " \u017fur",
+          "score": 30.75,
+          "class": "other"
+        },
+        {
+          "token": " \u017fer",
+          "score": 30.625,
+          "class": "other"
+        },
+        {
+          "token": " \u017ftre",
+          "score": 30.0,
+          "class": "other"
+        },
+        {
+          "token": " ense\u00f1anza",
+          "score": 27.0,
+          "class": "other"
+        },
+        {
+          "token": " \u017fen",
+          "score": 26.625,
+          "class": "other"
+        },
+        {
+          "token": " pa\u017f\u017f",
+          "score": 26.375,
+          "class": "other"
+        },
+        {
+          "token": " nece\u017f\u017f",
+          "score": 26.375,
+          "class": "other"
+        },
+        {
+          "token": " religieuses",
+          "score": 26.125,
+          "class": "other"
+        }
+      ]
+    },
+    "18": {
+      "energy_in_pair_span": 0.0027417929377406836,
+      "rand_energy_mean": 0.0036821104469709097,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " tran\u017f",
+          "score": 29.625,
+          "class": "other"
+        },
+        {
+          "token": " ju\u017f",
+          "score": 29.0,
+          "class": "other"
+        },
+        {
+          "token": " \u017fer",
+          "score": 27.875,
+          "class": "other"
+        },
+        {
+          "token": " \u017fur",
+          "score": 27.25,
+          "class": "other"
+        },
+        {
+          "token": "act\u00e9risti",
+          "score": 25.875,
+          "class": "other"
+        },
+        {
+          "token": " \u017ftre",
+          "score": 24.875,
+          "class": "other"
+        },
+        {
+          "token": " cur\u00e9",
+          "score": 24.75,
+          "class": "other"
+        },
+        {
+          "token": " ma\u00eetrise",
+          "score": 24.5,
+          "class": "other"
+        },
+        {
+          "token": " plainte",
+          "score": 24.25,
+          "class": "other"
+        },
+        {
+          "token": "StandardCharsets",
+          "score": 24.125,
+          "class": "other"
+        }
+      ]
+    },
+    "20": {
+      "energy_in_pair_span": 0.005775399971753359,
+      "rand_energy_mean": 0.004152535407338291,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " ma\u00eetrise",
+          "score": 25.875,
+          "class": "other"
+        },
+        {
+          "token": " transici\u00f3n",
+          "score": 24.5,
+          "class": "other"
+        },
+        {
+          "token": " language",
+          "score": 23.25,
+          "class": "relation_word"
+        },
+        {
+          "token": " Language",
+          "score": 23.125,
+          "class": "other"
+        },
+        {
+          "token": " \u017fur",
+          "score": 22.625,
+          "class": "other"
+        },
+        {
+          "token": "Language",
+          "score": 21.75,
+          "class": "other"
+        },
+        {
+          "token": " communication",
+          "score": 20.875,
+          "class": "other"
+        },
+        {
+          "token": " lenguas",
+          "score": 20.75,
+          "class": "other"
+        },
+        {
+          "token": " el\u00e9r",
+          "score": 20.75,
+          "class": "other"
+        },
+        {
+          "token": " \u017fer",
+          "score": 20.375,
+          "class": "other"
+        }
+      ]
+    },
+    "22": {
+      "energy_in_pair_span": 0.0052919527515769005,
+      "rand_energy_mean": 0.004714503304567188,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " ma\u00eetrise",
+          "score": 24.25,
+          "class": "other"
+        },
+        {
+          "token": " royaume",
+          "score": 23.375,
+          "class": "other"
+        },
+        {
+          "token": " \u017fur",
+          "score": 23.125,
+          "class": "other"
+        },
+        {
+          "token": " \u017fer",
+          "score": 23.125,
+          "class": "other"
+        },
+        {
+          "token": " utilisation",
+          "score": 22.75,
+          "class": "other"
+        },
+        {
+          "token": " ma\u00ee",
+          "score": 22.75,
+          "class": "other"
+        },
+        {
+          "token": " l\u00e4ra",
+          "score": 22.75,
+          "class": "other"
+        },
+        {
+          "token": "PMailer",
+          "score": 22.5,
+          "class": "other"
+        },
+        {
+          "token": " utilised",
+          "score": 22.125,
+          "class": "other"
+        },
+        {
+          "token": " Language",
+          "score": 21.875,
+          "class": "other"
+        }
+      ]
+    },
+    "23": {
+      "energy_in_pair_span": 0.0035267069470137358,
+      "rand_energy_mean": 0.004626533952541649,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": "PMailer",
+          "score": 29.875,
+          "class": "other"
+        },
+        {
+          "token": " syst\u00e9m",
+          "score": 25.625,
+          "class": "other"
+        },
+        {
+          "token": "ymce",
+          "score": 25.125,
+          "class": "other"
+        },
+        {
+          "token": " utilized",
+          "score": 25.0,
+          "class": "other"
+        },
+        {
+          "token": " ma\u00eetrise",
+          "score": 23.25,
+          "class": "other"
+        },
+        {
+          "token": " ma\u00ee",
+          "score": 23.125,
+          "class": "other"
+        },
+        {
+          "token": " utilised",
+          "score": 23.125,
+          "class": "other"
+        },
+        {
+          "token": " CommonModule",
+          "score": 22.125,
+          "class": "other"
+        },
+        {
+          "token": " \u017fur",
+          "score": 21.875,
+          "class": "other"
+        },
+        {
+          "token": "Obfuscated",
+          "score": 21.875,
+          "class": "other"
+        }
+      ]
+    },
+    "25": {
+      "energy_in_pair_span": 0.002790506463497877,
+      "rand_energy_mean": 0.004568172744475305,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " \u017fur",
+          "score": 28.25,
+          "class": "other"
+        },
+        {
+          "token": " ab\u017f",
+          "score": 26.875,
+          "class": "other"
+        },
+        {
+          "token": " Sprachen",
+          "score": 26.25,
+          "class": "other"
+        },
+        {
+          "token": " suaminya",
+          "score": 25.0,
+          "class": "other"
+        },
+        {
+          "token": "prilis",
+          "score": 24.5,
+          "class": "other"
+        },
+        {
+          "token": " lenguas",
+          "score": 24.375,
+          "class": "other"
+        },
+        {
+          "token": " e\u017f\u017f",
+          "score": 24.25,
+          "class": "other"
+        },
+        {
+          "token": " t\u1ef1a",
+          "score": 23.75,
+          "class": "other"
+        },
+        {
+          "token": " Roskov",
+          "score": 23.75,
+          "class": "other"
+        },
+        {
+          "token": " ovl\u00e1d",
+          "score": 23.125,
+          "class": "other"
+        }
+      ]
+    },
+    "27": {
+      "energy_in_pair_span": 0.0031806044280529022,
+      "rand_energy_mean": 0.004558621293399483,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " Sprachen",
+          "score": 31.875,
+          "class": "other"
+        },
+        {
+          "token": " lenguas",
+          "score": 31.625,
+          "class": "other"
+        },
+        {
+          "token": " Sprache",
+          "score": 30.875,
+          "class": "other"
+        },
+        {
+          "token": " Vielfalt",
+          "score": 29.75,
+          "class": "other"
+        },
+        {
+          "token": " ma\u00eetrise",
+          "score": 29.25,
+          "class": "other"
+        },
+        {
+          "token": " rich",
+          "score": 28.5,
+          "class": "other"
+        },
+        {
+          "token": " l\u00edngua",
+          "score": 28.375,
+          "class": "other"
+        },
+        {
+          "token": " j\u0119zyk",
+          "score": 27.875,
+          "class": "other"
+        },
+        {
+          "token": "prache",
+          "score": 27.75,
+          "class": "other"
+        },
+        {
+          "token": " dominated",
+          "score": 27.125,
+          "class": "other"
+        }
+      ]
+    },
+    "28": {
+      "energy_in_pair_span": 0.00631379010155797,
+      "rand_energy_mean": 0.00461926638148725,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " Sprachen",
+          "score": 37.5,
+          "class": "other"
+        },
+        {
+          "token": " Sprache",
+          "score": 34.5,
+          "class": "other"
+        },
+        {
+          "token": " Vielfalt",
+          "score": 33.25,
+          "class": "other"
+        },
+        {
+          "token": " lenguas",
+          "score": 31.75,
+          "class": "other"
+        },
+        {
+          "token": " l\u00edngua",
+          "score": 30.75,
+          "class": "other"
+        },
+        {
+          "token": "ArrowToggle",
+          "score": 30.375,
+          "class": "other"
+        },
+        {
+          "token": " rijk",
+          "score": 30.125,
+          "class": "other"
+        },
+        {
+          "token": " dialects",
+          "score": 30.0,
+          "class": "other"
+        },
+        {
+          "token": " vast",
+          "score": 29.75,
+          "class": "other"
+        },
+        {
+          "token": " ampla",
+          "score": 29.625,
+          "class": "other"
+        }
+      ]
+    },
+    "30": {
+      "energy_in_pair_span": 0.010872875340282917,
+      "rand_energy_mean": 0.004526801607571542,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " Sprache",
+          "score": 48.75,
+          "class": "other"
+        },
+        {
+          "token": " languages",
+          "score": 48.5,
+          "class": "other"
+        },
+        {
+          "token": " Sprachen",
+          "score": 48.5,
+          "class": "other"
+        },
+        {
+          "token": " lenguas",
+          "score": 48.25,
+          "class": "other"
+        },
+        {
+          "token": " l\u00edngua",
+          "score": 47.75,
+          "class": "other"
+        },
+        {
+          "token": " j\u0119zyk",
+          "score": 47.25,
+          "class": "other"
+        },
+        {
+          "token": " language",
+          "score": 46.75,
+          "class": "relation_word"
+        },
+        {
+          "token": " lingue",
+          "score": 46.25,
+          "class": "other"
+        },
+        {
+          "token": " langues",
+          "score": 44.75,
+          "class": "other"
+        },
+        {
+          "token": " lengua",
+          "score": 42.5,
+          "class": "other"
+        }
+      ]
+    },
+    "32": {
+      "energy_in_pair_span": 0.020825792104005814,
+      "rand_energy_mean": 0.004838161065708846,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " l\u00edngua",
+          "score": 53.75,
+          "class": "other"
+        },
+        {
+          "token": " languages",
+          "score": 48.75,
+          "class": "other"
+        },
+        {
+          "token": " Sprache",
+          "score": 48.25,
+          "class": "other"
+        },
+        {
+          "token": " lenguas",
+          "score": 48.0,
+          "class": "other"
+        },
+        {
+          "token": " language",
+          "score": 47.75,
+          "class": "relation_word"
+        },
+        {
+          "token": " lengua",
+          "score": 46.5,
+          "class": "other"
+        },
+        {
+          "token": " bahasa",
+          "score": 46.25,
+          "class": "other"
+        },
+        {
+          "token": " Sprachen",
+          "score": 45.75,
+          "class": "other"
+        },
+        {
+          "token": "Bahasa",
+          "score": 45.75,
+          "class": "other"
+        },
+        {
+          "token": " lingue",
+          "score": 45.5,
+          "class": "other"
+        }
+      ]
+    },
+    "33": {
+      "energy_in_pair_span": 0.02168612740933895,
+      "rand_energy_mean": 0.0042817015061154965,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " l\u00edngua",
+          "score": 52.5,
+          "class": "other"
+        },
+        {
+          "token": " language",
+          "score": 49.5,
+          "class": "relation_word"
+        },
+        {
+          "token": " languages",
+          "score": 49.25,
+          "class": "other"
+        },
+        {
+          "token": " lenguas",
+          "score": 49.25,
+          "class": "other"
+        },
+        {
+          "token": " Sprache",
+          "score": 47.25,
+          "class": "other"
+        },
+        {
+          "token": " bahasa",
+          "score": 46.5,
+          "class": "other"
+        },
+        {
+          "token": " j\u0119zyka",
+          "score": 46.5,
+          "class": "other"
+        },
+        {
+          "token": " Sprachen",
+          "score": 46.0,
+          "class": "other"
+        },
+        {
+          "token": " j\u0119zyk",
+          "score": 45.75,
+          "class": "other"
+        },
+        {
+          "token": " dialects",
+          "score": 45.5,
+          "class": "other"
+        }
+      ]
+    },
+    "35": {
+      "energy_in_pair_span": 0.020635485649108887,
+      "rand_energy_mean": 0.004275112585164606,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " l\u00edngua",
+          "score": 51.5,
+          "class": "other"
+        },
+        {
+          "token": " lenguas",
+          "score": 47.0,
+          "class": "other"
+        },
+        {
+          "token": " spoken",
+          "score": 45.5,
+          "class": "other"
+        },
+        {
+          "token": " ricca",
+          "score": 44.75,
+          "class": "other"
+        },
+        {
+          "token": "maj\u00e1nl\u00f3",
+          "score": 44.25,
+          "class": "other"
+        },
+        {
+          "token": " evolving",
+          "score": 43.5,
+          "class": "other"
+        },
+        {
+          "token": " languages",
+          "score": 43.25,
+          "class": "other"
+        },
+        {
+          "token": " bahasa",
+          "score": 42.75,
+          "class": "other"
+        },
+        {
+          "token": " lengua",
+          "score": 42.75,
+          "class": "other"
+        },
+        {
+          "token": " zijne",
+          "score": 42.25,
+          "class": "other"
+        }
+      ]
+    },
+    "37": {
+      "energy_in_pair_span": 0.017131155356764793,
+      "rand_energy_mean": 0.004408266695681959,
+      "n_syncretic_build": 8,
+      "marker_top": [
+        {
+          "token": " rijk",
+          "score": 44.25,
+          "class": "other"
+        },
+        {
+          "token": " l\u00edngua",
+          "score": 44.0,
+          "class": "other"
+        },
+        {
+          "token": " spoken",
+          "score": 43.75,
+          "class": "other"
+        },
+        {
+          "token": " widely",
+          "score": 43.0,
+          "class": "other"
+        },
+        {
+          "token": " evolving",
+          "score": 43.0,
+          "class": "other"
+        },
+        {
+          "token": " compleja",
+          "score": 43.0,
+          "class": "other"
+        },
+        {
+          "token": " parlato",
+          "score": 42.5,
+          "class": "other"
+        },
+        {
+          "token": " ricca",
+          "score": 41.75,
+          "class": "other"
+        },
+        {
+          "token": " fascinating",
+          "score": 41.5,
+          "class": "other"
+        },
+        {
+          "token": " pi\u0119k",
+          "score": 41.25,
+          "class": "other"
+        }
+      ]
+    }
+  },
+  "e6_stem_vs_embedding": {
+    "17": {
+      "cos_mean": 0.08434604486506997,
+      "cos_min": 0.04572254419326782,
+      "cos_max": 0.1307380199432373
+    },
+    "18": {
+      "cos_mean": 0.08527558900867448,
+      "cos_min": 0.056536734104156494,
+      "cos_max": 0.1325739324092865
+    },
+    "20": {
+      "cos_mean": 0.08936192507319378,
+      "cos_min": 0.05098358914256096,
+      "cos_max": 0.13133063912391663
+    },
+    "22": {
+      "cos_mean": 0.09734178368340839,
+      "cos_min": 0.06545087695121765,
+      "cos_max": 0.14086759090423584
+    },
+    "23": {
+      "cos_mean": 0.09724773319833206,
+      "cos_min": 0.06370731443166733,
+      "cos_max": 0.14303407073020935
+    },
+    "25": {
+      "cos_mean": 0.19644577327099713,
+      "cos_min": 0.1534835696220398,
+      "cos_max": 0.2527724802494049
+    },
+    "27": {
+      "cos_mean": 0.2062151190457922,
+      "cos_min": 0.1524249017238617,
+      "cos_max": 0.25992757081985474
+    },
+    "28": {
+      "cos_mean": 0.24376015184503613,
+      "cos_min": 0.19270220398902893,
+      "cos_max": 0.29669439792633057
+    },
+    "30": {
+      "cos_mean": 0.30505317878542526,
+      "cos_min": 0.24832206964492798,
+      "cos_max": 0.3931248188018799
+    },
+    "32": {
+      "cos_mean": 0.33885932013844,
+      "cos_min": 0.2785434126853943,
+      "cos_max": 0.40475016832351685
+    },
+    "33": {
+      "cos_mean": 0.34206914179252856,
+      "cos_min": 0.29441744089126587,
+      "cos_max": 0.41368186473846436
+    },
+    "35": {
+      "cos_mean": 0.33704014122486115,
+      "cos_min": 0.2759518325328827,
+      "cos_max": 0.4114910662174225
+    },
+    "37": {
+      "cos_mean": 0.41612670186794165,
+      "cos_min": 0.34801754355430603,
+      "cos_max": 0.4937952160835266
+    }
+  },
+  "_meta": {
+    "tag": "gemma-2-9b",
+    "domain": "relations",
+    "ws": [
+      17,
+      18,
+      20,
+      22,
+      23,
+      25,
+      27,
+      28,
+      30,
+      32,
+      33,
+      35,
+      37
+    ],
+    "lenses": [
+      "vanilla"
+    ],
+    "tied_embeddings": true,
+    "topk": 30,
+    "null_seeds": 10,
+    "identity_max_abs_diff": 2.6702880859375e-05,
+    "answer_spans": {
+      "currency": [
+        " euro",
+        " yen",
+        " rub",
+        " yuan",
+        " real",
+        " pound",
+        " rupee",
+        " peso",
+        " kron",
+        " lira"
+      ],
+      "capital": [
+        " Rome",
+        " Tokyo",
+        " Moscow",
+        " Beijing",
+        " Paris",
+        " Berlin",
+        " Bra",
+        " Cairo",
+        " Delhi",
+        " Stockholm",
+        " Ankara"
+      ],
+      "language": [
+        " Italian",
+        " Japanese",
+        " Russian",
+        " Chinese",
+        " French",
+        " German",
+        " Portuguese",
+        " Arabic",
+        " Hindi",
+        " Spanish",
+        " Swedish",
+        " Turkish"
+      ],
+      "demonym": [
+        " Italian",
+        " Japanese",
+        " Russian",
+        " Chinese",
+        " French",
+        " German",
+        " Brazilian",
+        " Egyptian",
+        " Indian",
+        " Mexican",
+        " Swedish",
+        " Turkish"
+      ],
+      "continent": [
+        " Europe",
+        " Asia",
+        " America",
+        " Africa"
+      ]
+    },
+    "relation_word_tokens": {
+      "currency": " currency",
+      "capital": " capital",
+      "language": " language",
+      "continent": " continent"
+    },
+    "exclusions": [
+      {
+        "relation": "capital",
+        "operand": "Mexico",
+        "answer": "Mexico",
+        "collides_with": "Mexico"
+      }
+    ],
+    "note": "raw = unembed(v) (scale-free top-k); marginal = mean_o[unembed(H)-unembed(H-v)] at the real operating point. e2 scores are marginal boosts on answer spans; nulls: permuted-label case + random-in-op-subspace, norm-matched."
+  }
+}
