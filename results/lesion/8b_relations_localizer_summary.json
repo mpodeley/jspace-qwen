@@ -1,0 +1,454 @@
+{
+  "induction_baseline": {
+    "logprob_repeat": -0.6763509114583334,
+    "logprob_control": -12.6015625,
+    "induction_score": 11.925211588541666
+  },
+  "regions": {
+    "head": {
+      "operator": {
+        "k": 16,
+        "layer_entropy": 0.5136707131126067,
+        "random_layer_entropy": 0.7495273140169244,
+        "top3_layer_share": 0.625,
+        "center_of_mass_depth": 91.96428571428571,
+        "bands": {
+          "early": 0.0,
+          "workspace": 0.5,
+          "late": 0.5
+        },
+        "layer_profile": {
+          "26": 1,
+          "29": 2,
+          "31": 3,
+          "32": 2,
+          "33": 1,
+          "34": 4,
+          "35": 3
+        }
+      },
+      "operand": {
+        "k": 16,
+        "layer_entropy": 0.4986183610778918,
+        "random_layer_entropy": 0.7495273140169244,
+        "top3_layer_share": 0.6875,
+        "center_of_mass_depth": 90.0,
+        "bands": {
+          "early": 0.0,
+          "workspace": 0.5625,
+          "late": 0.4375
+        },
+        "layer_profile": {
+          "20": 1,
+          "28": 1,
+          "31": 4,
+          "32": 3,
+          "33": 4,
+          "34": 1,
+          "35": 2
+        }
+      },
+      "operand_entity": {
+        "k": 16,
+        "layer_entropy": 0.6528141122082889,
+        "random_layer_entropy": 0.7495273140169244,
+        "top3_layer_share": 0.375,
+        "center_of_mass_depth": 76.78571428571428,
+        "bands": {
+          "early": 0.1875,
+          "workspace": 0.5,
+          "late": 0.3125
+        },
+        "layer_profile": {
+          "9": 1,
+          "10": 1,
+          "11": 1,
+          "24": 2,
+          "28": 1,
+          "29": 1,
+          "31": 2,
+          "32": 2,
+          "33": 2,
+          "34": 2,
+          "35": 1
+        }
+      },
+      "induction": {
+        "k": 16,
+        "layer_entropy": 0.6528141122082889,
+        "random_layer_entropy": 0.7495273140169244,
+        "top3_layer_share": 0.375,
+        "center_of_mass_depth": 58.92857142857143,
+        "bands": {
+          "early": 0.125,
+          "workspace": 0.75,
+          "late": 0.0
+        },
+        "layer_profile": {
+          "7": 2,
+          "13": 2,
+          "14": 1,
+          "19": 1,
+          "20": 1,
+          "22": 1,
+          "24": 2,
+          "25": 2,
+          "28": 1,
+          "29": 2,
+          "31": 1
+        }
+      },
+      "text_symbolic": {
+        "k": 16,
+        "layer_entropy": 0.7011707131126067,
+        "random_layer_entropy": 0.7495273140169244,
+        "top3_layer_share": 0.375,
+        "center_of_mass_depth": 23.214285714285715,
+        "bands": {
+          "early": 0.6875,
+          "workspace": 0.25,
+          "late": 0.0
+        },
+        "layer_profile": {
+          "0": 2,
+          "1": 1,
+          "2": 2,
+          "3": 2,
+          "4": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "12": 1,
+          "15": 1,
+          "20": 1,
+          "23": 1,
+          "24": 1
+        }
+      },
+      "symbolic_text": {
+        "k": 16,
+        "layer_entropy": 0.7495273140169244,
+        "random_layer_entropy": 0.7495273140169244,
+        "top3_layer_share": 0.25,
+        "center_of_mass_depth": 44.464285714285715,
+        "bands": {
+          "early": 0.4375,
+          "workspace": 0.5625,
+          "late": 0.0
+        },
+        "layer_profile": {
+          "1": 1,
+          "2": 1,
+          "4": 2,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "14": 1,
+          "19": 1,
+          "22": 1,
+          "23": 1,
+          "25": 1,
+          "26": 1,
+          "28": 1,
+          "31": 1,
+          "32": 1
+        }
+      }
+    },
+    "neuron": {
+      "operator": {
+        "k": 512,
+        "layer_entropy": 0.6008163987268725,
+        "random_layer_entropy": 0.9918424753726881,
+        "top3_layer_share": 0.56640625,
+        "center_of_mass_depth": 91.72991071428572,
+        "bands": {
+          "early": 0.009765625,
+          "workspace": 0.423828125,
+          "late": 0.56640625
+        },
+        "layer_profile": {
+          "8": 1,
+          "9": 2,
+          "10": 1,
+          "11": 1,
+          "23": 2,
+          "24": 4,
+          "25": 5,
+          "26": 2,
+          "27": 18,
+          "28": 24,
+          "29": 23,
+          "30": 46,
+          "31": 35,
+          "32": 58,
+          "33": 69,
+          "34": 86,
+          "35": 135
+        }
+      },
+      "operand": {
+        "k": 512,
+        "layer_entropy": 0.5617436763499515,
+        "random_layer_entropy": 0.9918424753726881,
+        "top3_layer_share": 0.58203125,
+        "center_of_mass_depth": 91.67410714285714,
+        "bands": {
+          "early": 0.0,
+          "workspace": 0.564453125,
+          "late": 0.435546875
+        },
+        "layer_profile": {
+          "24": 1,
+          "25": 1,
+          "26": 4,
+          "27": 6,
+          "28": 15,
+          "29": 24,
+          "30": 32,
+          "31": 104,
+          "32": 102,
+          "33": 92,
+          "34": 72,
+          "35": 59
+        }
+      },
+      "operand_entity": {
+        "k": 512,
+        "layer_entropy": 0.770801183346122,
+        "random_layer_entropy": 0.9918424753726881,
+        "top3_layer_share": 0.314453125,
+        "center_of_mass_depth": 80.96540178571429,
+        "bands": {
+          "early": 0.0703125,
+          "workspace": 0.62890625,
+          "late": 0.30078125
+        },
+        "layer_profile": {
+          "1": 9,
+          "3": 1,
+          "4": 3,
+          "5": 1,
+          "7": 1,
+          "8": 12,
+          "9": 2,
+          "10": 5,
+          "11": 2,
+          "20": 1,
+          "21": 5,
+          "22": 22,
+          "23": 17,
+          "24": 12,
+          "25": 13,
+          "26": 12,
+          "27": 27,
+          "28": 47,
+          "29": 31,
+          "30": 40,
+          "31": 56,
+          "32": 39,
+          "33": 51,
+          "34": 54,
+          "35": 49
+        }
+      },
+      "induction": {
+        "k": 512,
+        "layer_entropy": 0.822500353604743,
+        "random_layer_entropy": 0.9918424753726881,
+        "top3_layer_share": 0.359375,
+        "center_of_mass_depth": 58.59375,
+        "bands": {
+          "early": 0.033203125,
+          "workspace": 0.849609375,
+          "late": 0.0546875
+        },
+        "layer_profile": {
+          "3": 1,
+          "7": 4,
+          "8": 1,
+          "9": 4,
+          "10": 3,
+          "11": 4,
+          "12": 10,
+          "13": 22,
+          "14": 21,
+          "15": 16,
+          "16": 21,
+          "17": 26,
+          "18": 28,
+          "19": 35,
+          "20": 54,
+          "21": 71,
+          "22": 59,
+          "23": 32,
+          "24": 17,
+          "25": 21,
+          "26": 7,
+          "27": 4,
+          "28": 7,
+          "29": 4,
+          "30": 4,
+          "31": 4,
+          "32": 4,
+          "33": 10,
+          "34": 8,
+          "35": 10
+        }
+      },
+      "text_symbolic": {
+        "k": 512,
+        "layer_entropy": 0.9554646437965596,
+        "random_layer_entropy": 0.9918424753726881,
+        "top3_layer_share": 0.203125,
+        "center_of_mass_depth": 40.825892857142854,
+        "bands": {
+          "early": 0.46875,
+          "workspace": 0.4453125,
+          "late": 0.05078125
+        },
+        "layer_profile": {
+          "0": 40,
+          "1": 14,
+          "2": 14,
+          "3": 28,
+          "4": 34,
+          "5": 30,
+          "6": 19,
+          "7": 13,
+          "8": 16,
+          "9": 19,
+          "10": 8,
+          "11": 5,
+          "12": 10,
+          "13": 8,
+          "14": 7,
+          "15": 8,
+          "16": 12,
+          "17": 14,
+          "18": 5,
+          "19": 12,
+          "20": 18,
+          "21": 13,
+          "22": 22,
+          "23": 20,
+          "24": 24,
+          "25": 15,
+          "26": 14,
+          "27": 12,
+          "28": 3,
+          "29": 5,
+          "30": 7,
+          "31": 6,
+          "32": 11,
+          "33": 9,
+          "34": 10,
+          "35": 7
+        }
+      },
+      "symbolic_text": {
+        "k": 512,
+        "layer_entropy": 0.9583832270462179,
+        "random_layer_entropy": 0.9918424753726881,
+        "top3_layer_share": 0.19140625,
+        "center_of_mass_depth": 42.41629464285714,
+        "bands": {
+          "early": 0.447265625,
+          "workspace": 0.46875,
+          "late": 0.052734375
+        },
+        "layer_profile": {
+          "0": 30,
+          "1": 8,
+          "2": 29,
+          "3": 24,
+          "4": 39,
+          "5": 18,
+          "6": 16,
+          "7": 11,
+          "8": 26,
+          "9": 15,
+          "10": 8,
+          "11": 5,
+          "12": 12,
+          "13": 4,
+          "14": 6,
+          "15": 11,
+          "16": 10,
+          "17": 8,
+          "18": 10,
+          "19": 21,
+          "20": 16,
+          "21": 11,
+          "22": 25,
+          "23": 20,
+          "24": 17,
+          "25": 15,
+          "26": 16,
+          "27": 15,
+          "28": 7,
+          "29": 10,
+          "30": 13,
+          "31": 5,
+          "32": 4,
+          "33": 7,
+          "34": 9,
+          "35": 11
+        }
+      }
+    }
+  },
+  "segregation": {
+    "head": {
+      "operator|operand": 0.0,
+      "operator|operand_entity": 0.06666666666666667,
+      "operator|induction": 0.0,
+      "operator|text_symbolic": 0.0,
+      "operator|symbolic_text": 0.06666666666666667,
+      "operand|operand_entity": 0.14285714285714285,
+      "operand|induction": 0.0,
+      "operand|text_symbolic": 0.0,
+      "operand|symbolic_text": 0.0,
+      "operand_entity|induction": 0.0,
+      "operand_entity|text_symbolic": 0.03225806451612903,
+      "operand_entity|symbolic_text": 0.0,
+      "induction|text_symbolic": 0.0,
+      "induction|symbolic_text": 0.0,
+      "text_symbolic|symbolic_text": 0.0
+    },
+    "neuron": {
+      "operator|operand": 0.0,
+      "operator|operand_entity": 0.0199203187250996,
+      "operator|induction": 0.00392156862745098,
+      "operator|text_symbolic": 0.0019569471624266144,
+      "operator|symbolic_text": 0.01085883514313919,
+      "operand|operand_entity": 0.18793503480278423,
+      "operand|induction": 0.0009775171065493646,
+      "operand|text_symbolic": 0.0009775171065493646,
+      "operand|symbolic_text": 0.0009775171065493646,
+      "operand_entity|induction": 0.0,
+      "operand_entity|text_symbolic": 0.0,
+      "operand_entity|symbolic_text": 0.0009775171065493646,
+      "induction|text_symbolic": 0.0009775171065493646,
+      "induction|symbolic_text": 0.0009775171065493646,
+      "text_symbolic|symbolic_text": 0.0
+    }
+  },
+  "_meta": {
+    "tag": "8b",
+    "domain": "relations",
+    "k_neurons": 512,
+    "dims": {
+      "n_layers": 36,
+      "n_heads": 32,
+      "head_dim": 128,
+      "d_mlp": 12288
+    },
+    "n_induction": 24,
+    "n_text": 48,
+    "n_symbolic": 48,
+    "text_symbolic_tokens": 11,
+    "null_seeds": 5,
+    "note": "operator/operand = per-unit two-way variance contrast on the balanced grid at the query position (null: permuted relation labels). induction = repeated-vs-nonrepeating random sequences, second half. text_symbolic = WikiText vs arithmetic/logic, length-matched at the final position. layer_entropy: 1 = distributed network, 0 = single-layer area."
+  }
+}

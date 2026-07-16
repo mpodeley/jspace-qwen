@@ -46,6 +46,28 @@
           "27": 3
         }
       },
+      "operand_entity": {
+        "k": 16,
+        "layer_entropy": 0.5882277420666172,
+        "random_layer_entropy": 0.7540529165773467,
+        "top3_layer_share": 0.5625,
+        "center_of_mass_depth": 86.3425925925926,
+        "bands": {
+          "early": 0.0,
+          "workspace": 0.625,
+          "late": 0.375
+        },
+        "layer_profile": {
+          "18": 1,
+          "19": 1,
+          "20": 1,
+          "22": 2,
+          "23": 2,
+          "24": 3,
+          "25": 2,
+          "26": 4
+        }
+      },
       "induction": {
         "k": 16,
         "layer_entropy": 0.7182368656144357,
@@ -169,6 +191,32 @@
           "25": 90,
           "26": 114,
           "27": 59
+        }
+      },
+      "operand_entity": {
+        "k": 512,
+        "layer_entropy": 0.706510175874056,
+        "random_layer_entropy": 0.9904062751395887,
+        "top3_layer_share": 0.373046875,
+        "center_of_mass_depth": 84.01331018518519,
+        "bands": {
+          "early": 0.0,
+          "workspace": 0.666015625,
+          "late": 0.333984375
+        },
+        "layer_profile": {
+          "16": 6,
+          "17": 12,
+          "18": 17,
+          "19": 51,
+          "20": 54,
+          "21": 48,
+          "22": 47,
+          "23": 46,
+          "24": 60,
+          "25": 67,
+          "26": 64,
+          "27": 40
         }
       },
       "induction": {
@@ -299,24 +347,34 @@
   "segregation": {
     "head": {
       "operator|operand": 0.0,
+      "operator|operand_entity": 0.18518518518518517,
       "operator|induction": 0.0,
       "operator|text_symbolic": 0.0,
       "operator|symbolic_text": 0.03225806451612903,
+      "operand|operand_entity": 0.06666666666666667,
       "operand|induction": 0.0,
       "operand|text_symbolic": 0.0,
       "operand|symbolic_text": 0.0,
+      "operand_entity|induction": 0.0,
+      "operand_entity|text_symbolic": 0.0,
+      "operand_entity|symbolic_text": 0.0,
       "induction|text_symbolic": 0.0,
       "induction|symbolic_text": 0.0,
       "text_symbolic|symbolic_text": 0.0
     },
     "neuron": {
       "operator|operand": 0.0,
+      "operator|operand_entity": 0.02708124373119358,
       "operator|induction": 0.013861386138613862,
       "operator|text_symbolic": 0.00688298918387414,
       "operator|symbolic_text": 0.007874015748031496,
+      "operand|operand_entity": 0.18518518518518517,
       "operand|induction": 0.0,
       "operand|text_symbolic": 0.0009775171065493646,
       "operand|symbolic_text": 0.0009775171065493646,
+      "operand_entity|induction": 0.002938295788442703,
+      "operand_entity|text_symbolic": 0.0,
+      "operand_entity|symbolic_text": 0.0,
       "induction|text_symbolic": 0.0019569471624266144,
       "induction|symbolic_text": 0.002938295788442703,
       "text_symbolic|symbolic_text": 0.0
