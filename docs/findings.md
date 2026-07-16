@@ -20,6 +20,10 @@ looked visibly richer than the logit-lens path.
 The short version of what we found: **every correlational "one lens reads more
 than the other" comparison is null under controls. The one robust, controlled
 effect is causal — intervening on the workspace reroutes downstream computation.**
+Two later programs sharpen that into a shape the original question did not
+anticipate: the causal vector's *readable* part is not its lever (§2.18), and the
+operator half of the factorization has removable tissue while the operand half
+does not, at either position we have looked (Part 3).
 
 ---
 
@@ -566,6 +570,240 @@ and changes nothing. Artifacts: `1.7b_relations_audit.parquet` (with raw texts) 
   property, not a post-hoc pick. 8B held-out partitions also replicate (all flip, [+22.8, +25.6];
   LOO 222/224). Artifacts: `1.7b_relations_dose_oos.*`, `8b_relations_heldout_parts.*`.
 
+### 2.18 The vocab-semantics battery: the case vector reads, but its readable part is not the lever (2026-07-14)
+
+Todd et al. (ICLR'24, Tab. 5) decode function vectors to answer-space exemplars; Nadaf (2026) finds FV
+projections "universally incoherent" despite >0.9 steering accuracy. Both are correlational
+projections. We have the causal object — the case vector *is* the steering vector *is* the operator
+main effect (§2.11) — so we can ask the question causally: split the vector into the part a logit lens
+can see and the part it cannot, and inject each **alone at the calibrated dose** (§2.12).
+
+- **P1, it reads, and what it reads changes with depth (`op_vocab_portrait.py`).** The case vector's
+  diagonal contrast (its own relation's answers vs. the other relations') rises monotonically with
+  depth in all three models: L11 +1.81 → L24 **+7.94** (1.7B), L14 +3.03 → L31 **+10.05** (8B),
+  L17 +5.07 → L37 **+12.01** (Gemma-2-9B). Controls at the lever layer are flat: permuted-label
+  vectors max +1.32/+1.45/+1.64, random-subspace max +2.76/+3.59/+5.52, and a **random-projection
+  lens reads nothing at all** (+0.11 at 1.7B, −0.08 at 8B). So Nadaf's "incoherent" is too strong on
+  these models — but see the next bullet for what the coherence is worth.
+- **P2, the headline: the readable part is not the lever (`op_vocab_causal.py`).** Split
+  `case = c_ans ⊕ c_rest`, where `c_ans` is the exact orthogonal projection onto the span of the
+  γ-weighted unembedding rows of the relation's answer tokens — *the only part a logit lens could ever
+  attribute to "answer directions"*. It holds a **mean 7.3% of the vector's energy** (range 1.4–14.9%
+  over 20 pairs) at 1.7B, 5.3% (1.6–9.8%) at 8B, 2.9% (1.3–5.4%) at Gemma. At the calibrated
+  single-layer dose:
+
+  | model | `c_ans` alone | `c_rest` alone | full vector |
+  |---|---|---|---|
+  | Qwen3-1.7B | +0.9 [+0.2, +1.4], **0% flip** | +10.8 [+6.5, +14.7], 90% flip | +12.1 [+7.0, +16.5], 100% |
+  | Qwen3-8B | +0.8 [+0.5, +1.1], **0% flip** | +11.6 [+8.0, +15.1], 85% flip | +13.2 [+9.0, +17.1], 90% |
+  | Gemma-2-9B | +1.1 [+0.3, +1.5], **0% flip** | +16.1 [+11.2, +20.9], 100% flip | +17.3 [+11.9, +22.1], 100% |
+
+  The readable part's margin effect is *positive and tiny* — the CI excludes zero, so this is not "it
+  does nothing", it is "it does ~1/13th of the job and flips not a single pair in any model". The
+  complement carries 89% / 88% / 93% of the full margin effect. **Decodable, but not the lever:
+  identity travels in the ~93% no logit lens can read.**
+- **The generation split does NOT scale, and we said it did.** Exact-match generation under the donor
+  patch: `c_ans` 8.9% (1.7B) / **29.5% (8B)** / 4.9% (Gemma); `c_rest` 26.8 / 54.5 / 59.8; full 57.6 /
+  77.7 / 63.4. The 8B is the odd one out and **we have no account of why**. This retracts the
+  scale-trend reading of the 1.7B→8B pair: with a third model it is not a trend, it is an outlier.
+- **A third face of the dose artifact (§2.12).** At the 4× band overdose, `c_ans` *alone* inflates the
+  margin +34.6 [+19.3, +52.9] at 1.7B and **+65.7 [+51.9, +79.7]** at 8B — more than the full vector.
+  But so does a norm-matched vector built from the **wrong relations'** answers (+17.8 [+4.7, +30.7],
+  65% flips), and so do random vectors in the answer-token span (+5.4, +4.7). At high dose, margins in
+  vocabulary-aligned directions are **mechanically inflatable**; the calibrated dose is the honest
+  readout, and any "the answer directions matter" claim measured at overdose is measuring the dose.
+- **The purest test: a marker with no answers in it.** Build `language − demonym` from only the 8
+  countries where both relations share an answer word ("Italian"), so the marker carries almost no
+  answer-token energy (**4.96%** of ‖m‖² at 1.7B, 2.36% at 8B, 1.71% at Gemma, vs. random expectations
+  of 0.83 / 0.40 / 0.44%). Inject it on the 4 held-out countries where the answers *differ*: it moves
+  preference in the predicted direction in **100% of cells, in both directions, in all three models**
+  (Δ lang margin +12.27 [+9.76, +14.70] / +15.56 [+12.36, +18.77] / +17.60 [+13.74, +20.31] pushing
+  one way; −11.09 / −13.27 / −16.12 pushing the other). You can steer **which question is asked**
+  without touching **which word comes out**.
+
+Artifacts: `{1.7b,8b,gemma-2-9b}_relations_vocab_portrait_summary.json`, `*_vocab_causal_summary.json`,
+`*_marker_causal_summary.json`. Every number above is checked by
+`python scripts/verify_numbers.py` (VOCAB/MARKER blocks).
+
+---
+
+## Part 3 — The lesion study: tissue, not vectors (2026-07-14/15)
+
+Parts 1 and 2 are divided by method, and this is a third method. Everything above intervenes on the
+residual stream at **block** granularity — the right unit for steering, the wrong one for asking which
+*pieces* implement the operation. Neuropsychology's move is: localize a function with a contrast,
+remove the tissue, and measure whether the deficit is **selective**. That needs units you can remove.
+
+Two differences from every experiment above. The units are **heads and MLP neurons**, hooked inside
+the block (`layers[l].self_attn.o_proj` pre-hook = the concatenated per-head outputs;
+`layers[l].mlp.down_proj` pre-hook = `act_fn(gate(x)) * up(x)`, *the* MLP neurons). And a lesion is
+**not a steer**: the unit is silenced at *every token position of every prompt*, pinned to its
+WikiText mean, and the prompt asks the **true** question. We are not pushing the model toward an
+answer; we removed tissue and are watching what breaks.
+
+### 3.1 The infrastructure, and its ground-truth check (`lesion_core.py`)
+
+Zeroing 16 head slices at `o_proj`'s input equals zeroing that layer's attention output to 4 decimal
+places — the hook points are the units they claim to be. Every battery run begins with an assert that
+an **empty lesion is a bit-exact no-op** (`lesion_battery.py:196`, tolerance 1e-4): if the harness
+perturbs the model by existing, nothing downstream means anything.
+
+### 3.2 The criticality map: a tiny brainstem and a large redundant cortex
+
+Ablate every head **alone** and record the damage. Brains have this structure — a millimetre of
+brainstem is fatal, a lobe of "silent" cortex can be lost quietly — and if LLMs share it, a lesion
+study must know where the infrastructure is *before* claiming any deficit is about function.
+
+Qwen3-1.7B: **2 of 448 heads** exceed 2× perplexity. L1H5 alone costs **×19.7**, L0H3 **×4.4**; the
+median head costs **×1.003**. That is the whole map. It is why every control below is
+**depth-matched**: a globally random draw that happens to include L1H5 "beats" any targeted lesion for
+reasons that have nothing to do with function (§3.6 is that prediction coming true).
+
+**This map is 1.7B-only.** At 8B the depth-matching rationale is currently justified by analogy, not
+measurement. Artifacts: `1.7b_criticality_summary.json`.
+
+### 3.3 The anchor: a function with a known answer (induction heads)
+
+Before trusting the method on an unknown network, run it on one the field has already solved. Top-48
+induction heads, mean-ablated: the induction score collapses **+12.17 → +2.59 (−79%)** while WikiText
+perplexity is spared (**×1.24**), arithmetic is untouched (**100%**), and relational retrieval is
+*unharmed* (65.0% vs. a 61.7% baseline). The depth-matched controls do nothing to copying: layer
++11.70, magnitude +12.14. The method removes a known function selectively.
+
+### 3.4 The operator network lesions cleanly, at both scales
+
+Lesioning operator-selective neurons produces the pre-registered signature — the model answers the
+**right country under the wrong relation** — at **every lesion size**, dose-ordered, in both models.
+The test is a one-sided Fisher exact of the class's cell count against the **pooled control null** for
+its kind (36 control runs = 2160 cells), Bonferroni-corrected over all 42 tests (α = 1.2e-03):
+
+| model | k | accuracy | control band | `other_relation` | vs. null | p |
+|---|---|---|---|---|---|---|
+| 1.7B | 32 | 40.0% | [60.0, 61.7] | 6/60 | 1.1% | 8.9e-05 |
+| 1.7B | 128 | 36.7% | [60.0, 63.3] | 7/60 | 1.1% | 9.2e-06 |
+| 1.7B | **512** | **18.3%** | [45.0, 60.0] | **10/60** | 1.1% | **5.5e-09** |
+| 1.7B | 2048 | 16.7% | [61.7, 63.3] | 8/60 | 1.1% | 8.6e-07 |
+| 8B | 128 | 71.7% | [80.0, 81.7] | 3/60 | 0.1% | 3.5e-04 |
+| 8B | **512** | **46.7%** | [73.3, 81.7] | **5/60** | 0.1% | **6.4e-07** |
+| 8B | 2048 | 35.0% | [75.0, 80.0] | 4/60 | 0.1% | 1.6e-05 |
+
+Perplexity is spared throughout (×1.06–×1.22 at 1.7B, ×1.03–×1.14 at 8B) and arithmetic is intact, so
+the gate the method pre-registers — *"perplexity spared; otherwise the deficit is damage, not
+localization"* — passes on every row above.
+
+**An honesty correction to `b65dbc7`.** Its message says the three matched controls "do nothing". They
+do not all do nothing: at k=512 the **magnitude control drops to 45.0%** against a 61.7% baseline — a
+16.7-point hit. The defensible statement is that the targeted lesion sits **26.7 points below the
+worst matched control**, which is still the result, stated at its real size. The scoring now prints
+the control band on every row so this cannot be rounded off again.
+
+### 3.5 The operand network does not lesion — at either read position. The dissociation is one-sided.
+
+The pre-registered operand prediction is `other_operand`: the relation survives, the entity is lost —
+another country's capital. It essentially never happens.
+
+- **At the query position:** null at k=32/128/512 in both models (accuracy inside the control band).
+  The one exception is 1.7B k=2048, and it is instructive: **4/60 cells vs. a 0.4% null, p=2.0e-04** —
+  formally significant, and the predicted class. But accuracy moves only 61.7% → 53.3%, and those 4
+  cells (6.7%) **exactly equal the single highest of the 36 control runs**. So the pooled test calls
+  it enriched and the control envelope calls it ordinary; both are true, and it does not replicate at
+  8B (unstructured at every k). This is weaker than `b65dbc7`'s "NOT lesionable", and weaker than a
+  result: it is a hint at one scale, at the edge.
+- **At the entity token — the pre-registered test of `b65dbc7`'s account, and it fails.** That commit
+  proposed a mechanism: the entity reaches the query position by attention *from* the entity token, so
+  it is redundantly coded — erase it at the query and the model re-imports it next forward pass. The
+  operator has no second home. **Prediction: the operand must be lesionable where it is not
+  redundant.** We localized it there and lesioned it at 7 sizes in 2 models:
+
+  | model | k | accuracy | ppl | signature | detail |
+  |---|---|---|---|---|---|
+  | 1.7B | 512 | 46.7% | ×1.07 | `unstructured` | no class clears the null |
+  | 1.7B | **2048** | **11.7%** | **×1.48** | `unstructured` | `degraded` 81.7%, `other_operand` **1.7%** |
+  | 8B | 512 | 48.3% | ×1.04 | `other_operand` | 2/60, p=7.2e-04 — 2 cells |
+  | 8B | **2048** | **28.3%** | ×1.08 | **`other_relation`** | **6/60, p=2.4e-08** — the *operator* signature |
+
+  At 1.7B the accuracy collapse is real but it is **destruction**: ×1.476 perplexity, the largest cost
+  of any targeted neuron lesion in the battery, with 81.7% of cells degraded and the predicted class
+  at one cell. At 8B the deficit is cleaner *and points the wrong way*: six cells of the operator's
+  signature to the operand's one.
+- **The deficit is ranking-specific, so this is not generic entity-position fragility.** At 1.7B
+  k=2048 the depth-matched controls for the same network do nothing (68.3 / 58.3 / 61.7%). The ranking
+  selects something causally load-bearing at the entity token. It is not the operand.
+- **The readout was stacked in favour of the prediction that failed.** `op_audit.classify` tests
+  `other_operand` **before** `other_relation`, over ~2.8× more candidate strings per cell (10.33 vs.
+  3.73). The operand had priority and a wider net, and lost anyway.
+
+So: the operator has removable tissue; the operand does not, at either place we have looked for it.
+**Two hypotheses are now dead** — query-position, and entity-position — and the mechanism of the
+operand half is an open question, not a footnote.
+
+### 3.6 What the head-level rows can and cannot say
+
+The head arm at 1.7B is confounded, **exactly as §3.2 predicted it would be**, and the confound is the
+evidence rather than the bug:
+
+- The **globally random control** — kept only to expose the depth confound — catches L1H5 at k=16 and
+  k=48 and posts perplexity **×38.4** and **×78.4**. That row is the argument for depth-matching, in
+  the artifact, on demand.
+- `operand/top heads k=48` swallows L0H3: accuracy 0.0%, arithmetic 0.0%, perplexity **×485**. The
+  gate marks it `uninterpretable` automatically, and the summary now records *which* critical head it
+  caught rather than leaving the reader to guess.
+- **Excluding the sink heads would not rescue the regime.** `operand/magnitude heads k=48` costs
+  **×17.5 perplexity while containing no head that individually exceeds ×1.1**. Joint 48-head lesions
+  are superadditive in a way the single-head screen cannot predict, so the k=48 head regime at 1.7B is
+  simply beyond the screen's warrant. It is reported, not interpreted.
+- **At 8B the head arm is null but clean** — every head lesion stays under ×1.04 perplexity and no
+  targeted row produces a structured class. Uninformative for the opposite reason. Whatever the
+  operator network is, at 8B it is not a small set of heads.
+
+### 3.7 Two rankings, not four networks
+
+A methodological wart that is load-bearing for how the geometry reads. `lesion_localize.py` defines
+`operand := −operator` and `operand_entity := −operator_entity` on the same per-unit contrast. So
+**`jaccard(operator, operand) = 0.000` is a tautology, not a finding** — no "the networks are
+spatially segregated" claim can rest on it, and the number is now excluded from the printed summary
+rather than left to be misread. There are two rankings and two read positions, not four independent
+networks.
+
+The Jaccards that *are* informative are cross-position, and they are strikingly stable across scale:
+`operand|operand_entity` = **0.185 / 0.188** (1.7B / 8B), `operator|operator_entity` = 0.096 / 0.133.
+The same function at two positions shares ~1/5 of its tissue.
+
+The geometry that survives is real. Over neurons, layer entropy (1 = distributed, 0 = single-layer
+area) against a 0.99 random-unit null:
+
+| network | 1.7B | 8B | CoM depth (1.7B / 8B) |
+|---|---|---|---|
+| operator | 0.64 | 0.60 | 89% / 92% |
+| operand | 0.59 | 0.56 | 90% / 92% |
+| operator_entity | 0.69 | 0.58 | 87% / 93% |
+| operand_entity | 0.71 | 0.77 | 84% / 81% |
+| text_symbolic | **0.97** | **0.96** | 47% / 41% |
+
+The relational networks are **concentrated** and sit at 84–93% depth — the paper's causal lever, found
+again by a method that knows nothing about the paper. The text-vs-symbolic contrast is **fully
+distributed** (0.96–0.97, indistinguishable from the null) and sits mid-stack. **Whether a function
+has an "area" or a "network" depends on the function** — and that is a claim about this model, from
+this model's own data.
+
+### 3.8 What is still open
+
+- **`operator_entity` is localized and never lesioned.** The column exists, the region stats now
+  exist, the lesion runs do not. It is the missing cell of the 2×2 (~3h34m of sweep at measured
+  rates). It would not change §3.5 — the depth-matched controls already exclude generic
+  entity-position fragility — but the 2×2 is not closed until it runs.
+- **No 8B criticality screen**, so §3.2's map, and the depth-matching it licenses, is 1.7B-only.
+- **The per-cell generations are not persisted.** `run()` classifies each of the 60 cells and keeps
+  only the class *distribution*; the raw text is discarded. So no classification above can be
+  re-audited without a re-run — which is exactly the objection §2.16 was written to answer, reopened
+  at a new granularity. Fix before the next run.
+- **The `--networks` / `--stage` writes used to clobber.** They wrote the current run's rows over the
+  whole battery, which is why the P1 anchor rows (§3.3) are absent from the 84-run artifact and had to
+  be read back from `out/lesion/1.7b/anchor2.log`. Now merged on the run's identity; §3.3's numbers
+  return to the artifact on the next anchor pass.
+
+Artifacts: `{1.7b,8b}_relations_lesion_summary.json`, `*_localizer_summary.json`,
+`1.7b_criticality_summary.json`. Checked by `python scripts/verify_numbers.py` (LESION block).
 
 ---
 
@@ -583,6 +821,12 @@ The evidence splits cleanly into a negative half and a positive half:
   (§2.3): 20/20 case-swaps flip, random ~0, with operation separated from
   realization (language ≠ demonym as cases despite the same output word).
 
+Part 3 adds a third category that fits neither half: causal, well controlled, and
+**asymmetric**. The two halves of a factorization that is symmetric in the algebra
+(`H = μ + stem[o] + case[k] + inter`) are not symmetric in the tissue — one has a
+removable network and the other does not, at either read position. Nothing in the
+readable/causal split anticipates that, and we cannot currently explain it.
+
 Framings this could support, none yet chosen:
 
 1. **Legibility ≠ causal importance.** The headline is the dissociation itself:
@@ -591,7 +835,12 @@ Framings this could support, none yet chosen:
 2. **The workspace declines concepts by role.** Center on §2.3: relational
    computation as a case paradigm (function vectors with paradigm geometry, and
    the operation/realization split). The nulls become the "not via a special
-   readout" controls. This is the richest positive story.
+   readout" controls. This is the richest positive story. **Part 3 both
+   strengthens and narrows it:** the paradigm is a paradigm of *operators* — they
+   are what has an identifiable, removable, dose-ordered network (§3.4) — while
+   the operand's mechanism is now an open question rather than a symmetric
+   partner (§3.5). "Declines concepts by role" would have to be a claim about the
+   case-endings, not about the stems.
 3. **The negative result alone.** "The J-lens readout advantage does not replicate
    on Qwen3 under controls" — modest, defensive, solid.
 
@@ -605,6 +854,14 @@ Open threads that could change the picture before deciding:
 - The case paradigm is causal/representational; whether it is specifically a
   *J-space* phenomenon is answered "no" so far (§2.3: cases are cleaner in the
   raw residual; J-space reflects output form).
+- **Where does the operand live?** Two hypotheses are dead (query position §3.5,
+  entity token §3.5) and the second died having been *predicted* by the first's
+  post-mortem. The factorization's operand term is causally real — held-out
+  transfer, compositional sufficiency, §2.4 and §2.11 — yet it has no tissue we
+  can find. Either it is genuinely distributed in a way the operator is not, or
+  the localizer contrast (a per-unit variance decomposition) is the wrong
+  instrument for it. Deciding that is the next real experiment, and it is not
+  another lesion sweep.
 
 ## Reproducing these numbers
 
@@ -616,6 +873,21 @@ python scripts/syntax_swap.py 1.7b                      # 2.2
 python scripts/causal_swap.py 1.7b                      # 2.1 (existing)
 python scripts/operator_paradigm.py 1.7b               # 2.3 (also 8b)
 python scripts/operator_factorize.py 1.7b              # 2.4 (also 8b)
+python scripts/op_vocab_portrait.py 1.7b               # 2.18 P1 (also 8b, gemma-2-9b)
+python scripts/op_vocab_causal.py 1.7b                 # 2.18 P2 + the marker
+python scripts/lesion_localize.py 1.7b                 # 3.1, 3.7 (also 8b)
+python scripts/lesion_battery.py 1.7b --stage screen   # 3.2
+python scripts/lesion_battery.py 1.7b --stage anchor   # 3.3
+python scripts/lesion_battery.py 1.7b --stage dissoc   # 3.4-3.6 (also 8b)
+```
+
+Two of those re-score without a model, from the tracked summaries — the `.parquet`
+artifacts are gitignored, so this is what a fresh clone can actually run:
+
+```
+python scripts/lesion_battery.py 1.7b --rescore         # re-score the battery, no GPU
+python scripts/lesion_localize.py 1.7b --rescore        # recompute the geometry, no GPU
+python scripts/verify_numbers.py                        # every number above, against results/
 ```
 
 Relational stimuli: `data/relations.json`.
