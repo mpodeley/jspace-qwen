@@ -659,8 +659,18 @@ median head costs **×1.003**. That is the whole map. It is why every control be
 **depth-matched**: a globally random draw that happens to include L1H5 "beats" any targeted lesion for
 reasons that have nothing to do with function (§3.6 is that prediction coming true).
 
-**This map is 1.7B-only.** At 8B the depth-matching rationale is currently justified by analogy, not
-measurement. Artifacts: `1.7b_criticality_summary.json`.
+**And the brainstem is a small-model phenomenon.** The same screen at 8B — every one of 1152 heads
+ablated alone — finds **zero** critical heads. Not a smaller sink, not a sink somewhere else: the worst
+head in the model costs less than 2× and the median costs **×1.004**. Qwen3-1.7B keeps a head it cannot
+survive losing; Qwen3-8B, four times its size, keeps none.
+
+Two consequences, both load-bearing below. It **explains §3.6's puzzle**: the 8B head arm is null *but
+clean* (no lesion exceeds ×1.04) because there is no catastrophic head for a random control to
+swallow. And it means the depth-matching that §3.6 vindicates at 1.7B is defending against a confound
+that, at 8B, **does not exist** — the controls stay correct, but they are no longer doing the work
+they were designed for.
+
+Artifacts: `{1.7b,8b}_criticality_summary.json`.
 
 ### 3.3 The anchor: a function with a known answer (induction heads)
 
@@ -753,8 +763,10 @@ evidence rather than the bug:
   are superadditive in a way the single-head screen cannot predict, so the k=48 head regime at 1.7B is
   simply beyond the screen's warrant. It is reported, not interpreted.
 - **At 8B the head arm is null but clean** — every head lesion stays under ×1.04 perplexity and no
-  targeted row produces a structured class. Uninformative for the opposite reason. Whatever the
-  operator network is, at 8B it is not a small set of heads.
+  targeted row produces a structured class. Uninformative for the opposite reason, and §3.2 says why:
+  there is **no critical head at 8B to catch**, so nothing can blow up and nothing is confounded. The
+  1.7B head arm is unreadable because of the sink; the 8B head arm is readable and says nothing.
+  Whatever the operator network is, at 8B it is not a small set of heads.
 
 ### 3.7 Two rankings, not four networks
 
@@ -792,7 +804,10 @@ this model's own data.
   exist, the lesion runs do not. It is the missing cell of the 2×2 (~3h34m of sweep at measured
   rates). It would not change §3.5 — the depth-matched controls already exclude generic
   entity-position fragility — but the 2×2 is not closed until it runs.
-- **No 8B criticality screen**, so §3.2's map, and the depth-matching it licenses, is 1.7B-only.
+- **Why does 1.7B need a head that 8B does not?** The screen now covers both (§3.2) and the answer is
+  a new question: the sink that dominates the 1.7B map has no 8B counterpart at all. Whether the
+  function L1H5 performs is distributed at 8B, or simply unnecessary there, this screen cannot say —
+  it only ablates heads one at a time, and §3.6 shows single-head damage is not additive.
 - **The per-cell generations are not persisted.** `run()` classifies each of the 60 cells and keeps
   only the class *distribution*; the raw text is discarded. So no classification above can be
   re-audited without a re-run — which is exactly the objection §2.16 was written to answer, reopened
