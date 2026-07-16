@@ -48,6 +48,27 @@
           "35": 2
         }
       },
+      "operator_entity": {
+        "k": 16,
+        "layer_entropy": 0.5227966615300507,
+        "random_layer_entropy": 0.7495273140169244,
+        "top3_layer_share": 0.5625,
+        "center_of_mass_depth": 88.39285714285714,
+        "bands": {
+          "early": 0.0,
+          "workspace": 0.625,
+          "late": 0.375
+        },
+        "layer_profile": {
+          "26": 2,
+          "27": 2,
+          "28": 2,
+          "31": 1,
+          "32": 3,
+          "34": 4,
+          "35": 2
+        }
+      },
       "operand_entity": {
         "k": 16,
         "layer_entropy": 0.6528141122082889,
@@ -211,6 +232,36 @@
           "33": 92,
           "34": 72,
           "35": 59
+        }
+      },
+      "operator_entity": {
+        "k": 512,
+        "layer_entropy": 0.5832615089154348,
+        "random_layer_entropy": 0.9918424753726881,
+        "top3_layer_share": 0.630859375,
+        "center_of_mass_depth": 92.67857142857142,
+        "bands": {
+          "early": 0.001953125,
+          "workspace": 0.3671875,
+          "late": 0.630859375
+        },
+        "layer_profile": {
+          "11": 1,
+          "20": 1,
+          "22": 2,
+          "23": 5,
+          "24": 3,
+          "25": 3,
+          "26": 9,
+          "27": 12,
+          "28": 18,
+          "29": 28,
+          "30": 27,
+          "31": 39,
+          "32": 41,
+          "33": 63,
+          "34": 113,
+          "35": 147
         }
       },
       "operand_entity": {
@@ -401,14 +452,20 @@
   "segregation": {
     "head": {
       "operator|operand": 0.0,
+      "operator|operator_entity": 0.18518518518518517,
       "operator|operand_entity": 0.06666666666666667,
       "operator|induction": 0.0,
       "operator|text_symbolic": 0.0,
       "operator|symbolic_text": 0.06666666666666667,
+      "operand|operator_entity": 0.0,
       "operand|operand_entity": 0.14285714285714285,
       "operand|induction": 0.0,
       "operand|text_symbolic": 0.0,
       "operand|symbolic_text": 0.0,
+      "operator_entity|operand_entity": 0.0,
+      "operator_entity|induction": 0.0,
+      "operator_entity|text_symbolic": 0.0,
+      "operator_entity|symbolic_text": 0.03225806451612903,
       "operand_entity|induction": 0.0,
       "operand_entity|text_symbolic": 0.03225806451612903,
       "operand_entity|symbolic_text": 0.0,
@@ -418,14 +475,20 @@
     },
     "neuron": {
       "operator|operand": 0.0,
+      "operator|operator_entity": 0.13274336283185842,
       "operator|operand_entity": 0.0199203187250996,
       "operator|induction": 0.00392156862745098,
       "operator|text_symbolic": 0.0019569471624266144,
       "operator|symbolic_text": 0.01085883514313919,
+      "operand|operator_entity": 0.005893909626719057,
       "operand|operand_entity": 0.18793503480278423,
       "operand|induction": 0.0009775171065493646,
       "operand|text_symbolic": 0.0009775171065493646,
       "operand|symbolic_text": 0.0009775171065493646,
+      "operator_entity|operand_entity": 0.0,
+      "operator_entity|induction": 0.00688298918387414,
+      "operator_entity|text_symbolic": 0.0009775171065493646,
+      "operator_entity|symbolic_text": 0.002938295788442703,
       "operand_entity|induction": 0.0,
       "operand_entity|text_symbolic": 0.0,
       "operand_entity|symbolic_text": 0.0009775171065493646,

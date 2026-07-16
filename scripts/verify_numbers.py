@@ -28,6 +28,7 @@ import op_core
 ROOT = Path(__file__).resolve().parent.parent
 ABL = ROOT / "results" / "ablation"
 GEO = ROOT / "results" / "geometry"
+LES = ROOT / "results" / "lesion"
 PROSE = ["docs/paper.md", "docs/findings.md", "docs/robustness.md", "docs/index.md",
          "docs/explained.md", "README.md", "promo/x-thread.md", "promo/lesswrong.md"]
 
@@ -239,6 +240,47 @@ def rows():
                                 f"sign-correct {mv['sign_correct_frac']:.0%}, "
                                 f"span energy {meta['energy_in_pair_span']:.2%}, "
                                 f"n={len(meta['tested_on'])} operands"))
+
+    # --- lesion study: criticality (P0) ---------------------------------------
+    for tag in ("1.7b", "8b"):
+        p = LES / f"{tag}_criticality_summary.json"
+        if not p.exists():
+            continue
+        s = json.loads(p.read_text())
+        top = ", ".join(f"L{c['layer']}H{c['head']} x{c['ppl_ratio']:.1f}"
+                        for c in s["critical_heads"][:3]) or "none"
+        out.append((f"{tag} LESION P0 criticality",
+                    f"{len(s['critical_heads'])} of {s['n_heads']} heads > 2x ppl "
+                    f"({s['frac_critical']:.1%})",
+                    f"median x{s['median_ppl_ratio']:.3f}; worst: {top}"))
+
+    # --- lesion study: the per-network signature (P2) --------------------------
+    # Reads the summary JSON, not the parquet: *.parquet is gitignored, so a
+    # parquet-based check would silently pass on a fresh clone by finding nothing.
+    for tag in ("1.7b", "8b"):
+        p = LES / f"{tag}_relations_lesion_summary.json"
+        if not p.exists():
+            continue
+        s = json.loads(p.read_text())
+        base = s["baseline"]
+        out.append((f"{tag} LESION baseline",
+                    f"relations {base['relations_acc']:.1%}, ppl {base['ppl']:.2f}",
+                    f"arithmetic {base['arithmetic']:.0%}, "
+                    f"{len(s['runs'])} runs"))
+        diss = s.get("dissociation", {})
+        for key, v in diss.items():
+            if not key.startswith("neuron"):
+                continue                      # the head arm is reported separately
+            sig = v["signature"]
+            detail = (f"acc {v['acc_top']:.1%} vs control band "
+                      f"[{v['control_band'][0]:.1%}, {v['control_band'][1]:.1%}], "
+                      f"ppl x{v['ppl_ratio']:.2f}")
+            if sig in ("other_relation", "other_operand"):
+                detail += (f"; {v[f'count_{sig}']}/{v['n_cells']} cells vs null "
+                           f"{v[f'null_rate_{sig}']:.1%} over {v['null_cells']} "
+                           f"control cells, p={v[f'p_{sig}']:.1e} "
+                           f"(alpha={v['alpha_bonferroni']:.1e})")
+            out.append((f"{tag} LESION {key}", sig, detail))
     return out
 
 

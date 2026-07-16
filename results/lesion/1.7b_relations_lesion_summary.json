@@ -790,7 +790,8 @@
       "ppl_ratio": 1.0021406846821161,
       "arithmetic": 1.0,
       "induction_score": 12.171223958333334,
-      "induction_ratio": 1.0003210443824446
+      "induction_ratio": 1.0003210443824446,
+      "contains_critical_head": []
     },
     "operand_entity/layer heads k=4": {
       "network": "operand_entity",
@@ -806,7 +807,8 @@
       "ppl_ratio": 0.9985755234404367,
       "arithmetic": 1.0,
       "induction_score": 12.116129557291666,
-      "induction_ratio": 0.9957929797458646
+      "induction_ratio": 0.9957929797458646,
+      "contains_critical_head": []
     },
     "operand_entity/magnitude heads k=4": {
       "network": "operand_entity",
@@ -822,7 +824,8 @@
       "ppl_ratio": 0.9844415497926773,
       "arithmetic": 1.0,
       "induction_score": 11.979329427083332,
-      "induction_ratio": 0.9845497350573991
+      "induction_ratio": 0.9845497350573991,
+      "contains_critical_head": []
     },
     "operand_entity/random heads k=4": {
       "network": "operand_entity",
@@ -838,7 +841,8 @@
       "ppl_ratio": 1.0078711981785513,
       "arithmetic": 1.0,
       "induction_score": 12.118896484375,
-      "induction_ratio": 0.9960203862416456
+      "induction_ratio": 0.9960203862416456,
+      "contains_critical_head": []
     },
     "operand/top heads k=4": {
       "network": "operand",
@@ -854,7 +858,8 @@
       "ppl_ratio": 1.0050018806751326,
       "arithmetic": 1.0,
       "induction_score": 12.17578125,
-      "induction_ratio": 1.0006955962578485
+      "induction_ratio": 1.0006955962578485,
+      "contains_critical_head": []
     },
     "operand/layer heads k=4": {
       "network": "operand",
@@ -870,7 +875,8 @@
       "ppl_ratio": 0.9996436232748912,
       "arithmetic": 1.0,
       "induction_score": 12.177571614583334,
-      "induction_ratio": 1.0008427416374717
+      "induction_ratio": 1.0008427416374717,
+      "contains_critical_head": []
     },
     "operand/magnitude heads k=4": {
       "network": "operand",
@@ -886,7 +892,8 @@
       "ppl_ratio": 1.0100284895311913,
       "arithmetic": 1.0,
       "induction_score": 12.099853515625,
-      "induction_ratio": 0.9944552944765648
+      "induction_ratio": 0.9944552944765648,
+      "contains_critical_head": []
     },
     "operand/random heads k=4": {
       "network": "operand",
@@ -902,7 +909,8 @@
       "ppl_ratio": 1.0078711981785513,
       "arithmetic": 1.0,
       "induction_score": 12.118896484375,
-      "induction_ratio": 0.9960203862416456
+      "induction_ratio": 0.9960203862416456,
+      "contains_critical_head": []
     },
     "operator/top heads k=4": {
       "network": "operator",
@@ -918,7 +926,8 @@
       "ppl_ratio": 1.012190629546758,
       "arithmetic": 1.0,
       "induction_score": 12.137125651041666,
-      "induction_ratio": 0.9975185937432614
+      "induction_ratio": 0.9975185937432614,
+      "contains_critical_head": []
     },
     "operator/layer heads k=4": {
       "network": "operator",
@@ -934,7 +943,8 @@
       "ppl_ratio": 1.012551491285074,
       "arithmetic": 1.0,
       "induction_score": 12.141682942708332,
-      "induction_ratio": 0.9978931456186653
+      "induction_ratio": 0.9978931456186653,
+      "contains_critical_head": []
     },
     "operator/magnitude heads k=4": {
       "network": "operator",
@@ -950,7 +960,8 @@
       "ppl_ratio": 1.0100284895311913,
       "arithmetic": 1.0,
       "induction_score": 12.128336588541666,
-      "induction_ratio": 0.9967962436978395
+      "induction_ratio": 0.9967962436978395,
+      "contains_critical_head": []
     },
     "operator/random heads k=4": {
       "network": "operator",
@@ -966,7 +977,8 @@
       "ppl_ratio": 1.0078711981785513,
       "arithmetic": 1.0,
       "induction_score": 12.118896484375,
-      "induction_ratio": 0.9960203862416456
+      "induction_ratio": 0.9960203862416456,
+      "contains_critical_head": []
     },
     "operand_entity/top heads k=16": {
       "network": "operand_entity",
@@ -982,7 +994,8 @@
       "ppl_ratio": 0.9932515703304012,
       "arithmetic": 1.0,
       "induction_score": 11.931477864583334,
-      "induction_ratio": 0.9806169403656576
+      "induction_ratio": 0.9806169403656576,
+      "contains_critical_head": []
     },
     "operand_entity/layer heads k=16": {
       "network": "operand_entity",
@@ -998,7 +1011,8 @@
       "ppl_ratio": 1.0296541800262482,
       "arithmetic": 1.0,
       "induction_score": 12.285074869791666,
-      "induction_ratio": 1.0096781528411973
+      "induction_ratio": 1.0096781528411973,
+      "contains_critical_head": []
     },
     "operand_entity/magnitude heads k=16": {
       "network": "operand_entity",
@@ -1014,7 +1028,8 @@
       "ppl_ratio": 0.9890129904164965,
       "arithmetic": 1.0,
       "induction_score": 11.952799479166666,
-      "induction_ratio": 0.9823693080684404
+      "induction_ratio": 0.9823693080684404,
+      "contains_critical_head": []
     },
     "operand_entity/random heads k=16": {
       "network": "operand_entity",
@@ -1030,7 +1045,10 @@
       "ppl_ratio": 38.38016547759269,
       "arithmetic": 1.0,
       "induction_score": 17.631184895833332,
-      "induction_ratio": 1.4490609448217797
+      "induction_ratio": 1.4490609448217797,
+      "contains_critical_head": [
+        "L1H5"
+      ]
     },
     "operand/top heads k=16": {
       "network": "operand",
@@ -1046,7 +1064,8 @@
       "ppl_ratio": 1.0982608209731823,
       "arithmetic": 1.0,
       "induction_score": 12.113118489583334,
-      "induction_ratio": 0.9955455079710441
+      "induction_ratio": 0.9955455079710441,
+      "contains_critical_head": []
     },
     "operand/layer heads k=16": {
       "network": "operand",
@@ -1062,7 +1081,8 @@
       "ppl_ratio": 0.9886607350548754,
       "arithmetic": 1.0,
       "induction_score": 12.012613932291668,
-      "induction_ratio": 0.9872853014331175
+      "induction_ratio": 0.9872853014331175,
+      "contains_critical_head": []
     },
     "operand/magnitude heads k=16": {
       "network": "operand",
@@ -1078,7 +1098,8 @@
       "ppl_ratio": 1.0032126028386255,
       "arithmetic": 1.0,
       "induction_score": 12.009602864583332,
-      "induction_ratio": 0.9870378296582969
+      "induction_ratio": 0.9870378296582969,
+      "contains_critical_head": []
     },
     "operand/random heads k=16": {
       "network": "operand",
@@ -1094,7 +1115,10 @@
       "ppl_ratio": 38.38016547759269,
       "arithmetic": 1.0,
       "induction_score": 17.631184895833332,
-      "induction_ratio": 1.4490609448217797
+      "induction_ratio": 1.4490609448217797,
+      "contains_critical_head": [
+        "L1H5"
+      ]
     },
     "operator/top heads k=16": {
       "network": "operator",
@@ -1110,7 +1134,8 @@
       "ppl_ratio": 1.0278212642234013,
       "arithmetic": 1.0,
       "induction_score": 12.1259765625,
-      "induction_ratio": 0.9966022793337911
+      "induction_ratio": 0.9966022793337911,
+      "contains_critical_head": []
     },
     "operator/layer heads k=16": {
       "network": "operator",
@@ -1126,7 +1151,8 @@
       "ppl_ratio": 1.0194307742454056,
       "arithmetic": 1.0,
       "induction_score": 12.16650390625,
-      "induction_ratio": 0.9999331156543477
+      "induction_ratio": 0.9999331156543477,
+      "contains_critical_head": []
     },
     "operator/magnitude heads k=16": {
       "network": "operator",
@@ -1142,7 +1168,8 @@
       "ppl_ratio": 1.0107487584089452,
       "arithmetic": 1.0,
       "induction_score": 12.091796875,
-      "induction_ratio": 0.9937931402682613
+      "induction_ratio": 0.9937931402682613,
+      "contains_critical_head": []
     },
     "operator/random heads k=16": {
       "network": "operator",
@@ -1158,7 +1185,10 @@
       "ppl_ratio": 38.38016547759269,
       "arithmetic": 1.0,
       "induction_score": 17.631184895833332,
-      "induction_ratio": 1.4490609448217797
+      "induction_ratio": 1.4490609448217797,
+      "contains_critical_head": [
+        "L1H5"
+      ]
     },
     "operand_entity/top heads k=48": {
       "network": "operand_entity",
@@ -1174,7 +1204,8 @@
       "ppl_ratio": 1.2638229016168716,
       "arithmetic": 1.0,
       "induction_score": 10.9833984375,
-      "induction_ratio": 0.90269677342894
+      "induction_ratio": 0.90269677342894,
+      "contains_critical_head": []
     },
     "operand_entity/layer heads k=48": {
       "network": "operand_entity",
@@ -1190,7 +1221,8 @@
       "ppl_ratio": 1.0943536471703144,
       "arithmetic": 1.0,
       "induction_score": 11.849283854166666,
-      "induction_ratio": 0.9738616297556931
+      "induction_ratio": 0.9738616297556931,
+      "contains_critical_head": []
     },
     "operand_entity/magnitude heads k=48": {
       "network": "operand_entity",
@@ -1206,7 +1238,8 @@
       "ppl_ratio": 1.075409436249598,
       "arithmetic": 1.0,
       "induction_score": 10.732096354166666,
-      "induction_ratio": 0.8820429128709499
+      "induction_ratio": 0.8820429128709499,
+      "contains_critical_head": []
     },
     "operand_entity/random heads k=48": {
       "network": "operand_entity",
@@ -1222,7 +1255,10 @@
       "ppl_ratio": 78.36429968276411,
       "arithmetic": 1.0,
       "induction_score": 10.464843749999998,
-      "induction_ratio": 0.8600781207490459
+      "induction_ratio": 0.8600781207490459,
+      "contains_critical_head": [
+        "L1H5"
+      ]
     },
     "operand/top heads k=48": {
       "network": "operand",
@@ -1238,7 +1274,10 @@
       "ppl_ratio": 485.2209820554622,
       "arithmetic": 0.0,
       "induction_score": 3.7109375,
-      "induction_ratio": 0.30499224140037096
+      "induction_ratio": 0.30499224140037096,
+      "contains_critical_head": [
+        "L0H3"
+      ]
     },
     "operand/layer heads k=48": {
       "network": "operand",
@@ -1254,7 +1293,8 @@
       "ppl_ratio": 1.4684049608125,
       "arithmetic": 1.0,
       "induction_score": 13.58984375,
-      "induction_ratio": 1.1169136924546215
+      "induction_ratio": 1.1169136924546215,
+      "contains_critical_head": []
     },
     "operand/magnitude heads k=48": {
       "network": "operand",
@@ -1270,7 +1310,8 @@
       "ppl_ratio": 17.5041405763145,
       "arithmetic": 1.0,
       "induction_score": 12.744140624999998,
-      "induction_ratio": 1.0474075658618
+      "induction_ratio": 1.0474075658618,
+      "contains_critical_head": []
     },
     "operand/random heads k=48": {
       "network": "operand",
@@ -1286,7 +1327,10 @@
       "ppl_ratio": 78.36429968276411,
       "arithmetic": 1.0,
       "induction_score": 10.464843749999998,
-      "induction_ratio": 0.8600781207490459
+      "induction_ratio": 0.8600781207490459,
+      "contains_critical_head": [
+        "L1H5"
+      ]
     },
     "operator/top heads k=48": {
       "network": "operator",
@@ -1302,7 +1346,8 @@
       "ppl_ratio": 1.2570849571808516,
       "arithmetic": 0.24242424242424243,
       "induction_score": 12.10498046875,
-      "induction_ratio": 0.9948766653363942
+      "induction_ratio": 0.9948766653363942,
+      "contains_critical_head": []
     },
     "operator/layer heads k=48": {
       "network": "operator",
@@ -1318,7 +1363,8 @@
       "ppl_ratio": 1.2459344870484335,
       "arithmetic": 1.0,
       "induction_score": 11.188151041666666,
-      "induction_ratio": 0.9195248541167323
+      "induction_ratio": 0.9195248541167323,
+      "contains_critical_head": []
     },
     "operator/magnitude heads k=48": {
       "network": "operator",
@@ -1334,7 +1380,8 @@
       "ppl_ratio": 1.1336532723565484,
       "arithmetic": 0.9696969696969697,
       "induction_score": 11.281412760416666,
-      "induction_ratio": 0.9271897907098205
+      "induction_ratio": 0.9271897907098205,
+      "contains_critical_head": []
     },
     "operator/random heads k=48": {
       "network": "operator",
@@ -1350,7 +1397,10 @@
       "ppl_ratio": 78.36429968276411,
       "arithmetic": 1.0,
       "induction_score": 10.464843749999998,
-      "induction_ratio": 0.8600781207490459
+      "induction_ratio": 0.8600781207490459,
+      "contains_critical_head": [
+        "L1H5"
+      ]
     }
   },
   "_meta": {
@@ -1368,68 +1418,932 @@
     "note": "TRUE lesion: units are silenced at every token position of every prompt. mean-ablation pins each unit to its WikiText mean. class_other_operand = right relation, wrong entity; class_other_relation = right entity, wrong relation (no 'source' class exists in a lesion: the prompt always asks the true question)."
   },
   "dissociation": {
-    "neuron/k=32": {
-      "operator_lesion_other_relation": 0.1,
-      "operator_lesion_other_operand": 0.0,
-      "operand_lesion_other_operand": 0.016666666666666666,
-      "operand_lesion_other_relation": 0.0,
-      "crossed": true,
-      "ppl_ratio_operator": 1.0586776702223124,
-      "ppl_ratio_operand": 1.0078711981785513
+    "head/k=4/operand": {
+      "signature": "null",
+      "interpretable": true,
+      "outside_control_band": false,
+      "acc_top": 0.6166666666666667,
+      "control_band": [
+        0.5666666666666667,
+        0.6333333333333333
+      ],
+      "ppl_ratio": 1.0050018806751326,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.016666666666666666,
+      "count_other_relation": 1,
+      "ci_other_relation": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_relation": 0.020000000000000004,
+      "null_ceiling_other_relation": 0.11666666666666667,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.0,
+      "null_ceiling_other_operand": 0.0,
+      "class_degraded": 0.36666666666666664,
+      "count_degraded": 22,
+      "ci_degraded": [
+        0.2562073884620827,
+        0.4931723263320327
+      ],
+      "null_rate_degraded": 0.36916666666666664,
+      "null_ceiling_degraded": 0.6,
+      "p_other_relation": 0.7082387497843631,
+      "significant_other_relation": false,
+      "p_other_operand": 1.0,
+      "significant_other_operand": false,
+      "null_runs": 20,
+      "null_cells": 1200
     },
-    "neuron/k=128": {
-      "operator_lesion_other_relation": 0.11666666666666667,
-      "operator_lesion_other_operand": 0.0,
-      "operand_lesion_other_operand": 0.05,
-      "operand_lesion_other_relation": 0.016666666666666666,
-      "crossed": true,
-      "ppl_ratio_operator": 1.0963054764314375,
-      "ppl_ratio_operand": 1.0227058036192118
+    "head/k=4/operand_entity": {
+      "signature": "null",
+      "interpretable": true,
+      "outside_control_band": false,
+      "acc_top": 0.6166666666666667,
+      "control_band": [
+        0.5666666666666667,
+        0.6666666666666666
+      ],
+      "ppl_ratio": 1.0021406846821161,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.0,
+      "count_other_relation": 0,
+      "ci_other_relation": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_relation": 0.020000000000000004,
+      "null_ceiling_other_relation": 0.11666666666666667,
+      "class_other_operand": 0.016666666666666666,
+      "count_other_operand": 1,
+      "ci_other_operand": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_operand": 0.0,
+      "null_ceiling_other_operand": 0.0,
+      "class_degraded": 0.36666666666666664,
+      "count_degraded": 22,
+      "ci_degraded": [
+        0.2562073884620827,
+        0.4931723263320327
+      ],
+      "null_rate_degraded": 0.36916666666666664,
+      "null_ceiling_degraded": 0.6,
+      "p_other_relation": 1.0,
+      "significant_other_relation": false,
+      "p_other_operand": 0.047619047619027,
+      "significant_other_operand": false,
+      "null_runs": 20,
+      "null_cells": 1200
     },
-    "neuron/k=512": {
-      "operator_lesion_other_relation": 0.16666666666666666,
-      "operator_lesion_other_operand": 0.0,
-      "operand_lesion_other_operand": 0.016666666666666666,
-      "operand_lesion_other_relation": 0.016666666666666666,
-      "crossed": false,
-      "ppl_ratio_operator": 1.1252007194930917,
-      "ppl_ratio_operand": 1.039239138116224
+    "head/k=4/operator": {
+      "signature": "null",
+      "interpretable": true,
+      "outside_control_band": false,
+      "acc_top": 0.6,
+      "control_band": [
+        0.5666666666666667,
+        0.6166666666666667
+      ],
+      "ppl_ratio": 1.012190629546758,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.016666666666666666,
+      "count_other_relation": 1,
+      "ci_other_relation": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_relation": 0.020000000000000004,
+      "null_ceiling_other_relation": 0.11666666666666667,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.0,
+      "null_ceiling_other_operand": 0.0,
+      "class_degraded": 0.38333333333333336,
+      "count_degraded": 23,
+      "ci_degraded": [
+        0.2708808958488824,
+        0.5098263545959686
+      ],
+      "null_rate_degraded": 0.36916666666666664,
+      "null_ceiling_degraded": 0.6,
+      "p_other_relation": 0.7082387497843631,
+      "significant_other_relation": false,
+      "p_other_operand": 1.0,
+      "significant_other_operand": false,
+      "null_runs": 20,
+      "null_cells": 1200
     },
-    "neuron/k=2048": {
-      "operator_lesion_other_relation": 0.13333333333333333,
-      "operator_lesion_other_operand": 0.0,
-      "operand_lesion_other_operand": 0.06666666666666667,
-      "operand_lesion_other_relation": 0.016666666666666666,
-      "crossed": true,
-      "ppl_ratio_operator": 1.224366179751814,
-      "ppl_ratio_operand": 1.0780954742943893
+    "head/k=16/operand": {
+      "signature": "null",
+      "interpretable": true,
+      "outside_control_band": false,
+      "acc_top": 0.6666666666666666,
+      "control_band": [
+        0.5833333333333334,
+        0.6666666666666666
+      ],
+      "ppl_ratio": 1.0982608209731823,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.0,
+      "count_other_relation": 0,
+      "ci_other_relation": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_relation": 0.020000000000000004,
+      "null_ceiling_other_relation": 0.11666666666666667,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.0,
+      "null_ceiling_other_operand": 0.0,
+      "class_degraded": 0.3333333333333333,
+      "count_degraded": 20,
+      "ci_degraded": [
+        0.2272909421592783,
+        0.459433701333366
+      ],
+      "null_rate_degraded": 0.36916666666666664,
+      "null_ceiling_degraded": 0.6,
+      "p_other_relation": 1.0,
+      "significant_other_relation": false,
+      "p_other_operand": 1.0,
+      "significant_other_operand": false,
+      "null_runs": 20,
+      "null_cells": 1200
     },
-    "head/k=4": {
-      "operator_lesion_other_relation": 0.016666666666666666,
-      "operator_lesion_other_operand": 0.0,
-      "operand_lesion_other_operand": 0.0,
-      "operand_lesion_other_relation": 0.016666666666666666,
-      "crossed": false,
-      "ppl_ratio_operator": 1.012190629546758,
-      "ppl_ratio_operand": 1.0050018806751326
+    "head/k=16/operand_entity": {
+      "signature": "unstructured",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.3,
+      "control_band": [
+        0.5833333333333334,
+        0.6666666666666666
+      ],
+      "ppl_ratio": 0.9932515703304012,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.0,
+      "count_other_relation": 0,
+      "ci_other_relation": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_relation": 0.020000000000000004,
+      "null_ceiling_other_relation": 0.11666666666666667,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.0,
+      "null_ceiling_other_operand": 0.0,
+      "class_degraded": 0.7,
+      "count_degraded": 42,
+      "ci_degraded": [
+        0.5749105303360957,
+        0.801019897472731
+      ],
+      "null_rate_degraded": 0.36916666666666664,
+      "null_ceiling_degraded": 0.6,
+      "p_other_relation": 1.0,
+      "significant_other_relation": false,
+      "p_other_operand": 1.0,
+      "significant_other_operand": false,
+      "null_runs": 20,
+      "null_cells": 1200
     },
-    "head/k=16": {
-      "operator_lesion_other_relation": 0.0,
-      "operator_lesion_other_operand": 0.0,
-      "operand_lesion_other_operand": 0.0,
-      "operand_lesion_other_relation": 0.0,
-      "crossed": false,
-      "ppl_ratio_operator": 1.0278212642234013,
-      "ppl_ratio_operand": 1.0982608209731823
+    "head/k=16/operator": {
+      "signature": "unstructured",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.5,
+      "control_band": [
+        0.5833333333333334,
+        0.65
+      ],
+      "ppl_ratio": 1.0278212642234013,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.0,
+      "count_other_relation": 0,
+      "ci_other_relation": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_relation": 0.020000000000000004,
+      "null_ceiling_other_relation": 0.11666666666666667,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.0,
+      "null_ceiling_other_operand": 0.0,
+      "class_degraded": 0.5,
+      "count_degraded": 30,
+      "ci_degraded": [
+        0.37734812427246284,
+        0.6226518757275372
+      ],
+      "null_rate_degraded": 0.36916666666666664,
+      "null_ceiling_degraded": 0.6,
+      "p_other_relation": 1.0,
+      "significant_other_relation": false,
+      "p_other_operand": 1.0,
+      "significant_other_operand": false,
+      "null_runs": 20,
+      "null_cells": 1200
     },
-    "head/k=48": {
-      "operator_lesion_other_relation": 0.13333333333333333,
-      "operator_lesion_other_operand": 0.0,
-      "operand_lesion_other_operand": 0.0,
-      "operand_lesion_other_relation": 0.0,
-      "crossed": false,
-      "ppl_ratio_operator": 1.2570849571808516,
-      "ppl_ratio_operand": 485.2209820554622
+    "head/k=48/operand": {
+      "signature": "uninterpretable",
+      "interpretable": false,
+      "outside_control_band": true,
+      "acc_top": 0.0,
+      "control_band": [
+        0.2833333333333333,
+        0.5166666666666667
+      ],
+      "ppl_ratio": 485.2209820554622,
+      "arithmetic": 0.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.0,
+      "count_other_relation": 0,
+      "ci_other_relation": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_relation": 0.020000000000000004,
+      "null_ceiling_other_relation": 0.11666666666666667,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.0,
+      "null_ceiling_other_operand": 0.0,
+      "class_degraded": 1.0,
+      "count_degraded": 60,
+      "ci_degraded": [
+        0.9398260695220669,
+        0.9999999999999999
+      ],
+      "null_rate_degraded": 0.36916666666666664,
+      "null_ceiling_degraded": 0.6,
+      "p_other_relation": 1.0,
+      "significant_other_relation": false,
+      "p_other_operand": 1.0,
+      "significant_other_operand": false,
+      "null_runs": 20,
+      "null_cells": 1200,
+      "contains_critical_head": [
+        "L0H3"
+      ]
+    },
+    "head/k=48/operand_entity": {
+      "signature": "other_operand",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.16666666666666666,
+      "control_band": [
+        0.5166666666666667,
+        0.6666666666666666
+      ],
+      "ppl_ratio": 1.2638229016168716,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.0,
+      "count_other_relation": 0,
+      "ci_other_relation": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_relation": 0.020000000000000004,
+      "null_ceiling_other_relation": 0.11666666666666667,
+      "class_other_operand": 0.05,
+      "count_other_operand": 3,
+      "ci_other_operand": [
+        0.01714919117914121,
+        0.13700734625099836
+      ],
+      "null_rate_other_operand": 0.0,
+      "null_ceiling_other_operand": 0.0,
+      "class_degraded": 0.7833333333333333,
+      "count_degraded": 47,
+      "ci_degraded": [
+        0.6637973165265748,
+        0.8687707895359299
+      ],
+      "null_rate_degraded": 0.36916666666666664,
+      "null_ceiling_degraded": 0.6,
+      "p_other_relation": 1.0,
+      "significant_other_relation": false,
+      "p_other_operand": 0.00010288553950659924,
+      "significant_other_operand": true,
+      "null_runs": 20,
+      "null_cells": 1200
+    },
+    "head/k=48/operator": {
+      "signature": "uninterpretable",
+      "interpretable": false,
+      "outside_control_band": true,
+      "acc_top": 0.06666666666666667,
+      "control_band": [
+        0.5166666666666667,
+        0.7666666666666667
+      ],
+      "ppl_ratio": 1.2570849571808516,
+      "arithmetic": 0.24242424242424243,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.13333333333333333,
+      "count_other_relation": 8,
+      "ci_other_relation": [
+        0.06914026978309641,
+        0.24165394590072103
+      ],
+      "null_rate_other_relation": 0.020000000000000004,
+      "null_ceiling_other_relation": 0.11666666666666667,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.0,
+      "null_ceiling_other_operand": 0.0,
+      "class_degraded": 0.8,
+      "count_degraded": 48,
+      "ci_degraded": [
+        0.6821795390818299,
+        0.8817161026314104
+      ],
+      "null_rate_degraded": 0.36916666666666664,
+      "null_ceiling_degraded": 0.6,
+      "p_other_relation": 7.065402522529335e-05,
+      "significant_other_relation": true,
+      "p_other_operand": 1.0,
+      "significant_other_operand": false,
+      "null_runs": 20,
+      "null_cells": 1200
+    },
+    "neuron/k=32/operand": {
+      "signature": "null",
+      "interpretable": true,
+      "outside_control_band": false,
+      "acc_top": 0.6333333333333333,
+      "control_band": [
+        0.6,
+        0.6166666666666667
+      ],
+      "ppl_ratio": 1.0078711981785513,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.0,
+      "count_other_relation": 0,
+      "ci_other_relation": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.016666666666666666,
+      "count_other_operand": 1,
+      "ci_other_operand": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.35,
+      "count_degraded": 21,
+      "ci_degraded": [
+        0.24167601723815488,
+        0.4763761619052249
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 0.9999999999993209,
+      "significant_other_relation": false,
+      "p_other_operand": 0.21889241621545213,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=32/operand_entity": {
+      "signature": "null",
+      "interpretable": true,
+      "outside_control_band": false,
+      "acc_top": 0.6166666666666667,
+      "control_band": [
+        0.6,
+        0.6333333333333333
+      ],
+      "ppl_ratio": 1.0060768292459712,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.0,
+      "count_other_relation": 0,
+      "ci_other_relation": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.38333333333333336,
+      "count_degraded": 23,
+      "ci_degraded": [
+        0.2708808958488824,
+        0.5098263545959686
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 0.9999999999993209,
+      "significant_other_relation": false,
+      "p_other_operand": 0.9999999999995067,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=32/operator": {
+      "signature": "other_relation",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.4,
+      "control_band": [
+        0.6,
+        0.6166666666666667
+      ],
+      "ppl_ratio": 1.0586776702223124,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.1,
+      "count_other_relation": 6,
+      "ci_other_relation": [
+        0.04664219945723587,
+        0.20149694492511044
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.5,
+      "count_degraded": 30,
+      "ci_degraded": [
+        0.37734812427246284,
+        0.6226518757275372
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 8.861539960655307e-05,
+      "significant_other_relation": true,
+      "p_other_operand": 0.9999999999995067,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=128/operand": {
+      "signature": "null",
+      "interpretable": true,
+      "outside_control_band": false,
+      "acc_top": 0.65,
+      "control_band": [
+        0.6166666666666667,
+        0.65
+      ],
+      "ppl_ratio": 1.0227058036192118,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.016666666666666666,
+      "count_other_relation": 1,
+      "ci_other_relation": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.05,
+      "count_other_operand": 3,
+      "ci_other_operand": [
+        0.01714919117914121,
+        0.13700734625099836
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.2833333333333333,
+      "count_degraded": 17,
+      "ci_degraded": [
+        0.1850667860430859,
+        0.40767525049735165
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 0.48369300776434593,
+      "significant_other_relation": false,
+      "p_other_operand": 0.002654758640242061,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=128/operand_entity": {
+      "signature": "null",
+      "interpretable": true,
+      "outside_control_band": false,
+      "acc_top": 0.6333333333333333,
+      "control_band": [
+        0.6333333333333333,
+        0.6333333333333333
+      ],
+      "ppl_ratio": 1.023435163739953,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.0,
+      "count_other_relation": 0,
+      "ci_other_relation": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.016666666666666666,
+      "count_other_operand": 1,
+      "ci_other_operand": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.35,
+      "count_degraded": 21,
+      "ci_degraded": [
+        0.24167601723815488,
+        0.4763761619052249
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 0.9999999999993209,
+      "significant_other_relation": false,
+      "p_other_operand": 0.21889241621545213,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=128/operator": {
+      "signature": "other_relation",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.36666666666666664,
+      "control_band": [
+        0.6,
+        0.6333333333333333
+      ],
+      "ppl_ratio": 1.0963054764314375,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.11666666666666667,
+      "count_other_relation": 7,
+      "ci_other_relation": [
+        0.05767647403450049,
+        0.2217902059985814
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.5166666666666667,
+      "count_degraded": 31,
+      "ci_degraded": [
+        0.39307594850843575,
+        0.6382515871422999
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 9.246257317178972e-06,
+      "significant_other_relation": true,
+      "p_other_operand": 0.9999999999995067,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=512/operand": {
+      "signature": "null",
+      "interpretable": true,
+      "outside_control_band": false,
+      "acc_top": 0.6666666666666666,
+      "control_band": [
+        0.5833333333333334,
+        0.65
+      ],
+      "ppl_ratio": 1.039239138116224,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.016666666666666666,
+      "count_other_relation": 1,
+      "ci_other_relation": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.016666666666666666,
+      "count_other_operand": 1,
+      "ci_other_operand": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.3,
+      "count_degraded": 18,
+      "ci_degraded": [
+        0.19898010252726892,
+        0.42508946966390415
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 0.48369300776434593,
+      "significant_other_relation": false,
+      "p_other_operand": 0.21889241621545213,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=512/operand_entity": {
+      "signature": "unstructured",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.4666666666666667,
+      "control_band": [
+        0.5666666666666667,
+        0.6
+      ],
+      "ppl_ratio": 1.0723475056114182,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.05,
+      "count_other_relation": 3,
+      "ci_other_relation": [
+        0.01714919117914121,
+        0.13700734625099836
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.05,
+      "count_other_operand": 3,
+      "ci_other_operand": [
+        0.01714919117914121,
+        0.13700734625099836
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.43333333333333335,
+      "count_degraded": 26,
+      "ci_degraded": [
+        0.31572200394400635,
+        0.5589678534530513
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 0.031377311218085666,
+      "significant_other_relation": false,
+      "p_other_operand": 0.002654758640242061,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=512/operator": {
+      "signature": "other_relation",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.18333333333333332,
+      "control_band": [
+        0.45,
+        0.6
+      ],
+      "ppl_ratio": 1.1252007194930917,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.16666666666666666,
+      "count_other_relation": 10,
+      "ci_other_relation": [
+        0.09313077201321032,
+        0.28031851497207827
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.65,
+      "count_degraded": 39,
+      "ci_degraded": [
+        0.5236238380947751,
+        0.7583239827618451
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 5.504073401817669e-09,
+      "significant_other_relation": true,
+      "p_other_operand": 0.9999999999995067,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=2048/operand": {
+      "signature": "other_operand",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.5333333333333333,
+      "control_band": [
+        0.6166666666666667,
+        0.65
+      ],
+      "ppl_ratio": 1.0780954742943893,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.016666666666666666,
+      "count_other_relation": 1,
+      "ci_other_relation": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.06666666666666667,
+      "count_other_operand": 4,
+      "ci_other_operand": [
+        0.02622827414319792,
+        0.15925579893767722
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.38333333333333336,
+      "count_degraded": 23,
+      "ci_degraded": [
+        0.2708808958488824,
+        0.5098263545959686
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 0.48369300776434593,
+      "significant_other_relation": false,
+      "p_other_operand": 0.00020316028076805014,
+      "significant_other_operand": true,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=2048/operand_entity": {
+      "signature": "unstructured",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.11666666666666667,
+      "control_band": [
+        0.5833333333333334,
+        0.6833333333333333
+      ],
+      "ppl_ratio": 1.4757497154137904,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.05,
+      "count_other_relation": 3,
+      "ci_other_relation": [
+        0.01714919117914121,
+        0.13700734625099836
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.016666666666666666,
+      "count_other_operand": 1,
+      "ci_other_operand": [
+        0.002948083860873682,
+        0.08855338226779477
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.8166666666666667,
+      "count_degraded": 49,
+      "ci_degraded": [
+        0.7008000677353371,
+        0.8944231096286387
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 0.031377311218085666,
+      "significant_other_relation": false,
+      "p_other_operand": 0.21889241621545213,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
+    },
+    "neuron/k=2048/operator": {
+      "signature": "other_relation",
+      "interpretable": true,
+      "outside_control_band": true,
+      "acc_top": 0.16666666666666666,
+      "control_band": [
+        0.6166666666666667,
+        0.6333333333333333
+      ],
+      "ppl_ratio": 1.224366179751814,
+      "arithmetic": 1.0,
+      "n_cells": 60,
+      "alpha_bonferroni": 0.0011904761904761906,
+      "class_other_relation": 0.13333333333333333,
+      "count_other_relation": 8,
+      "ci_other_relation": [
+        0.06914026978309641,
+        0.24165394590072103
+      ],
+      "null_rate_other_relation": 0.01064814814814815,
+      "null_ceiling_other_relation": 0.016666666666666666,
+      "class_other_operand": 0.0,
+      "count_other_operand": 0,
+      "ci_other_operand": [
+        0.0,
+        0.06017393047793289
+      ],
+      "null_rate_other_operand": 0.003703703703703704,
+      "null_ceiling_other_operand": 0.06666666666666667,
+      "class_degraded": 0.7,
+      "count_degraded": 42,
+      "ci_degraded": [
+        0.5749105303360957,
+        0.801019897472731
+      ],
+      "null_rate_degraded": 0.37268518518518523,
+      "null_ceiling_degraded": 0.5166666666666667,
+      "p_other_relation": 8.589115566641143e-07,
+      "significant_other_relation": true,
+      "p_other_operand": 0.9999999999995067,
+      "significant_other_operand": false,
+      "null_runs": 36,
+      "null_cells": 2160
     }
   }
 }

@@ -249,10 +249,74 @@ def jaccard(df, a, b, k):
 
 # --- main ---------------------------------------------------------------------
 
+# operator_entity was exported as a column but missing from this list, so it had
+# no region stats and no Jaccards: localized, never described. Note that
+# `operand := -operator` and `operand_entity := -operator_entity` BY CONSTRUCTION
+# (see the rows built above), so the within-position Jaccards of those two pairs
+# are 0.0 as a TAUTOLOGY, not a finding -- no "the networks are segregated" claim
+# can rest on them. The informative Jaccards are the cross-position ones, e.g.
+# operand|operand_entity.
+NETS = ["operator", "operand", "operator_entity", "operand_entity",
+        "induction", "text_symbolic", "symbolic_text"]
+
+
+def geometry_summary(df, base_ind, n_layers, k_neurons, seed=0):
+    """Region geometry: areas or networks? Pure pandas over the localizer frame,
+    so `--rescore` recomputes it without a model."""
+    summary = {"induction_baseline": base_ind, "regions": {}, "segregation": {}}
+    for kind in ("head", "neuron"):
+        sub = df[df.kind == kind].reset_index(drop=True)
+        k = min(k_neurons, len(sub) // 4) if kind == "neuron" else min(16, len(sub) // 4)
+        summary["regions"][kind] = {
+            net: region_stats(sub, net, k, n_layers, seed=seed) for net in NETS}
+        summary["segregation"][kind] = {
+            f"{a}|{b}": jaccard(sub, a, b, k)
+            for ia, a in enumerate(NETS) for b in NETS[ia + 1:]}
+
+    print(f"\n{'network':<16} {'kind':<7} {'entropy':>8} {'null':>6} "
+          f"{'top3':>6} {'CoM depth':>10} {'workspace':>10}")
+    for kind in ("head", "neuron"):
+        for net in NETS:
+            r = summary["regions"][kind][net]
+            print(f"{net:<16} {kind:<7} {r['layer_entropy']:>8.2f} "
+                  f"{r['random_layer_entropy']:>6.2f} {r['top3_layer_share']:>6.0%} "
+                  f"{r['center_of_mass_depth']:>9.0f}% "
+                  f"{r['bands']['workspace']:>10.0%}")
+    print("\nsegregation (Jaccard of top-k):")
+    for kind in ("head", "neuron"):
+        pairs = summary["segregation"][kind]
+        print(f"  {kind}: " + "  ".join(f"{k_}={v:.2f}" for k_, v in pairs.items()
+                                        if v > 0.02) or f"  {kind}: all < 0.02")
+    return summary
+
+
+def rescore(tag, domain, k_neurons, seed=0):
+    """Recompute the geometry summary from the existing localizer frame. No model.
+
+    The parquet is gitignored, so unlike the battery's rescore this one only runs
+    where the artifact was produced -- but it is what lets a new network be
+    described without paying for the forward passes again.
+    """
+    out = ROOT / "results" / "lesion" / f"{tag}_{domain}_localizer.parquet"
+    js = out.with_suffix("").with_name(out.stem + "_summary.json")
+    if not (out.exists() and js.exists()):
+        raise SystemExit(f"nothing to rescore: need {out} and {js}")
+    df = pd.read_parquet(out)
+    old = json.loads(js.read_text())
+    n_layers = int(df.layer.max()) + 1
+    summary = geometry_summary(df, old["induction_baseline"], n_layers, k_neurons,
+                               seed=seed)
+    summary["_meta"] = old["_meta"]
+    js.write_text(json.dumps(summary, indent=2))
+    print(f"\nrescored {js}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("model")
     ap.add_argument("--domain", default="relations")
+    ap.add_argument("--rescore", action="store_true",
+                    help="recompute the geometry summary from the existing frame")
     ap.add_argument("--k", type=int, default=512, help="network size for the stats")
     ap.add_argument("--null-seeds", type=int, default=5)
     ap.add_argument("--n-induction", type=int, default=24)
@@ -261,6 +325,11 @@ def main() -> None:
     args = ap.parse_args()
 
     tag = resolve_tag(args.model)
+
+    if args.rescore:                       # must precede load_model: the point is no GPU
+        rescore(tag, args.domain, args.k, seed=args.seed)
+        return
+
     dom = op_core.load_domain(args.domain)
     model = load_model(args.model)
     dims = unit_dims(model)
@@ -269,12 +338,19 @@ def main() -> None:
           f"{dims.n_neuron_units} neurons")
 
     # ---- factorial localizer (operator vs operand) ----
-    # TWO read positions. The query token is where the operator is *constructed*;
-    # the entity token is where the operand *lives*. A lesion at the query
-    # position cannot remove the entity, because attention re-imports it from the
-    # entity token on every forward pass -- the operand is redundantly coded, and
-    # that redundancy is exactly why the query-position operand network turned out
-    # to be unlesionable. So we localize the operand where it is not redundant.
+    # TWO read positions, to test a HYPOTHESIS (b65dbc7) that has since FAILED.
+    # The hypothesis: the query token is where the operator is constructed, while
+    # the operand only visits it -- attention re-imports the entity from the
+    # entity token on every forward pass, so the operand is redundantly coded at
+    # the query, which would explain why the query-position operand network is
+    # unlesionable. It predicted the operand would be lesionable at the entity
+    # token, where it is not redundant.
+    # The prediction fails at both scales (02a19fb). Lesioning the entity-position
+    # operand network degrades (1.7B: ppl x1.48, degraded 81.7%, other_operand
+    # 1.7%) or produces the OPERATOR signature (8B: other_relation 10.0%). The
+    # second read position is still worth localizing -- it is how we know the
+    # failure is not a localizer artifact -- but "the entity token is where the
+    # operand lives" is not something this repo has shown.
     print("factorial localizer (12x5 grid, query position)...")
     grid = grid_activations(model, dom, dims, pos=-1)
     fac = factorial_selectivity(grid, dom.operand_keys, dom.op_keys)
@@ -350,35 +426,7 @@ def main() -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(out)
 
-    # ---- region geometry: areas or networks? ----
-    NETS = ["operator", "operand", "operand_entity", "induction", "text_symbolic",
-            "symbolic_text"]
-    summary = {"induction_baseline": base_ind, "regions": {}, "segregation": {}}
-    for kind in ("head", "neuron"):
-        sub = df[df.kind == kind].reset_index(drop=True)
-        k = min(args.k, len(sub) // 4) if kind == "neuron" else min(16, len(sub) // 4)
-        summary["regions"][kind] = {
-            net: region_stats(sub, net, k, dims.n_layers, seed=args.seed)
-            for net in NETS}
-        summary["segregation"][kind] = {
-            f"{a}|{b}": jaccard(sub, a, b, k)
-            for ia, a in enumerate(NETS) for b in NETS[ia + 1:]}
-
-    print(f"\n{'network':<16} {'kind':<7} {'entropy':>8} {'null':>6} "
-          f"{'top3':>6} {'CoM depth':>10} {'workspace':>10}")
-    for kind in ("head", "neuron"):
-        for net in NETS:
-            r = summary["regions"][kind][net]
-            print(f"{net:<16} {kind:<7} {r['layer_entropy']:>8.2f} "
-                  f"{r['random_layer_entropy']:>6.2f} {r['top3_layer_share']:>6.0%} "
-                  f"{r['center_of_mass_depth']:>9.0f}% "
-                  f"{r['bands']['workspace']:>10.0%}")
-    print("\nsegregation (Jaccard of top-k):")
-    for kind in ("head", "neuron"):
-        pairs = summary["segregation"][kind]
-        print(f"  {kind}: " + "  ".join(f"{k_}={v:.2f}" for k_, v in pairs.items()
-                                        if v > 0.02) or f"  {kind}: all < 0.02")
-
+    summary = geometry_summary(df, base_ind, dims.n_layers, args.k, seed=args.seed)
     summary["_meta"] = {
         "tag": tag, "domain": args.domain, "k_neurons": args.k,
         "dims": {"n_layers": dims.n_layers, "n_heads": dims.n_heads,
