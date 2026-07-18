@@ -1037,10 +1037,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#38-what-is-still-open" class="md-nav__link">
+  <a href="#38-the-22-closed-and-what-stays-open" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.8 What is still open
+        3.8 The 2×2, closed — and what stays open
       
     </span>
   </a>
@@ -2410,27 +2410,61 @@ again by a method that knows nothing about the paper. The text-vs-symbolic contr
 distributed</strong> (0.96–0.97, indistinguishable from the null) and sits mid-stack. <strong>Whether a function
 has an "area" or a "network" depends on the function</strong> — and that is a claim about this model, from
 this model's own data.</p>
-<h3 id="38-what-is-still-open">3.8 What is still open</h3>
-<ul>
-<li><strong><code>operator_entity</code> is localized and never lesioned.</strong> The column exists, the region stats now
-  exist, the lesion runs do not. It is the missing cell of the 2×2 (~3h34m of sweep at measured
-  rates). It would not change §3.5 — the depth-matched controls already exclude generic
-  entity-position fragility — but the 2×2 is not closed until it runs.</li>
-<li><strong>Why does 1.7B need a head that 8B does not?</strong> The screen now covers both (§3.2) and the answer is
-  a new question: the sink that dominates the 1.7B map has no 8B counterpart at all. Whether the
-  function L1H5 performs is distributed at 8B, or simply unnecessary there, this screen cannot say —
-  it only ablates heads one at a time, and §3.6 shows single-head damage is not additive.</li>
-<li><strong>The per-cell generations are not persisted.</strong> <code>run()</code> classifies each of the 60 cells and keeps
-  only the class <em>distribution</em>; the raw text is discarded. So no classification above can be
-  re-audited without a re-run — which is exactly the objection §2.16 was written to answer, reopened
-  at a new granularity. Fix before the next run.</li>
-<li><strong>The <code>--networks</code> / <code>--stage</code> writes used to clobber.</strong> They wrote the current run's rows over the
-  whole battery, which is why the P1 anchor rows (§3.3) are absent from the 84-run artifact and had to
-  be read back from <code>out/lesion/1.7b/anchor2.log</code>. Now merged on the run's identity; §3.3's numbers
-  return to the artifact on the next anchor pass.</li>
-</ul>
+<h3 id="38-the-22-closed-and-what-stays-open">3.8 The 2×2, closed — and what stays open</h3>
+<p><strong>The 2×2 is now closed.</strong> <code>operator_entity</code> was localized and never lesioned; it has run at both
+scales, and it <strong>sharpens §3.5 rather than complicating it.</strong> Ranking neurons by operator
+selectivity <em>at the entity token</em> and lesioning the top-2048 produces the <strong>operator</strong> signature —
+<code>other_relation</code> — at <strong>1.7B (12/60, p=2.9e-11, the smallest p in the study)</strong> and <strong>8B (4/60,
+p=5.2e-06)</strong>. So the operator has removable tissue at <em>both</em> read positions, at both scales. The
+full grid, neurons at k=2048:</p>
+<table>
+<thead>
+<tr>
+<th>ranking \ position</th>
+<th>query</th>
+<th>entity token</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>operator</strong></td>
+<td><code>other_relation</code> (both models)</td>
+<td><code>other_relation</code> (both models)</td>
+</tr>
+<tr>
+<td><strong>operand</strong></td>
+<td><code>other_operand</code> 1.7B edge / null 8B</td>
+<td><code>unstructured</code> 1.7B / <code>other_relation</code> 8B</td>
+</tr>
+</tbody>
+</table>
+<p>The operator column is clean and consistent; the operand column produces its own signature in
+<strong>one cell of eight</strong>, at the control envelope's edge, non-replicating — and at the entity token,
+where it does produce a clean deficit (8B), it is the <em>operator's</em> signature in the wrong network.
+There is no read position or ranking that yields the operand as removable tissue. The paradigm is
+a paradigm of operators, now across the whole 2×2.</p>
+<p><strong>Why does 1.7B need a head that 8B does not — answered.</strong> The single-head screen (§3.2) could not
+say whether 8B distributes L1H5's function across a jointly-critical <em>set</em> or simply lacks it. A
+greedy joint-ablation search settles it: at 1.7B the damage <strong>compounds catastrophically</strong> — L1H5
+alone ×19.7, then ×269, ×23,674, up to <strong>×2.8 million at 8 heads</strong> — an interdependent critical
+core. At 8B the same greedy search over <strong>12</strong> heads reaches only <strong>×4.3</strong>. Six orders of magnitude
+apart: the large model has no catastrophic tissue, single <em>or</em> joint. It concentrates load-bearing
+computation in no small set of heads.</p>
+<p><strong>And the critical heads are not attention sinks.</strong> The obvious mechanism — L1H5 as a BOS sink —
+is refuted: attention sinks exist (L19H4 sends 97.4% of its mass to position 0; 8B's L13H12 sends
+100%), but L1H5 sends only <strong>1.3%</strong> (rank 430 of 448) and L0H3 <strong>0.4%</strong> (rank 446). Whatever makes
+these two early heads load-bearing, it is not the sink pattern — a new open thread, honestly
+narrower than the one it replaces.</p>
+<p><strong>Per-cell generations are now persisted.</strong> <code>run()</code> kept only the class distribution; it now writes
+every cell's raw text to <code>{tag}_{domain}_lesion_cells.parquet</code> (gitignored, merged on run
+identity), so any classification here can be re-audited without a re-run — §2.16's discipline, held
+at this granularity. <strong>The clobbering write is fixed</strong> (§3.3's anchor rows are back in the 84-run
+artifact, merged on identity).</p>
+<p>Still open: what L1H5 <em>does</em>, if not a sink; and the operand's mechanism, which two dead hypotheses
+(query- and entity-position) have not caught.</p>
 <p>Artifacts: <code>{1.7b,8b}_relations_lesion_summary.json</code>, <code>*_localizer_summary.json</code>,
-<code>1.7b_criticality_summary.json</code>. Checked by <code>python scripts/verify_numbers.py</code> (LESION block).</p>
+<code>{1.7b,8b}_criticality_summary.json</code>, <code>{1.7b,8b}_critical_probe.json</code>. Checked by
+<code>python scripts/verify_numbers.py</code> (LESION block).</p>
 <hr />
 <h2 id="the-open-interpretive-question-deliberately-unresolved">The open interpretive question (deliberately unresolved)</h2>
 <p>The evidence splits cleanly into a negative half and a positive half:</p>
