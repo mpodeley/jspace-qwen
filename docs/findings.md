@@ -798,27 +798,52 @@ distributed** (0.96–0.97, indistinguishable from the null) and sits mid-stack.
 has an "area" or a "network" depends on the function** — and that is a claim about this model, from
 this model's own data.
 
-### 3.8 What is still open
+### 3.8 The 2×2, closed — and what stays open
 
-- **`operator_entity` is localized and never lesioned.** The column exists, the region stats now
-  exist, the lesion runs do not. It is the missing cell of the 2×2 (~3h34m of sweep at measured
-  rates). It would not change §3.5 — the depth-matched controls already exclude generic
-  entity-position fragility — but the 2×2 is not closed until it runs.
-- **Why does 1.7B need a head that 8B does not?** The screen now covers both (§3.2) and the answer is
-  a new question: the sink that dominates the 1.7B map has no 8B counterpart at all. Whether the
-  function L1H5 performs is distributed at 8B, or simply unnecessary there, this screen cannot say —
-  it only ablates heads one at a time, and §3.6 shows single-head damage is not additive.
-- **The per-cell generations are not persisted.** `run()` classifies each of the 60 cells and keeps
-  only the class *distribution*; the raw text is discarded. So no classification above can be
-  re-audited without a re-run — which is exactly the objection §2.16 was written to answer, reopened
-  at a new granularity. Fix before the next run.
-- **The `--networks` / `--stage` writes used to clobber.** They wrote the current run's rows over the
-  whole battery, which is why the P1 anchor rows (§3.3) are absent from the 84-run artifact and had to
-  be read back from `out/lesion/1.7b/anchor2.log`. Now merged on the run's identity; §3.3's numbers
-  return to the artifact on the next anchor pass.
+**The 2×2 is now closed.** `operator_entity` was localized and never lesioned; it has run at both
+scales, and it **sharpens §3.5 rather than complicating it.** Ranking neurons by operator
+selectivity *at the entity token* and lesioning the top-2048 produces the **operator** signature —
+`other_relation` — at **1.7B (12/60, p=2.9e-11, the smallest p in the study)** and **8B (4/60,
+p=5.2e-06)**. So the operator has removable tissue at *both* read positions, at both scales. The
+full grid, neurons at k=2048:
+
+| ranking \ position | query | entity token |
+|---|---|---|
+| **operator** | `other_relation` (both models) | `other_relation` (both models) |
+| **operand** | `other_operand` 1.7B edge / null 8B | `unstructured` 1.7B / `other_relation` 8B |
+
+The operator column is clean and consistent; the operand column produces its own signature in
+**one cell of eight**, at the control envelope's edge, non-replicating — and at the entity token,
+where it does produce a clean deficit (8B), it is the *operator's* signature in the wrong network.
+There is no read position or ranking that yields the operand as removable tissue. The paradigm is
+a paradigm of operators, now across the whole 2×2.
+
+**Why does 1.7B need a head that 8B does not — answered.** The single-head screen (§3.2) could not
+say whether 8B distributes L1H5's function across a jointly-critical *set* or simply lacks it. A
+greedy joint-ablation search settles it: at 1.7B the damage **compounds catastrophically** — L1H5
+alone ×19.7, then ×269, ×23,674, up to **×2.8 million at 8 heads** — an interdependent critical
+core. At 8B the same greedy search over **12** heads reaches only **×4.3**. Six orders of magnitude
+apart: the large model has no catastrophic tissue, single *or* joint. It concentrates load-bearing
+computation in no small set of heads.
+
+**And the critical heads are not attention sinks.** The obvious mechanism — L1H5 as a BOS sink —
+is refuted: attention sinks exist (L19H4 sends 97.4% of its mass to position 0; 8B's L13H12 sends
+100%), but L1H5 sends only **1.3%** (rank 430 of 448) and L0H3 **0.4%** (rank 446). Whatever makes
+these two early heads load-bearing, it is not the sink pattern — a new open thread, honestly
+narrower than the one it replaces.
+
+**Per-cell generations are now persisted.** `run()` kept only the class distribution; it now writes
+every cell's raw text to `{tag}_{domain}_lesion_cells.parquet` (gitignored, merged on run
+identity), so any classification here can be re-audited without a re-run — §2.16's discipline, held
+at this granularity. **The clobbering write is fixed** (§3.3's anchor rows are back in the 84-run
+artifact, merged on identity).
+
+Still open: what L1H5 *does*, if not a sink; and the operand's mechanism, which two dead hypotheses
+(query- and entity-position) have not caught.
 
 Artifacts: `{1.7b,8b}_relations_lesion_summary.json`, `*_localizer_summary.json`,
-`1.7b_criticality_summary.json`. Checked by `python scripts/verify_numbers.py` (LESION block).
+`{1.7b,8b}_criticality_summary.json`, `{1.7b,8b}_critical_probe.json`. Checked by
+`python scripts/verify_numbers.py` (LESION block).
 
 ---
 

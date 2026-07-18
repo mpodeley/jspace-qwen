@@ -443,6 +443,10 @@ def main() -> None:
     print(f"identity check: empty lesion is a no-op (ppl {chk:.4f})")
 
     rows = []
+    cell_rows = []                       # the raw per-cell generations, persisted so
+                                         # any classification can be re-audited without
+                                         # a re-run (§3.8): the same objection §2.16
+                                         # answered, kept answered at this granularity
 
     def run(label, network, kind, k, units, cls_mode):
         heads = units if kind == "head" else ()
@@ -464,6 +468,9 @@ def main() -> None:
                "induction_ratio": (ind["induction_score"]
                                    / (base_ind["induction_score"] + 1e-9))}
         rows.append(row)
+        for c in rel.to_dict("records"):
+            cell_rows.append({"network": network, "control": cls_mode,
+                              "kind": kind, "k": k, **c})
         print(f"  {label:<34} acc {row['relations_acc']:>5.1%} "
               f"o_op {dist['other_operand']:>5.1%} o_rel {dist['other_relation']:>5.1%} "
               f"deg {dist['degraded']:>5.1%} | ppl x{row['ppl_ratio']:.2f} "
@@ -559,6 +566,23 @@ def main() -> None:
             print(f"merging {int(keep.sum())} preserved runs from {out.name}")
             res = pd.concat([old[keep], res], ignore_index=True)
     res.to_parquet(out)
+
+    # the raw generations, merged on run identity like the summary parquet.
+    # Gitignored like every other parquet -- re-auditable on the machine that ran
+    # it, which is what §3.8 asks; the class distributions in the summary stay the
+    # committed record.
+    if cell_rows:
+        cells_out = (ROOT / "results" / "lesion"
+                     / f"{tag}_{args.domain}_lesion_cells.parquet")
+        cres = pd.DataFrame(cell_rows)
+        ckeys = ["network", "control", "kind", "k"]
+        if cells_out.exists():
+            cold = pd.read_parquet(cells_out)
+            ckeep = ~pd.MultiIndex.from_frame(cold[ckeys]).isin(
+                pd.MultiIndex.from_frame(cres[ckeys].drop_duplicates()))
+            if ckeep.any():
+                cres = pd.concat([cold[ckeep], cres], ignore_index=True)
+        cres.to_parquet(cells_out)
 
     summary = {
         "baseline": {"ppl": base_ppl, "relations_acc": float(base_rel.correct.mean()),

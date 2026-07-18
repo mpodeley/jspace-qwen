@@ -1,0 +1,129 @@
+{
+  "tag": "1.7b",
+  "critical_heads": [
+    {
+      "layer": 1,
+      "head": 5,
+      "ppl_ratio": 19.726628000604805,
+      "sink_rank": 430
+    },
+    {
+      "layer": 0,
+      "head": 3,
+      "ppl_ratio": 4.398555123012046,
+      "sink_rank": 446
+    }
+  ],
+  "sink_top8": [
+    {
+      "layer": 19,
+      "head": 4,
+      "sink_fraction": 0.9735169410705566,
+      "is_critical": false
+    },
+    {
+      "layer": 27,
+      "head": 8,
+      "sink_fraction": 0.960275411605835,
+      "is_critical": false
+    },
+    {
+      "layer": 23,
+      "head": 11,
+      "sink_fraction": 0.945974588394165,
+      "is_critical": false
+    },
+    {
+      "layer": 27,
+      "head": 0,
+      "sink_fraction": 0.9443855881690979,
+      "is_critical": false
+    },
+    {
+      "layer": 16,
+      "head": 15,
+      "sink_fraction": 0.9306144118309021,
+      "is_critical": false
+    },
+    {
+      "layer": 27,
+      "head": 6,
+      "sink_fraction": 0.9269067645072937,
+      "is_critical": false
+    },
+    {
+      "layer": 20,
+      "head": 3,
+      "sink_fraction": 0.9258474707603455,
+      "is_critical": false
+    },
+    {
+      "layer": 26,
+      "head": 12,
+      "sink_fraction": 0.9184321761131287,
+      "is_critical": false
+    }
+  ],
+  "critical_sink_fraction": {
+    "L1H5": 0.01292703952640295,
+    "L0H3": 0.004382117185741663
+  },
+  "max_sink_fraction": 0.9735169410705566,
+  "greedy_joint": {
+    "base_ppl": 42.183319091796875,
+    "trace": [
+      {
+        "step": 1,
+        "added": "L1H5",
+        "ppl": 832.1346435546875,
+        "ppl_ratio": 19.726628000604805
+      },
+      {
+        "step": 2,
+        "added": "L0H3",
+        "ppl": 11350.6728515625,
+        "ppl_ratio": 269.07965271442555
+      },
+      {
+        "step": 3,
+        "added": "L0H12",
+        "ppl": 998637.375,
+        "ppl_ratio": 23673.75058436781
+      },
+      {
+        "step": 4,
+        "added": "L0H7",
+        "ppl": 2995499.25,
+        "ppl_ratio": 71011.46411645251
+      },
+      {
+        "step": 5,
+        "added": "L2H3",
+        "ppl": 13546470.0,
+        "ppl_ratio": 321133.3363911209
+      },
+      {
+        "step": 6,
+        "added": "L2H10",
+        "ppl": 29453864.0,
+        "ppl_ratio": 698234.8623612149
+      },
+      {
+        "step": 7,
+        "added": "L0H13",
+        "ppl": 66947336.0,
+        "ppl_ratio": 1587057.098430617
+      },
+      {
+        "step": 8,
+        "added": "L1H7",
+        "ppl": 119209568.0,
+        "ppl_ratio": 2825988.3424673886
+      }
+    ],
+    "max_ppl_ratio": 2825988.3424673886
+  },
+  "_meta": {
+    "note": "sink fraction = mean attention mass on key position 0 per head. greedy_joint grows a head set by marginal ppl damage; if it stays cheap, no small set is catastrophic and the small model's single point of failure has no large-model analogue."
+  }
+}

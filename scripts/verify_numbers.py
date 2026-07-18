@@ -281,6 +281,23 @@ def rows():
                            f"control cells, p={v[f'p_{sig}']:.1e} "
                            f"(alpha={v['alpha_bonferroni']:.1e})")
             out.append((f"{tag} LESION {key}", sig, detail))
+
+    # --- lesion study: the critical-head probe (P3) ---------------------------
+    for tag in ("1.7b", "8b"):
+        p = LES / f"{tag}_critical_probe.json"
+        if not p.exists():
+            continue
+        s = json.loads(p.read_text())
+        gj = s["greedy_joint"]
+        n = len(gj["trace"])
+        out.append((f"{tag} PROBE greedy joint ({n} heads)",
+                    f"max ppl x{gj['max_ppl_ratio']:.1f}",
+                    f"step1 {gj['trace'][0]['added']} x{gj['trace'][0]['ppl_ratio']:.1f}"))
+        sink = ", ".join(f"{h}={v:.1%}" for h, v in
+                         s.get("critical_sink_fraction", {}).items()) or "no critical heads"
+        out.append((f"{tag} PROBE critical-head sink fraction",
+                    sink,
+                    f"max sink in model {s['max_sink_fraction']:.1%}"))
     return out
 
 
