@@ -1,0 +1,179 @@
+{
+  "baseline_acc": 0.6333333333333333,
+  "window": 9,
+  "sweep": [
+    {
+      "start": 0,
+      "layers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "mid_depth": 16.666666666666668,
+      "acc": 0.5166666666666667,
+      "target": 0.5166666666666667,
+      "other_operand": 0.0,
+      "other_relation": 0.03333333333333333,
+      "degraded": 0.45
+    },
+    {
+      "start": 4,
+      "layers": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "mid_depth": 31.48148148148148,
+      "acc": 0.4166666666666667,
+      "target": 0.4166666666666667,
+      "other_operand": 0.0,
+      "other_relation": 0.016666666666666666,
+      "degraded": 0.5666666666666667
+    },
+    {
+      "start": 8,
+      "layers": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "mid_depth": 46.2962962962963,
+      "acc": 0.4166666666666667,
+      "target": 0.4166666666666667,
+      "other_operand": 0.0,
+      "other_relation": 0.016666666666666666,
+      "degraded": 0.5666666666666667
+    },
+    {
+      "start": 12,
+      "layers": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "mid_depth": 61.111111111111114,
+      "acc": 0.4166666666666667,
+      "target": 0.4166666666666667,
+      "other_operand": 0.0,
+      "other_relation": 0.016666666666666666,
+      "degraded": 0.5666666666666667
+    },
+    {
+      "start": 16,
+      "layers": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "mid_depth": 75.92592592592592,
+      "acc": 0.15,
+      "target": 0.15,
+      "other_operand": 0.11666666666666667,
+      "other_relation": 0.0,
+      "degraded": 0.7333333333333333
+    }
+  ],
+  "critical_window": {
+    "layers": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "mid_depth": 75.92592592592592
+  },
+  "dissociation": {
+    "entity": {
+      "acc": 0.15,
+      "n": 60,
+      "target": 0.15,
+      "other_operand": 0.11666666666666667,
+      "other_relation": 0.0,
+      "degraded": 0.7333333333333333
+    },
+    "operator": {
+      "acc": 0.6333333333333333,
+      "n": 60,
+      "target": 0.6333333333333333,
+      "other_operand": 0.0,
+      "other_relation": 0.0,
+      "degraded": 0.36666666666666664
+    },
+    "filler": {
+      "acc": 0.38333333333333336,
+      "n": 60,
+      "target": 0.38333333333333336,
+      "other_operand": 0.0,
+      "other_relation": 0.13333333333333333,
+      "degraded": 0.48333333333333334
+    }
+  },
+  "paired": {
+    "entity_vs_operator": {
+      "acc_diff": -0.48333333333333334,
+      "lo": -0.6166666666666667,
+      "hi": -0.3333333333333333,
+      "ci_excludes_0": true,
+      "entity_only_broken": 31,
+      "operator_only_broken": 2,
+      "mcnemar_p": 1.3085082173347473e-07
+    },
+    "entity_vs_filler": {
+      "acc_diff": -0.23333333333333334,
+      "lo": -0.38333333333333336,
+      "hi": -0.08291666666667273,
+      "ci_excludes_0": true,
+      "entity_only_broken": 20,
+      "filler_only_broken": 6,
+      "mcnemar_p": 0.009355306625366211
+    },
+    "other_operand_counts": {
+      "entity": 7,
+      "operator": 0,
+      "filler": 0
+    },
+    "n_cells": 60
+  },
+  "_meta": {
+    "tag": "1.7b",
+    "domain": "relations",
+    "k": 8,
+    "n_cells": 60,
+    "note": "query->KEY attention blocked across a layer window, all heads, every query position >= the prompt's last token. entity/operator token positions from char-offset mapping. class via op_audit.classify (source=target, no steer)."
+  }
+}
