@@ -838,12 +838,60 @@ identity), so any classification here can be re-audited without a re-run — §2
 at this granularity. **The clobbering write is fixed** (§3.3's anchor rows are back in the 84-run
 artifact, merged on identity).
 
-Still open: what L1H5 *does*, if not a sink; and the operand's mechanism, which two dead hypotheses
-(query- and entity-position) have not caught.
+Still open: what L1H5 *does*, if not a sink. The operand's mechanism — the other item that stood
+open here — is answered in §3.9: it is not stored tissue at all but attention routing, and cutting
+the query→entity wire produces the deficit the neuron lesions could not.
 
 Artifacts: `{1.7b,8b}_relations_lesion_summary.json`, `*_localizer_summary.json`,
 `{1.7b,8b}_criticality_summary.json`, `{1.7b,8b}_critical_probe.json`. Checked by
 `python scripts/verify_numbers.py` (LESION block).
+
+### 3.9 The operand is in the wiring, not the tissue (attention knockout)
+
+§3.5 left the operand's mechanism as an open question with two dead hypotheses. Here is the third,
+and it holds — because it stops looking for *stored* tissue and looks at *routing*. A lesion
+removes computation that is stored at a position. But the entity is not stored at the query
+position; it is **moved** there, by attention, from the entity token. So the operand may have no
+removable tissue for the reason that it is a *wire*, not a store — and the way to lesion a wire is
+to cut it. Attention knockout (Geva et al., [2304.14767](https://arxiv.org/abs/2304.14767)):
+block the query→entity attention edge and ask whether *that* produces the operand deficit the
+neuron lesions could not. (`scripts/attn_knockout.py`: an eager-attention edge mask, no-op
+bit-exact; entity/operator token positions from char-offset mapping; paired McNemar + bootstrap.)
+
+**It does, and it localizes.** A sliding window of blocked layers, swept over depth (Geva's
+design), finds a band where cutting query→entity attention destroys entity retrieval — **1.7B at
+~76% depth, 8B at ~70%** — and it is dose-dependent in the window width: 1.7B relational accuracy
+**63.3% → 36.7% (W=5) → 15.0% (W=9)**, with the clean operand signature rising in step
+(`other_operand` **3 → 7** of 60 cells). The raw generations show the texture the class labels
+miss: under entity-knockout the model keeps the *relation* and loses the *entity* — Egypt/capital →
+"the city of **Rome**" (right relation, wrong entity), France/capital → "a city that is known
+for…", Brazil/continent → "located in the southern hemisphere". The wire carried the entity.
+
+**The substrate dissociation.** Blocking query→**operator-word** attention is inert — accuracy
+61.7 / 63.3 / 80.0% across the three configs, barely below baseline. The operator is *not*
+attention-read from its word; it is constructed, as §2.3 argues. The paired entity-vs-operator
+contrast, per cell:
+
+| config | band | block→entity | block→operator | Δacc (entity−operator) | McNemar p |
+|---|---|---|---|---|---|
+| 1.7B W=5 | L18–22 (76%) | 36.7% | 61.7% | −25.0% [−38.3, −13.3] | 7.3e-04 |
+| 1.7B W=9 | L16–24 (76%) | **15.0%** | 63.3% | **−48.3%** [−61.7, −33.3] | **1.3e-07** |
+| 8B W=7 | L21–27 (70%) | 60.0% | 80.0% | −20.0% [−30.0, −10.0] | 4.9e-04 |
+
+The dissociation replicates at 8B. Two honesty notes. At the **wide** window even entity-vs-filler
+clears (Δ−23.3%, CI excludes 0), but at the narrow window and at 8B a function-word filler ("the",
+"of") also disrupts retrieval, so the clean, theory-loaded contrast is entity-vs-**operator-word**,
+not entity-vs-any-token. And at 8B the entity deficit is **degradation**, not clean substitution
+(`other_operand` 0) — the same texture §3.5 found for the operand everywhere.
+
+**This closes the asymmetry.** The two halves have two substrates: the operator is **stored MLP
+tissue** (removable by neuron lesion, §3.4; not attention-read from its word, here); the operand is
+**attention routing** (no removable tissue, §3.5; severed by cutting the query→entity wire, here).
+The neuron lesion never found the operand because there was no operand *tissue* to find — only a
+wire, which a lesion cannot cut and an attention knockout can.
+
+Artifacts: `1.7b_relations_knockout_{w5,w9}_summary.json`, `8b_relations_knockout_summary.json`.
+Checked by `verify_numbers.py` (KNOCKOUT block).
 
 ---
 
@@ -864,8 +912,13 @@ The evidence splits cleanly into a negative half and a positive half:
 Part 3 adds a third category that fits neither half: causal, well controlled, and
 **asymmetric**. The two halves of a factorization that is symmetric in the algebra
 (`H = μ + stem[o] + case[k] + inter`) are not symmetric in the tissue — one has a
-removable network and the other does not, at either read position. Nothing in the
-readable/causal split anticipates that, and we cannot currently explain it.
+removable network and the other does not, at either read position. §3.9 gives the
+explanation the earlier draft of this paragraph said it lacked: the halves have
+**different substrates**. The operator is stored MLP tissue (lesionable, and not
+attention-read from its word); the operand is attention routing (no removable
+tissue, but severed by cutting the query→entity edge). The symmetry of the algebra
+does not imply symmetry of the implementation — one factor is a store, the other
+is a wire.
 
 Framings this could support, none yet chosen:
 

@@ -298,6 +298,27 @@ def rows():
         out.append((f"{tag} PROBE critical-head sink fraction",
                     sink,
                     f"max sink in model {s['max_sink_fraction']:.1%}"))
+
+    # --- attention knockout: the operand is routing, not tissue (3.9) ---------
+    for name in ("1.7b_relations_knockout_w5", "1.7b_relations_knockout_w9",
+                 "8b_relations_knockout"):
+        p = LES / f"{name}_summary.json"
+        if not p.exists():
+            continue
+        s = json.loads(p.read_text())
+        cw = s["critical_window"]
+        d = s["dissociation"]
+        pv = s["paired"]["entity_vs_operator"]
+        out.append((f"{name} KNOCKOUT critical window",
+                    f"L{cw['layers'][0]}-{cw['layers'][-1]} ({cw['mid_depth']:.0f}% depth)",
+                    f"baseline acc {s['baseline_acc']:.1%}, window W={s['window']}"))
+        out.append((f"{name} KNOCKOUT entity vs operator-word",
+                    f"acc {d['entity']['acc']:.1%} vs {d['operator']['acc']:.1%}, "
+                    f"Δ{pv['acc_diff']:+.1%} [{pv['lo']:+.1%}, {pv['hi']:+.1%}]",
+                    f"McNemar p={pv['mcnemar_p']:.1e}, other_operand "
+                    f"{s['paired']['other_operand_counts'].get('entity', 0)}/"
+                    f"{s['paired']['n_cells']} (operator "
+                    f"{s['paired']['other_operand_counts'].get('operator', 0)})"))
     return out
 
 
