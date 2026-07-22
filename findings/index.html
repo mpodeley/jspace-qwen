@@ -1047,6 +1047,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#39-the-operand-is-in-the-wiring-not-the-tissue-attention-knockout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9 The operand is in the wiring, not the tissue (attention knockout)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2460,11 +2471,84 @@ every cell's raw text to <code>{tag}_{domain}_lesion_cells.parquet</code> (gitig
 identity), so any classification here can be re-audited without a re-run — §2.16's discipline, held
 at this granularity. <strong>The clobbering write is fixed</strong> (§3.3's anchor rows are back in the 84-run
 artifact, merged on identity).</p>
-<p>Still open: what L1H5 <em>does</em>, if not a sink; and the operand's mechanism, which two dead hypotheses
-(query- and entity-position) have not caught.</p>
+<p>Still open: what L1H5 <em>does</em>, if not a sink. The operand's mechanism — the other item that stood
+open here — is answered in §3.9: it is not stored tissue at all but attention routing, and cutting
+the query→entity wire produces the deficit the neuron lesions could not.</p>
 <p>Artifacts: <code>{1.7b,8b}_relations_lesion_summary.json</code>, <code>*_localizer_summary.json</code>,
 <code>{1.7b,8b}_criticality_summary.json</code>, <code>{1.7b,8b}_critical_probe.json</code>. Checked by
 <code>python scripts/verify_numbers.py</code> (LESION block).</p>
+<h3 id="39-the-operand-is-in-the-wiring-not-the-tissue-attention-knockout">3.9 The operand is in the wiring, not the tissue (attention knockout)</h3>
+<p>§3.5 left the operand's mechanism as an open question with two dead hypotheses. Here is the third,
+and it holds — because it stops looking for <em>stored</em> tissue and looks at <em>routing</em>. A lesion
+removes computation that is stored at a position. But the entity is not stored at the query
+position; it is <strong>moved</strong> there, by attention, from the entity token. So the operand may have no
+removable tissue for the reason that it is a <em>wire</em>, not a store — and the way to lesion a wire is
+to cut it. Attention knockout (Geva et al., <a href="https://arxiv.org/abs/2304.14767">2304.14767</a>):
+block the query→entity attention edge and ask whether <em>that</em> produces the operand deficit the
+neuron lesions could not. (<code>scripts/attn_knockout.py</code>: an eager-attention edge mask, no-op
+bit-exact; entity/operator token positions from char-offset mapping; paired McNemar + bootstrap.)</p>
+<p><strong>It does, and it localizes.</strong> A sliding window of blocked layers, swept over depth (Geva's
+design), finds a band where cutting query→entity attention destroys entity retrieval — <strong>1.7B at
+~76% depth, 8B at ~70%</strong> — and it is dose-dependent in the window width: 1.7B relational accuracy
+<strong>63.3% → 36.7% (W=5) → 15.0% (W=9)</strong>, with the clean operand signature rising in step
+(<code>other_operand</code> <strong>3 → 7</strong> of 60 cells). The raw generations show the texture the class labels
+miss: under entity-knockout the model keeps the <em>relation</em> and loses the <em>entity</em> — Egypt/capital →
+"the city of <strong>Rome</strong>" (right relation, wrong entity), France/capital → "a city that is known
+for…", Brazil/continent → "located in the southern hemisphere". The wire carried the entity.</p>
+<p><strong>The substrate dissociation.</strong> Blocking query→<strong>operator-word</strong> attention is inert — accuracy
+61.7 / 63.3 / 80.0% across the three configs, barely below baseline. The operator is <em>not</em>
+attention-read from its word; it is constructed, as §2.3 argues. The paired entity-vs-operator
+contrast, per cell:</p>
+<table>
+<thead>
+<tr>
+<th>config</th>
+<th>band</th>
+<th>block→entity</th>
+<th>block→operator</th>
+<th>Δacc (entity−operator)</th>
+<th>McNemar p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.7B W=5</td>
+<td>L18–22 (76%)</td>
+<td>36.7%</td>
+<td>61.7%</td>
+<td>−25.0% [−38.3, −13.3]</td>
+<td>7.3e-04</td>
+</tr>
+<tr>
+<td>1.7B W=9</td>
+<td>L16–24 (76%)</td>
+<td><strong>15.0%</strong></td>
+<td>63.3%</td>
+<td><strong>−48.3%</strong> [−61.7, −33.3]</td>
+<td><strong>1.3e-07</strong></td>
+</tr>
+<tr>
+<td>8B W=7</td>
+<td>L21–27 (70%)</td>
+<td>60.0%</td>
+<td>80.0%</td>
+<td>−20.0% [−30.0, −10.0]</td>
+<td>4.9e-04</td>
+</tr>
+</tbody>
+</table>
+<p>The dissociation replicates at 8B. Two honesty notes. At the <strong>wide</strong> window even entity-vs-filler
+clears (Δ−23.3%, CI excludes 0), but at the narrow window and at 8B a function-word filler ("the",
+"of") also disrupts retrieval, so the clean, theory-loaded contrast is entity-vs-<strong>operator-word</strong>,
+not entity-vs-any-token. And at 8B the entity deficit is <strong>degradation</strong>, not clean substitution
+(<code>other_operand</code> 0) — the same texture §3.5 found for the operand everywhere.</p>
+<p><strong>This closes the asymmetry.</strong> The two halves have two substrates: the operator is <strong>stored MLP
+tissue</strong> (removable by neuron lesion, §3.4; not attention-read from its word, here); the operand is
+<strong>attention routing</strong> (no removable tissue, §3.5; severed by cutting the query→entity wire, here).
+The neuron lesion never found the operand because there was no operand <em>tissue</em> to find — only a
+wire, which a lesion cannot cut and an attention knockout can.</p>
+<p>Artifacts: <code>1.7b_relations_knockout_{w5,w9}_summary.json</code>, <code>8b_relations_knockout_summary.json</code>.
+Checked by <code>verify_numbers.py</code> (KNOCKOUT block).</p>
 <hr />
 <h2 id="the-open-interpretive-question-deliberately-unresolved">The open interpretive question (deliberately unresolved)</h2>
 <p>The evidence splits cleanly into a negative half and a positive half:</p>
@@ -2482,8 +2566,13 @@ artifact, merged on identity).</p>
 <p>Part 3 adds a third category that fits neither half: causal, well controlled, and
 <strong>asymmetric</strong>. The two halves of a factorization that is symmetric in the algebra
 (<code>H = μ + stem[o] + case[k] + inter</code>) are not symmetric in the tissue — one has a
-removable network and the other does not, at either read position. Nothing in the
-readable/causal split anticipates that, and we cannot currently explain it.</p>
+removable network and the other does not, at either read position. §3.9 gives the
+explanation the earlier draft of this paragraph said it lacked: the halves have
+<strong>different substrates</strong>. The operator is stored MLP tissue (lesionable, and not
+attention-read from its word); the operand is attention routing (no removable
+tissue, but severed by cutting the query→entity edge). The symmetry of the algebra
+does not imply symmetry of the implementation — one factor is a store, the other
+is a wire.</p>
 <p>Framings this could support, none yet chosen:</p>
 <ol>
 <li><strong>Legibility ≠ causal importance.</strong> The headline is the dissociation itself:
